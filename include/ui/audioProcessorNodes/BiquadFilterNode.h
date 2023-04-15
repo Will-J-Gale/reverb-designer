@@ -1,7 +1,7 @@
 /*
   ==============================================================================
 
-    FilterUI.h
+    BiquadFilterNode.h
     Created: 20 Sep 2020 9:41:52pm
     Author:  Will
 
@@ -16,13 +16,13 @@
 #include <ui/parameters/ComboBoxParameter.h>
 #include <ui/parameters/NumberParameter.h>
 
-class FilterUI : public AudioProcessorNode,
+class BiquadFilterNode : public AudioProcessorNode,
                  public TextEditor::Listener,
                  public ComboBox::Listener
 {
 public:
-    FilterUI(DspObjectType type);
-    ~FilterUI();
+    BiquadFilterNode(DspObjectType type);
+    ~BiquadFilterNode();
 
     void textEditorTextChanged(TextEditor& textEditor) override;
     virtual void comboBoxChanged(ComboBox* comboBox) override;

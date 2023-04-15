@@ -14,10 +14,10 @@
 #include <utils/ManagedArray.h>
 #include <ui/audioProcessorNodes/Input.h>
 #include <ui/audioProcessorNodes/Output.h>
-#include <ui/audioProcessorNodes/FilterUI.h>
-#include <ui/audioProcessorNodes/SimpleDelayUI.h>
+#include <ui/audioProcessorNodes/BiquadFilterNode.h>
+#include <ui/audioProcessorNodes/SimpleDelayNode.h>
 #include <utils/Constants.h>
-#include <ui/audioProcessorNodes/AllPassFilterUI.h>
+#include <ui/audioProcessorNodes/AllPassFilterNode.h>
 #include <ui/menus/GraphEditorContextMenu.h>
 #include <ui/interaction/SelectionHandler.h>
 #include <ui/menus/MainMenu.h>
@@ -29,7 +29,7 @@
 
 //Forward declarations
 class Node;
-class GainUI;
+class GainNode;
 class PluginGraph;
 
 class GraphEditor : public Component,

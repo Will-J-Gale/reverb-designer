@@ -1,18 +1,18 @@
 /*
   ==============================================================================
 
-    CombFilterUI.cpp
+    CombFilterNode.cpp
     Created: 26 Sep 2020 3:51:16pm
     Author:  Will
 
   ==============================================================================
 */
 
-#include <ui/audioProcessorNodes/CombFilterUI.h>
+#include <ui/audioProcessorNodes/CombFilterNode.h>
 #include <utils/Constants.h>
 #include <utils/XmlUtils.h>
 
-CombFilterUI::CombFilterUI(DspObjectType type) : AudioProcessorNode(type)
+CombFilterNode::CombFilterNode(DspObjectType type) : AudioProcessorNode(type)
 {
     setBounds(0, 0, COMB_WIDTH, COMB_HEIGHT);
     updateNameAndReCenter(COMB_NAME);
@@ -44,11 +44,11 @@ CombFilterUI::CombFilterUI(DspObjectType type) : AudioProcessorNode(type)
     addOutputNode();
 }
 
-CombFilterUI::~CombFilterUI()
+CombFilterNode::~CombFilterNode()
 {
 }
 
-void CombFilterUI::buttonClicked(Button* button)
+void CombFilterNode::buttonClicked(Button* button)
 {
     auto proc = getAudioProcessorAs<CombFilter>();
     auto parameters = proc->getParameters();
@@ -61,7 +61,7 @@ void CombFilterUI::buttonClicked(Button* button)
     proc->setParameters(parameters);
 }
 
-void CombFilterUI::sliderValueChanged(Slider* slider)
+void CombFilterNode::sliderValueChanged(Slider* slider)
 {
     auto proc = getAudioProcessorAs<CombFilter>();
     auto parameters = proc->getParameters();
@@ -82,7 +82,7 @@ void CombFilterUI::sliderValueChanged(Slider* slider)
     proc->setParameters(parameters);
 }
 
-void CombFilterUI::setUIParameters()
+void CombFilterNode::setUIParameters()
 {
     auto params = getAudioProcessorAs<CombFilter>()->getParameters();
 
@@ -92,7 +92,7 @@ void CombFilterUI::setUIParameters()
     enableLPF.setToggleState(params.enableLpf);
 }
 
-void CombFilterUI::setAudioParametersFromXml(XmlElement* parametersXml)
+void CombFilterNode::setAudioParametersFromXml(XmlElement* parametersXml)
 {
     auto processor = getAudioProcessorAs<CombFilter>();
     auto params = processor->getParameters();
@@ -106,7 +106,7 @@ void CombFilterUI::setAudioParametersFromXml(XmlElement* parametersXml)
     setUIParameters();
 }
 
-XmlElement* CombFilterUI::getAudioParametersAsXml()
+XmlElement* CombFilterNode::getAudioParametersAsXml()
 {
     auto params = getAudioProcessorAs<CombFilter>()->getParameters();
     auto parametersXml = XmlUtils::createElement(PARAMETERTS_TAG);

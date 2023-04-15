@@ -10,9 +10,9 @@
 
 #include <map>
 #include <ui/GraphEditor.h>
-#include <ui/audioProcessorNodes/GainUI.h>
+#include <ui/audioProcessorNodes/GainNode.h>
 #include <dsp/PluginGraph.h>
-#include <ui/audioProcessorNodes/AudioProcessorUIFactory.h>
+#include <ui/audioProcessorNodes/AudioProcessorNodeFactory.h>
 #include <utils/HitTest.h>
 #include <ui/interaction/NodeConnectionDrawer.h>
 #include <utils/XmlGenerator.h>

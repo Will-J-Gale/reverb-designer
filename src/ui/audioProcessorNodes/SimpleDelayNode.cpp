@@ -1,19 +1,19 @@
 /*
   ==============================================================================
 
-    SimpleDelayUI.cpp
+    SimpleDelayNode.cpp
     Created: 21 Sep 2020 8:53:30pm
     Author:  Will
 
   ==============================================================================
 */
 
-#include <ui/audioProcessorNodes/SimpleDelayUI.h>
+#include <ui/audioProcessorNodes/SimpleDelayNode.h>
 #include <utils/Constants.h>
 #include <ui/GraphEditor.h>
 #include <utils/XmlUtils.h>
 
-SimpleDelayUI::SimpleDelayUI(DspObjectType type) : AudioProcessorNode(type)
+SimpleDelayNode::SimpleDelayNode(DspObjectType type) : AudioProcessorNode(type)
 {
     setBounds(0, 0, DELAY_WIDTH, DELAY_HEIGHT);
     addInputNode();
@@ -29,11 +29,11 @@ SimpleDelayUI::SimpleDelayUI(DspObjectType type) : AudioProcessorNode(type)
     updateNameAndReCenter(DELAY_NAME);
 }
 
-SimpleDelayUI::~SimpleDelayUI()
+SimpleDelayNode::~SimpleDelayNode()
 {
 }
 
-void SimpleDelayUI::textEditorTextChanged(TextEditor& textEditor)
+void SimpleDelayNode::textEditorTextChanged(TextEditor& textEditor)
 {
     auto proc = getAudioProcessorAs<SimpleDelay>();
     auto parameters = proc->getParameters();
@@ -47,13 +47,13 @@ void SimpleDelayUI::textEditorTextChanged(TextEditor& textEditor)
     proc->setParameters(parameters);
 }
 
-void SimpleDelayUI::setUIParameters()
+void SimpleDelayNode::setUIParameters()
 {
     auto params = getAudioProcessorAs<SimpleDelay>()->getParameters();
     delayTime.setValue(params.delayTimeInMs);
 }
 
-void SimpleDelayUI::setAudioParametersFromXml(XmlElement* parametersXml)
+void SimpleDelayNode::setAudioParametersFromXml(XmlElement* parametersXml)
 {
     auto processor = getAudioProcessorAs<SimpleDelay>();
     auto params = processor->getParameters();
@@ -64,7 +64,7 @@ void SimpleDelayUI::setAudioParametersFromXml(XmlElement* parametersXml)
     setUIParameters();
 }
 
-XmlElement* SimpleDelayUI::getAudioParametersAsXml()
+XmlElement* SimpleDelayNode::getAudioParametersAsXml()
 {
     auto params = getAudioProcessorAs<SimpleDelay>()->getParameters();
     auto parametersXml = XmlUtils::createElement(PARAMETERTS_TAG);

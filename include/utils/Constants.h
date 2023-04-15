@@ -94,7 +94,7 @@ constexpr int GAIN_WIDTH = 100;
 constexpr int GAIN_HEIGHT = 60;
 constexpr int GAIN_INPUT_WIDTH = 50;
 
-//FilterUI constants
+//BiquadFilterNode constants
 const std::string FILTER_NAME = "Filter";
 constexpr int FILTER_WIDTH = 200;
 constexpr int FILTER_HEIGHT = 90;

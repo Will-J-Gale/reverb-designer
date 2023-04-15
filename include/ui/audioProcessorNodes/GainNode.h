@@ -1,8 +1,8 @@
 /*
   ==============================================================================
 
-    SimpleDelayUI.h
-    Created: 21 Sep 2020 8:53:30pm
+    GainNode.h
+    Created: 19 Sep 2020 1:34:26pm
     Author:  Will
 
   ==============================================================================
@@ -10,18 +10,16 @@
 
 #pragma once
 #include <ui/audioProcessorNodes/AudioProcessorNode.h>
+#include <dsp/Gain.h>
 #include <ui/parameters/NumberParameter.h>
-#include <dsp/IAudioProcessor.h>
-#include <dsp/SimpleDelay.h>
+#include <dsp/AudioProcessingBlock.h>
 
-class GraphEditor;
-
-class SimpleDelayUI : public AudioProcessorNode,
-                      public TextEditor::Listener
+class GainNode : public AudioProcessorNode,
+               public TextEditor::Listener
 {
 public:
-    SimpleDelayUI(DspObjectType type);
-    ~SimpleDelayUI();
+    GainNode(DspObjectType type);
+    ~GainNode();
 
     void textEditorTextChanged(TextEditor& textEditor) override;
 
@@ -30,5 +28,6 @@ public:
 
 private:
     virtual void setUIParameters() override;
-    NumberParameter delayTime;
+
+    NumberParameter gainParameter;
 };

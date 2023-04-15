@@ -1,18 +1,18 @@
 /*
   ==============================================================================
 
-    FilterUI.cpp
+    BiquadFilterNode.cpp
     Created: 20 Sep 2020 9:41:52pm
     Author:  Will
 
   ==============================================================================
 */
-#include <ui/audioProcessorNodes/FilterUI.h>
+#include <ui/audioProcessorNodes/BiquadFilterNode.h>
 #include <utils/Constants.h>
 #include <dsp/Parameters.h>
 #include <utils/XmlUtils.h>
 
-FilterUI::FilterUI(DspObjectType type) : AudioProcessorNode(type)
+BiquadFilterNode::BiquadFilterNode(DspObjectType type) : AudioProcessorNode(type)
 {
     setBounds(0, 0, FILTER_WIDTH, FILTER_HEIGHT);
 
@@ -43,11 +43,11 @@ FilterUI::FilterUI(DspObjectType type) : AudioProcessorNode(type)
     updateNameAndReCenter(FILTER_NAME);
 }
 
-FilterUI::~FilterUI()
+BiquadFilterNode::~BiquadFilterNode()
 {
 }
 
-void FilterUI::textEditorTextChanged(TextEditor& textEditor)
+void BiquadFilterNode::textEditorTextChanged(TextEditor& textEditor)
 {
     auto proc = getAudioProcessorAs<AudioFilter>();
     auto parameters = proc->getParameters();
@@ -61,7 +61,7 @@ void FilterUI::textEditorTextChanged(TextEditor& textEditor)
     proc->setParameters(parameters);
 }
 
-void FilterUI::comboBoxChanged(ComboBox* comboBox)
+void BiquadFilterNode::comboBoxChanged(ComboBox* comboBox)
 {
     auto proc = dynamic_cast<AudioFilter*>(getAudioProcessor());
     auto parameters = proc->getParameters();
@@ -76,14 +76,14 @@ void FilterUI::comboBoxChanged(ComboBox* comboBox)
     proc->setParameters(parameters);
 }
 
-void FilterUI::setUIParameters()
+void BiquadFilterNode::setUIParameters()
 {
     auto params = getAudioProcessorAs<AudioFilter>()->getParameters();
     filterType.setSelectedItem((int)params.filterType);
     frequency.setValue(params.fc);
 }
 
-void FilterUI::setAudioParametersFromXml(XmlElement* parametersXml)
+void BiquadFilterNode::setAudioParametersFromXml(XmlElement* parametersXml)
 {
     auto processor = getAudioProcessorAs<AudioFilter>();
     auto params = processor->getParameters();
@@ -97,7 +97,7 @@ void FilterUI::setAudioParametersFromXml(XmlElement* parametersXml)
     setUIParameters();
 }
 
-XmlElement* FilterUI::getAudioParametersAsXml()
+XmlElement* BiquadFilterNode::getAudioParametersAsXml()
 {
     auto params = getAudioProcessorAs<AudioFilter>()->getParameters();
     auto parametersXml = XmlUtils::createElement(PARAMETERTS_TAG);

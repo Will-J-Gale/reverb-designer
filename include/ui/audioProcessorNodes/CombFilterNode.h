@@ -1,7 +1,7 @@
 /*
   ==============================================================================
 
-    CombFilterUI.h
+    CombFilterNode.h
     Created: 26 Sep 2020 3:51:16pm
     Author:  Will
 
@@ -16,13 +16,13 @@
 
 class GraphEditor;
 
-class CombFilterUI : public AudioProcessorNode,
+class CombFilterNode : public AudioProcessorNode,
                      public Slider::Listener,
                      public ToggleButton::Listener
 {
 public:
-    CombFilterUI(DspObjectType type);
-    ~CombFilterUI();
+    CombFilterNode(DspObjectType type);
+    ~CombFilterNode();
 
     virtual void buttonClicked(Button*) override;
     virtual void sliderValueChanged(Slider* slider) override;

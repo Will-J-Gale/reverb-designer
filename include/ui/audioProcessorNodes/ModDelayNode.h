@@ -1,7 +1,7 @@
 /*
   ==============================================================================
 
-    ModDelayUI.h
+    ModDelayNode.h
     Created: 4 Oct 2020 6:08:27pm
     Author:  Will
 
@@ -14,13 +14,13 @@
 #include <ui/parameters/ComboBoxParameter.h>
 #include <ui/parameters/SliderParameter.h>
 
-class ModDelayUI : public AudioProcessorNode,
+class ModDelayNode : public AudioProcessorNode,
                    public Slider::Listener,
                    public ComboBox::Listener
 {
 public:
-    ModDelayUI(DspObjectType type);
-    ~ModDelayUI();
+    ModDelayNode(DspObjectType type);
+    ~ModDelayNode();
 
     virtual void sliderValueChanged(Slider* slider) override;
     virtual void comboBoxChanged(ComboBox* comboBoxThatHasChanged) override;

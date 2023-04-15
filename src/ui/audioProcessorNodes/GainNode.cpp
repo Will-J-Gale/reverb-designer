@@ -1,18 +1,18 @@
 /*
   ==============================================================================
 
-    GainUI.cpp
+    GainNode.cpp
     Created: 19 Sep 2020 1:34:26pm
     Author:  Will
 
   ==============================================================================
 */
 
-#include <ui/audioProcessorNodes/GainUI.h>
+#include <ui/audioProcessorNodes/GainNode.h>
 #include <utils/Constants.h>
 #include <utils/XmlUtils.h>
 
-GainUI::GainUI(DspObjectType type) : AudioProcessorNode(type)
+GainNode::GainNode(DspObjectType type) : AudioProcessorNode(type)
 {
     setBounds(0, 0, GAIN_WIDTH, GAIN_HEIGHT);
 
@@ -28,11 +28,11 @@ GainUI::GainUI(DspObjectType type) : AudioProcessorNode(type)
     updateNameAndReCenter(GAIN_NAME);
 }
 
-GainUI::~GainUI()
+GainNode::~GainNode()
 {
 }
 
-void GainUI::textEditorTextChanged(TextEditor& textEditor)
+void GainNode::textEditorTextChanged(TextEditor& textEditor)
 {
     auto proc = getAudioProcessorAs<Gain>();
 
@@ -43,13 +43,13 @@ void GainUI::textEditorTextChanged(TextEditor& textEditor)
     }
 }
 
-void GainUI::setUIParameters()
+void GainNode::setUIParameters()
 {
     auto gain = getAudioProcessorAs<Gain>()->getGain();
     gainParameter.setValue(gain);
 }
 
-void GainUI::setAudioParametersFromXml(XmlElement* parametersXml)
+void GainNode::setAudioParametersFromXml(XmlElement* parametersXml)
 {
     auto processor = getAudioProcessorAs<Gain>();
     auto gain = parametersXml->getChildByName(GAIN_TAG)->getAllSubText().getFloatValue();
@@ -58,7 +58,7 @@ void GainUI::setAudioParametersFromXml(XmlElement* parametersXml)
     setUIParameters();
 }
 
-XmlElement* GainUI::getAudioParametersAsXml()
+XmlElement* GainNode::getAudioParametersAsXml()
 {
     auto processor = getAudioProcessorAs<Gain>();
     auto parametersXml = XmlUtils::createElement(PARAMETERTS_TAG);

@@ -1,19 +1,19 @@
 /*
   ==============================================================================
 
-    AllPassFilterUI.cpp
+    AllPassFilterNode.cpp
     Created: 25 Sep 2020 8:21:25pm
     Author:  Will
 
   ==============================================================================
 */
 
-#include <ui/audioProcessorNodes/AllPassFilterUI.h>
+#include <ui/audioProcessorNodes/AllPassFilterNode.h>
 #include <utils/Constants.h>
 #include <ui/GraphEditor.h>
 #include <utils/XmlUtils.h>
 
-AllPassFilterUI::AllPassFilterUI(DspObjectType type) : AudioProcessorNode(type)
+AllPassFilterNode::AllPassFilterNode(DspObjectType type) : AudioProcessorNode(type)
 {
     setBounds(0, 0, APF_WIDTH, APF_HEIGHT);
     updateNameAndReCenter(APF_NAME);
@@ -63,12 +63,12 @@ AllPassFilterUI::AllPassFilterUI(DspObjectType type) : AudioProcessorNode(type)
     addOutputNode();
 }
 
-AllPassFilterUI::~AllPassFilterUI()
+AllPassFilterNode::~AllPassFilterNode()
 {
 
 }
 
-void AllPassFilterUI::buttonClicked(Button* button)
+void AllPassFilterNode::buttonClicked(Button* button)
 {
     auto apf = getAudioProcessorAs<DelayAPF>();
     auto params = apf->getParameters();
@@ -85,7 +85,7 @@ void AllPassFilterUI::buttonClicked(Button* button)
     apf->setParameters(params);
 }
 
-void AllPassFilterUI::sliderValueChanged(Slider* slider)
+void AllPassFilterNode::sliderValueChanged(Slider* slider)
 {
     auto apf = getAudioProcessorAs<DelayAPF>();
     auto params = apf->getParameters();
@@ -118,7 +118,7 @@ void AllPassFilterUI::sliderValueChanged(Slider* slider)
     apf->setParameters(params);
 }
 
-void AllPassFilterUI::setUIParameters()
+void AllPassFilterNode::setUIParameters()
 {
     auto params = getAudioProcessorAs<DelayAPF>()->getParameters();
 
@@ -132,7 +132,7 @@ void AllPassFilterUI::setUIParameters()
     maxModulation.setValue(params.lfoMaxModulationInMs);
 }
 
-void AllPassFilterUI::setAudioParametersFromXml(XmlElement* parametersXml)
+void AllPassFilterNode::setAudioParametersFromXml(XmlElement* parametersXml)
 {
     auto processor = getAudioProcessorAs<DelayAPF>();
     auto params = processor->getParameters();
@@ -150,7 +150,7 @@ void AllPassFilterUI::setAudioParametersFromXml(XmlElement* parametersXml)
     setUIParameters();
 }
 
-XmlElement* AllPassFilterUI::getAudioParametersAsXml()
+XmlElement* AllPassFilterNode::getAudioParametersAsXml()
 {
     auto params = getAudioProcessorAs<DelayAPF>()->getParameters();
     auto parameterXml = XmlUtils::createElement(PARAMETERTS_TAG);

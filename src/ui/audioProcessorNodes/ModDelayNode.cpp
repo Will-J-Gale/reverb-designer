@@ -1,19 +1,19 @@
 /*
   ==============================================================================
 
-    ModDelayUI.cpp
+    ModDelayNode.cpp
     Created: 4 Oct 2020 6:08:27pm
     Author:  Will
 
   ==============================================================================
 */
 
-#include <ui/audioProcessorNodes/ModDelayUI.h>
+#include <ui/audioProcessorNodes/ModDelayNode.h>
 #include <utils/Constants.h>
 #include <dsp/ModulatedDelay.h>
 
 
-ModDelayUI::ModDelayUI(DspObjectType type) : AudioProcessorNode(type)
+ModDelayNode::ModDelayNode(DspObjectType type) : AudioProcessorNode(type)
 {
     setBounds(0, 0, MOD_DELAY_WIDTH, MOD_DELAY_HEIGHT);
     updateNameAndReCenter(MOD_DELAY_NAME);
@@ -48,11 +48,11 @@ ModDelayUI::ModDelayUI(DspObjectType type) : AudioProcessorNode(type)
     addOutputNode();
 }
 
-ModDelayUI::~ModDelayUI()
+ModDelayNode::~ModDelayNode()
 {
 }
 
-void ModDelayUI::sliderValueChanged(Slider* slider)
+void ModDelayNode::sliderValueChanged(Slider* slider)
 {
     auto proc = getAudioProcessorAs<ModulatedDelay>();
     auto params = proc->getParameters();
@@ -74,7 +74,7 @@ void ModDelayUI::sliderValueChanged(Slider* slider)
 
 }
 
-void ModDelayUI::comboBoxChanged(ComboBox* comboBox)
+void ModDelayNode::comboBoxChanged(ComboBox* comboBox)
 {
     auto proc = getAudioProcessorAs<ModulatedDelay>();
     auto params = proc->getParameters();
@@ -83,7 +83,7 @@ void ModDelayUI::comboBoxChanged(ComboBox* comboBox)
     proc->setParamters(params);
 }
 
-void ModDelayUI::setUIParameters()
+void ModDelayNode::setUIParameters()
 {
     auto params = getAudioProcessorAs<ModulatedDelay>()->getParameters();
 
@@ -93,7 +93,7 @@ void ModDelayUI::setUIParameters()
     lfoDepth.setValue(params.lfoDepth);
 }
 
-void ModDelayUI::setAudioParametersFromXml(XmlElement* parametersXml)
+void ModDelayNode::setAudioParametersFromXml(XmlElement* parametersXml)
 {
     auto processor = getAudioProcessorAs<ModulatedDelay>();
     auto params = processor->getParameters();
@@ -107,7 +107,7 @@ void ModDelayUI::setAudioParametersFromXml(XmlElement* parametersXml)
     setUIParameters();
 }
 
-XmlElement* ModDelayUI::getAudioParametersAsXml()
+XmlElement* ModDelayNode::getAudioParametersAsXml()
 {
     auto params = getAudioProcessorAs<ModulatedDelay>()->getParameters();
     auto parametersXml = XmlUtils::createElement(PARAMETERTS_TAG);

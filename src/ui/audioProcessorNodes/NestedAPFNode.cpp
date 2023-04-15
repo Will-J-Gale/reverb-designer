@@ -1,19 +1,19 @@
 /*
   ==============================================================================
 
-    NestedApfUI.cpp
+    NestedAPFNode.cpp
     Created: 5 Oct 2020 6:53:26pm
     Author:  Will
 
   ==============================================================================
 */
 
-#include <ui/audioProcessorNodes/NestedApfUI.h>
+#include <ui/audioProcessorNodes/NestedAPFNode.h>
 #include <utils/Constants.h>
 #include <dsp/NestedDelayAPF.h>
 #include <utils/XmlUtils.h>
 
-NestedApfUI::NestedApfUI(DspObjectType type) : AudioProcessorNode(type)
+NestedAPFNode::NestedAPFNode(DspObjectType type) : AudioProcessorNode(type)
 {
     setBounds(0, 0, NESTED_APF_WIDTH, NESTED_APF_HEIGHT);
     updateNameAndReCenter(NESTED_APF_NAME);
@@ -73,7 +73,7 @@ NestedApfUI::NestedApfUI(DspObjectType type) : AudioProcessorNode(type)
     addOutputNode();
 }
 
-void NestedApfUI::buttonClicked(Button* button)
+void NestedAPFNode::buttonClicked(Button* button)
 {
     auto nApf = getAudioProcessorAs<NestedDelayAPF>();
     auto params = nApf->getParameters();
@@ -90,7 +90,7 @@ void NestedApfUI::buttonClicked(Button* button)
     nApf->setParameters(params);
 }
 
-void NestedApfUI::sliderValueChanged(Slider* slider)
+void NestedAPFNode::sliderValueChanged(Slider* slider)
 {
     auto nApf = getAudioProcessorAs<NestedDelayAPF>();
     auto params = nApf->getParameters();
@@ -131,7 +131,7 @@ void NestedApfUI::sliderValueChanged(Slider* slider)
     nApf->setParameters(params);
 }
 
-void NestedApfUI::setUIParameters()
+void NestedAPFNode::setUIParameters()
 {
     auto params = getAudioProcessorAs<NestedDelayAPF>()->getParameters();
 
@@ -150,7 +150,7 @@ void NestedApfUI::setUIParameters()
     maxModulation.setValue(params.lfoMaxModulationInMs);
 }
 
-void NestedApfUI::setAudioParametersFromXml(XmlElement* parametersXml)
+void NestedAPFNode::setAudioParametersFromXml(XmlElement* parametersXml)
 {
     auto processor = getAudioProcessorAs<NestedDelayAPF>();
     auto params = processor->getParameters();
@@ -170,7 +170,7 @@ void NestedApfUI::setAudioParametersFromXml(XmlElement* parametersXml)
     setUIParameters();
 }
 
-XmlElement* NestedApfUI::getAudioParametersAsXml()
+XmlElement* NestedAPFNode::getAudioParametersAsXml()
 {
     auto params = getAudioProcessorAs<NestedDelayAPF>()->getParameters();
     auto parametersXml = XmlUtils::createElement(PARAMETERTS_TAG);

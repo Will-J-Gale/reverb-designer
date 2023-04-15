@@ -11,7 +11,7 @@
 #include <ui/interaction/ProcessorUIHandler.h>
 #include <ui/audioProcessorNodes/AudioProcessorNode.h>
 #include <dsp/AudioProcessingBlock.h>
-#include <ui/audioProcessorNodes/AudioProcessorUIFactory.h>
+#include <ui/audioProcessorNodes/AudioProcessorNodeFactory.h>
 #include <ui/GraphEditor.h>
 #include <dsp/PluginGraph.h>
 #include <ui/interaction/ConnectionHandler.h>
@@ -26,7 +26,7 @@ AudioProcessorNodePtr ProcessorUIHandler::createDspObject(DspObjectType type, Po
     if (type == DspObjectType::Input || type == DspObjectType::Output)
         jassert("Cannot create input or output processor without existing providing AudioProcessingBlock");
 
-    auto processorUI = AudioProcessorUIFactory::Generate(type);
+    auto processorUI = AudioProcessorNodeFactory::Generate(type);
     auto processingBlock = graphEditor->pluginGraph->generateProcessingBlock(type);
 
     processorUI->setProcessingBlock(processingBlock);
@@ -37,7 +37,7 @@ AudioProcessorNodePtr ProcessorUIHandler::createDspObject(DspObjectType type, Po
 
 AudioProcessorNodePtr ProcessorUIHandler::createDspObject(DspObjectType type, Point<int> position, AudioProcessingBlockPtr processingBlock)
 {
-    AudioProcessorNodePtr processorUI = AudioProcessorUIFactory::Generate(type);
+    AudioProcessorNodePtr processorUI = AudioProcessorNodeFactory::Generate(type);
 
     processorUI->setProcessingBlock(processingBlock);
     processorUI->setTopLeftPosition(position);
