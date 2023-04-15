@@ -8,11 +8,11 @@
   ==============================================================================
 */
 
-#include <ui/audioProcessor/CombFilterUI.h>
+#include <ui/audioProcessorNodes/CombFilterUI.h>
 #include <utils/Constants.h>
 #include <utils/XmlUtils.h>
 
-CombFilterUI::CombFilterUI(DspObjectType type) : AudioProcessorUI(type)
+CombFilterUI::CombFilterUI(DspObjectType type) : AudioProcessorNode(type)
 {
     setBounds(0, 0, COMB_WIDTH, COMB_HEIGHT);
     updateNameAndReCenter(COMB_NAME);

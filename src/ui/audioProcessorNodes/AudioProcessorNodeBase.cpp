@@ -8,27 +8,27 @@
   ==============================================================================
 */
 
-#include <ui/audioProcessor/AudioProcessorUI.h>
+#include <ui/audioProcessorNodes/AudioProcessorNode.h>
 #include <ui/GraphEditor.h>
 #include <dsp/Delay.h>
 
 
-AudioProcessorUI::AudioProcessorUI()
+AudioProcessorNode::AudioProcessorNode()
 {
     initialize();
 }
 
-AudioProcessorUI::AudioProcessorUI(DspObjectType type)
+AudioProcessorNode::AudioProcessorNode(DspObjectType type)
 {
     this->type = type;
     initialize();
 }
 
-AudioProcessorUI::~AudioProcessorUI()
+AudioProcessorNode::~AudioProcessorNode()
 {
 }
 
-void AudioProcessorUI::initialize()
+void AudioProcessorNode::initialize()
 {
     setBounds(0, 0, 200, 50);
 
@@ -41,7 +41,7 @@ void AudioProcessorUI::initialize()
     addAndMakeVisible(nameLabel);
 }
 
-Point<int> AudioProcessorUI::getCenterPosition()
+Point<int> AudioProcessorNode::getCenterPosition()
 {
     auto bounds = getBounds();
     Point<int> pos;
@@ -52,7 +52,7 @@ Point<int> AudioProcessorUI::getCenterPosition()
     return pos;
 }
 
-void AudioProcessorUI::paint(Graphics& g)
+void AudioProcessorNode::paint(Graphics& g)
 {
     Rectangle<int> bounds = getLocalBounds();
     bounds.setX(bounds.getX() + NODE_SIZE);
@@ -63,7 +63,7 @@ void AudioProcessorUI::paint(Graphics& g)
     g.fillRoundedRectangle(bounds.toFloat(), AUDIO_PROCESSOR_CORNER_SIZE);
 }
 
-void AudioProcessorUI::mouseDown(const MouseEvent& e)
+void AudioProcessorNode::mouseDown(const MouseEvent& e)
 {
     dragHandler.mouseDown(e);
 
@@ -80,7 +80,7 @@ void AudioProcessorUI::mouseDown(const MouseEvent& e)
     }
 }
 
-void AudioProcessorUI::mouseDrag(const MouseEvent& e)
+void AudioProcessorNode::mouseDrag(const MouseEvent& e)
 {
     dragHandler.drag(e);
 
@@ -90,7 +90,7 @@ void AudioProcessorUI::mouseDrag(const MouseEvent& e)
     }
 }
 
-void AudioProcessorUI::mouseUp(const MouseEvent& e)
+void AudioProcessorNode::mouseUp(const MouseEvent& e)
 {
     for (auto listener : listeners)
     {
@@ -98,13 +98,13 @@ void AudioProcessorUI::mouseUp(const MouseEvent& e)
     }
 }
 
-void AudioProcessorUI::updateNameAndReCenter(String name)
+void AudioProcessorNode::updateNameAndReCenter(String name)
 {
     nameLabel.setText(name, dontSendNotification);
     nameLabel.setSize(getBounds().getWidth(), nameLabel.getBounds().getHeight());
 }
 
-Array<Node*> AudioProcessorUI::getAllNodes()
+Array<Node*> AudioProcessorNode::getAllNodes()
 {
     Array<Node*> nodes;
 
@@ -117,17 +117,17 @@ Array<Node*> AudioProcessorUI::getAllNodes()
     return nodes;
 }
 
-Node* AudioProcessorUI::getInputNode()
+Node* AudioProcessorNode::getInputNode()
 {
     return input.get();
 }
 
-Node* AudioProcessorUI::getOutputNode()
+Node* AudioProcessorNode::getOutputNode()
 {
 	return output.get();
 }
 
-void AudioProcessorUI::addInputNode()
+void AudioProcessorNode::addInputNode()
 {
     input = std::make_shared<Node>(this);
     input->setType(NodeType::AudioInput);
@@ -136,7 +136,7 @@ void AudioProcessorUI::addInputNode()
     addAndMakeVisible(input.get());  
 }
 
-void AudioProcessorUI::addOutputNode()
+void AudioProcessorNode::addOutputNode()
 {
     output = std::make_shared<Node>(this);
     output->setType(NodeType::AudioOutput);
@@ -145,17 +145,17 @@ void AudioProcessorUI::addOutputNode()
     addAndMakeVisible(output.get());
 }
 
-void AudioProcessorUI::addListener(AudioProcessorUI::Listener* listener)
+void AudioProcessorNode::addListener(AudioProcessorNode::Listener* listener)
 {
     listeners.add(listener);
 }
 
-AudioProcessingBlockPtr AudioProcessorUI::getProcessingBlock()
+AudioProcessingBlockPtr AudioProcessorNode::getProcessingBlock()
 {
 	return processingBlock;
 }
 
-void AudioProcessorUI::handleRightClick()
+void AudioProcessorNode::handleRightClick()
 {
     AudioProcessorConextMenuItems selection = (AudioProcessorConextMenuItems)contextMenu.show();
 
@@ -165,7 +165,7 @@ void AudioProcessorUI::handleRightClick()
     }
 }
 
-void AudioProcessorUI::setProcessingBlock(AudioProcessingBlockPtr processingBlock)
+void AudioProcessorNode::setProcessingBlock(AudioProcessingBlockPtr processingBlock)
 {
     if (processingBlock->getType() != type)
     {
@@ -176,12 +176,12 @@ void AudioProcessorUI::setProcessingBlock(AudioProcessingBlockPtr processingBloc
     this->setUIParameters();
 }
 
-IAudioProcessor* AudioProcessorUI::getAudioProcessor()
+IAudioProcessor* AudioProcessorNode::getAudioProcessor()
 {
     return processingBlock->getProcessor();
 }
 
-void AudioProcessorUI::reverse()
+void AudioProcessorNode::reverse()
 {
     reversed = !reversed;
 
@@ -195,22 +195,22 @@ void AudioProcessorUI::reverse()
     output->setCentrePosition(inputPosition);
 }
 
-std::string AudioProcessorUI::getIdAsString()
+std::string AudioProcessorNode::getIdAsString()
 {
     return processingBlock->getIdAsString();
 }
 
-DspObjectType AudioProcessorUI::getType()
+DspObjectType AudioProcessorNode::getType()
 {
     return type;
 }
 
-bool AudioProcessorUI::isReversed()
+bool AudioProcessorNode::isReversed()
 {
     return reversed;
 }
 
-void AudioProcessorUI::connectInput(AudioProcessorUI* connection)
+void AudioProcessorNode::connectInput(AudioProcessorNode* connection)
 {
     if (!inputConnections.contains(connection))
     {
@@ -220,7 +220,7 @@ void AudioProcessorUI::connectInput(AudioProcessorUI* connection)
     
 }
 
-void AudioProcessorUI::connectFeedbackInput(AudioProcessorUI* connection)
+void AudioProcessorNode::connectFeedbackInput(AudioProcessorNode* connection)
 {
     if (!feedbackConnections.contains(connection))
     {
@@ -229,7 +229,7 @@ void AudioProcessorUI::connectFeedbackInput(AudioProcessorUI* connection)
     }
 }
 
-void AudioProcessorUI::connectOutput(AudioProcessorUI* connection)
+void AudioProcessorNode::connectOutput(AudioProcessorNode* connection)
 {
     if (!outputConnections.contains(connection))
     {
@@ -238,39 +238,39 @@ void AudioProcessorUI::connectOutput(AudioProcessorUI* connection)
     } 
 }
 
-void AudioProcessorUI::disconnectInput(AudioProcessorUI* connection)
+void AudioProcessorNode::disconnectInput(AudioProcessorNode* connection)
 {
     removeFromArray(inputConnections, connection);
     this->processingBlock->disconnectInput(connection->getProcessingBlock().get());
 }
 
-void AudioProcessorUI::disconnectOutput(AudioProcessorUI* connection)
+void AudioProcessorNode::disconnectOutput(AudioProcessorNode* connection)
 {
     removeFromArray(outputConnections, connection);
     this->processingBlock->disconnectOutput(connection->getProcessingBlock().get());
 }
 
-Array<AudioProcessorUI*> AudioProcessorUI::getOutputConnections()
+Array<AudioProcessorNode*> AudioProcessorNode::getOutputConnections()
 {
     return outputConnections;
 }
 
-Array<AudioProcessorUI*> AudioProcessorUI::getInputConnections()
+Array<AudioProcessorNode*> AudioProcessorNode::getInputConnections()
 {
     return inputConnections;
 }
 
-Array<AudioProcessorUI*> AudioProcessorUI::getFeedbackConnections()
+Array<AudioProcessorNode*> AudioProcessorNode::getFeedbackConnections()
 {
     return feedbackConnections;
 }
 
-void AudioProcessorUI::addExistingInput(AudioProcessorUI* inputProcessor)
+void AudioProcessorNode::addExistingInput(AudioProcessorNode* inputProcessor)
 {
     inputConnections.add(inputProcessor);
 }
 
-void AudioProcessorUI::addExistingOutput(AudioProcessorUI* outputProcessor)
+void AudioProcessorNode::addExistingOutput(AudioProcessorNode* outputProcessor)
 {
     outputConnections.add(outputProcessor);
 }

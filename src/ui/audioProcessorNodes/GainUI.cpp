@@ -8,11 +8,11 @@
   ==============================================================================
 */
 
-#include <ui/audioProcessor/GainUI.h>
+#include <ui/audioProcessorNodes/GainUI.h>
 #include <utils/Constants.h>
 #include <utils/XmlUtils.h>
 
-GainUI::GainUI(DspObjectType type) : AudioProcessorUI(type)
+GainUI::GainUI(DspObjectType type) : AudioProcessorNode(type)
 {
     setBounds(0, 0, GAIN_WIDTH, GAIN_HEIGHT);
 

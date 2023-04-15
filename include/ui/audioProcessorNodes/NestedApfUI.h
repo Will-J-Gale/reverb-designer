@@ -9,14 +9,14 @@
 */
 
 #pragma once
-#include <ui/audioProcessor/AudioProcessorUI.h>
+#include <ui/audioProcessorNodes/AudioProcessorNode.h>
 #include <JuceHeader.h>
 #include <ui/parameters/BoolParameter.h>
 #include <ui/parameters/SliderParameter.h>
 
 class GraphEditor;
 
-class NestedApfUI : public AudioProcessorUI,
+class NestedApfUI : public AudioProcessorNode,
                     public ToggleButton::Listener,
                     public Slider::Listener
 {

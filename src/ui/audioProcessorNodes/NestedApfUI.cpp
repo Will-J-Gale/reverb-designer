@@ -8,12 +8,12 @@
   ==============================================================================
 */
 
-#include <ui/audioProcessor/NestedApfUI.h>
+#include <ui/audioProcessorNodes/NestedApfUI.h>
 #include <utils/Constants.h>
 #include <dsp/NestedDelayAPF.h>
 #include <utils/XmlUtils.h>
 
-NestedApfUI::NestedApfUI(DspObjectType type) : AudioProcessorUI(type)
+NestedApfUI::NestedApfUI(DspObjectType type) : AudioProcessorNode(type)
 {
     setBounds(0, 0, NESTED_APF_WIDTH, NESTED_APF_HEIGHT);
     updateNameAndReCenter(NESTED_APF_NAME);

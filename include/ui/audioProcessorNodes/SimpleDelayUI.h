@@ -1,41 +1,34 @@
 /*
   ==============================================================================
 
-    FilterUI.h
-    Created: 20 Sep 2020 9:41:52pm
+    SimpleDelayUI.h
+    Created: 21 Sep 2020 8:53:30pm
     Author:  Will
 
   ==============================================================================
 */
 
 #pragma once
-
-#include <JuceHeader.h>
-#include <ui/audioProcessor/AudioProcessorUI.h>
-#include <dsp/AudioFilter.h>
-#include <ui/parameters/ComboBoxParameter.h>
+#include <ui/audioProcessorNodes/AudioProcessorNode.h>
 #include <ui/parameters/NumberParameter.h>
+#include <dsp/IAudioProcessor.h>
+#include <dsp/SimpleDelay.h>
 
-class FilterUI : public AudioProcessorUI,
-                 public TextEditor::Listener,
-                 public ComboBox::Listener
+class GraphEditor;
+
+class SimpleDelayUI : public AudioProcessorNode,
+                      public TextEditor::Listener
 {
 public:
-    FilterUI(DspObjectType type);
-    ~FilterUI();
+    SimpleDelayUI(DspObjectType type);
+    ~SimpleDelayUI();
 
     void textEditorTextChanged(TextEditor& textEditor) override;
-    virtual void comboBoxChanged(ComboBox* comboBox) override;
 
     virtual void setAudioParametersFromXml(XmlElement* parametersXml) override;
     virtual XmlElement* getAudioParametersAsXml() override;
 
 private:
     virtual void setUIParameters() override;
-
-    ComboBoxParameter filterType;
-    NumberParameter frequency;
+    NumberParameter delayTime;
 };
-
-
-

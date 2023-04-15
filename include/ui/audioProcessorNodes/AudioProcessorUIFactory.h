@@ -11,23 +11,23 @@
 #pragma once
 #include <stdexcept>
 #include <utils/Constants.h>
-#include <ui/audioProcessor/AudioProcessorUI.h>
-#include <ui/audioProcessor/GainUI.h>
-#include <ui/audioProcessor/FilterUI.h>
-#include <ui/audioProcessor/AllPassFilterUI.h>
-#include <ui/audioProcessor/CombFilterUI.h>
-#include <ui/audioProcessor/Input.h>
-#include <ui/audioProcessor/Output.h>
-#include <ui/audioProcessor/SimpleDelayUI.h>
-#include <ui/audioProcessor/ModDelayUI.h>
-#include <ui/audioProcessor/NestedApfUI.h>
+#include <ui/audioProcessorNodes/AudioProcessorNode.h>
+#include <ui/audioProcessorNodes/GainUI.h>
+#include <ui/audioProcessorNodes/FilterUI.h>
+#include <ui/audioProcessorNodes/AllPassFilterUI.h>
+#include <ui/audioProcessorNodes/CombFilterUI.h>
+#include <ui/audioProcessorNodes/Input.h>
+#include <ui/audioProcessorNodes/Output.h>
+#include <ui/audioProcessorNodes/SimpleDelayUI.h>
+#include <ui/audioProcessorNodes/ModDelayUI.h>
+#include <ui/audioProcessorNodes/NestedApfUI.h>
 
 class GraphEditor;
 
 class AudioProcessorUIFactory
 {
 public:
-    static AudioProcessorUIPtr Generate(DspObjectType type)
+    static AudioProcessorNodePtr Generate(DspObjectType type)
     {
         switch (type)
         {

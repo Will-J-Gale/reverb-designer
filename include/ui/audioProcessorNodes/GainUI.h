@@ -9,12 +9,12 @@
 */
 
 #pragma once
-#include <ui/audioProcessor/AudioProcessorUI.h>
+#include <ui/audioProcessorNodes/AudioProcessorNode.h>
 #include <dsp/Gain.h>
 #include <ui/parameters/NumberParameter.h>
 #include <dsp/AudioProcessingBlock.h>
 
-class GainUI : public AudioProcessorUI,
+class GainUI : public AudioProcessorNode,
                public TextEditor::Listener
 {
 public:

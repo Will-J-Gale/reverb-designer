@@ -10,11 +10,11 @@
 
 #pragma once
 
-#include <ui/audioProcessor/AudioProcessorUI.h>
+#include <ui/audioProcessorNodes/AudioProcessorNode.h>
 #include <ui/parameters/ComboBoxParameter.h>
 #include <ui/parameters/SliderParameter.h>
 
-class ModDelayUI : public AudioProcessorUI,
+class ModDelayUI : public AudioProcessorNode,
                    public Slider::Listener,
                    public ComboBox::Listener
 {

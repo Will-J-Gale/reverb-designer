@@ -8,17 +8,17 @@
   ==============================================================================
 */
 
-#include <ui/audioProcessor/Node.h>
+#include <ui/audioProcessorNodes/Node.h>
 #include <utils/Constants.h>
 #include <ui/GraphEditor.h>
-#include <ui/audioProcessor/AudioProcessorUI.h>
+#include <ui/audioProcessorNodes/AudioProcessorNode.h>
 
 Node::Node()
 {
     initialize();
 }
 
-Node::Node(AudioProcessorUI* attachedProcessorUI)
+Node::Node(AudioProcessorNode* attachedProcessorUI)
 {
     this->attachedProcessorUI = attachedProcessorUI;
     initialize();
@@ -120,7 +120,7 @@ void Node::addListener(Node::Listener* listener)
     listeners.add(listener);
 }
 
-AudioProcessorUI* Node::getAttachedProcessor()
+AudioProcessorNode* Node::getAttachedProcessor()
 {
     return attachedProcessorUI;
 }

@@ -8,12 +8,12 @@
   ==============================================================================
 */
 
-#include <ui/audioProcessor/ModDelayUI.h>
+#include <ui/audioProcessorNodes/ModDelayUI.h>
 #include <utils/Constants.h>
 #include <dsp/ModulatedDelay.h>
 
 
-ModDelayUI::ModDelayUI(DspObjectType type) : AudioProcessorUI(type)
+ModDelayUI::ModDelayUI(DspObjectType type) : AudioProcessorNode(type)
 {
     setBounds(0, 0, MOD_DELAY_WIDTH, MOD_DELAY_HEIGHT);
     updateNameAndReCenter(MOD_DELAY_NAME);

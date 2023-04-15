@@ -9,14 +9,14 @@
 */
 
 #pragma once
-#include <ui/audioProcessor/AudioProcessorUI.h>
+#include <ui/audioProcessorNodes/AudioProcessorNode.h>
 #include <ui/parameters/SliderParameter.h>
 #include <ui/parameters/BoolParameter.h>
 #include <dsp/CombFilter.h>
 
 class GraphEditor;
 
-class CombFilterUI : public AudioProcessorUI,
+class CombFilterUI : public AudioProcessorNode,
                      public Slider::Listener,
                      public ToggleButton::Listener
 {

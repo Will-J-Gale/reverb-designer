@@ -10,9 +10,9 @@
 
 #include <ui/interaction/ConnectionHandler.h>
 #include <memory>
-#include <ui/audioProcessor/Node.h>
+#include <ui/audioProcessorNodes/Node.h>
 #include <ui/GraphEditor.h>
-#include <ui/audioProcessor/NodeConnection.h>
+#include <ui/audioProcessorNodes/NodeConnection.h>
 #include <dsp/PluginGraph.h>
 
 ConnectionHandler::ConnectionHandler(GraphEditor* graphEditor)
@@ -25,8 +25,8 @@ void ConnectionHandler::createConnection(Node* start, Node* end)
     auto connection = std::make_shared<NodeConnection>(start, end);
     graphEditor->connections.add(connection);
 
-    auto* startProcessorUI = (AudioProcessorUI*)start->getParentComponent();
-    auto* endProcessorUI = (AudioProcessorUI*)end->getParentComponent();
+    auto* startProcessorUI = (AudioProcessorNode*)start->getParentComponent();
+    auto* endProcessorUI = (AudioProcessorNode*)end->getParentComponent();
 
     endProcessorUI->connectInput(startProcessorUI);
     startProcessorUI->connectOutput(endProcessorUI);
@@ -38,8 +38,8 @@ void ConnectionHandler::createFeedbackConnection(Node* start, Node* end)
     auto connection = std::make_shared<NodeConnection>(start, end);
     graphEditor->connections.add(connection);
 
-    auto* startProcessorUI = (AudioProcessorUI*)start->getParentComponent();
-    auto* endProcessorUI = (AudioProcessorUI*)end->getParentComponent();
+    auto* startProcessorUI = (AudioProcessorNode*)start->getParentComponent();
+    auto* endProcessorUI = (AudioProcessorNode*)end->getParentComponent();
 
     endProcessorUI->connectFeedbackInput(startProcessorUI);
     graphEditor->pluginGraph->updateProcessPath();
@@ -59,8 +59,8 @@ void ConnectionHandler::deleteConnection(Node* node)
 
     for (auto connection : nodeConnections)
     {
-        auto* startProcessor = (AudioProcessorUI*)connection->getStart()->getParentComponent();
-        auto* endProcessor = (AudioProcessorUI*)connection->getEnd()->getParentComponent();
+        auto* startProcessor = (AudioProcessorNode*)connection->getStart()->getParentComponent();
+        auto* endProcessor = (AudioProcessorNode*)connection->getEnd()->getParentComponent();
 
         startProcessor->disconnectOutput(endProcessor);
         endProcessor->disconnectInput(startProcessor);

@@ -12,16 +12,16 @@
 #include <JuceHeader.h>
 #include <memory>
 
-class AudioProcessorUI;
+class AudioProcessorNode;
 class IAudioProcessor;
 
-#define AudioProcessorUIPtr std::shared_ptr<AudioProcessorUI>
+#define AudioProcessorNodePtr std::shared_ptr<AudioProcessorNode>
 #define XmlElementPtr std::shared_ptr<XmlElement>
 
 namespace XmlGenerator
 {    
     /// Generates XmlElement for single AudioProcessorUI
-    inline XmlElement* generateProcessorXml(AudioProcessorUIPtr processor)
+    inline XmlElement* generateProcessorXml(AudioProcessorNodePtr processor)
     {
         XmlElement* xml = new XmlElement(PROCESSOR_STATE_TAG);
         XmlElement* xmlType = xml->createNewChildElement(TYPE_TAG);
@@ -77,14 +77,14 @@ namespace XmlGenerator
     }
 
     /// Generates XmlElement that holds state of whole plugin
-    inline XmlElementPtr generatePluginState(Array<AudioProcessorUIPtr>& inputs, Array<AudioProcessorUIPtr>& outputs, Array<AudioProcessorUIPtr>& processors)
+    inline XmlElementPtr generatePluginState(Array<AudioProcessorNodePtr>& inputs, Array<AudioProcessorNodePtr>& outputs, Array<AudioProcessorNodePtr>& processors)
     {
         XmlElementPtr xml = std::make_shared<XmlElement>(PLUGIN_STATE_TAG);
         XmlElement* xmlInputs = xml->createNewChildElement(INPUTS_TAG);
         XmlElement* xmlOutputs = xml->createNewChildElement(OUTPUTS_TAG);
         XmlElement* xmlProcessors = xml->createNewChildElement(PROCESSORS_TAG);
 
-        std::map<AudioProcessorUIPtr, XmlElement*> xmlMap;
+        std::map<AudioProcessorNodePtr, XmlElement*> xmlMap;
 
         //Save states of processors and create state map
         for (auto input : inputs)

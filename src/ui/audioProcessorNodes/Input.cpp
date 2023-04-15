@@ -8,11 +8,11 @@
   ==============================================================================
 */
 
-#include <ui/audioProcessor/Input.h>
+#include <ui/audioProcessorNodes/Input.h>
 #include <utils/Constants.h>
 #include <utils/XmlUtils.h>
 
-Input::Input(DspObjectType type) : AudioProcessorUI(type)
+Input::Input(DspObjectType type) : AudioProcessorNode(type)
 {
     setBounds(0, 0, IO_WIDTH, IO_HEIGHT);
     nameLabel.setJustificationType(Justification::centred);

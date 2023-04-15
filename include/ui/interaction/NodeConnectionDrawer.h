@@ -57,8 +57,8 @@ namespace NodeConnectionDrawer
         int x2 = to.getX() + NODE_RADIUS;
         int y2 = to.getY() + NODE_RADIUS;
 
-        auto startProcessor = (AudioProcessorUI*)(startNode->getParentComponent());
-        auto endProcessor = (AudioProcessorUI*)(endNode->getParentComponent());
+        auto startProcessor = (AudioProcessorNode*)(startNode->getParentComponent());
+        auto endProcessor = (AudioProcessorNode*)(endNode->getParentComponent());
 
         bool startReversed = startProcessor->isReversed();
         bool endReversed = endProcessor->isReversed();

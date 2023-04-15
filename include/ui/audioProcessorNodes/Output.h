@@ -9,12 +9,12 @@
 */
 
 #pragma once
-#include <ui/audioProcessor/AudioProcessorUI.h>
+#include <ui/audioProcessorNodes/AudioProcessorNode.h>
 
 //Forward declaration
 class GraphEditor;
 
-class Output : public AudioProcessorUI
+class Output : public AudioProcessorNode
 {
 public:
     Output(DspObjectType type);

@@ -7,12 +7,12 @@
 
   ==============================================================================
 */
-#include <ui/audioProcessor/FilterUI.h>
+#include <ui/audioProcessorNodes/FilterUI.h>
 #include <utils/Constants.h>
 #include <dsp/Parameters.h>
 #include <utils/XmlUtils.h>
 
-FilterUI::FilterUI(DspObjectType type) : AudioProcessorUI(type)
+FilterUI::FilterUI(DspObjectType type) : AudioProcessorNode(type)
 {
     setBounds(0, 0, FILTER_WIDTH, FILTER_HEIGHT);
 

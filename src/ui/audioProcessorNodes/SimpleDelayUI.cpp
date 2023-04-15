@@ -8,12 +8,12 @@
   ==============================================================================
 */
 
-#include <ui/audioProcessor/SimpleDelayUI.h>
+#include <ui/audioProcessorNodes/SimpleDelayUI.h>
 #include <utils/Constants.h>
 #include <ui/GraphEditor.h>
 #include <utils/XmlUtils.h>
 
-SimpleDelayUI::SimpleDelayUI(DspObjectType type) : AudioProcessorUI(type)
+SimpleDelayUI::SimpleDelayUI(DspObjectType type) : AudioProcessorNode(type)
 {
     setBounds(0, 0, DELAY_WIDTH, DELAY_HEIGHT);
     addInputNode();
