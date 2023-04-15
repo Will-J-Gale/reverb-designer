@@ -11,9 +11,29 @@
 #pragma once
 #include <JuceHeader.h>
 
-class StorageManager
+namespace StorageManager
 {
-public:
-    static void saveXML(std::string filename, std::string xmlString);
-    static File getStorageDirectory();
+    inline void saveXML(std::string filename, std::string xmlString)
+    {
+        auto saveFile = File(filename);
+        saveFile.create();
+        saveFile.replaceWithText(xmlString);
+    }
+
+    inline File getStorageDirectory()
+    {
+        auto appDataFolder = File::getSpecialLocation(File::SpecialLocationType::userApplicationDataDirectory);
+        auto appDataPath = appDataFolder.getFullPathName();
+        auto suffix = std::string("\\") + JucePlugin_Name;
+        appDataPath.append(suffix, sizeof(suffix));
+        
+        auto storageDirectory = File(appDataPath);
+
+        if (!storageDirectory.exists())
+        {
+            storageDirectory.createDirectory();
+        }
+
+        return storageDirectory;
+    }
 };

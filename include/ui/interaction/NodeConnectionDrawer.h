@@ -17,7 +17,7 @@ class GraphEditor;
 
 namespace NodeConnectionDrawer
 {
-    void drawUTurnConnection(Graphics& g, Point<int> start, Point<int> end, bool isLeft)
+    inline void drawUTurnConnection(Graphics& g, Point<int> start, Point<int> end, bool isLeft)
     {
         int vertLineX = isLeft ? fmin(start.x, end.x) : fmax(start.x, end.x);
         auto gap = isLeft ? -CONNECTION_GAP : CONNECTION_GAP;
@@ -31,7 +31,7 @@ namespace NodeConnectionDrawer
         g.drawArrow(line, CONNECTION_THICKNESS, ARROW_SIZE, ARROW_SIZE);
     }
 
-    void drawRightAngleConnection(Graphics& g, Point<int> start, Point<int> end)
+    inline void drawRightAngleConnection(Graphics& g, Point<int> start, Point<int> end)
     {
         auto center = start + ((end - start) / 2);
 
@@ -44,7 +44,7 @@ namespace NodeConnectionDrawer
         g.drawArrow(line, CONNECTION_THICKNESS, ARROW_SIZE, ARROW_SIZE);
     }
 
-    void drawConnection(Graphics& g, GraphEditor* graphEditor, Node* startNode, Node* endNode)
+    inline void drawConnection(Graphics& g, GraphEditor* graphEditor, Node* startNode, Node* endNode)
     {
         auto fromPos = startNode->getScreenPosition();
         auto toPos = endNode->getScreenPosition();
