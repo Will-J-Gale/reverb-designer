@@ -8,7 +8,7 @@
   ==============================================================================
 */
 
-#include "CombFilter.h"
+#include <dsp/CombFilter.h>
 #include <cmath>
 
 void CombFilter::reset(double sampleRate, double delayTimeInSeconds)

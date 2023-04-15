@@ -10,7 +10,7 @@
 
 #include "ModDelayUI.h"
 #include "Constants.h"
-#include "ModulatedDelay.h"
+#include <dsp/ModulatedDelay.h>
 
 
 ModDelayUI::ModDelayUI(DspObjectType type) : AudioProcessorUI(type)

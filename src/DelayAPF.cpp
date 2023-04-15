@@ -8,7 +8,7 @@
   ==============================================================================
 */
 
-#include "DelayAPF.h"
+#include <dsp/DelayAPF.h>
 
 void DelayAPF::reset(double sampleRate, double maxDelayTimeInSeconds)
 {

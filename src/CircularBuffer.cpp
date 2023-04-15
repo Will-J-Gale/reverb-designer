@@ -8,7 +8,7 @@
   ==============================================================================
 */
 
-#include "CircularBuffer.h"
+#include <dsp/CircularBuffer.h>
 #include "Utilities.h"
 #include <cstring>
 

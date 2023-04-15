@@ -8,7 +8,7 @@
   ==============================================================================
 */
 
-#include "Gain.h"
+#include <dsp/Gain.h>
 
 bool Gain::reset(double sampleRate)
 {

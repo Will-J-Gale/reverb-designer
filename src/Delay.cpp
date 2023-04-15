@@ -8,7 +8,7 @@
   ==============================================================================
 */
 
-#include "Delay.h"
+#include <dsp/Delay.h>
 
 bool Delay::reset(double sampleRate)
 {

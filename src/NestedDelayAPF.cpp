@@ -8,7 +8,7 @@
   ==============================================================================
 */
 
-#include "NestedDelayAPF.h"
+#include <dsp/NestedDelayAPF.h>
 
 void NestedDelayAPF::reset(double sampleRate, double maxDelayTimeInSeconds)
 {

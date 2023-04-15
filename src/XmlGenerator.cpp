@@ -10,7 +10,7 @@
 
 #include "XmlGenerator.h"
 #include "AudioProcessorUI.h"
-#include "IAudioProcessor.h"
+#include <dsp/IAudioProcessor.h>
 #include "Input.h"
 #include "Output.h"
 

@@ -8,7 +8,7 @@
   ==============================================================================
 */
 
-#include "BiquadFilter.h"
+#include <dsp/BiquadFilter.h>
 #include <cstring>
 
 BiquadFilter::BiquadFilter()

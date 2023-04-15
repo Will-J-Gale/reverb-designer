@@ -22,10 +22,11 @@ juce_add_plugin(ReverbDesigner
 
 juce_generate_juce_header(ReverbDesigner)
 
-file(GLOB SRC_FILES src/*)
+file(GLOB_RECURSE SRC_FILES src/*.cpp)
+
 target_sources(ReverbDesigner
     PRIVATE
-       ${SRC_FILES})
+    ${SRC_FILES})
 
 target_compile_definitions(ReverbDesigner
     PUBLIC
@@ -34,6 +35,7 @@ target_compile_definitions(ReverbDesigner
         JUCE_VST3_CAN_REPLACE_VST2=0
         JUCE_MODAL_LOOPS_PERMITTED=1)
 
+
 target_link_libraries(ReverbDesigner
     PRIVATE
         juce::juce_audio_utils
@@ -41,3 +43,5 @@ target_link_libraries(ReverbDesigner
         juce::juce_recommended_config_flags
         juce::juce_recommended_lto_flags
         juce::juce_recommended_warning_flags)
+
+target_include_directories(ReverbDesigner PUBLIC include)

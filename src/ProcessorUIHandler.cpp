@@ -10,7 +10,7 @@
 
 #include "ProcessorUIHandler.h"
 #include "AudioProcessorUI.h"
-#include "AudioProcessingBlock.h"
+#include <dsp/AudioProcessingBlock.h>
 #include "AudioProcessorUIFactory.h"
 #include "GraphEditor.h"
 #include "PluginGraph.h"

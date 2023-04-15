@@ -8,7 +8,7 @@
   ==============================================================================
 */
 
-#include "ReverbTank.h"
+#include <dsp/ReverbTank.h>
 
 void ReverbTank::reset(double sampleRate, double maxDelayTimeInSeconds)
 {

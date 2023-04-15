@@ -8,7 +8,7 @@
   ==============================================================================
 */
 
-#include "TwoBandShelvingFilter.h"
+#include <dsp/TwoBandShelvingFilter.h>
 
 bool TwoBandShelvingFilter::reset(double sampleRate)
 {

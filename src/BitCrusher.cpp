@@ -8,7 +8,7 @@
   ==============================================================================
 */
 
-#include "BitCrusher.h"
+#include <dsp/BitCrusher.h>
 #include <cmath>
 
 bool BitCrusher::reset(double sampleRate)

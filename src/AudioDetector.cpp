@@ -8,7 +8,7 @@
   ==============================================================================
 */
 
-#include "AudioDetector.h"
+#include <dsp/AudioDetector.h>
 #include <cmath>
 
 bool AudioDetector::reset(double sampleRate)

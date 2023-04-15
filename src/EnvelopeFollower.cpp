@@ -8,7 +8,7 @@
   ==============================================================================
 */
 #include <cmath>
-#include "EnvelopeFollower.h"
+#include <dsp/EnvelopeFollower.h>
 #include "Utilities.h"
 
 EnvelopeFollowerParameters EnvelopeFollower::getParameters()

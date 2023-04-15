@@ -9,7 +9,7 @@
 */
 
 #include "PluginGraph.h"
-#include "AudioProcessorFactory.h"
+#include <dsp/AudioProcessorFactory.h>
 
 PluginGraph::~PluginGraph()
 {

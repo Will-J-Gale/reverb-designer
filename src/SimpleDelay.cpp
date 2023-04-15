@@ -8,7 +8,7 @@
   ==============================================================================
 */
 
-#include "SimpleDelay.h"
+#include <dsp/SimpleDelay.h>
 
 void SimpleDelay::reset(double sampleRate, double maxDelayTimeInSeconds)
 {

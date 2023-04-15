@@ -8,7 +8,7 @@
   ==============================================================================
 */
 
-#include "ModifiedReverb.h"
+#include <dsp/ModifiedReverb.h>
 
 double ModifiedReverb::process(double xn)
 {

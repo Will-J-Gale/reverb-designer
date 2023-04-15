@@ -9,7 +9,7 @@
 */
 #pragma once
 #include <cmath>
-#include "AudioFilter.h"
+#include <dsp/AudioFilter.h>
 #include "Utilities.h"
 
 bool AudioFilter::reset(double sampleRate)

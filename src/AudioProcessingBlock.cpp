@@ -8,7 +8,7 @@
   ==============================================================================
 */
 
-#include "AudioProcessingBlock.h"
+#include <dsp/AudioProcessingBlock.h>
 
 AudioProcessingBlock::~AudioProcessingBlock()
 {

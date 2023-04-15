@@ -8,7 +8,7 @@
   ==============================================================================
 */
 #include <cmath>
-#include "LFO.h"
+#include <dsp/LFO.h>
 
 void LFO::reset(double sampleRate)
 {

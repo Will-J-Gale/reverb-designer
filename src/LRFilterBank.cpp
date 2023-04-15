@@ -8,7 +8,7 @@
   ==============================================================================
 */
 
-#include "LRFilterBank.h"
+#include <dsp/LRFilterBank.h>
 
 LRFilterBank::LRFilterBank()
 {

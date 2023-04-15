@@ -8,7 +8,7 @@
   ==============================================================================
 */
 
-#include "SimpleLPF.h"
+#include <dsp/SimpleLPF.h>
 
 bool SimpleLPF::reset(double sampleRate)
 {

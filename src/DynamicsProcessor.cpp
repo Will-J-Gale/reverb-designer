@@ -8,7 +8,7 @@
   ==============================================================================
 */
 
-#include "DynamicsProcessor.h"
+#include <dsp/DynamicsProcessor.h>
 #include <cmath>
 
 bool DynamicsProcessor::reset(double sampleRate)

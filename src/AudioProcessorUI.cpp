@@ -10,7 +10,7 @@
 
 #include "AudioProcessorUI.h"
 #include "GraphEditor.h"
-#include "Delay.h"
+#include <dsp/Delay.h>
 
 
 AudioProcessorUI::AudioProcessorUI()

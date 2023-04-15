@@ -8,8 +8,8 @@
   ==============================================================================
 */
 
-#include "TriodeClassA.h"
-#include "WaveshaperFunctions.h"
+#include <dsp/TriodeClassA.h>
+#include <dsp/WaveshaperFunctions.h>
 
 TriodeClassA::TriodeClassA()
 {
