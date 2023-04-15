@@ -45,7 +45,7 @@ double EnvelopeFollower::process(double xn)
     if (deltaValue > 0)
     {
         double modulatorValue = deltaValue * parameters.sensitivity;
-        controlValue = uniPolarScale(
+        controlValue = Math::uniPolarScale(
             modulatorValue,
             parameters.outputMin,
             parameters.outputMax

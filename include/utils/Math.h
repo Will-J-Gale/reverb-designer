@@ -11,48 +11,51 @@
 #pragma once
 #include <cmath>
 
-const double PI = 3.14159265358979323846;
-
-inline double linearInterpolation(double y1, double y2, double fraction)
+namespace Math
 {
-    if (fraction > 1.0) { return y2; }
+    const double PI = 3.14159265358979323846;
 
-    return (fraction * y2)+ ((1 - fraction) * y1);
-}
+    inline double linearInterpolation(double y1, double y2, double fraction)
+    {
+        if (fraction > 1.0) { return y2; }
 
-inline void clamp(double& value, double min, double max)
-{
-    value = fmin(value, max);
-    value = fmax(value, min);
-}
+        return (fraction * y2)+ ((1 - fraction) * y1);
+    }
 
-inline void uniPolarClamp(double& value)
-{
-    value = fmin(value, 1.0);
-    value = fmax(value, 0.0);
-}
+    inline void clamp(double& value, double min, double max)
+    {
+        value = fmin(value, max);
+        value = fmax(value, min);
+    }
 
-inline double unipolarToBipolar(double value)
-{
-    return (2.0 * value) - 1;
-}
-inline double bipolarToUnipolar(double value)
-{
-    return (value + 1) / 2.0;
-}
+    inline void uniPolarClamp(double& value)
+    {
+        value = fmin(value, 1.0);
+        value = fmax(value, 0.0);
+    }
 
-inline double uniPolarScale(double value, double min, double max)
-{
-    uniPolarClamp(value);
-    return min + ((max - min) * value);
-}
+    inline double unipolarToBipolar(double value)
+    {
+        return (2.0 * value) - 1;
+    }
+    inline double bipolarToUnipolar(double value)
+    {
+        return (value + 1) / 2.0;
+    }
 
-inline double bipolarScale(double value, double min, double max)
-{
-    clamp(value, -1.0, 1.0);
+    inline double uniPolarScale(double value, double min, double max)
+    {
+        Math::uniPolarClamp(value);
+        return min + ((max - min) * value);
+    }
 
-    double halfRange = (max - min) / 2.0;
-    double midpoint = min + halfRange;
+    inline double bipolarScale(double value, double min, double max)
+    {
+        Math::clamp(value, -1.0, 1.0);
 
-    return (value * halfRange) + midpoint;
+        double halfRange = (max - min) / 2.0;
+        double midpoint = min + halfRange;
+
+        return (value * halfRange) + midpoint;
+    }
 }

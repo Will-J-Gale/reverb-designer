@@ -35,7 +35,7 @@ double CircularBuffer::read(double delayInFractionalSamples, bool interpolate)
 
     double fraction = delayInFractionalSamples - delayInSamplesInt;
 
-    return linearInterpolation(y1, y2, fraction);
+    return Math::linearInterpolation(y1, y2, fraction);
 }
 
 void CircularBuffer::createCircularBuffer(size_t bufferLength)

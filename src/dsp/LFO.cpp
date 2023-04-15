@@ -38,26 +38,26 @@ SignalGenData LFO::renderAudioOutput()
 
     if (lfoParameters.waveForm == GeneratorWaveform::kSin)
     {
-        double angle = (modCounter * 2.0 * PI) - PI;
+        double angle = (modCounter * 2.0 * Math::PI) - Math::PI;
 
         output.normalOutput = parabolicSine(-angle);
 
-        angle = (modCounterQP * 2.0 * PI) - PI;
+        angle = (modCounterQP * 2.0 * Math::PI) - Math::PI;
 
         output.quadPhaseOutput_pos = parabolicSine(-angle);
     }
     else if (lfoParameters.waveForm == GeneratorWaveform::kTriangle)
     {
-        double bipolar = unipolarToBipolar(modCounter);
+        double bipolar = Math::unipolarToBipolar(modCounter);
         output.normalOutput = 2.0 * fabs(bipolar) - 1;
 
-        bipolar = unipolarToBipolar(modCounterQP);
+        bipolar = Math::unipolarToBipolar(modCounterQP);
         output.quadPhaseOutput_pos = 2.0 * fabs(bipolar) - 1;
     }
     else if (lfoParameters.waveForm == GeneratorWaveform::kSaw)
     {
-        output.normalOutput = unipolarToBipolar(modCounter);
-        output.quadPhaseOutput_pos = unipolarToBipolar(modCounterQP);
+        output.normalOutput = Math::unipolarToBipolar(modCounter);
+        output.quadPhaseOutput_pos = Math::unipolarToBipolar(modCounterQP);
     }
 
     output.invertedOutput = -output.normalOutput;

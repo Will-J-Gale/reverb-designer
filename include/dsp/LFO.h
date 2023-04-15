@@ -37,7 +37,7 @@ private:
     double phaseInc;
     double sampleRate;
 
-    const double B = 4.0 / PI;
-    const double C = -4.0 / (PI * PI);
+    const double B = 4.0 / Math::PI;
+    const double C = -4.0 / (Math::PI * Math::PI);
     const double P = 0.225;
 };

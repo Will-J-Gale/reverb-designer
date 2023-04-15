@@ -58,12 +58,12 @@ double ModulatedDelay::process(double xn)
 
     if (parameters.algorithm == ModulatedDelayAlgorithm::kFlanger)
     {
-        modulationValue = bipolarToUnipolar(modulationValue);
-        delayParams.delayInSeconds = uniPolarScale(modulationValue, modulationMin, modulationMax) / 1000;
+        modulationValue = Math::bipolarToUnipolar(modulationValue);
+        delayParams.delayInSeconds = Math::uniPolarScale(modulationValue, modulationMin, modulationMax) / 1000;
     }
     else
     {
-        delayParams.delayInSeconds = bipolarScale(modulationValue, modulationMin, modulationMax) / 1000;
+        delayParams.delayInSeconds = Math::bipolarScale(modulationValue, modulationMin, modulationMax) / 1000;
     }
 
     delay.setParameters(delayParams);

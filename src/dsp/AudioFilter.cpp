@@ -129,7 +129,7 @@ void AudioFilter::calculateLPF1()
     double fs = sampleRate;
     double Q = parameters.Q;
 
-    double theta = (2.0 * PI * fc) / fs;
+    double theta = (2.0 * Math::PI * fc) / fs;
     double gamma = cos(theta) / (1.0 + sin(theta));
 
     coeffs[A0] = (1.0 - gamma) / 2.0;
@@ -149,7 +149,7 @@ void AudioFilter::calculateLPF2()
     double fs = sampleRate;
     double Q = parameters.Q;
 
-    double theta = (2.0 * PI * fc) / fs;
+    double theta = (2.0 * Math::PI * fc) / fs;
     double d = 1.0 / Q;
 
     double sinThetha = sin(theta);
@@ -174,7 +174,7 @@ void AudioFilter::calculateLPFButterworth()
     double fs = sampleRate;
     double Q = parameters.Q;
 
-    double C = 1.0/ tan((PI * fc) / fs);
+    double C = 1.0/ tan((Math::PI * fc) / fs);
     double C2 = C * C;
 
     double a0 = 1.0/ (1.0+ (sqrt(2) * C) + C2);
@@ -195,7 +195,7 @@ void AudioFilter::calculateHPF1()
     double fs = sampleRate;
     double Q = parameters.Q;
 
-    double theta = (2.0 * PI * fc) / fs;
+    double theta = (2.0 * Math::PI * fc) / fs;
     double gamma = cos(theta) / (1.0+ sin(theta));
 
     coeffs[A0] = (1.0+ gamma) / 2;
@@ -215,7 +215,7 @@ void AudioFilter::calculateHPF2()
     double fs = sampleRate;
     double Q = parameters.Q;
 
-    double theta = (2.0 * PI * fc) / fs;
+    double theta = (2.0 * Math::PI * fc) / fs;
     double d = 1.0/ Q;
 
     double sinThetha = sin(theta);
@@ -240,7 +240,7 @@ void AudioFilter::calculateHPFButterworth()
     double fs = sampleRate;
     double Q = parameters.Q;
 
-    double C = 1.0/ tan((PI * fc) / fs);
+    double C = 1.0/ tan((Math::PI * fc) / fs);
     double C2 = C * C;
 
     double a0 = 1.0/ (1.0+ (sqrt(2) * C) + C2);
@@ -261,7 +261,7 @@ void AudioFilter::calculateBPF()
     double fs = sampleRate;
     double Q = parameters.Q;
 
-    double K = tan((PI * fc) / fs);
+    double K = tan((Math::PI * fc) / fs);
     double K2 = (K * K);
 
     double delta = (K2* Q) + K + Q;
@@ -283,7 +283,7 @@ void AudioFilter::calculateBSF()
     double fs = sampleRate;
     double Q = parameters.Q;
 
-    double K = tan((PI * fc) / fs);
+    double K = tan((Math::PI * fc) / fs);
     double K2 = (K * K);
 
     double delta = (K2 * Q) + K + Q;
@@ -310,7 +310,7 @@ void AudioFilter::calculateHSF()
     double Q = parameters.Q;
     double gain = parameters.gain_dB;
 
-    double theta = (2.0 * PI * fc) / fs;
+    double theta = (2.0 * Math::PI * fc) / fs;
     double u = pow(10.0, gain / 20.0);
     double beta = (1.0+ u) / 4;
     double delta = beta * tan(theta / 2.0);
@@ -334,7 +334,7 @@ void AudioFilter::calculateLSF()
     double Q = parameters.Q;
     double gain = parameters.gain_dB;
 
-    double theta = (2.0 * PI * fc) / fs;
+    double theta = (2.0 * Math::PI * fc) / fs;
     double u = pow(10.0, gain / 20.0);
     double beta = 4 / (1.0+ u);
     double delta = beta * tan(theta / 2.0);
@@ -358,7 +358,7 @@ void AudioFilter::calculatePEQ()
     double Q = parameters.Q;
     double gain = parameters.gain_dB;
 
-    double theta = (2.0 * PI * fc) / fs;
+    double theta = (2.0 * Math::PI * fc) / fs;
     double u = pow(10.0, gain / 20.0);
     double zeta = 4.0 / (1.0+ u);
 
@@ -385,7 +385,7 @@ void AudioFilter::calculatePEQConstant()
     double Q = parameters.Q;
     double gain = parameters.gain_dB;
 
-    double K = tan((PI * fc) / fs);
+    double K = tan((Math::PI * fc) / fs);
     double K2 = K * K;
     double V0 = pow(10.0, gain / 20.0);
     double d0 = 1.0 + ((1.0/ Q) * K) + K2;
@@ -440,7 +440,7 @@ void AudioFilter::calcualteLWRLPF2()
     double fc = parameters.fc;
     double fs = sampleRate;
 
-    double omega = PI * fc;
+    double omega = Math::PI * fc;
     double omega2 = omega * omega;
     double theta = omega / fs;
     double kappa = omega / tan(theta);
@@ -463,7 +463,7 @@ void AudioFilter::calcualteLWRHPF2()
     double fc = parameters.fc;
     double fs = sampleRate;
 
-    double omega = PI * fc;
+    double omega = Math::PI * fc;
     double omega2 = omega * omega;
     double theta = omega / fs;
     double kappa = omega / tan(theta);

@@ -32,8 +32,8 @@ double NestedDelayAPF::process(double xn)
 
         minDelay = fmax(minDelay, 0.0);
 
-        double uniPolarLfo = bipolarToUnipolar(lfoDepth * lfoOutput.normalOutput);
-        double modDelayInMs = uniPolarScale(uniPolarLfo, minDelay, maxDelay);
+        double uniPolarLfo = Math::bipolarToUnipolar(lfoDepth * lfoOutput.normalOutput);
+        double modDelayInMs = Math::uniPolarScale(uniPolarLfo, minDelay, maxDelay);
 
         delayedSample = delay.readDelayAtTimeInMs(modDelayInMs);
     }
