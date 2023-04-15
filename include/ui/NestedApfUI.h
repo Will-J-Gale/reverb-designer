@@ -11,8 +11,8 @@
 #pragma once
 #include <ui/AudioProcessorUI.h>
 #include <JuceHeader.h>
-#include <ui/BoolParameter.h>
-#include <ui/SliderParameter.h>
+#include <ui/parameters/BoolParameter.h>
+#include <ui/parameters/SliderParameter.h>
 
 class GraphEditor;
 

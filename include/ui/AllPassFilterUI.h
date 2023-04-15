@@ -11,9 +11,9 @@
 #pragma once
 #include <ui/AudioProcessorUI.h>
 #include <dsp/DelayAPF.h>
-#include <ui/SliderParameter.h>
+#include <ui/parameters/SliderParameter.h>
 #include <ui/AudioProcessorUI.h>
-#include <ui/BoolParameter.h>
+#include <ui/parameters/BoolParameter.h>
 
 
 class GraphEditor;

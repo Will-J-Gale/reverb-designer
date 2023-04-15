@@ -10,7 +10,7 @@
 
 #pragma once
 #include <JuceHeader.h>
-#include <ui/BaseParameter.h>
+#include <ui/parameters/BaseParameter.h>
 
 class ComboBoxParameter : public BaseParameter
 {

@@ -10,7 +10,7 @@
 
 #pragma once
 #include <ui/AudioProcessorUI.h>
-#include <ui/NumberParameter.h>
+#include <ui/parameters/NumberParameter.h>
 #include <dsp/IAudioProcessor.h>
 #include <dsp/SimpleDelay.h>
 

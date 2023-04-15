@@ -8,7 +8,7 @@
   ==============================================================================
 */
 
-#include <ui/NumberParameter.h>
+#include <ui/parameters/NumberParameter.h>
 #include <utils/Constants.h>
 
 NumberParameter::NumberParameter()

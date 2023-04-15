@@ -11,7 +11,7 @@
 #pragma once
 #include <ui/AudioProcessorUI.h>
 #include <dsp/Gain.h>
-#include <ui/NumberParameter.h>
+#include <ui/parameters/NumberParameter.h>
 #include <dsp/AudioProcessingBlock.h>
 
 class GainUI : public AudioProcessorUI,

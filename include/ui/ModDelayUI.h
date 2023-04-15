@@ -11,8 +11,8 @@
 #pragma once
 
 #include <ui/AudioProcessorUI.h>
-#include <ui/ComboBoxParameter.h>
-#include <ui/SliderParameter.h>
+#include <ui/parameters/ComboBoxParameter.h>
+#include <ui/parameters/SliderParameter.h>
 
 class ModDelayUI : public AudioProcessorUI,
                    public Slider::Listener,

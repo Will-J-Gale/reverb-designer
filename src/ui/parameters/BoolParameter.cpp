@@ -9,7 +9,7 @@
 */
 
 #include <ui/AudioProcessorUI.h>
-#include <ui/BoolParameter.h>
+#include <ui/parameters/BoolParameter.h>
 #include <utils/Constants.h>
 
 BoolParameter::BoolParameter()

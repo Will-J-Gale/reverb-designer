@@ -13,8 +13,8 @@
 #include <JuceHeader.h>
 #include <ui/AudioProcessorUI.h>
 #include <dsp/AudioFilter.h>
-#include <ui/ComboBoxParameter.h>
-#include <ui/NumberParameter.h>
+#include <ui/parameters/ComboBoxParameter.h>
+#include <ui/parameters/NumberParameter.h>
 
 class FilterUI : public AudioProcessorUI,
                  public TextEditor::Listener,

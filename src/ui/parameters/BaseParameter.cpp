@@ -8,7 +8,7 @@
   ==============================================================================
 */
 
-#include <ui/BaseParameter.h>
+#include <ui/parameters/BaseParameter.h>
 #include <utils/Constants.h>
 
 BaseParameter::BaseParameter()

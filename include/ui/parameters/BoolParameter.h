@@ -1,8 +1,8 @@
 /*
   ==============================================================================
 
-    NumberParameter.h
-    Created: 10 Sep 2020 4:24:16pm
+    BoolParameter.h
+    Created: 10 Sep 2020 4:56:04pm
     Author:  Will
 
   ==============================================================================
@@ -10,18 +10,15 @@
 
 #pragma once
 #include <JuceHeader.h>
-#include <ui/BaseParameter.h>
+#include <ui/parameters/BaseParameter.h>
 
-class NumberParameter : public BaseParameter
+class BoolParameter : public BaseParameter
 {
 public:
-    NumberParameter();
-
-    void setValue(double number);
-    void setWidth(int width);
-    void addListener(TextEditor::Listener* listener);
+    BoolParameter();
     virtual Component* getComponent() override;
-
+    void addListener(ToggleButton::Listener* listener);
+    void setToggleState(bool state);
 private:
-    TextEditor value;
+    ToggleButton toggle;
 };
