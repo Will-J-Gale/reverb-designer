@@ -12,8 +12,8 @@
 
 #include <JuceHeader.h>
 #include "PluginProcessor.h"
-#include "AudioProcessorUI.h"
-#include "GraphEditor.h"
+#include <ui/AudioProcessorUI.h>
+#include <ui/GraphEditor.h>
 
 //==============================================================================
 /**

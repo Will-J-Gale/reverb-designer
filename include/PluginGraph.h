@@ -9,7 +9,6 @@
 */
 
 #pragma once
-#include "GraphEditor.h"
 #include <dsp/IAudioProcessor.h>
 #include <dsp/AudioProcessingBlock.h>
 #include "ManagedArray.h"
