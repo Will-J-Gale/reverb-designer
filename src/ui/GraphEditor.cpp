@@ -14,7 +14,7 @@
 #include <dsp/PluginGraph.h>
 #include <ui/audioProcessor/AudioProcessorUIFactory.h>
 #include <utils/HitTest.h>
-#include <ui/NodeConnectionDrawer.h>
+#include <ui/interaction/NodeConnectionDrawer.h>
 #include <utils/XmlGenerator.h>
 #include <utils/StorageManager.h>
 #include <utils/PresetFactory.h>

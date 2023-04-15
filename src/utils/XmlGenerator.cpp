@@ -11,8 +11,8 @@
 #include <utils/XmlGenerator.h>
 #include <ui/audioProcessor/AudioProcessorUI.h>
 #include <dsp/IAudioProcessor.h>
-#include <ui/Input.h>
-#include <ui/Output.h>
+#include <ui/audioProcessor/Input.h>
+#include <ui/audioProcessor/Output.h>
 
 XmlElementPtr XmlGenerator::generatePluginState(Array<AudioProcessorUIPtr>& inputs, Array<AudioProcessorUIPtr>& outputs, Array<AudioProcessorUIPtr>& processors)
 {

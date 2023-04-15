@@ -8,7 +8,7 @@
   ==============================================================================
 */
 
-#include <ui/Node.h>
+#include <ui/audioProcessor/Node.h>
 #include <utils/Constants.h>
 #include <ui/GraphEditor.h>
 #include <ui/audioProcessor/AudioProcessorUI.h>

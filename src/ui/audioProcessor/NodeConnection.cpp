@@ -8,9 +8,9 @@
   ==============================================================================
 */
 
-#include <ui/NodeConnection.h>
+#include <ui/audioProcessor/NodeConnection.h>
+#include <ui/audioProcessor/Node.h>
 #include <utils/Constants.h>
-#include <ui/Node.h>
 
 NodeConnection::NodeConnection()
 {

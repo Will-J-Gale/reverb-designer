@@ -8,7 +8,7 @@
   ==============================================================================
 */
 
-#include <ui/GraphEditorContextMenu.h>
+#include <ui/menus/GraphEditorContextMenu.h>
 #include <utils/Constants.h>
 
 GraphEditorContextMenu::GraphEditorContextMenu()

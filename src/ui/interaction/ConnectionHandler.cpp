@@ -8,11 +8,11 @@
   ==============================================================================
 */
 
-#include <ui/ConnectionHandler.h>
+#include <ui/interaction/ConnectionHandler.h>
 #include <memory>
-#include <ui/Node.h>
+#include <ui/audioProcessor/Node.h>
 #include <ui/GraphEditor.h>
-#include <ui/NodeConnection.h>
+#include <ui/audioProcessor/NodeConnection.h>
 #include <dsp/PluginGraph.h>
 
 ConnectionHandler::ConnectionHandler(GraphEditor* graphEditor)

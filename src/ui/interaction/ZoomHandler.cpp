@@ -8,7 +8,7 @@
   ==============================================================================
 */
 
-#include <ui/ZoomHandler.h>
+#include <ui/interaction/ZoomHandler.h>
 
 ZoomHandler::ZoomHandler(Component* component)
 {

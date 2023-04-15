@@ -8,7 +8,7 @@
   ==============================================================================
 */
 
-#include <ui/MainMenu.h>
+#include <ui/menus/MainMenu.h>
 #include <utils/StorageManager.h>
 #include <utils/Constants.h>
 

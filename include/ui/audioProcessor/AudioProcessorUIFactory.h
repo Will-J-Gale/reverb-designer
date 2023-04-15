@@ -16,8 +16,8 @@
 #include <ui/audioProcessor/FilterUI.h>
 #include <ui/audioProcessor/AllPassFilterUI.h>
 #include <ui/audioProcessor/CombFilterUI.h>
-#include <ui/Input.h>
-#include <ui/Output.h>
+#include <ui/audioProcessor/Input.h>
+#include <ui/audioProcessor/Output.h>
 #include <ui/audioProcessor/SimpleDelayUI.h>
 #include <ui/audioProcessor/ModDelayUI.h>
 #include <ui/audioProcessor/NestedApfUI.h>

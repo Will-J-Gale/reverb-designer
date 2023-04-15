@@ -8,7 +8,7 @@
   ==============================================================================
 */
 
-#include <ui/DragHandler.h>
+#include <ui/interaction/DragHandler.h>
 #include <ui/GraphEditor.h>
 
 DragHandler::DragHandler(Component* component)

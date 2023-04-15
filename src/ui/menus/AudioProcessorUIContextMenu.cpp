@@ -8,7 +8,7 @@
   ==============================================================================
 */
 
-#include <ui/AudioProcessorUIContextMenu.h>
+#include <ui/menus/AudioProcessorUIContextMenu.h>
 #include <utils/Constants.h>
 
 AudioProcessorUIContextMenu::AudioProcessorUIContextMenu()

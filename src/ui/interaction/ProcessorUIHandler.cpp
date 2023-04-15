@@ -8,13 +8,13 @@
   ==============================================================================
 */
 
-#include <ui/ProcessorUIHandler.h>
+#include <ui/interaction/ProcessorUIHandler.h>
 #include <ui/audioProcessor/AudioProcessorUI.h>
 #include <dsp/AudioProcessingBlock.h>
 #include <ui/audioProcessor/AudioProcessorUIFactory.h>
 #include <ui/GraphEditor.h>
 #include <dsp/PluginGraph.h>
-#include <ui/ConnectionHandler.h>
+#include <ui/interaction/ConnectionHandler.h>
 
 ProcessorUIHandler::ProcessorUIHandler(GraphEditor* graphEditor)
 {

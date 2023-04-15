@@ -8,7 +8,7 @@
   ==============================================================================
 */
 
-#include <ui/NodeConnectionDrawer.h>
+#include <ui/interaction/NodeConnectionDrawer.h>
 #include <ui/audioProcessor/AudioProcessorUI.h>
 #include <ui/GraphEditor.h>
 

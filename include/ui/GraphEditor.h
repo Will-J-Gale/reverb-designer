@@ -10,22 +10,22 @@
 
 #pragma once
 #include <ui/audioProcessor/AudioProcessorUI.h>
-#include <ui/NodeConnection.h>
+#include <ui/audioProcessor/NodeConnection.h>
 #include <utils/ManagedArray.h>
-#include <ui/Input.h>
-#include <ui/Output.h>
+#include <ui/audioProcessor/Input.h>
+#include <ui/audioProcessor/Output.h>
 #include <ui/audioProcessor/FilterUI.h>
 #include <ui/audioProcessor/SimpleDelayUI.h>
 #include <utils/Constants.h>
 #include <ui/audioProcessor/AllPassFilterUI.h>
-#include <ui/GraphEditorContextMenu.h>
-#include <ui/SelectionHandler.h>
-#include <ui/MainMenu.h>
+#include <ui/menus/GraphEditorContextMenu.h>
+#include <ui/interaction/SelectionHandler.h>
+#include <ui/menus/MainMenu.h>
 #include <dsp/AudioProcessorState.h>
-#include <ui/ZoomHandler.h>
-#include <ui/DragHandler.h>
-#include <ui/ConnectionHandler.h>
-#include <ui/ProcessorUIHandler.h>
+#include <ui/interaction/ZoomHandler.h>
+#include <ui/interaction/DragHandler.h>
+#include <ui/interaction/ConnectionHandler.h>
+#include <ui/interaction/ProcessorUIHandler.h>
 
 //Forward declarations
 class Node;
