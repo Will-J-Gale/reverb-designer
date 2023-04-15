@@ -9,7 +9,7 @@
 */
 
 #include <ui/NodeConnectionDrawer.h>
-#include <ui/AudioProcessorUI.h>
+#include <ui/audioProcessor/AudioProcessorUI.h>
 #include <ui/GraphEditor.h>
 
 void NodeConnectionDrawer::drawConnection(Graphics& g, GraphEditor* graphEditor, Node* startNode, Node* endNode)

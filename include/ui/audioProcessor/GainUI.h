@@ -1,27 +1,25 @@
 /*
   ==============================================================================
 
-    SimpleDelayUI.h
-    Created: 21 Sep 2020 8:53:30pm
+    GainUI.h
+    Created: 19 Sep 2020 1:34:26pm
     Author:  Will
 
   ==============================================================================
 */
 
 #pragma once
-#include <ui/AudioProcessorUI.h>
+#include <ui/audioProcessor/AudioProcessorUI.h>
+#include <dsp/Gain.h>
 #include <ui/parameters/NumberParameter.h>
-#include <dsp/IAudioProcessor.h>
-#include <dsp/SimpleDelay.h>
+#include <dsp/AudioProcessingBlock.h>
 
-class GraphEditor;
-
-class SimpleDelayUI : public AudioProcessorUI,
-                      public TextEditor::Listener
+class GainUI : public AudioProcessorUI,
+               public TextEditor::Listener
 {
 public:
-    SimpleDelayUI(DspObjectType type);
-    ~SimpleDelayUI();
+    GainUI(DspObjectType type);
+    ~GainUI();
 
     void textEditorTextChanged(TextEditor& textEditor) override;
 
@@ -30,5 +28,6 @@ public:
 
 private:
     virtual void setUIParameters() override;
-    NumberParameter delayTime;
+
+    NumberParameter gainParameter;
 };

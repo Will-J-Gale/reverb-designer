@@ -8,7 +8,7 @@
   ==============================================================================
 */
 
-#include <ui/AudioProcessorUI.h>
+#include <ui/audioProcessor/AudioProcessorUI.h>
 #include <ui/GraphEditor.h>
 #include <dsp/Delay.h>
 

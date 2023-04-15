@@ -8,7 +8,7 @@
   ==============================================================================
 */
 
-#include <ui/ModDelayUI.h>
+#include <ui/audioProcessor/ModDelayUI.h>
 #include <utils/Constants.h>
 #include <dsp/ModulatedDelay.h>
 

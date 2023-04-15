@@ -9,7 +9,7 @@
 */
 
 #pragma once
-#include <ui/AudioProcessorUI.h>
+#include <ui/audioProcessor/AudioProcessorUI.h>
 
 //Forward declaration
 class GraphEditor;

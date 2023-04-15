@@ -8,7 +8,7 @@
   ==============================================================================
 */
 
-#include <ui/GainUI.h>
+#include <ui/audioProcessor/GainUI.h>
 #include <utils/Constants.h>
 #include <utils/XmlUtils.h>
 

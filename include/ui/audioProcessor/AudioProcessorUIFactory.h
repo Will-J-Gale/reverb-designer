@@ -11,16 +11,16 @@
 #pragma once
 #include <stdexcept>
 #include <utils/Constants.h>
-#include <ui/AudioProcessorUI.h>
-#include <ui/GainUI.h>
-#include <ui/FilterUI.h>
-#include <ui/AllPassFilterUI.h>
-#include <ui/CombFilterUI.h>
+#include <ui/audioProcessor/AudioProcessorUI.h>
+#include <ui/audioProcessor/GainUI.h>
+#include <ui/audioProcessor/FilterUI.h>
+#include <ui/audioProcessor/AllPassFilterUI.h>
+#include <ui/audioProcessor/CombFilterUI.h>
 #include <ui/Input.h>
 #include <ui/Output.h>
-#include <ui/SimpleDelayUI.h>
-#include <ui/ModDelayUI.h>
-#include <ui/NestedApfUI.h>
+#include <ui/audioProcessor/SimpleDelayUI.h>
+#include <ui/audioProcessor/ModDelayUI.h>
+#include <ui/audioProcessor/NestedApfUI.h>
 
 class GraphEditor;
 

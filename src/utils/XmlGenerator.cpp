@@ -9,7 +9,7 @@
 */
 
 #include <utils/XmlGenerator.h>
-#include <ui/AudioProcessorUI.h>
+#include <ui/audioProcessor/AudioProcessorUI.h>
 #include <dsp/IAudioProcessor.h>
 #include <ui/Input.h>
 #include <ui/Output.h>

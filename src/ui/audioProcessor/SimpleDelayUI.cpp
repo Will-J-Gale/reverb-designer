@@ -8,7 +8,7 @@
   ==============================================================================
 */
 
-#include <ui/SimpleDelayUI.h>
+#include <ui/audioProcessor/SimpleDelayUI.h>
 #include <utils/Constants.h>
 #include <ui/GraphEditor.h>
 #include <utils/XmlUtils.h>

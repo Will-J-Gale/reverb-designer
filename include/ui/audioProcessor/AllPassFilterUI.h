@@ -9,10 +9,10 @@
 */
 
 #pragma once
-#include <ui/AudioProcessorUI.h>
+#include <ui/audioProcessor/AudioProcessorUI.h>
 #include <dsp/DelayAPF.h>
 #include <ui/parameters/SliderParameter.h>
-#include <ui/AudioProcessorUI.h>
+#include <ui/audioProcessor/AudioProcessorUI.h>
 #include <ui/parameters/BoolParameter.h>
 
 

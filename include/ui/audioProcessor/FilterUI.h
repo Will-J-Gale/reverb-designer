@@ -1,27 +1,31 @@
 /*
   ==============================================================================
 
-    GainUI.h
-    Created: 19 Sep 2020 1:34:26pm
+    FilterUI.h
+    Created: 20 Sep 2020 9:41:52pm
     Author:  Will
 
   ==============================================================================
 */
 
 #pragma once
-#include <ui/AudioProcessorUI.h>
-#include <dsp/Gain.h>
-#include <ui/parameters/NumberParameter.h>
-#include <dsp/AudioProcessingBlock.h>
 
-class GainUI : public AudioProcessorUI,
-               public TextEditor::Listener
+#include <JuceHeader.h>
+#include <ui/audioProcessor/AudioProcessorUI.h>
+#include <dsp/AudioFilter.h>
+#include <ui/parameters/ComboBoxParameter.h>
+#include <ui/parameters/NumberParameter.h>
+
+class FilterUI : public AudioProcessorUI,
+                 public TextEditor::Listener,
+                 public ComboBox::Listener
 {
 public:
-    GainUI(DspObjectType type);
-    ~GainUI();
+    FilterUI(DspObjectType type);
+    ~FilterUI();
 
     void textEditorTextChanged(TextEditor& textEditor) override;
+    virtual void comboBoxChanged(ComboBox* comboBox) override;
 
     virtual void setAudioParametersFromXml(XmlElement* parametersXml) override;
     virtual XmlElement* getAudioParametersAsXml() override;
@@ -29,5 +33,9 @@ public:
 private:
     virtual void setUIParameters() override;
 
-    NumberParameter gainParameter;
+    ComboBoxParameter filterType;
+    NumberParameter frequency;
 };
+
+
+

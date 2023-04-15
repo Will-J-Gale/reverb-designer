@@ -9,15 +9,15 @@
 */
 
 #pragma once
-#include <ui/AudioProcessorUI.h>
+#include <ui/audioProcessor/AudioProcessorUI.h>
 #include <ui/NodeConnection.h>
 #include <utils/ManagedArray.h>
 #include <ui/Input.h>
 #include <ui/Output.h>
-#include <ui/FilterUI.h>
-#include <ui/SimpleDelayUI.h>
+#include <ui/audioProcessor/FilterUI.h>
+#include <ui/audioProcessor/SimpleDelayUI.h>
 #include <utils/Constants.h>
-#include <ui/AllPassFilterUI.h>
+#include <ui/audioProcessor/AllPassFilterUI.h>
 #include <ui/GraphEditorContextMenu.h>
 #include <ui/SelectionHandler.h>
 #include <ui/MainMenu.h>

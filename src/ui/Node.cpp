@@ -11,7 +11,7 @@
 #include <ui/Node.h>
 #include <utils/Constants.h>
 #include <ui/GraphEditor.h>
-#include <ui/AudioProcessorUI.h>
+#include <ui/audioProcessor/AudioProcessorUI.h>
 
 Node::Node()
 {

@@ -8,7 +8,7 @@
   ==============================================================================
 */
 
-#include <ui/AllPassFilterUI.h>
+#include <ui/audioProcessor/AllPassFilterUI.h>
 #include <utils/Constants.h>
 #include <ui/GraphEditor.h>
 #include <utils/XmlUtils.h>

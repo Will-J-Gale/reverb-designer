@@ -9,7 +9,7 @@
 */
 
 #pragma once
-#include <ui/AudioProcessorUI.h>
+#include <ui/audioProcessor/AudioProcessorUI.h>
 #include <JuceHeader.h>
 #include <ui/parameters/BoolParameter.h>
 #include <ui/parameters/SliderParameter.h>

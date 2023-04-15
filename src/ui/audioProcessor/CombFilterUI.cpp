@@ -8,7 +8,7 @@
   ==============================================================================
 */
 
-#include <ui/CombFilterUI.h>
+#include <ui/audioProcessor/CombFilterUI.h>
 #include <utils/Constants.h>
 #include <utils/XmlUtils.h>
 

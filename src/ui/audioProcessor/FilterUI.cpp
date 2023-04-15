@@ -7,7 +7,7 @@
 
   ==============================================================================
 */
-#include <ui/FilterUI.h>
+#include <ui/audioProcessor/FilterUI.h>
 #include <utils/Constants.h>
 #include <dsp/Parameters.h>
 #include <utils/XmlUtils.h>
