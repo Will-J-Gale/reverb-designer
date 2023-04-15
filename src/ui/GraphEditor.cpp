@@ -11,13 +11,13 @@
 #include <map>
 #include <ui/GraphEditor.h>
 #include <ui/GainUI.h>
-#include "PluginGraph.h"
+#include <dsp/PluginGraph.h>
 #include <ui/AudioProcessorUIFactory.h>
-#include "HitTest.h"
+#include <utils/HitTest.h>
 #include <ui/NodeConnectionDrawer.h>
-#include "XmlGenerator.h"
-#include "StorageManager.h"
-#include "PresetFactory.h"
+#include <utils/XmlGenerator.h>
+#include <utils/StorageManager.h>
+#include <utils/PresetFactory.h>
 
 GraphEditor::GraphEditor()
 {

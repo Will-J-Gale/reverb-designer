@@ -9,6 +9,7 @@
 */
 
 #pragma once
+#include <string>
 
 //Plugin size
 constexpr int PLUGIN_WIDTH = 1800;

@@ -9,9 +9,9 @@
 */
 
 #include <ui/SimpleDelayUI.h>
-#include "Constants.h"
+#include <utils/Constants.h>
 #include <ui/GraphEditor.h>
-#include "XmlUtils.h"
+#include <utils/XmlUtils.h>
 
 SimpleDelayUI::SimpleDelayUI(DspObjectType type) : AudioProcessorUI(type)
 {

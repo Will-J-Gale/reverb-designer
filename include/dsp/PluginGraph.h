@@ -11,9 +11,9 @@
 #pragma once
 #include <dsp/IAudioProcessor.h>
 #include <dsp/AudioProcessingBlock.h>
-#include "ManagedArray.h"
+#include <utils/ManagedArray.h>
 #include <dsp/AudioProcessorState.h>
-#include "XmlUtils.h"
+#include <utils/XmlUtils.h>
 
 class PluginGraph : public ManagedArray
 {

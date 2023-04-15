@@ -9,7 +9,7 @@
 */
 
 #include <ui/SliderParameter.h>
-#include "Constants.h"
+#include <utils/Constants.h>
 
 SliderParameter::SliderParameter()
 {

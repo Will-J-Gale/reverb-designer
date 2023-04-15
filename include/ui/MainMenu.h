@@ -10,7 +10,7 @@
 
 #pragma once
 #include <JuceHeader.h>
-#include "Constants.h"
+#include <utils/Constants.h>
 
 class MainMenu : public Component,
                  public MenuBarModel

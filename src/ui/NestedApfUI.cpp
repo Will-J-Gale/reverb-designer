@@ -9,9 +9,9 @@
 */
 
 #include <ui/NestedApfUI.h>
-#include "Constants.h"
+#include <utils/Constants.h>
 #include <dsp/NestedDelayAPF.h>
-#include "XmlUtils.h"
+#include <utils/XmlUtils.h>
 
 NestedApfUI::NestedApfUI(DspObjectType type) : AudioProcessorUI(type)
 {

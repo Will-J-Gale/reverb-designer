@@ -9,7 +9,7 @@
 */
 
 #include <ui/GraphEditorContextMenu.h>
-#include "Constants.h"
+#include <utils/Constants.h>
 
 GraphEditorContextMenu::GraphEditorContextMenu()
 {

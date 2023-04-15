@@ -11,12 +11,12 @@
 #pragma once
 #include <ui/AudioProcessorUI.h>
 #include <ui/NodeConnection.h>
-#include "ManagedArray.h"
+#include <utils/ManagedArray.h>
 #include <ui/Input.h>
 #include <ui/Output.h>
 #include <ui/FilterUI.h>
 #include <ui/SimpleDelayUI.h>
-#include "Constants.h"
+#include <utils/Constants.h>
 #include <ui/AllPassFilterUI.h>
 #include <ui/GraphEditorContextMenu.h>
 #include <ui/SelectionHandler.h>

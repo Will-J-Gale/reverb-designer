@@ -9,9 +9,9 @@
 */
 
 #include <ui/AllPassFilterUI.h>
-#include "Constants.h"
+#include <utils/Constants.h>
 #include <ui/GraphEditor.h>
-#include "XmlUtils.h"
+#include <utils/XmlUtils.h>
 
 AllPassFilterUI::AllPassFilterUI(DspObjectType type) : AudioProcessorUI(type)
 {

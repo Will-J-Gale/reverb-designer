@@ -11,7 +11,7 @@
 #pragma once
 #include <memory>
 #include <JuceHeader.h>
-#include "Constants.h"
+#include <utils/Constants.h>
 
 class GraphEditor;
 class AudioProcessorUI;

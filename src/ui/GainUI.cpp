@@ -9,8 +9,8 @@
 */
 
 #include <ui/GainUI.h>
-#include "Constants.h"
-#include "XmlUtils.h"
+#include <utils/Constants.h>
+#include <utils/XmlUtils.h>
 
 GainUI::GainUI(DspObjectType type) : AudioProcessorUI(type)
 {

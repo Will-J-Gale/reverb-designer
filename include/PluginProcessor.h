@@ -11,7 +11,7 @@
 #pragma once
 
 #include <JuceHeader.h>
-#include "PluginGraph.h"
+#include <dsp/PluginGraph.h>
 
 //==============================================================================
 /**

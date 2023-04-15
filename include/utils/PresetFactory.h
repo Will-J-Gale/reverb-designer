@@ -10,8 +10,8 @@
 
 #pragma once
 #include <JuceHeader.h>
-#include "BinaryData.h"
-#include "Constants.h"
+#include <utils/BinaryData.h>
+#include <utils/Constants.h>
 class PresetFactory
 {
 public:

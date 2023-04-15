@@ -11,7 +11,7 @@
 #pragma once
 #include <JuceHeader.h>
 #include <memory>
-#include "Constants.h"
+#include <utils/Constants.h>
 
 //Forward declarations
 class Node;

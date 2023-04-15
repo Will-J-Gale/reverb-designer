@@ -8,7 +8,7 @@
   ==============================================================================
 */
 
-#include "XmlGenerator.h"
+#include <utils/XmlGenerator.h>
 #include <ui/AudioProcessorUI.h>
 #include <dsp/IAudioProcessor.h>
 #include <ui/Input.h>

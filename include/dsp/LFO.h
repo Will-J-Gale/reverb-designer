@@ -10,7 +10,7 @@
 
 #pragma once
 #include <dsp/IAudioSignalGenerator.h>
-#include <Utilities.h>
+#include <utils/Math.h>
 
 class LFO : public IAudioSignalGenerator
 {

@@ -9,7 +9,7 @@
 */
 
 #include <ui/ComboBoxParameter.h>
-#include "Constants.h"
+#include <utils/Constants.h>
 
 ComboBoxParameter::ComboBoxParameter()
 {

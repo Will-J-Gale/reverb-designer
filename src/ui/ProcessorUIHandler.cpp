@@ -13,7 +13,7 @@
 #include <dsp/AudioProcessingBlock.h>
 #include <ui/AudioProcessorUIFactory.h>
 #include <ui/GraphEditor.h>
-#include "PluginGraph.h"
+#include <dsp/PluginGraph.h>
 #include <ui/ConnectionHandler.h>
 
 ProcessorUIHandler::ProcessorUIHandler(GraphEditor* graphEditor)

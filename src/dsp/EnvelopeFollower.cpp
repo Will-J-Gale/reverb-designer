@@ -9,7 +9,7 @@
 */
 #include <cmath>
 #include <dsp/EnvelopeFollower.h>
-#include "Utilities.h"
+#include <utils/Math.h>
 
 EnvelopeFollowerParameters EnvelopeFollower::getParameters()
 {

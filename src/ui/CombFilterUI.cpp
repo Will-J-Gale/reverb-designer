@@ -9,8 +9,8 @@
 */
 
 #include <ui/CombFilterUI.h>
-#include "Constants.h"
-#include "XmlUtils.h"
+#include <utils/Constants.h>
+#include <utils/XmlUtils.h>
 
 CombFilterUI::CombFilterUI(DspObjectType type) : AudioProcessorUI(type)
 {

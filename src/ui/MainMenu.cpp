@@ -9,8 +9,8 @@
 */
 
 #include <ui/MainMenu.h>
-#include "StorageManager.h"
-#include "Constants.h"
+#include <utils/StorageManager.h>
+#include <utils/Constants.h>
 
 MainMenu::MainMenu()
 {

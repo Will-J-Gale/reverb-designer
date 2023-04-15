@@ -8,7 +8,7 @@
   ==============================================================================
 */
 
-#include "PluginGraph.h"
+#include <dsp/PluginGraph.h>
 #include <dsp/AudioProcessorFactory.h>
 
 PluginGraph::~PluginGraph()

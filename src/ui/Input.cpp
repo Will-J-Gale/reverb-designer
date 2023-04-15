@@ -9,8 +9,8 @@
 */
 
 #include <ui/Input.h>
-#include "Constants.h"
-#include "XmlUtils.h"
+#include <utils/Constants.h>
+#include <utils/XmlUtils.h>
 
 Input::Input(DspObjectType type) : AudioProcessorUI(type)
 {

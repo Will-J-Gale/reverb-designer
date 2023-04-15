@@ -9,7 +9,7 @@
 */
 
 #include <ui/NumberParameter.h>
-#include "Constants.h"
+#include <utils/Constants.h>
 
 NumberParameter::NumberParameter()
 {

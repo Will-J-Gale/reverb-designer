@@ -10,7 +10,7 @@
 
 #include "PluginProcessor.h"
 #include "PluginEditor.h"
-#include "Constants.h"
+#include <utils/Constants.h>
 
 //==============================================================================
 ReverbDesignerAudioProcessorEditor::ReverbDesignerAudioProcessorEditor (ReverbDesignerAudioProcessor& p)

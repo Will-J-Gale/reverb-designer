@@ -12,12 +12,12 @@
 #include <JuceHeader.h>
 #include <ui/Node.h>
 #include <vector>
-#include "Constants.h"
-#include "ManagedArray.h"
+#include <utils/Constants.h>
+#include <utils/ManagedArray.h>
 #include <dsp/IAudioProcessor.h>
 #include <dsp/AudioProcessingBlock.h>
 #include <ui/AudioProcessorUIContextMenu.h>
-#include "XmlUtils.h"
+#include <utils/XmlUtils.h>
 #include <ui/DragHandler.h>
 
 //Forward declarations

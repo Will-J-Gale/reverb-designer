@@ -9,7 +9,7 @@
 */
 
 #include <ui/Node.h>
-#include "Constants.h"
+#include <utils/Constants.h>
 #include <ui/GraphEditor.h>
 #include <ui/AudioProcessorUI.h>
 

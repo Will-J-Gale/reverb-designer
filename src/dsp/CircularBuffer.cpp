@@ -9,7 +9,7 @@
 */
 
 #include <dsp/CircularBuffer.h>
-#include "Utilities.h"
+#include <utils/Math.h>
 #include <cstring>
 
 double CircularBuffer::read(int delayInSamples)

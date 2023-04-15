@@ -13,7 +13,7 @@
 #include <dsp/IAudioProcessor.h>
 #include <JuceHeader.h>
 #include <memory>
-#include "Constants.h"
+#include <utils/Constants.h>
 
 #define AudioProcessingBlockPtr std::shared_ptr<AudioProcessingBlock>
 

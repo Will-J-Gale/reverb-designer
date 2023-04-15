@@ -9,7 +9,7 @@
 */
 
 #include <ui/NodeConnection.h>
-#include "Constants.h"
+#include <utils/Constants.h>
 #include <ui/Node.h>
 
 NodeConnection::NodeConnection()

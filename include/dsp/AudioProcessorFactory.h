@@ -11,7 +11,7 @@
 #pragma once
 #include <stdexcept>
 #include <dsp/IAudioProcessor.h>
-#include "Constants.h"
+#include <utils/Constants.h>
 #include <dsp/Gain.h>
 #include <dsp/SimpleDelay.h>
 #include <dsp/AudioFilter.h>

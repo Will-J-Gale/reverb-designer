@@ -9,7 +9,7 @@
 */
 
 #include <dsp/ModulatedDelay.h>
-#include "Utilities.h"
+#include <utils/Math.h>
 
 bool ModulatedDelay::reset(double sampleRate)
 {

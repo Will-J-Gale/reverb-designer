@@ -8,9 +8,9 @@
   ==============================================================================
 */
 #include <ui/FilterUI.h>
-#include "Constants.h"
+#include <utils/Constants.h>
 #include <dsp/Parameters.h>
-#include "XmlUtils.h"
+#include <utils/XmlUtils.h>
 
 FilterUI::FilterUI(DspObjectType type) : AudioProcessorUI(type)
 {

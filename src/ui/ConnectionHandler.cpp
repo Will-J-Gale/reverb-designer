@@ -13,7 +13,7 @@
 #include <ui/Node.h>
 #include <ui/GraphEditor.h>
 #include <ui/NodeConnection.h>
-#include "PluginGraph.h"
+#include <dsp/PluginGraph.h>
 
 ConnectionHandler::ConnectionHandler(GraphEditor* graphEditor)
 {

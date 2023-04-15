@@ -10,7 +10,7 @@
 
 #include <ui/AudioProcessorUI.h>
 #include <ui/BoolParameter.h>
-#include "Constants.h"
+#include <utils/Constants.h>
 
 BoolParameter::BoolParameter()
 {
