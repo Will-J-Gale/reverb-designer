@@ -31,7 +31,6 @@
 class Node;
 class GainUI;
 class PluginGraph;
-class XmlGenerator;
 
 class GraphEditor : public Component,
                     public ManagedArray,
