@@ -157,16 +157,11 @@ AudioProcessingBlockPtr AudioProcessorUI::getProcessingBlock()
 
 void AudioProcessorUI::handleRightClick()
 {
-    int selection = contextMenu.show();
-
-    if (selection == (int)AudioProcessorConextMenuItems::Reverse)
-    {
-        reverse();
-    }
+    AudioProcessorConextMenuItems selection = (AudioProcessorConextMenuItems)contextMenu.show();
 
     for (auto listener : listeners)
     {
-        listener->onContextSelection(this, (AudioProcessorConextMenuItems)selection);
+        listener->onContextSelection(this, selection);
     }
 }
 
