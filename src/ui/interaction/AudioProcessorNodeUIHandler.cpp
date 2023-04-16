@@ -26,54 +26,54 @@ AudioProcessorNodeUIPtr AudioProcessorNodeUIHandler::createAudioProcessorNode(Au
     if (type == AudioProcessorNodeType::Input || type == AudioProcessorNodeType::Output)
         jassert("Cannot create input or output processor without providing AudioProcessorNode");
 
-    auto processorUI = AudioProcessorNodeUIFactory::Generate(type);
+    auto processorNodeUI = AudioProcessorNodeUIFactory::Generate(type);
     auto processorNode = graphEditor->pluginGraph->generateProcessorNode(type);
 
-    processorUI->setProcessorNode(processorNode);
-    processorUI->setTopLeftPosition(position);
+    processorNodeUI->setProcessorNode(processorNode);
+    processorNodeUI->setTopLeftPosition(position);
 
-    return processorUI;
+    return processorNodeUI;
 }
 
 AudioProcessorNodeUIPtr AudioProcessorNodeUIHandler::createAudioProcessorNode(AudioProcessorNodeType type, Point<int> position, AudioProcessorNodePtr processorNode)
 {
-    AudioProcessorNodeUIPtr processorUI = AudioProcessorNodeUIFactory::Generate(type);
+    AudioProcessorNodeUIPtr processorNodeUI = AudioProcessorNodeUIFactory::Generate(type);
 
-    processorUI->setProcessorNode(processorNode);
-    processorUI->setTopLeftPosition(position);
+    processorNodeUI->setProcessorNode(processorNode);
+    processorNodeUI->setTopLeftPosition(position);
 
-    return processorUI;
+    return processorNodeUI;
 }
 
-void AudioProcessorNodeUIHandler::initializeProcessor(AudioProcessorNodeUIPtr processor)
+void AudioProcessorNodeUIHandler::initializeProcessor(AudioProcessorNodeUIPtr processorNodeUI)
 {
-    processor->addListener(graphEditor);
-    graphEditor->processors.add(processor);
-    graphEditor->nodes.addArray(processor->getAllNodes());
-    graphEditor->addNodeListeners(processor->getAllNodes());
-    graphEditor->addAndMakeVisible(processor.get());
+    processorNodeUI->addListener(graphEditor);
+    graphEditor->processors.add(processorNodeUI);
+    graphEditor->nodes.addArray(processorNodeUI->getAllNodes());
+    graphEditor->addNodeListeners(processorNodeUI->getAllNodes());
+    graphEditor->addAndMakeVisible(processorNodeUI.get());
 }
 
-void AudioProcessorNodeUIHandler::deleteProcessor(AudioProcessorNodeUI* processor)
+void AudioProcessorNodeUIHandler::deleteProcessor(AudioProcessorNodeUI* processorNodeUI)
 {
-    Array<Node*> processorNodes = processor->getAllNodes();
+    Array<Node*> processorNodes = processorNodeUI->getAllNodes();
     for (auto* node : processorNodes)
     {
         graphEditor->connectionHandler.deleteConnection(node);
         graphEditor->removeFromArray(graphEditor->nodes, node);
     }
 
-    graphEditor->pluginGraph->deleteProcessorNode(processor->getProcessorNode());
-    graphEditor->removeFromArray(graphEditor->processors, processor);
+    graphEditor->pluginGraph->deleteProcessorNode(processorNodeUI->getProcessorNode());
+    graphEditor->removeFromArray(graphEditor->processors, processorNodeUI);
     graphEditor->pluginGraph->updateProcessPath();
 }
 
-void AudioProcessorNodeUIHandler::duplicateProcessor(AudioProcessorNodeUI* processor)
+void AudioProcessorNodeUIHandler::duplicateProcessor(AudioProcessorNodeUI* processorNodeUI)
 {
-    AudioProcessorNodeType type = processor->getType();
+    AudioProcessorNodeType type = processorNodeUI->getType();
 
-    auto newProcessor = createAudioProcessorNode(type, processor->getPosition () + Point<int>(DUPLICATE_OFFSET_X, DUPLICATE_OFFSET_Y));
-    auto parameters = processor->getAudioParametersAsXml();
+    auto newProcessor = createAudioProcessorNode(type, processorNodeUI->getPosition () + Point<int>(DUPLICATE_OFFSET_X, DUPLICATE_OFFSET_Y));
+    auto parameters = processorNodeUI->getAudioParametersAsXml();
     newProcessor->setAudioParametersFromXml(parameters);
     delete parameters;
     initializeProcessor(newProcessor);
