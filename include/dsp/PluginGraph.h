@@ -68,7 +68,7 @@ private:
     Array<AudioProcessorNode*> processBlocks(Array<AudioProcessorNode*> blockToProcess);
 
     double sampleRate = 0;
-    Array<AudioProcessorNodePtr> allBlocks;
+    Array<AudioProcessorNodePtr> allProcessorNodes;
     Array<AudioProcessorNodePtr> inputs;
     Array<AudioProcessorNodePtr> outputs;
 

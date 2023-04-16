@@ -303,8 +303,6 @@ void GraphEditor::handleRightClick(const MouseEvent& e)
     {
         auto processorUI = processorUIHandler.createDspObject((DspObjectType)contextSelection, e.getPosition());
         processorUIHandler.initializeProcessor(processorUI);
-
-        //
     }
 }
 

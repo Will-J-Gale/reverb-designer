@@ -25,7 +25,7 @@ bool PluginGraph::reset(double sampleRate)
 
     inputs.clear();
     outputs.clear();
-    allBlocks.clear();
+    allProcessorNodes.clear();
 
     return true;
 }
@@ -111,12 +111,12 @@ void PluginGraph::initialiseDspObject(IAudioProcessor *dspObject)
 
 void PluginGraph::addProcessorNode(AudioProcessorNodePtr processorNode)
 {
-    allBlocks.add(processorNode);
+    allProcessorNodes.add(processorNode);
 }
 
 void PluginGraph::deleteProcessorNode(AudioProcessorNodePtr processorNode)
 {
-    removeFromArray(allBlocks, processorNode);
+    removeFromArray(allProcessorNodes, processorNode);
 }
 
 AudioProcessorNodePtr PluginGraph::generateProcessorNode(DspObjectType type)
@@ -127,7 +127,7 @@ AudioProcessorNodePtr PluginGraph::generateProcessorNode(DspObjectType type)
     initialiseDspObject(audioProcessor.get());
     processorNode->setProcessor(audioProcessor);
 
-    allBlocks.add(processorNode);
+    allProcessorNodes.add(processorNode);
 
     return processorNode;
 }
@@ -249,7 +249,7 @@ std::map<std::string, AudioProcessorNodePtr> PluginGraph::getAudioProcessorNodeM
         map[id] = block;
     }
 
-    for (auto block : allBlocks)
+    for (auto block : allProcessorNodes)
     {
         auto id = block->getIdAsString();
         map[id] = block;
@@ -260,7 +260,7 @@ std::map<std::string, AudioProcessorNodePtr> PluginGraph::getAudioProcessorNodeM
 
 Array<AudioProcessorNodePtr> PluginGraph::getAllBlocks()
 {
-    return allBlocks;
+    return allProcessorNodes;
 }
 
 void PluginGraph::clear()
@@ -269,7 +269,7 @@ void PluginGraph::clear()
 
     inputs.clear();
     outputs.clear();
-    allBlocks.clear();
+    allProcessorNodes.clear();
 }
 
 void PluginGraph::deleteAndReplaceAudioBlocks(std::function<std::shared_ptr<AudioProcessorState>()> callback)
@@ -333,7 +333,7 @@ void PluginGraph::updateProcessPath()
 
 void PluginGraph::updateProcessors()
 {
-    allBlocks.clear();
+    allProcessorNodes.clear();
     inputs.clear();
     outputs.clear();
 
@@ -341,14 +341,14 @@ void PluginGraph::updateProcessors()
 
     inputs = tempProcessorState->inputs;
     outputs = tempProcessorState->outputs;
-    allBlocks = tempProcessorState->allBlocks;
+    allProcessorNodes = tempProcessorState->allBlocks;
 
     calculateProcessPath();
 }
 
 void PluginGraph::resetProcessors()
 {
-    for (auto block : allBlocks)
+    for (auto block : allProcessorNodes)
     {
         block->setFinishedProcessing(false);
     }
