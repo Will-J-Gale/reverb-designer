@@ -28,10 +28,10 @@ public:
 
     void createDSPObject(DspObjectType dspObjectType);
     void initialiseDspObject(IAudioProcessor* dspObject);
-    void addProcessingBlock(AudioProcessorNodePtr processingBlock);
-    void deleteProcessingBlock(AudioProcessorNodePtr processingBlock);
+    void addProcessorNode(AudioProcessorNodePtr processorNode);
+    void deleteProcessorNode(AudioProcessorNodePtr processorNode);
 
-    AudioProcessorNodePtr generateProcessingBlock(DspObjectType type);
+    AudioProcessorNodePtr generateProcessorNode(DspObjectType type);
 
     bool isCreatingFeedback(AudioProcessorNode* start, AudioProcessorNode* end);
 

@@ -15,7 +15,6 @@
 #include <memory>
 #include <utils/Constants.h>
 
-
 #define AudioProcessorNodePtr std::shared_ptr<AudioProcessorNode>
 
 /// AudioProcessorNode wraps an IAudioProcessor and handles input, output

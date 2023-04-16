@@ -109,27 +109,27 @@ void PluginGraph::initialiseDspObject(IAudioProcessor *dspObject)
     }
 }
 
-void PluginGraph::addProcessingBlock(AudioProcessorNodePtr processingBlock)
+void PluginGraph::addProcessorNode(AudioProcessorNodePtr processorNode)
 {
-    allBlocks.add(processingBlock);
+    allBlocks.add(processorNode);
 }
 
-void PluginGraph::deleteProcessingBlock(AudioProcessorNodePtr processingBlock)
+void PluginGraph::deleteProcessorNode(AudioProcessorNodePtr processorNode)
 {
-    removeFromArray(allBlocks, processingBlock);
+    removeFromArray(allBlocks, processorNode);
 }
 
-AudioProcessorNodePtr PluginGraph::generateProcessingBlock(DspObjectType type)
+AudioProcessorNodePtr PluginGraph::generateProcessorNode(DspObjectType type)
 {
     auto audioProcessor = AudioProcessorFactory::Generate(type);
-    auto processingBlock = std::make_shared<AudioProcessorNode>(type);
+    auto processorNode = std::make_shared<AudioProcessorNode>(type);
 
     initialiseDspObject(audioProcessor.get());
-    processingBlock->setProcessor(audioProcessor);
+    processorNode->setProcessor(audioProcessor);
 
-    allBlocks.add(processingBlock);
+    allBlocks.add(processorNode);
 
-    return processingBlock;
+    return processorNode;
 }
 
 bool PluginGraph::isCreatingFeedback(AudioProcessorNode* start, AudioProcessorNode* end)

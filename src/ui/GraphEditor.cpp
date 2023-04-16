@@ -303,6 +303,8 @@ void GraphEditor::handleRightClick(const MouseEvent& e)
     {
         auto processorUI = processorUIHandler.createDspObject((DspObjectType)contextSelection, e.getPosition());
         processorUIHandler.initializeProcessor(processorUI);
+
+        //
     }
 }
 
@@ -466,7 +468,7 @@ std::shared_ptr<AudioProcessorState> GraphEditor::loadStateFromFile(std::string 
             processorUI->setAudioParametersFromXml(parametersXML);
 
             inputs.add(processorUI);
-            tempInputs.add(processorUI->getProcessingBlock());
+            tempInputs.add(processorUI->getProcessorNode());
         }
         else if (type == DspObjectType::Output)
         {
@@ -476,14 +478,14 @@ std::shared_ptr<AudioProcessorState> GraphEditor::loadStateFromFile(std::string 
             processorUI->setAudioParametersFromXml(parametersXML);
 
             outputs.add(processorUI);
-            tempOutputs.add(processorUI->getProcessingBlock());
+            tempOutputs.add(processorUI->getProcessorNode());
         }
         else //Processor does not exist
         {
             processorUI = processorUIHandler.createDspObject(type, Point<int>(x, y));
             processorUI->setAudioParametersFromXml(parametersXML);
 
-            tempAllBlocks.add(processorUI->getProcessingBlock());
+            tempAllBlocks.add(processorUI->getProcessorNode());
         }
 
         if (isReversed)
@@ -577,7 +579,7 @@ void GraphEditor::loadFromExistingState(XmlElement* state)
     }
     
     auto xmlMap = XmlGenerator::generateXmlMap(state);
-    auto processingBlockMap = pluginGraph->getAudioProcessorNodeMap();
+    auto processorNodeMap = pluginGraph->getAudioProcessorNodeMap();
 
     std::map<std::string, AudioProcessorNodeUIPtr> processorUIMap;
     
@@ -597,9 +599,9 @@ void GraphEditor::loadFromExistingState(XmlElement* state)
         if (type == DspObjectType::Input)
         {
             auto channel = parametersXML->getChildByName(IO_CHANNEL_TAG)->getAllSubText().getIntValue();
-            auto processingBlock = pluginGraph->getInputs()[channel];
+            auto processorNode = pluginGraph->getInputs()[channel];
 
-            processorUI = processorUIHandler.createDspObject(DspObjectType::Input, Point<int>(x, y), processingBlock);
+            processorUI = processorUIHandler.createDspObject(DspObjectType::Input, Point<int>(x, y), processorNode);
             processorUI->setAudioParametersFromXml(parametersXML);
 
             inputs.add(processorUI);
@@ -607,18 +609,18 @@ void GraphEditor::loadFromExistingState(XmlElement* state)
         else if (type == DspObjectType::Output)
         {
             auto channel = parametersXML->getChildByName(IO_CHANNEL_TAG)->getAllSubText().getIntValue();
-            auto processingBlock = pluginGraph->getOutputs()[channel];
+            auto processorNode = pluginGraph->getOutputs()[channel];
 
-            processorUI = processorUIHandler.createDspObject(DspObjectType::Output, Point<int>(), processingBlock);
+            processorUI = processorUIHandler.createDspObject(DspObjectType::Output, Point<int>(), processorNode);
             processorUI->setTopLeftPosition(Point<int>(x, y));
             processorUI->setAudioParametersFromXml(parametersXML);
 
             outputs.add(processorUI);
         }
-        else if (processingBlockMap.count(id) > 0)//Processor Exists
+        else if (processorNodeMap.count(id) > 0)//Processor Exists
         {
-            auto processingBlock = processingBlockMap[id];
-            processorUI = processorUIHandler.createDspObject(type, Point<int>(x, y), processingBlock);
+            auto processorNode = processorNodeMap[id];
+            processorUI = processorUIHandler.createDspObject(type, Point<int>(x, y), processorNode);
         }
         else //Processor does not exist
         {

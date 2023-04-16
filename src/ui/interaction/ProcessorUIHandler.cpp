@@ -24,22 +24,22 @@ ProcessorUIHandler::ProcessorUIHandler(GraphEditor* graphEditor)
 AudioProcessorNodeUIPtr ProcessorUIHandler::createDspObject(DspObjectType type, Point<int> position)
 {
     if (type == DspObjectType::Input || type == DspObjectType::Output)
-        jassert("Cannot create input or output processor without existing providing AudioProcessorNode");
+        jassert("Cannot create input or output processor without providing AudioProcessorNode");
 
     auto processorUI = AudioProcessorNodeUIFactory::Generate(type);
-    auto processingBlock = graphEditor->pluginGraph->generateProcessingBlock(type);
+    auto processorNode = graphEditor->pluginGraph->generateProcessorNode(type);
 
-    processorUI->setProcessingBlock(processingBlock);
+    processorUI->setProcessorNode(processorNode);
     processorUI->setTopLeftPosition(position);
 
     return processorUI;
 }
 
-AudioProcessorNodeUIPtr ProcessorUIHandler::createDspObject(DspObjectType type, Point<int> position, AudioProcessorNodePtr processingBlock)
+AudioProcessorNodeUIPtr ProcessorUIHandler::createDspObject(DspObjectType type, Point<int> position, AudioProcessorNodePtr processorNode)
 {
     AudioProcessorNodeUIPtr processorUI = AudioProcessorNodeUIFactory::Generate(type);
 
-    processorUI->setProcessingBlock(processingBlock);
+    processorUI->setProcessorNode(processorNode);
     processorUI->setTopLeftPosition(position);
 
     return processorUI;
@@ -63,7 +63,7 @@ void ProcessorUIHandler::deleteProcessor(AudioProcessorNodeUI* processor)
         graphEditor->removeFromArray(graphEditor->nodes, node);
     }
 
-    graphEditor->pluginGraph->deleteProcessingBlock(processor->getProcessingBlock());
+    graphEditor->pluginGraph->deleteProcessorNode(processor->getProcessorNode());
     graphEditor->removeFromArray(graphEditor->processors, processor);
     graphEditor->pluginGraph->updateProcessPath();
 }

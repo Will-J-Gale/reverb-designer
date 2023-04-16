@@ -150,9 +150,9 @@ void AudioProcessorNodeUI::addListener(AudioProcessorNodeUI::Listener* listener)
     listeners.add(listener);
 }
 
-AudioProcessorNodePtr AudioProcessorNodeUI::getProcessingBlock()
+AudioProcessorNodePtr AudioProcessorNodeUI::getProcessorNode()
 {
-	return processingBlock;
+	return processorNode;
 }
 
 void AudioProcessorNodeUI::handleRightClick()
@@ -165,20 +165,20 @@ void AudioProcessorNodeUI::handleRightClick()
     }
 }
 
-void AudioProcessorNodeUI::setProcessingBlock(AudioProcessorNodePtr processingBlock)
+void AudioProcessorNodeUI::setProcessorNode(AudioProcessorNodePtr processorNode)
 {
-    if (processingBlock->getType() != type)
+    if (processorNode->getType() != type)
     {
         jassert("Cannot pass processing block of different type to UI");
     }
 
-    this->processingBlock = processingBlock;
+    this->processorNode = processorNode;
     this->setUIParameters();
 }
 
 IAudioProcessor* AudioProcessorNodeUI::getAudioProcessor()
 {
-    return processingBlock->getProcessor();
+    return processorNode->getProcessor();
 }
 
 void AudioProcessorNodeUI::reverse()
@@ -197,7 +197,7 @@ void AudioProcessorNodeUI::reverse()
 
 std::string AudioProcessorNodeUI::getIdAsString()
 {
-    return processingBlock->getIdAsString();
+    return processorNode->getIdAsString();
 }
 
 DspObjectType AudioProcessorNodeUI::getType()
@@ -215,7 +215,7 @@ void AudioProcessorNodeUI::connectInput(AudioProcessorNodeUI* connection)
     if (!inputConnections.contains(connection))
     {
         inputConnections.add(connection);
-        this->processingBlock->connectInput(connection->getProcessingBlock().get());
+        this->processorNode->connectInput(connection->getProcessorNode().get());
     }
     
 }
@@ -225,7 +225,7 @@ void AudioProcessorNodeUI::connectFeedbackInput(AudioProcessorNodeUI* connection
     if (!feedbackConnections.contains(connection))
     {
         feedbackConnections.add(connection);
-        this->processingBlock->connectFeedbackInput(connection->getProcessingBlock().get());
+        this->processorNode->connectFeedbackInput(connection->getProcessorNode().get());
     }
 }
 
@@ -234,20 +234,20 @@ void AudioProcessorNodeUI::connectOutput(AudioProcessorNodeUI* connection)
     if (!outputConnections.contains(connection))
     {
         outputConnections.add(connection);
-        this->processingBlock->connectOutput(connection->getProcessingBlock().get());
+        this->processorNode->connectOutput(connection->getProcessorNode().get());
     } 
 }
 
 void AudioProcessorNodeUI::disconnectInput(AudioProcessorNodeUI* connection)
 {
     removeFromArray(inputConnections, connection);
-    this->processingBlock->disconnectInput(connection->getProcessingBlock().get());
+    this->processorNode->disconnectInput(connection->getProcessorNode().get());
 }
 
 void AudioProcessorNodeUI::disconnectOutput(AudioProcessorNodeUI* connection)
 {
     removeFromArray(outputConnections, connection);
-    this->processingBlock->disconnectOutput(connection->getProcessingBlock().get());
+    this->processorNode->disconnectOutput(connection->getProcessorNode().get());
 }
 
 Array<AudioProcessorNodeUI*> AudioProcessorNodeUI::getOutputConnections()

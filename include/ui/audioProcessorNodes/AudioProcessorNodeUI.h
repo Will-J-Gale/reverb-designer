@@ -70,8 +70,8 @@ public:
     
     void addListener(AudioProcessorNodeUI::Listener* listener);
 
-    AudioProcessorNodePtr getProcessingBlock();
-    void setProcessingBlock(AudioProcessorNodePtr processingBlock);
+    AudioProcessorNodePtr getProcessorNode();
+    void setProcessorNode(AudioProcessorNodePtr processorNode);
 
     IAudioProcessor* getAudioProcessor();
     DspObjectType getType();
@@ -96,7 +96,7 @@ protected:
     NodePtr input = nullptr;
     NodePtr output = nullptr;
 
-    AudioProcessorNodePtr processingBlock = nullptr;
+    AudioProcessorNodePtr processorNode = nullptr;
 
     Array<AudioProcessorNodeUI*> inputConnections;
     Array<AudioProcessorNodeUI*> outputConnections;

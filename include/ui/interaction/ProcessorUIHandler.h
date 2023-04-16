@@ -26,7 +26,7 @@ public:
     ProcessorUIHandler(GraphEditor* graphEditor);
 
     AudioProcessorNodeUIPtr createDspObject(DspObjectType type, Point<int> position);
-    AudioProcessorNodeUIPtr createDspObject(DspObjectType type, Point<int> position, AudioProcessorNodePtr processingBlock);
+    AudioProcessorNodeUIPtr createDspObject(DspObjectType type, Point<int> position, AudioProcessorNodePtr processorNode);
     void initializeProcessor(AudioProcessorNodeUIPtr processor);
     void deleteProcessor(AudioProcessorNodeUI* processor);
     void duplicateProcessor(AudioProcessorNodeUI* processor);

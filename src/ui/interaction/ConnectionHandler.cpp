@@ -91,13 +91,13 @@ bool ConnectionHandler::connectionExists(Node* start, Node* end)
 
 bool ConnectionHandler::isCreatingFeedback(Node* start, Node* end)
 {
-    auto startProcessingBlock = start->getAttachedProcessor()->getProcessingBlock();
-    auto endProcessingBlock = end->getAttachedProcessor()->getProcessingBlock();
+    auto startProcessorNode = start->getAttachedProcessor()->getProcessorNode();
+    auto endProcessorNode = end->getAttachedProcessor()->getProcessorNode();
 
-    if (startProcessingBlock == nullptr || endProcessingBlock == nullptr) { return false; }
-    if (startProcessingBlock == endProcessingBlock) { return true; }
+    if (startProcessorNode == nullptr || endProcessorNode == nullptr) { return false; }
+    if (startProcessorNode == endProcessorNode) { return true; }
 
-    if (graphEditor->pluginGraph->isCreatingFeedback(endProcessingBlock.get(), startProcessingBlock.get()))
+    if (graphEditor->pluginGraph->isCreatingFeedback(endProcessorNode.get(), startProcessorNode.get()))
     {
         return true;
     }
