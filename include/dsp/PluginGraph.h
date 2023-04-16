@@ -26,6 +26,7 @@ public:
     void process(std::vector<float>& inputFrame, size_t numInputChannels);
     bool canProcessAudioFrame();
 
+    void createDSPObject(DspObjectType dspObjectType);
     void initialiseDspObject(IAudioProcessor* dspObject);
     void addProcessingBlock(AudioProcessingBlockPtr processingBlock);
     void deleteProcessingBlock(AudioProcessingBlockPtr processingBlock);
@@ -52,7 +53,6 @@ public:
     XmlElementPtr getPluginState();
 
     std::map<std::string, AudioProcessingBlockPtr> getAudioProcessingBlockMap();
-    
 
     void clear();
     void deleteAndReplaceAudioBlocks(std::function<std::shared_ptr<AudioProcessorState>()> callback);

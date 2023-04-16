@@ -9,11 +9,11 @@
 */
 
 #pragma once
-#include <ui/audioProcessorNodes/AudioProcessorNode.h>
+#include <ui/audioProcessorNodes/AudioProcessorNodeUI.h>
 
 class GraphEditor;
 
-class Input : public AudioProcessorNode
+class Input : public AudioProcessorNodeUI
 {
 public:
     Input(DspObjectType type);

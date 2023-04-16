@@ -14,10 +14,10 @@
 #include <utils/Constants.h>
 
 class GraphEditor;
-class AudioProcessorNode;
+class AudioProcessorNodeUI;
 class AudioProcessingBlock;
 
-#define AudioProcessorNodePtr std::shared_ptr<AudioProcessorNode>
+#define AudioProcessorNodeUIPtr std::shared_ptr<AudioProcessorNodeUI>
 #define AudioProcessingBlockPtr std::shared_ptr<AudioProcessingBlock>
 
 class ProcessorUIHandler
@@ -25,11 +25,11 @@ class ProcessorUIHandler
 public:
     ProcessorUIHandler(GraphEditor* graphEditor);
 
-    AudioProcessorNodePtr createDspObject(DspObjectType type, Point<int> position);
-    AudioProcessorNodePtr createDspObject(DspObjectType type, Point<int> position, AudioProcessingBlockPtr processingBlock);
-    void initializeProcessor(AudioProcessorNodePtr processor);
-    void deleteProcessor(AudioProcessorNode* processor);
-    void duplicateProcessor(AudioProcessorNode* processor);
+    AudioProcessorNodeUIPtr createDspObject(DspObjectType type, Point<int> position);
+    AudioProcessorNodeUIPtr createDspObject(DspObjectType type, Point<int> position, AudioProcessingBlockPtr processingBlock);
+    void initializeProcessor(AudioProcessorNodeUIPtr processor);
+    void deleteProcessor(AudioProcessorNodeUI* processor);
+    void duplicateProcessor(AudioProcessorNodeUI* processor);
 
 private:
     GraphEditor* graphEditor;

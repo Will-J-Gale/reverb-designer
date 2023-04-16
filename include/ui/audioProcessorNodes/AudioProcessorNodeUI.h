@@ -23,24 +23,24 @@
 //Forward declarations
 class GraphEditor;
 
-#define AudioProcessorNodePtr std::shared_ptr<AudioProcessorNode>
+#define AudioProcessorNodeUIPtr std::shared_ptr<AudioProcessorNodeUI>
 
-class AudioProcessorNode : public Component,
+class AudioProcessorNodeUI : public Component,
                          public ManagedArray
 {
 public:
     class Listener
     {
     public:
-        virtual void onProcessorClicked(AudioProcessorNode* processor, const MouseEvent& e) = 0;
-        virtual void onProcessorMoved(AudioProcessorNode* processor, const MouseEvent& e) = 0;
-        virtual void onProcessorReleased(AudioProcessorNode* processor, const MouseEvent& e) = 0;
-        virtual void onContextSelection(AudioProcessorNode* processor, AudioProcessorConextMenuItems selection) = 0;
+        virtual void onProcessorClicked(AudioProcessorNodeUI* processor, const MouseEvent& e) = 0;
+        virtual void onProcessorMoved(AudioProcessorNodeUI* processor, const MouseEvent& e) = 0;
+        virtual void onProcessorReleased(AudioProcessorNodeUI* processor, const MouseEvent& e) = 0;
+        virtual void onContextSelection(AudioProcessorNodeUI* processor, AudioProcessorConextMenuItems selection) = 0;
     };
 
-    AudioProcessorNode();
-    AudioProcessorNode(DspObjectType type);
-    ~AudioProcessorNode();
+    AudioProcessorNodeUI();
+    AudioProcessorNodeUI(DspObjectType type);
+    ~AudioProcessorNodeUI();
     void paint(Graphics& g) override;
     void mouseDown(const MouseEvent& e) override;
     void mouseDrag(const MouseEvent& e) override;
@@ -54,21 +54,21 @@ public:
     Node* getInputNode();
     Node* getOutputNode();
     
-    void connectInput(AudioProcessorNode* connection);
-    void connectFeedbackInput(AudioProcessorNode* connection);
-    void connectOutput(AudioProcessorNode* connection);
-    void disconnectInput(AudioProcessorNode* connection);
-    void disconnectOutput(AudioProcessorNode* connection);
-    Array<AudioProcessorNode*> getOutputConnections();
-    Array<AudioProcessorNode*> getInputConnections();
-    Array<AudioProcessorNode*> getFeedbackConnections();
+    void connectInput(AudioProcessorNodeUI* connection);
+    void connectFeedbackInput(AudioProcessorNodeUI* connection);
+    void connectOutput(AudioProcessorNodeUI* connection);
+    void disconnectInput(AudioProcessorNodeUI* connection);
+    void disconnectOutput(AudioProcessorNodeUI* connection);
+    Array<AudioProcessorNodeUI*> getOutputConnections();
+    Array<AudioProcessorNodeUI*> getInputConnections();
+    Array<AudioProcessorNodeUI*> getFeedbackConnections();
     
     virtual void setUIParameters() {};
 
-    void addExistingInput(AudioProcessorNode* outputProcessor);
-    void addExistingOutput(AudioProcessorNode* inputProcessor);
+    void addExistingInput(AudioProcessorNodeUI* outputProcessor);
+    void addExistingOutput(AudioProcessorNodeUI* inputProcessor);
     
-    void addListener(AudioProcessorNode::Listener* listener);
+    void addListener(AudioProcessorNodeUI::Listener* listener);
 
     AudioProcessingBlockPtr getProcessingBlock();
     void setProcessingBlock(AudioProcessingBlockPtr processingBlock);
@@ -98,9 +98,9 @@ protected:
 
     AudioProcessingBlockPtr processingBlock = nullptr;
 
-    Array<AudioProcessorNode*> inputConnections;
-    Array<AudioProcessorNode*> outputConnections;
-    Array<AudioProcessorNode*> feedbackConnections;
+    Array<AudioProcessorNodeUI*> inputConnections;
+    Array<AudioProcessorNodeUI*> outputConnections;
+    Array<AudioProcessorNodeUI*> feedbackConnections;
 
     Label nameLabel;
     String name;
@@ -117,7 +117,7 @@ protected:
 };
 
 template<class T>
-inline T* AudioProcessorNode::getAudioProcessorAs()
+inline T* AudioProcessorNodeUI::getAudioProcessorAs()
 {
     return dynamic_cast<T*>(getAudioProcessor());
 }

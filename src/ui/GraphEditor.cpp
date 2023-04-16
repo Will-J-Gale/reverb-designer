@@ -12,7 +12,7 @@
 #include <dsp/PluginGraph.h>
 #include <ui/GraphEditor.h>
 #include <ui/audioProcessorNodes/GainNode.h>
-#include <ui/audioProcessorNodes/AudioProcessorNodeFactory.h>
+#include <ui/audioProcessorNodes/AudioProcessorNodeUIFactory.h>
 #include <ui/interaction/NodeConnectionDrawer.h>
 #include <utils/HitTest.h>
 #include <utils/XmlGenerator.h>
@@ -38,7 +38,7 @@ void GraphEditor::mouseDown(const MouseEvent& e)
 {
     dragHandler.mouseDown(e);
 
-    Array<AudioProcessorNode*> tempProcessors;
+    Array<AudioProcessorNodeUI*> tempProcessors;
     for (auto processor : processors)
     {
         tempProcessors.add(processor.get());
@@ -148,7 +148,7 @@ void GraphEditor::drawPotentialConnection(Graphics& g)
         Point<int> pos = clickedNode->getScreenPosition();
         pos = getLocalPoint(nullptr, pos);
 
-        auto processor = (AudioProcessorNode*)(clickedNode->getParentComponent());
+        auto processor = (AudioProcessorNodeUI*)(clickedNode->getParentComponent());
         auto isReversed = processor->isReversed();
 
         int x1 = pos.getX() + NODE_RADIUS;
@@ -205,7 +205,7 @@ void GraphEditor::createIOProcessors()
     }
 }
 
-void GraphEditor::createAllConnections(std::map<std::string, AudioProcessorNodePtr> processorUIMap, std::map<std::string, XmlElement*> xmlMap)
+void GraphEditor::createAllConnections(std::map<std::string, AudioProcessorNodeUIPtr> processorUIMap, std::map<std::string, XmlElement*> xmlMap)
 {
     for (auto pair : processorUIMap)
     {
@@ -296,7 +296,7 @@ void GraphEditor::handleRightClick(const MouseEvent& e)
     }
     else if (contextSelection == (int)GraphEditorContextMenuItems::Macro)
     {
-        auto processorUI = AudioProcessorNodeFactory::Generate(DspObjectType::Macro);
+        auto processorUI = AudioProcessorNodeUIFactory::Generate(DspObjectType::Macro);
         processorUIHandler.initializeProcessor(processorUI);
     }
     else if (contextSelection > 0)
@@ -362,9 +362,9 @@ Node* GraphEditor::getNodeAtPosition(Point<int> screenPos)
     return nullptr;
 }
 
-Array<AudioProcessorNode*> GraphEditor::getOverlappingProcessors(Rectangle<int> bounds)
+Array<AudioProcessorNodeUI*> GraphEditor::getOverlappingProcessors(Rectangle<int> bounds)
 {
-    Array<AudioProcessorNode*> selectedProcessors;
+    Array<AudioProcessorNodeUI*> selectedProcessors;
 
     for (auto processor : processors)
     {
@@ -378,7 +378,7 @@ Array<AudioProcessorNode*> GraphEditor::getOverlappingProcessors(Rectangle<int> 
 
 void GraphEditor::onNewProject()
 {
-    auto io = Array<AudioProcessorNodePtr>();
+    auto io = Array<AudioProcessorNodeUIPtr>();
     io.addArray(inputs);
     io.addArray(outputs);
 
@@ -443,7 +443,7 @@ std::shared_ptr<AudioProcessorState> GraphEditor::loadStateFromFile(std::string 
 
     auto xmlMap = XmlGenerator::generateXmlMap(state);
 
-    std::map<std::string, AudioProcessorNodePtr> processorUIMap;
+    std::map<std::string, AudioProcessorNodeUIPtr> processorUIMap;
 
     //Generate all processing UI
     for (auto pair : xmlMap)
@@ -456,7 +456,7 @@ std::shared_ptr<AudioProcessorState> GraphEditor::loadStateFromFile(std::string 
         auto isReversed = xml->getChildByName(IS_REVERSED_TAG)->getAllSubText().getIntValue();
         auto parametersXML = xml->getChildByName(PARAMETERTS_TAG);
 
-        AudioProcessorNodePtr processorUI;
+        AudioProcessorNodeUIPtr processorUI;
 
         if (type == DspObjectType::Input)
         {
@@ -579,7 +579,7 @@ void GraphEditor::loadFromExistingState(XmlElement* state)
     auto xmlMap = XmlGenerator::generateXmlMap(state);
     auto processingBlockMap = pluginGraph->getAudioProcessingBlockMap();
 
-    std::map<std::string, AudioProcessorNodePtr> processorUIMap;
+    std::map<std::string, AudioProcessorNodeUIPtr> processorUIMap;
     
     //Generate all processing UI
     for (auto pair : xmlMap)
@@ -592,7 +592,7 @@ void GraphEditor::loadFromExistingState(XmlElement* state)
         auto isReversed = xml->getChildByName(IS_REVERSED_TAG)->getAllSubText().getIntValue();
         auto parametersXML = xml->getChildByName(PARAMETERTS_TAG);
 
-        AudioProcessorNodePtr processorUI = nullptr;
+        AudioProcessorNodeUIPtr processorUI = nullptr;
 
         if (type == DspObjectType::Input)
         {
@@ -638,7 +638,7 @@ void GraphEditor::loadFromExistingState(XmlElement* state)
     state->deleteAllChildElements();
 }
 
-void GraphEditor::onProcessorClicked(AudioProcessorNode* processor, const MouseEvent& e)
+void GraphEditor::onProcessorClicked(AudioProcessorNodeUI* processor, const MouseEvent& e)
 {
     if (!selectionHandler.contains(processor))
     {
@@ -648,7 +648,7 @@ void GraphEditor::onProcessorClicked(AudioProcessorNode* processor, const MouseE
     repaint();
 }
 
-void GraphEditor::onProcessorMoved(AudioProcessorNode* processor, const MouseEvent& e)
+void GraphEditor::onProcessorMoved(AudioProcessorNodeUI* processor, const MouseEvent& e)
 {
     auto newE = e.getEventRelativeTo(this);
     selectionHandler.moveItems(newE.getOffsetFromDragStart());
@@ -656,13 +656,13 @@ void GraphEditor::onProcessorMoved(AudioProcessorNode* processor, const MouseEve
     repaint();
 }
 
-void GraphEditor::onProcessorReleased(AudioProcessorNode* processor, const MouseEvent& e)
+void GraphEditor::onProcessorReleased(AudioProcessorNodeUI* processor, const MouseEvent& e)
 {
     globalSelection.updateItemPositions();
     selectionHandler.updateItemPositions();
 }
 
-void GraphEditor::onContextSelection(AudioProcessorNode* processor, AudioProcessorConextMenuItems selection)
+void GraphEditor::onContextSelection(AudioProcessorNodeUI* processor, AudioProcessorConextMenuItems selection)
 {
     if (selection == AudioProcessorConextMenuItems::Delete)
     {

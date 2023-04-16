@@ -45,7 +45,7 @@ void PluginGraph::process(std::vector<float>& inputFrame, size_t numInputChannel
         return;
     }
 
-    for (int i = 0; i < inputs.size(); i++)
+    for (size_t i = 0; i < inputs.size(); i++)
     {
         auto input = inputs[i];
         inputs[i]->process(inputFrame[i]);
@@ -89,7 +89,12 @@ Array<AudioProcessingBlock*> PluginGraph::processBlocks(Array<AudioProcessingBlo
     return outputConnections;
 }
 
-void PluginGraph::initialiseDspObject(IAudioProcessor* dspObject)
+void PluginGraph::createDSPObject(DspObjectType dspObjectType)
+{
+}
+
+
+void PluginGraph::initialiseDspObject(IAudioProcessor *dspObject)
 {
     if (dspObject == nullptr)
         return;

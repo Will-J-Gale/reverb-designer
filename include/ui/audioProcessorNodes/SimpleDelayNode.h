@@ -9,14 +9,14 @@
 */
 
 #pragma once
-#include <ui/audioProcessorNodes/AudioProcessorNode.h>
+#include <ui/audioProcessorNodes/AudioProcessorNodeUI.h>
 #include <ui/parameters/NumberParameter.h>
 #include <dsp/IAudioProcessor.h>
 #include <dsp/SimpleDelay.h>
 
 class GraphEditor;
 
-class SimpleDelayNode : public AudioProcessorNode,
+class SimpleDelayNode : public AudioProcessorNodeUI,
                       public TextEditor::Listener
 {
 public:

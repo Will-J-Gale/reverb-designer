@@ -25,8 +25,8 @@ void ConnectionHandler::createConnection(Node* start, Node* end)
     auto connection = std::make_shared<NodeConnection>(start, end);
     graphEditor->connections.add(connection);
 
-    auto* startProcessorUI = (AudioProcessorNode*)start->getParentComponent();
-    auto* endProcessorUI = (AudioProcessorNode*)end->getParentComponent();
+    auto* startProcessorUI = (AudioProcessorNodeUI*)start->getParentComponent();
+    auto* endProcessorUI = (AudioProcessorNodeUI*)end->getParentComponent();
 
     endProcessorUI->connectInput(startProcessorUI);
     startProcessorUI->connectOutput(endProcessorUI);
@@ -38,8 +38,8 @@ void ConnectionHandler::createFeedbackConnection(Node* start, Node* end)
     auto connection = std::make_shared<NodeConnection>(start, end);
     graphEditor->connections.add(connection);
 
-    auto* startProcessorUI = (AudioProcessorNode*)start->getParentComponent();
-    auto* endProcessorUI = (AudioProcessorNode*)end->getParentComponent();
+    auto* startProcessorUI = (AudioProcessorNodeUI*)start->getParentComponent();
+    auto* endProcessorUI = (AudioProcessorNodeUI*)end->getParentComponent();
 
     endProcessorUI->connectFeedbackInput(startProcessorUI);
     graphEditor->pluginGraph->updateProcessPath();
@@ -59,8 +59,8 @@ void ConnectionHandler::deleteConnection(Node* node)
 
     for (auto connection : nodeConnections)
     {
-        auto* startProcessor = (AudioProcessorNode*)connection->getStart()->getParentComponent();
-        auto* endProcessor = (AudioProcessorNode*)connection->getEnd()->getParentComponent();
+        auto* startProcessor = (AudioProcessorNodeUI*)connection->getStart()->getParentComponent();
+        auto* endProcessor = (AudioProcessorNodeUI*)connection->getEnd()->getParentComponent();
 
         startProcessor->disconnectOutput(endProcessor);
         endProcessor->disconnectInput(startProcessor);

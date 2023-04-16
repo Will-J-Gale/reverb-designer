@@ -12,7 +12,7 @@
 #include <utils/Constants.h>
 #include <utils/XmlUtils.h>
 
-Input::Input(DspObjectType type) : AudioProcessorNode(type)
+Input::Input(DspObjectType type) : AudioProcessorNodeUI(type)
 {
     setBounds(0, 0, IO_WIDTH, IO_HEIGHT);
     nameLabel.setJustificationType(Justification::centred);

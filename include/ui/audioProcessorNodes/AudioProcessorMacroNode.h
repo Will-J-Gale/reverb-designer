@@ -1,11 +1,11 @@
 #pragma once
 #include <dsp/AudioProcessingBlock.h>
 #include <dsp/Gain.h>
-#include <ui/audioProcessorNodes/AudioProcessorNode.h>
+#include <ui/audioProcessorNodes/AudioProcessorNodeUI.h>
 #include <ui/parameters/NumberParameter.h>
 #include <ui/windows/AudioProcessorMacroWindow.h>
 
-class AudioProcessorMacroNode : public AudioProcessorNode
+class AudioProcessorMacroNode : public AudioProcessorNodeUI
 {
 public:
     AudioProcessorMacroNode(DspObjectType type);

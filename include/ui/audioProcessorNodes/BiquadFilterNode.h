@@ -11,12 +11,12 @@
 #pragma once
 
 #include <JuceHeader.h>
-#include <ui/audioProcessorNodes/AudioProcessorNode.h>
+#include <ui/audioProcessorNodes/AudioProcessorNodeUI.h>
 #include <dsp/AudioFilter.h>
 #include <ui/parameters/ComboBoxParameter.h>
 #include <ui/parameters/NumberParameter.h>
 
-class BiquadFilterNode : public AudioProcessorNode,
+class BiquadFilterNode : public AudioProcessorNodeUI,
                  public TextEditor::Listener,
                  public ComboBox::Listener
 {

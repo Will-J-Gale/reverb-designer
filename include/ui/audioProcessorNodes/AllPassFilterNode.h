@@ -9,16 +9,16 @@
 */
 
 #pragma once
-#include <ui/audioProcessorNodes/AudioProcessorNode.h>
+#include <ui/audioProcessorNodes/AudioProcessorNodeUI.h>
 #include <dsp/DelayAPF.h>
 #include <ui/parameters/SliderParameter.h>
-#include <ui/audioProcessorNodes/AudioProcessorNode.h>
+#include <ui/audioProcessorNodes/AudioProcessorNodeUI.h>
 #include <ui/parameters/BoolParameter.h>
 
 
 class GraphEditor;
 
-class AllPassFilterNode : public AudioProcessorNode,
+class AllPassFilterNode : public AudioProcessorNodeUI,
                         public ToggleButton::Listener,
                         public Slider::Listener
 {

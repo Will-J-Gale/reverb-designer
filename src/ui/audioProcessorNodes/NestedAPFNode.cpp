@@ -13,7 +13,7 @@
 #include <dsp/NestedDelayAPF.h>
 #include <utils/XmlUtils.h>
 
-NestedAPFNode::NestedAPFNode(DspObjectType type) : AudioProcessorNode(type)
+NestedAPFNode::NestedAPFNode(DspObjectType type) : AudioProcessorNodeUI(type)
 {
     setBounds(0, 0, NESTED_APF_WIDTH, NESTED_APF_HEIGHT);
     updateNameAndReCenter(NESTED_APF_NAME);

@@ -1,7 +1,7 @@
 /*
   ==============================================================================
 
-    AudioProcessorNodeFactory.h
+    AudioProcessorNodeUIFactory.h
     Created: 21 Sep 2020 11:14:33pm
     Author:  Will
 
@@ -11,7 +11,7 @@
 #pragma once
 #include <stdexcept>
 #include <utils/Constants.h>
-#include <ui/audioProcessorNodes/AudioProcessorNode.h>
+#include <ui/audioProcessorNodes/AudioProcessorNodeUI.h>
 #include <ui/audioProcessorNodes/GainNode.h>
 #include <ui/audioProcessorNodes/BiquadFilterNode.h>
 #include <ui/audioProcessorNodes/AllPassFilterNode.h>
@@ -25,10 +25,10 @@
 
 class GraphEditor;
 
-class AudioProcessorNodeFactory
+class AudioProcessorNodeUIFactory
 {
 public:
-    static AudioProcessorNodePtr Generate(DspObjectType type)
+    static AudioProcessorNodeUIPtr Generate(DspObjectType type)
     {
         switch (type)
         {

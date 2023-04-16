@@ -13,7 +13,7 @@
 #include <ui/GraphEditor.h>
 #include <utils/XmlUtils.h>
 
-SimpleDelayNode::SimpleDelayNode(DspObjectType type) : AudioProcessorNode(type)
+SimpleDelayNode::SimpleDelayNode(DspObjectType type) : AudioProcessorNodeUI(type)
 {
     setBounds(0, 0, DELAY_WIDTH, DELAY_HEIGHT);
     addInputNode();

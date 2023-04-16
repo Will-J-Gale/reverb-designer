@@ -9,7 +9,7 @@
 */
 
 #pragma once
-#include <ui/audioProcessorNodes/AudioProcessorNode.h>
+#include <ui/audioProcessorNodes/AudioProcessorNodeUI.h>
 #include <ui/audioProcessorNodes/NodeConnection.h>
 #include <utils/ManagedArray.h>
 #include <ui/audioProcessorNodes/Input.h>
@@ -34,7 +34,7 @@ class PluginGraph;
 
 class GraphEditor : public Component,
                     public ManagedArray,
-                    public AudioProcessorNode::Listener,
+                    public AudioProcessorNodeUI::Listener,
                     public Node::Listener,
                     public MainMenu::Listener
 {
@@ -57,10 +57,10 @@ public:
     void deleteSelectedProcessors();
 
     //Listener callbacks
-    virtual void onProcessorClicked(AudioProcessorNode* processor, const MouseEvent& e) override;
-    virtual void onProcessorMoved(AudioProcessorNode* processor, const MouseEvent& e) override;
-    virtual void onProcessorReleased(AudioProcessorNode* processor, const MouseEvent& e) override;
-    virtual void onContextSelection(AudioProcessorNode* processor, AudioProcessorConextMenuItems selection) override;
+    virtual void onProcessorClicked(AudioProcessorNodeUI* processor, const MouseEvent& e) override;
+    virtual void onProcessorMoved(AudioProcessorNodeUI* processor, const MouseEvent& e) override;
+    virtual void onProcessorReleased(AudioProcessorNodeUI* processor, const MouseEvent& e) override;
+    virtual void onContextSelection(AudioProcessorNodeUI* processor, AudioProcessorConextMenuItems selection) override;
 
     virtual void onNodeLeftClick(Node* node, const MouseEvent& e) override;
     virtual void onNodeRightClick(Node* node, const MouseEvent& e) override;
@@ -87,14 +87,14 @@ private:
     void addNodeListeners(Array<Node*> nodes);
     void createIOProcessors();
 
-    void createAllConnections(std::map<std::string, AudioProcessorNodePtr> processorUIMap, std::map<std::string, XmlElement*> xmlMap);
+    void createAllConnections(std::map<std::string, AudioProcessorNodeUIPtr> processorUIMap, std::map<std::string, XmlElement*> xmlMap);
 
     Node* getNodeAtPosition(Point<int> screenPos);
-    Array<AudioProcessorNode*> getOverlappingProcessors(Rectangle<int> bounds);
+    Array<AudioProcessorNodeUI*> getOverlappingProcessors(Rectangle<int> bounds);
 
-    Array<AudioProcessorNodePtr> inputs;
-    Array<AudioProcessorNodePtr> outputs;
-    Array<AudioProcessorNodePtr> processors;
+    Array<AudioProcessorNodeUIPtr> inputs;
+    Array<AudioProcessorNodeUIPtr> outputs;
+    Array<AudioProcessorNodeUIPtr> processors;
     Array<NodeConnectionPtr> connections;
     NodeConnection potentialConnection;
     Array<Node*> nodes;

@@ -11,14 +11,14 @@
 #include <ui/audioProcessorNodes/Node.h>
 #include <utils/Constants.h>
 #include <ui/GraphEditor.h>
-#include <ui/audioProcessorNodes/AudioProcessorNode.h>
+#include <ui/audioProcessorNodes/AudioProcessorNodeUI.h>
 
 Node::Node()
 {
     initialize();
 }
 
-Node::Node(AudioProcessorNode* attachedProcessorUI)
+Node::Node(AudioProcessorNodeUI* attachedProcessorUI)
 {
     this->attachedProcessorUI = attachedProcessorUI;
     initialize();
@@ -120,7 +120,7 @@ void Node::addListener(Node::Listener* listener)
     listeners.add(listener);
 }
 
-AudioProcessorNode* Node::getAttachedProcessor()
+AudioProcessorNodeUI* Node::getAttachedProcessor()
 {
     return attachedProcessorUI;
 }

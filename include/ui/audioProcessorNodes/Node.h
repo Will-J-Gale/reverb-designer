@@ -15,7 +15,7 @@
 
 //Forward declarations
 class GraphEditor;
-class AudioProcessorNode;
+class AudioProcessorNodeUI;
 
 #define NodePtr std::shared_ptr<Node>
 
@@ -32,7 +32,7 @@ public:
     };
 
     Node();
-    Node(AudioProcessorNode* attachedProcessorUI);
+    Node(AudioProcessorNodeUI* attachedProcessorUI);
     ~Node();
 
     void initialize();
@@ -52,7 +52,7 @@ public:
 
     void addListener(Node::Listener* listener);
 
-    AudioProcessorNode* getAttachedProcessor();
+    AudioProcessorNodeUI* getAttachedProcessor();
 
 private:
     Uuid id;
@@ -60,6 +60,6 @@ private:
     Point<float> position;
     Node* connectedTo = nullptr;
     GraphEditor* parent = nullptr;
-    AudioProcessorNode* attachedProcessorUI;
+    AudioProcessorNodeUI* attachedProcessorUI;
     Array<Node::Listener*> listeners;
 };
