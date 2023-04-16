@@ -12,7 +12,7 @@
 #include <utils/Constants.h>
 #include <utils/XmlUtils.h>
 
-Output::Output(DspObjectType type) : AudioProcessorNodeUI(type)
+Output::Output(AudioProcessorNodeType type) : AudioProcessorNodeUI(type)
 {
     setBounds(0, 0, IO_WIDTH, IO_HEIGHT);
     nameLabel.setJustificationType(Justification::centred);

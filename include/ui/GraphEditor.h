@@ -25,7 +25,7 @@
 #include <ui/interaction/ZoomHandler.h>
 #include <ui/interaction/DragHandler.h>
 #include <ui/interaction/ConnectionHandler.h>
-#include <ui/interaction/ProcessorUIHandler.h>
+#include <ui/interaction/AudioProcessorNodeUIHandler.h>
 
 //Forward declarations
 class Node;
@@ -114,11 +114,11 @@ private:
 
     //Interaction
     friend class ConnectionHandler;
-    friend class ProcessorUIHandler;
+    friend class AudioProcessorNodeUIHandler;
     SelectionHandler globalSelection;
     SelectionHandler selectionHandler;
     ZoomHandler zoomHandler = ZoomHandler(this);
     DragHandler dragHandler = DragHandler(this);
     ConnectionHandler connectionHandler = ConnectionHandler(this);
-    ProcessorUIHandler processorUIHandler = ProcessorUIHandler(this);
+    AudioProcessorNodeUIHandler processorUIHandler = AudioProcessorNodeUIHandler(this);
 };

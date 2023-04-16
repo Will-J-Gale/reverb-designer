@@ -8,7 +8,7 @@
 class AudioProcessorMacroNode : public AudioProcessorNodeUI
 {
 public:
-    AudioProcessorMacroNode(DspObjectType type);
+    AudioProcessorMacroNode(AudioProcessorNodeType type);
     ~AudioProcessorMacroNode();
 
     void setUIParameters() override {};

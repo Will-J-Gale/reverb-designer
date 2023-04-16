@@ -1,14 +1,14 @@
 /*
   ==============================================================================
 
-    ProcessorUIHandler.cpp
+    AudioProcessorNodeUIHandler.cpp
     Created: 26 Oct 2020 9:45:05pm
     Author:  Will
 
   ==============================================================================
 */
 
-#include <ui/interaction/ProcessorUIHandler.h>
+#include <ui/interaction/AudioProcessorNodeUIHandler.h>
 #include <ui/audioProcessorNodes/AudioProcessorNodeUI.h>
 #include <dsp/AudioProcessorNode.h>
 #include <ui/audioProcessorNodes/AudioProcessorNodeUIFactory.h>
@@ -16,14 +16,14 @@
 #include <dsp/PluginGraph.h>
 #include <ui/interaction/ConnectionHandler.h>
 
-ProcessorUIHandler::ProcessorUIHandler(GraphEditor* graphEditor)
+AudioProcessorNodeUIHandler::AudioProcessorNodeUIHandler(GraphEditor* graphEditor)
 {
     this->graphEditor = graphEditor;
 }
 
-AudioProcessorNodeUIPtr ProcessorUIHandler::createDspObject(DspObjectType type, Point<int> position)
+AudioProcessorNodeUIPtr AudioProcessorNodeUIHandler::createAudioProcessorNode(AudioProcessorNodeType type, Point<int> position)
 {
-    if (type == DspObjectType::Input || type == DspObjectType::Output)
+    if (type == AudioProcessorNodeType::Input || type == AudioProcessorNodeType::Output)
         jassert("Cannot create input or output processor without providing AudioProcessorNode");
 
     auto processorUI = AudioProcessorNodeUIFactory::Generate(type);
@@ -35,7 +35,7 @@ AudioProcessorNodeUIPtr ProcessorUIHandler::createDspObject(DspObjectType type, 
     return processorUI;
 }
 
-AudioProcessorNodeUIPtr ProcessorUIHandler::createDspObject(DspObjectType type, Point<int> position, AudioProcessorNodePtr processorNode)
+AudioProcessorNodeUIPtr AudioProcessorNodeUIHandler::createAudioProcessorNode(AudioProcessorNodeType type, Point<int> position, AudioProcessorNodePtr processorNode)
 {
     AudioProcessorNodeUIPtr processorUI = AudioProcessorNodeUIFactory::Generate(type);
 
@@ -45,7 +45,7 @@ AudioProcessorNodeUIPtr ProcessorUIHandler::createDspObject(DspObjectType type, 
     return processorUI;
 }
 
-void ProcessorUIHandler::initializeProcessor(AudioProcessorNodeUIPtr processor)
+void AudioProcessorNodeUIHandler::initializeProcessor(AudioProcessorNodeUIPtr processor)
 {
     processor->addListener(graphEditor);
     graphEditor->processors.add(processor);
@@ -54,7 +54,7 @@ void ProcessorUIHandler::initializeProcessor(AudioProcessorNodeUIPtr processor)
     graphEditor->addAndMakeVisible(processor.get());
 }
 
-void ProcessorUIHandler::deleteProcessor(AudioProcessorNodeUI* processor)
+void AudioProcessorNodeUIHandler::deleteProcessor(AudioProcessorNodeUI* processor)
 {
     Array<Node*> processorNodes = processor->getAllNodes();
     for (auto* node : processorNodes)
@@ -68,11 +68,11 @@ void ProcessorUIHandler::deleteProcessor(AudioProcessorNodeUI* processor)
     graphEditor->pluginGraph->updateProcessPath();
 }
 
-void ProcessorUIHandler::duplicateProcessor(AudioProcessorNodeUI* processor)
+void AudioProcessorNodeUIHandler::duplicateProcessor(AudioProcessorNodeUI* processor)
 {
-    DspObjectType type = processor->getType();
+    AudioProcessorNodeType type = processor->getType();
 
-    auto newProcessor = createDspObject(type, processor->getPosition () + Point<int>(DUPLICATE_OFFSET_X, DUPLICATE_OFFSET_Y));
+    auto newProcessor = createAudioProcessorNode(type, processor->getPosition () + Point<int>(DUPLICATE_OFFSET_X, DUPLICATE_OFFSET_Y));
     auto parameters = processor->getAudioParametersAsXml();
     newProcessor->setAudioParametersFromXml(parameters);
     delete parameters;

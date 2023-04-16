@@ -23,35 +23,35 @@
 class AudioProcessorFactory
 {
 public:
-    static IAudioProcessorPtr Generate(DspObjectType type)
+    static IAudioProcessorPtr Generate(AudioProcessorNodeType type)
     {
         switch (type)
         {
-            case DspObjectType::Input:
+            case AudioProcessorNodeType::Input:
                 return nullptr;
             
-            case DspObjectType::Output:
+            case AudioProcessorNodeType::Output:
                 return nullptr;
 
-            case DspObjectType::Gain:
+            case AudioProcessorNodeType::Gain:
                 return std::make_shared<Gain>();
 
-            case DspObjectType::Delay:
+            case AudioProcessorNodeType::Delay:
                 return std::make_shared<SimpleDelay>();
 
-            case DspObjectType::Filter:
+            case AudioProcessorNodeType::Filter:
                 return std::make_shared<AudioFilter>();
 
-            case DspObjectType::APF:
+            case AudioProcessorNodeType::APF:
                 return std::make_shared<DelayAPF>();
 
-            case DspObjectType::Comb:
+            case AudioProcessorNodeType::Comb:
                 return std::make_shared<CombFilter>();
 
-            case DspObjectType::ModDelay:
+            case AudioProcessorNodeType::ModDelay:
                 return std::make_shared<ModulatedDelay>();
 
-            case DspObjectType::NestedApf:
+            case AudioProcessorNodeType::NestedApf:
                 return std::make_shared<NestedDelayAPF>();
 
             default:

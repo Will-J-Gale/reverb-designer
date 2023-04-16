@@ -39,7 +39,7 @@ public:
     };
 
     AudioProcessorNodeUI();
-    AudioProcessorNodeUI(DspObjectType type);
+    AudioProcessorNodeUI(AudioProcessorNodeType type);
     ~AudioProcessorNodeUI();
     void paint(Graphics& g) override;
     void mouseDown(const MouseEvent& e) override;
@@ -74,7 +74,7 @@ public:
     void setProcessorNode(AudioProcessorNodePtr processorNode);
 
     IAudioProcessor* getAudioProcessor();
-    DspObjectType getType();
+    AudioProcessorNodeType getType();
     
     bool isReversed();
     void reverse();
@@ -105,7 +105,7 @@ protected:
     Label nameLabel;
     String name;
 
-    DspObjectType type;
+    AudioProcessorNodeType type;
 
     bool reversed = false;
 

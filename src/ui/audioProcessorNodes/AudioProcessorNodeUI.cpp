@@ -18,7 +18,7 @@ AudioProcessorNodeUI::AudioProcessorNodeUI()
     initialize();
 }
 
-AudioProcessorNodeUI::AudioProcessorNodeUI(DspObjectType type)
+AudioProcessorNodeUI::AudioProcessorNodeUI(AudioProcessorNodeType type)
 {
     this->type = type;
     initialize();
@@ -200,7 +200,7 @@ std::string AudioProcessorNodeUI::getIdAsString()
     return processorNode->getIdAsString();
 }
 
-DspObjectType AudioProcessorNodeUI::getType()
+AudioProcessorNodeType AudioProcessorNodeUI::getType()
 {
     return type;
 }

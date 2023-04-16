@@ -228,7 +228,7 @@ enum class ConnectionType
     Feedback
 };
 
-enum class DspObjectType
+enum class AudioProcessorNodeType
 {
     Macro = -3,
     Input = -2,
@@ -246,15 +246,15 @@ enum class DspObjectType
 enum class GraphEditorContextMenuItems
 {
     //DSP Objects
-    EMPTY = (int)DspObjectType::EMPTY,
-    Gain = (int)DspObjectType::Gain,
-    Delay = (int)DspObjectType::Delay,
-    Filter = (int)DspObjectType::Filter,
-    APF = (int)DspObjectType::APF,
-    Comb = (int)DspObjectType::Comb,
-    ModDelay = (int)DspObjectType::ModDelay,
-    NestedApf = (int)DspObjectType::NestedApf,
-    Macro = (int)DspObjectType::Macro,
+    EMPTY = (int)AudioProcessorNodeType::EMPTY,
+    Gain = (int)AudioProcessorNodeType::Gain,
+    Delay = (int)AudioProcessorNodeType::Delay,
+    Filter = (int)AudioProcessorNodeType::Filter,
+    APF = (int)AudioProcessorNodeType::APF,
+    Comb = (int)AudioProcessorNodeType::Comb,
+    ModDelay = (int)AudioProcessorNodeType::ModDelay,
+    NestedApf = (int)AudioProcessorNodeType::NestedApf,
+    Macro = (int)AudioProcessorNodeType::Macro,
 
     //Actions
     Duplicate,

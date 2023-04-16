@@ -28,38 +28,38 @@ class GraphEditor;
 class AudioProcessorNodeUIFactory
 {
 public:
-    static AudioProcessorNodeUIPtr Generate(DspObjectType type)
+    static AudioProcessorNodeUIPtr Generate(AudioProcessorNodeType type)
     {
         switch (type)
         {
-            case DspObjectType::Input:
+            case AudioProcessorNodeType::Input:
                 return std::make_shared<Input>(type);
 
-            case DspObjectType::Output:
+            case AudioProcessorNodeType::Output:
                 return std::make_shared<Output>(type);
 
-            case DspObjectType::Gain:
+            case AudioProcessorNodeType::Gain:
                 return std::make_shared<GainNode>(type);
 
-            case DspObjectType::Delay:
+            case AudioProcessorNodeType::Delay:
                 return std::make_shared<SimpleDelayNode>(type);
 
-            case DspObjectType::Filter:
+            case AudioProcessorNodeType::Filter:
                 return std::make_shared<BiquadFilterNode>(type);
 
-            case DspObjectType::APF:
+            case AudioProcessorNodeType::APF:
                 return std::make_shared<AllPassFilterNode>(type);
 
-            case DspObjectType::Comb:
+            case AudioProcessorNodeType::Comb:
                 return std::make_shared<CombFilterNode>(type);
 
-            case DspObjectType::ModDelay:
+            case AudioProcessorNodeType::ModDelay:
                 return std::make_shared<ModDelayNode>(type);
 
-            case DspObjectType::NestedApf:
+            case AudioProcessorNodeType::NestedApf:
                 return std::make_shared<NestedAPFNode>(type);
             
-            case DspObjectType::Macro:
+            case AudioProcessorNodeType::Macro:
                 return std::make_shared<AudioProcessorMacroNode>(type);
 
             default:

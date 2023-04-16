@@ -16,7 +16,7 @@ class GraphEditor;
 class Input : public AudioProcessorNodeUI
 {
 public:
-    Input(DspObjectType type);
+    Input(AudioProcessorNodeType type);
 
     virtual void setAudioParametersFromXml(XmlElement* parametersXml);
     virtual XmlElement* getAudioParametersAsXml();

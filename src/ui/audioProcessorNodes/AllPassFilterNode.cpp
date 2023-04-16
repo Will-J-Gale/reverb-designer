@@ -13,7 +13,7 @@
 #include <ui/GraphEditor.h>
 #include <utils/XmlUtils.h>
 
-AllPassFilterNode::AllPassFilterNode(DspObjectType type) : AudioProcessorNodeUI(type)
+AllPassFilterNode::AllPassFilterNode(AudioProcessorNodeType type) : AudioProcessorNodeUI(type)
 {
     setBounds(0, 0, APF_WIDTH, APF_HEIGHT);
     updateNameAndReCenter(APF_NAME);

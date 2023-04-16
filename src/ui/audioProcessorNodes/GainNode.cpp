@@ -12,7 +12,7 @@
 #include <utils/Constants.h>
 #include <utils/XmlUtils.h>
 
-GainNode::GainNode(DspObjectType type) : AudioProcessorNodeUI(type)
+GainNode::GainNode(AudioProcessorNodeType type) : AudioProcessorNodeUI(type)
 {
     setBounds(0, 0, GAIN_WIDTH, GAIN_HEIGHT);
 

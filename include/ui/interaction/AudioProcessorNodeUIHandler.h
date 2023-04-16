@@ -1,7 +1,7 @@
 /*
   ==============================================================================
 
-    ProcessorUIHandler.h
+    AudioProcessorNodeUIHandler.h
     Created: 26 Oct 2020 9:45:05pm
     Author:  Will
 
@@ -20,13 +20,13 @@ class AudioProcessorNode;
 #define AudioProcessorNodeUIPtr std::shared_ptr<AudioProcessorNodeUI>
 #define AudioProcessorNodePtr std::shared_ptr<AudioProcessorNode>
 
-class ProcessorUIHandler
+class AudioProcessorNodeUIHandler
 {
 public:
-    ProcessorUIHandler(GraphEditor* graphEditor);
+    AudioProcessorNodeUIHandler(GraphEditor* graphEditor);
 
-    AudioProcessorNodeUIPtr createDspObject(DspObjectType type, Point<int> position);
-    AudioProcessorNodeUIPtr createDspObject(DspObjectType type, Point<int> position, AudioProcessorNodePtr processorNode);
+    AudioProcessorNodeUIPtr createAudioProcessorNode(AudioProcessorNodeType type, Point<int> position);
+    AudioProcessorNodeUIPtr createAudioProcessorNode(AudioProcessorNodeType type, Point<int> position, AudioProcessorNodePtr processorNode);
     void initializeProcessor(AudioProcessorNodeUIPtr processor);
     void deleteProcessor(AudioProcessorNodeUI* processor);
     void duplicateProcessor(AudioProcessorNodeUI* processor);

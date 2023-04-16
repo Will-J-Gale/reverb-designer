@@ -89,7 +89,7 @@ Array<AudioProcessorNode*> PluginGraph::processBlocks(Array<AudioProcessorNode*>
     return outputConnections;
 }
 
-void PluginGraph::createDSPObject(DspObjectType dspObjectType)
+void PluginGraph::createDSPObject(AudioProcessorNodeType dspObjectType)
 {
 }
 
@@ -119,7 +119,7 @@ void PluginGraph::deleteProcessorNode(AudioProcessorNodePtr processorNode)
     removeFromArray(allProcessorNodes, processorNode);
 }
 
-AudioProcessorNodePtr PluginGraph::generateProcessorNode(DspObjectType type)
+AudioProcessorNodePtr PluginGraph::generateProcessorNode(AudioProcessorNodeType type)
 {
     auto audioProcessor = AudioProcessorFactory::Generate(type);
     auto processorNode = std::make_shared<AudioProcessorNode>(type);
