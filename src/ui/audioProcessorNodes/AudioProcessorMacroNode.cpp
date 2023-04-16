@@ -1,0 +1,27 @@
+#include <ui/audioProcessorNodes/AudioProcessorMacroNode.h>
+
+AudioProcessorMacroNode::AudioProcessorMacroNode(DspObjectType type) : AudioProcessorNode(type)
+{
+    setBounds(0, 0, GAIN_WIDTH, GAIN_HEIGHT);
+
+    addInputNode();
+    addOutputNode();
+
+    nameLabel.setBounds(0, 0, GAIN_WIDTH, TEXT_HEIGHT);
+    updateNameAndReCenter("Hello there");
+}
+
+AudioProcessorMacroNode::~AudioProcessorMacroNode()
+{
+}
+
+void AudioProcessorMacroNode::mouseDoubleClick(const MouseEvent& e)
+{
+    auto closeCallback = std::bind(&AudioProcessorMacroNode::closeWindow, this);
+    window = std::make_unique<AudioProcessorMacroWindow>("Macro", closeCallback);
+}
+
+void AudioProcessorMacroNode::closeWindow()
+{
+    window.reset();
+}

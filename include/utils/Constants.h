@@ -10,12 +10,14 @@
 
 #pragma once
 #include <string>
+#include <JuceHeader.h>
 
 //Plugin size
 constexpr int PLUGIN_WIDTH = 1800;
 constexpr int PLUGIN_HEIGHT = 900;
 constexpr int DSP_UI_NAME_Y = 10;
-const std::string BACKGROUND_COLOR = "ff323232";
+const std::string BACKGROUND_COLOUR_STRING = "ff323232";
+const juce::Colour BACKGROUND_COLOUR = Colour::fromString(BACKGROUND_COLOUR_STRING);
 
 //Text
 constexpr int TEXT_HEIGHT = 40;
@@ -183,6 +185,14 @@ const String INNER_APF_G_TAG = "InnerApfG";
 const String INNER_DELAY_TIME_TAG = "OuterDelayTime";
 const String IO_CHANNEL_TAG = "Channel";
 
+//Macro window
+const int MACRO_WINDOW_DEFAULT_WIDTH = 1000;
+const int MACRO_WINDOW_DEFAULT_HEIGHT = 500;
+const bool MACRO_WINDOW_RESIZABLE = true;
+const bool MACRO_WINDOW_CORNER_RESIZE = false;
+const bool MACRO_WINDOW_DEFAULT_VISIBLE = true;
+const bool MACRO_WINDOW_USE_NATIVE_WINDOW = true;
+
 //Main menu
 constexpr int MENU_HEIGHT = 20;
 const String SAVE_TEXT = "Save As";
@@ -220,6 +230,7 @@ enum class ConnectionType
 
 enum class DspObjectType
 {
+    Macro = -3,
     Input = -2,
     Output = -1,
     EMPTY = 0,
@@ -243,6 +254,7 @@ enum class GraphEditorContextMenuItems
     Comb = (int)DspObjectType::Comb,
     ModDelay = (int)DspObjectType::ModDelay,
     NestedApf = (int)DspObjectType::NestedApf,
+    Macro = (int)DspObjectType::Macro,
 
     //Actions
     Duplicate,

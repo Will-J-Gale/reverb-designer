@@ -21,6 +21,7 @@
 #include <ui/audioProcessorNodes/SimpleDelayNode.h>
 #include <ui/audioProcessorNodes/ModDelayNode.h>
 #include <ui/audioProcessorNodes/NestedAPFNode.h>
+#include <ui/audioProcessorNodes/AudioProcessorMacroNode.h>
 
 class GraphEditor;
 
@@ -57,6 +58,9 @@ public:
 
             case DspObjectType::NestedApf:
                 return std::make_shared<NestedAPFNode>(type);
+            
+            case DspObjectType::Macro:
+                return std::make_shared<AudioProcessorMacroNode>(type);
 
             default:
                 throw std::invalid_argument("Missing object type");

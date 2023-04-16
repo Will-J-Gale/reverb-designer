@@ -9,12 +9,12 @@
 */
 
 #include <map>
+#include <dsp/PluginGraph.h>
 #include <ui/GraphEditor.h>
 #include <ui/audioProcessorNodes/GainNode.h>
-#include <dsp/PluginGraph.h>
 #include <ui/audioProcessorNodes/AudioProcessorNodeFactory.h>
-#include <utils/HitTest.h>
 #include <ui/interaction/NodeConnectionDrawer.h>
+#include <utils/HitTest.h>
 #include <utils/XmlGenerator.h>
 #include <utils/StorageManager.h>
 #include <utils/PresetFactory.h>
@@ -89,7 +89,7 @@ void GraphEditor::mouseWheelMove(const MouseEvent& event, const MouseWheelDetail
 
 void GraphEditor::paint(Graphics& g)
 {
-    g.fillAll(Colour::fromString(BACKGROUND_COLOR));
+    g.fillAll(Colour::fromString(BACKGROUND_COLOUR_STRING));
     drawConnections(g);
 
     if (interactionState == InteractionState::CreateSelection)
@@ -293,6 +293,11 @@ void GraphEditor::handleRightClick(const MouseEvent& e)
     if (contextSelection == (int)GraphEditorContextMenuItems::Duplicate)
     {
         duplicateSelectedProcessors();
+    }
+    else if (contextSelection == (int)GraphEditorContextMenuItems::Macro)
+    {
+        auto processorUI = AudioProcessorNodeFactory::Generate(DspObjectType::Macro);
+        processorUIHandler.initializeProcessor(processorUI);
     }
     else if (contextSelection > 0)
     {

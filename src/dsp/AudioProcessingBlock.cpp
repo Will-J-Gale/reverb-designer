@@ -183,5 +183,6 @@ void AudioProcessingBlock::setFinishedProcessing(bool hasFinished)
 
 std::string AudioProcessingBlock::getIdAsString()
 {
+    auto test = id.toString();
     return id.toString().toStdString();
 }
