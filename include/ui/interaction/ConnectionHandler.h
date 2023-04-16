@@ -10,12 +10,14 @@
 
 #pragma once
 class GraphEditor;
+class PluginGraph;
 class AudioProcessorNodeConnectorUI;
 
 class ConnectionHandler
 {
 public:
-    ConnectionHandler(GraphEditor* graphEditor);
+    ConnectionHandler(){};
+    void initialize(GraphEditor* graphEditor, PluginGraph* pluginGraph);
     void createConnection(AudioProcessorNodeConnectorUI* start, AudioProcessorNodeConnectorUI* end);
     void createFeedbackConnection(AudioProcessorNodeConnectorUI* start, AudioProcessorNodeConnectorUI* end);
     void deleteConnection(AudioProcessorNodeConnectorUI* nodeConnector);
@@ -25,4 +27,5 @@ public:
 
 private:
     GraphEditor* graphEditor;
+    PluginGraph* pluginGraph;
 };

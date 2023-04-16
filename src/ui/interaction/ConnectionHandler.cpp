@@ -8,16 +8,17 @@
   ==============================================================================
 */
 
-#include <ui/interaction/ConnectionHandler.h>
 #include <memory>
+#include <ui/interaction/ConnectionHandler.h>
 #include <ui/audioProcessorNodes/AudioProcessorNodeConnectorUI.h>
 #include <ui/GraphEditor.h>
 #include <ui/audioProcessorNodes/NodeConnection.h>
 #include <dsp/PluginGraph.h>
 
-ConnectionHandler::ConnectionHandler(GraphEditor* graphEditor)
+void ConnectionHandler::initialize(GraphEditor* graphEditor, PluginGraph* pluginGraph)
 {
     this->graphEditor = graphEditor;
+    this->pluginGraph = pluginGraph;
 }
 
 void ConnectionHandler::createConnection(AudioProcessorNodeConnectorUI* start, AudioProcessorNodeConnectorUI* end)
