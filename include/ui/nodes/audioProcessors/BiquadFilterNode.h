@@ -11,7 +11,7 @@
 #pragma once
 
 #include <JuceHeader.h>
-#include <ui/audioProcessorNodes/AudioProcessorNodeUI.h>
+#include <ui/nodes/audioProcessors/AudioProcessorNodeUI.h>
 #include <dsp/AudioFilter.h>
 #include <ui/parameters/ComboBoxParameter.h>
 #include <ui/parameters/NumberParameter.h>

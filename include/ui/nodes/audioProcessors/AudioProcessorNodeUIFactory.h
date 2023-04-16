@@ -11,17 +11,17 @@
 #pragma once
 #include <stdexcept>
 #include <utils/Constants.h>
-#include <ui/audioProcessorNodes/AudioProcessorNodeUI.h>
-#include <ui/audioProcessorNodes/GainNode.h>
-#include <ui/audioProcessorNodes/BiquadFilterNode.h>
-#include <ui/audioProcessorNodes/AllPassFilterNode.h>
-#include <ui/audioProcessorNodes/CombFilterNode.h>
-#include <ui/audioProcessorNodes/Input.h>
-#include <ui/audioProcessorNodes/Output.h>
-#include <ui/audioProcessorNodes/SimpleDelayNode.h>
-#include <ui/audioProcessorNodes/ModDelayNode.h>
-#include <ui/audioProcessorNodes/NestedAPFNode.h>
-#include <ui/audioProcessorNodes/AudioProcessorMacroNode.h>
+#include <ui/nodes/audioProcessors/AudioProcessorNodeUI.h>
+#include <ui/nodes/audioProcessors/GainNode.h>
+#include <ui/nodes/audioProcessors/BiquadFilterNode.h>
+#include <ui/nodes/audioProcessors/AllPassFilterNode.h>
+#include <ui/nodes/audioProcessors/CombFilterNode.h>
+#include <ui/nodes/audioProcessors/Input.h>
+#include <ui/nodes/audioProcessors/Output.h>
+#include <ui/nodes/audioProcessors/SimpleDelayNode.h>
+#include <ui/nodes/audioProcessors/ModDelayNode.h>
+#include <ui/nodes/audioProcessors/NestedAPFNode.h>
+#include <ui/nodes/audioProcessors/AudioProcessorMacroNode.h>
 
 class GraphEditor;
 

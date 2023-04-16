@@ -8,10 +8,10 @@
   ==============================================================================
 */
 
-#include <ui/audioProcessorNodes/AudioProcessorNodeConnectorUI.h>
+#include <ui/nodes/audioProcessors/AudioProcessorNodeConnectorUI.h>
 #include <utils/Constants.h>
 #include <ui/GraphEditor.h>
-#include <ui/audioProcessorNodes/AudioProcessorNodeUI.h>
+#include <ui/nodes/audioProcessors/AudioProcessorNodeUI.h>
 
 AudioProcessorNodeConnectorUI::AudioProcessorNodeConnectorUI()
 {

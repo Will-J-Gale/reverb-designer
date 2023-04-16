@@ -9,15 +9,15 @@
 */
 
 #pragma once
-#include <ui/audioProcessorNodes/AudioProcessorNodeUI.h>
-#include <ui/audioProcessorNodes/NodeConnection.h>
+#include <ui/nodes/audioProcessors/AudioProcessorNodeUI.h>
+#include <ui/nodes/audioProcessors/NodeConnection.h>
 #include <utils/ManagedArray.h>
-#include <ui/audioProcessorNodes/Input.h>
-#include <ui/audioProcessorNodes/Output.h>
-#include <ui/audioProcessorNodes/BiquadFilterNode.h>
-#include <ui/audioProcessorNodes/SimpleDelayNode.h>
+#include <ui/nodes/audioProcessors/Input.h>
+#include <ui/nodes/audioProcessors/Output.h>
+#include <ui/nodes/audioProcessors/BiquadFilterNode.h>
+#include <ui/nodes/audioProcessors/SimpleDelayNode.h>
 #include <utils/Constants.h>
-#include <ui/audioProcessorNodes/AllPassFilterNode.h>
+#include <ui/nodes/audioProcessors/AllPassFilterNode.h>
 #include <ui/menus/GraphEditorContextMenu.h>
 #include <ui/interaction/SelectionHandler.h>
 #include <ui/menus/MainMenu.h>
@@ -26,6 +26,7 @@
 #include <ui/interaction/DragHandler.h>
 #include <ui/interaction/ConnectionHandler.h>
 #include <ui/interaction/AudioProcessorNodeUIHandler.h>
+#include <ui/nodes/NodeUI.h>
 
 //Forward declarations
 class AudioProcessorNodeConnectorUI;
@@ -36,7 +37,8 @@ class GraphEditor : public Component,
                     public ManagedArray,
                     public AudioProcessorNodeUI::Listener,
                     public AudioProcessorNodeConnectorUI::Listener,
-                    public MainMenu::Listener
+                    public MainMenu::Listener,
+                    public NodeUI::Listener
 {
 public:
     GraphEditor();
@@ -61,6 +63,11 @@ public:
     virtual void onProcessorMoved(AudioProcessorNodeUI* processor, const MouseEvent& e) override;
     virtual void onProcessorReleased(AudioProcessorNodeUI* processor, const MouseEvent& e) override;
     virtual void onContextSelection(AudioProcessorNodeUI* processor, NodeUIConextMenuItems selection) override;
+    
+    virtual void onProcessorClicked(NodeUI* processor, const MouseEvent& e) override;
+    virtual void onProcessorMoved(NodeUI* processor, const MouseEvent& e) override;
+    virtual void onProcessorReleased(NodeUI* processor, const MouseEvent& e) override;
+    virtual void onContextSelection(NodeUI* processor, NodeUIConextMenuItems selection) override;
 
     virtual void onNodeLeftClick(AudioProcessorNodeConnectorUI* nodeConnector, const MouseEvent& e) override;
     virtual void onNodeRightClick(AudioProcessorNodeConnectorUI* nodeConnector, const MouseEvent& e) override;
@@ -84,12 +91,12 @@ private:
 
     void drawConnections(Graphics& g);
     void drawPotentialConnection(Graphics& g);
-    void addNodeListeners(Array<AudioProcessorNodeConnectorUI*> nodes);
+    void addNodeConnectorListeners(Array<AudioProcessorNodeConnectorUI*> nodes);
     void createIOProcessors();
 
     void createAllConnections(std::map<std::string, AudioProcessorNodeUIPtr> processorUIMap, std::map<std::string, XmlElement*> xmlMap);
 
-    AudioProcessorNodeConnectorUI* getNodeAtPosition(Point<int> screenPos);
+    AudioProcessorNodeConnectorUI* getNodeConnectorAtPosition(Point<int> screenPos);
     Array<AudioProcessorNodeUI*> getOverlappingProcessors(Rectangle<int> bounds);
 
     Array<AudioProcessorNodeUIPtr> inputs;
@@ -97,7 +104,7 @@ private:
     Array<AudioProcessorNodeUIPtr> processors;
     Array<NodeConnectionPtr> connections;
     NodeConnection potentialConnection;
-    Array<AudioProcessorNodeConnectorUI*> nodes;
+    Array<AudioProcessorNodeConnectorUI*> nodeConnectors;
     AudioProcessorNodeConnectorUI* clickedNode = nullptr;
 
     PluginGraph* pluginGraph = nullptr;

@@ -8,7 +8,7 @@
   ==============================================================================
 */
 
-#include <ui/audioProcessorNodes/AllPassFilterNode.h>
+#include <ui/nodes/audioProcessors/AllPassFilterNode.h>
 #include <utils/Constants.h>
 #include <ui/GraphEditor.h>
 #include <utils/XmlUtils.h>

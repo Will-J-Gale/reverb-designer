@@ -12,7 +12,7 @@
 
 #include <JuceHeader.h>
 #include "PluginProcessor.h"
-#include <ui/audioProcessorNodes/AudioProcessorNodeUI.h>
+#include <ui/nodes/audioProcessors/AudioProcessorNodeUI.h>
 #include <ui/GraphEditor.h>
 
 //==============================================================================

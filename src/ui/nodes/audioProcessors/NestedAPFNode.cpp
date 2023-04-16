@@ -8,7 +8,7 @@
   ==============================================================================
 */
 
-#include <ui/audioProcessorNodes/NestedAPFNode.h>
+#include <ui/nodes/audioProcessors/NestedAPFNode.h>
 #include <utils/Constants.h>
 #include <dsp/NestedDelayAPF.h>
 #include <utils/XmlUtils.h>

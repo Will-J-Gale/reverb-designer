@@ -11,12 +11,12 @@
 #pragma once
 #include <vector>
 #include <JuceHeader.h>
-#include <ui/audioProcessorNodes/AudioProcessorNodeConnectorUI.h>
+#include <ui/nodes/audioProcessors/AudioProcessorNodeConnectorUI.h>
 #include <utils/Constants.h>
 #include <utils/ManagedArray.h>
 #include <dsp/IAudioProcessor.h>
 #include <dsp/AudioProcessorNode.h>
-#include <ui/menus/AudioProcessorUIContextMenu.h>
+#include <ui/menus/NodeUIContextMenu.h>
 #include <utils/XmlUtils.h>
 #include <ui/interaction/DragHandler.h>
 
@@ -50,7 +50,7 @@ public:
     
     void addInputNode();
     void addOutputNode();
-    Array<AudioProcessorNodeConnectorUI*> getAllNodes();
+    Array<AudioProcessorNodeConnectorUI*> getAllNodeConnectors();
     AudioProcessorNodeConnectorUI* getInputNode();
     AudioProcessorNodeConnectorUI* getOutputNode();
     
@@ -109,7 +109,7 @@ protected:
 
     bool reversed = false;
 
-    AudioProcessorUIContextMenu contextMenu;
+    NodeUIContextMenu contextMenu;
 
     Array<Listener*> listeners;
 

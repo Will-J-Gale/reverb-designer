@@ -9,9 +9,9 @@
 */
 
 #include <ui/interaction/AudioProcessorNodeUIHandler.h>
-#include <ui/audioProcessorNodes/AudioProcessorNodeUI.h>
+#include <ui/nodes/audioProcessors/AudioProcessorNodeUI.h>
 #include <dsp/AudioProcessorNode.h>
-#include <ui/audioProcessorNodes/AudioProcessorNodeUIFactory.h>
+#include <ui/nodes/audioProcessors/AudioProcessorNodeUIFactory.h>
 #include <ui/GraphEditor.h>
 #include <dsp/PluginGraph.h>
 #include <ui/interaction/ConnectionHandler.h>
@@ -53,18 +53,18 @@ void AudioProcessorNodeUIHandler::initializeProcessor(AudioProcessorNodeUIPtr pr
 {
     processorNodeUI->addListener(graphEditor);
     graphEditor->processors.add(processorNodeUI);
-    graphEditor->nodes.addArray(processorNodeUI->getAllNodes());
-    graphEditor->addNodeListeners(processorNodeUI->getAllNodes());
+    graphEditor->nodeConnectors.addArray(processorNodeUI->getAllNodeConnectors());
+    graphEditor->addNodeConnectorListeners(processorNodeUI->getAllNodeConnectors());
     graphEditor->addAndMakeVisible(processorNodeUI.get());
 }
 
 void AudioProcessorNodeUIHandler::deleteProcessor(AudioProcessorNodeUI* processorNodeUI)
 {
-    Array<AudioProcessorNodeConnectorUI*> processorNodes = processorNodeUI->getAllNodes();
+    Array<AudioProcessorNodeConnectorUI*> processorNodes = processorNodeUI->getAllNodeConnectors();
     for (auto* node : processorNodes)
     {
         graphEditor->connectionHandler.deleteConnection(node);
-        graphEditor->removeFromArray(graphEditor->nodes, node);
+        graphEditor->removeFromArray(graphEditor->nodeConnectors, node);
     }
 
     pluginGraph->deleteProcessorNode(processorNodeUI->getProcessorNode());

@@ -243,6 +243,13 @@ enum class AudioProcessorNodeType
     NestedApf
 };
 
+enum class NodeUIType
+{
+    AudioProcessor,
+    Macro,
+    Control
+};
+
 enum class GraphEditorContextMenuItems
 {
     //DSP Objects

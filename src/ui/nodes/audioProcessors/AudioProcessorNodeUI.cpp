@@ -8,7 +8,7 @@
   ==============================================================================
 */
 
-#include <ui/audioProcessorNodes/AudioProcessorNodeUI.h>
+#include <ui/nodes/audioProcessors/AudioProcessorNodeUI.h>
 #include <ui/GraphEditor.h>
 #include <dsp/Delay.h>
 
@@ -104,7 +104,7 @@ void AudioProcessorNodeUI::updateNameAndReCenter(String name)
     nameLabel.setSize(getBounds().getWidth(), nameLabel.getBounds().getHeight());
 }
 
-Array<AudioProcessorNodeConnectorUI*> AudioProcessorNodeUI::getAllNodes()
+Array<AudioProcessorNodeConnectorUI*> AudioProcessorNodeUI::getAllNodeConnectors()
 {
     Array<AudioProcessorNodeConnectorUI*> nodes;
 

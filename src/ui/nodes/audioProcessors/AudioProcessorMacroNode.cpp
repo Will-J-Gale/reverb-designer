@@ -1,4 +1,4 @@
-#include <ui/audioProcessorNodes/AudioProcessorMacroNode.h>
+#include <ui/nodes/audioProcessors/AudioProcessorMacroNode.h>
 
 AudioProcessorMacroNode::AudioProcessorMacroNode(AudioProcessorNodeType type) : AudioProcessorNodeUI(type)
 {

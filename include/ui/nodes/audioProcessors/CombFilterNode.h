@@ -9,7 +9,7 @@
 */
 
 #pragma once
-#include <ui/audioProcessorNodes/AudioProcessorNodeUI.h>
+#include <ui/nodes/audioProcessors/AudioProcessorNodeUI.h>
 #include <ui/parameters/SliderParameter.h>
 #include <ui/parameters/BoolParameter.h>
 #include <dsp/CombFilter.h>

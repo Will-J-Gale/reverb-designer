@@ -8,8 +8,8 @@
   ==============================================================================
 */
 
-#include <ui/audioProcessorNodes/NodeConnection.h>
-#include <ui/audioProcessorNodes/AudioProcessorNodeConnectorUI.h>
+#include <ui/nodes/audioProcessors/NodeConnection.h>
+#include <ui/nodes/audioProcessors/AudioProcessorNodeConnectorUI.h>
 #include <utils/Constants.h>
 
 NodeConnection::NodeConnection()

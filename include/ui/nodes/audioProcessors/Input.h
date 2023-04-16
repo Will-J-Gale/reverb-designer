@@ -9,7 +9,7 @@
 */
 
 #pragma once
-#include <ui/audioProcessorNodes/AudioProcessorNodeUI.h>
+#include <ui/nodes/audioProcessors/AudioProcessorNodeUI.h>
 
 class GraphEditor;
 

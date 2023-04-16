@@ -10,9 +10,9 @@
 
 #include <memory>
 #include <ui/interaction/ConnectionHandler.h>
-#include <ui/audioProcessorNodes/AudioProcessorNodeConnectorUI.h>
+#include <ui/nodes/audioProcessors/AudioProcessorNodeConnectorUI.h>
 #include <ui/GraphEditor.h>
-#include <ui/audioProcessorNodes/NodeConnection.h>
+#include <ui/nodes/audioProcessors/NodeConnection.h>
 #include <dsp/PluginGraph.h>
 
 void ConnectionHandler::initialize(GraphEditor* graphEditor, PluginGraph* pluginGraph)

@@ -11,8 +11,8 @@
 #include <map>
 #include <dsp/PluginGraph.h>
 #include <ui/GraphEditor.h>
-#include <ui/audioProcessorNodes/GainNode.h>
-#include <ui/audioProcessorNodes/AudioProcessorNodeUIFactory.h>
+#include <ui/nodes/audioProcessors/GainNode.h>
+#include <ui/nodes/audioProcessors/AudioProcessorNodeUIFactory.h>
 #include <ui/interaction/NodeConnectionDrawer.h>
 #include <utils/HitTest.h>
 #include <utils/XmlGenerator.h>
@@ -170,10 +170,10 @@ void GraphEditor::drawPotentialConnection(Graphics& g)
     }
 }
 
-void GraphEditor::addNodeListeners(Array<AudioProcessorNodeConnectorUI*> nodes)
+void GraphEditor::addNodeConnectorListeners(Array<AudioProcessorNodeConnectorUI*> nodeConnectors)
 {
-    for (auto node : nodes)
-        node->addListener(this);
+    for (auto nodeConnector : nodeConnectors)
+        nodeConnector->addListener(this);
 }
 
 void GraphEditor::createIOProcessors()
@@ -298,8 +298,12 @@ void GraphEditor::handleRightClick(const MouseEvent& e)
     }
     else if (contextSelection == (int)GraphEditorContextMenuItems::Macro)
     {
-        auto processorUI = processorNodeUIHandler.createAudioProcessorNodeUI((AudioProcessorNodeType)contextSelection, e.getPosition());
-        processorNodeUIHandler.initializeProcessor(processorUI);
+        // auto processorUI = processorNodeUIHandler.createAudioProcessorNodeUI((AudioProcessorNodeType)contextSelection, e.getPosition());
+        // processorNodeUIHandler.initializeProcessor(processorUI);
+
+        static auto processorUI = new NodeUI("Hello there!", NodeUIType::Macro);
+        addAndMakeVisible(processorUI);
+        processorUI->addListener(this);
     }
     else if (contextSelection > 0)
     {
@@ -350,15 +354,15 @@ void GraphEditor::deleteSelectedProcessors()
     selectionHandler.clear();
 }
 
-AudioProcessorNodeConnectorUI* GraphEditor::getNodeAtPosition(Point<int> screenPos)
+AudioProcessorNodeConnectorUI* GraphEditor::getNodeConnectorAtPosition(Point<int> screenPos)
 {
-    for (auto* node : nodes)
+    for (auto* nodeConnector : nodeConnectors)
     {
-        auto nodePos = node->getScreenPosition();
-        auto nodeRadius = node->getBounds().getWidth();
+        auto nodePos = nodeConnector->getScreenPosition();
+        auto nodeRadius = nodeConnector->getBounds().getWidth();
 
         if (HitTest::PointSphereHit(screenPos, nodePos, nodeRadius))
-            return node;
+            return nodeConnector;
     }
 
     return nullptr;
@@ -509,7 +513,7 @@ void GraphEditor::clear()
     inputs.clear();
     outputs.clear();
     processors.clear();
-    nodes.clear();
+    nodeConnectors.clear();
     connections.clear();
     globalSelection.clear();
     selectionHandler.clear();
@@ -536,7 +540,7 @@ void GraphEditor::onNodeDrag(AudioProcessorNodeConnectorUI* node, const MouseEve
 
 void GraphEditor::onNodeLeftRelease(AudioProcessorNodeConnectorUI* node, const MouseEvent& e)
 {
-    auto* mouseUpNode = getNodeAtPosition(e.getScreenPosition());
+    auto* mouseUpNode = getNodeConnectorAtPosition(e.getScreenPosition());
 
     if (mouseUpNode)
     {
@@ -687,6 +691,49 @@ void GraphEditor::onContextSelection(AudioProcessorNodeUI* processor, NodeUICone
         else
             processor->reverse();
     }
+
+    repaint();
+}
+
+
+void GraphEditor::onProcessorClicked(NodeUI* node, const MouseEvent& e)
+{
+    repaint();
+}
+
+void GraphEditor::onProcessorMoved(NodeUI* node, const MouseEvent& e)
+{  
+    repaint();
+}
+
+void GraphEditor::onProcessorReleased(NodeUI* node, const MouseEvent& e)
+{
+    
+}
+
+void GraphEditor::onContextSelection(NodeUI* node, NodeUIConextMenuItems selection)
+{
+    // if (selection == NodeUIConextMenuItems::Delete)
+    // {
+    //     if (!selectionHandler.isEmpty())
+    //         deleteSelectedProcessors();
+    //     else
+    //         processorNodeUIHandler.deleteProcessor(node);
+    // }
+    // else if (selection == NodeUIConextMenuItems::Duplicate)
+    // {
+    //     if (!selectionHandler.isEmpty())
+    //         duplicateSelectedProcessors();
+    //     else
+    //         processorNodeUIHandler.duplicateProcessor(node);
+    // }
+    // else if (selection == NodeUIConextMenuItems::Reverse)
+    // {
+    //     if (!selectionHandler.isEmpty())
+    //         reverseSelectedProcessors();
+    //     else
+    //         node->reverse();
+    // }
 
     repaint();
 }

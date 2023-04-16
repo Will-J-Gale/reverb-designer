@@ -1,27 +1,25 @@
 /*
   ==============================================================================
 
-    SimpleDelayNode.h
-    Created: 21 Sep 2020 8:53:30pm
+    GainNode.h
+    Created: 19 Sep 2020 1:34:26pm
     Author:  Will
 
   ==============================================================================
 */
 
 #pragma once
-#include <ui/audioProcessorNodes/AudioProcessorNodeUI.h>
+#include <ui/nodes/audioProcessors/AudioProcessorNodeUI.h>
+#include <dsp/Gain.h>
 #include <ui/parameters/NumberParameter.h>
-#include <dsp/IAudioProcessor.h>
-#include <dsp/SimpleDelay.h>
+#include <dsp/AudioProcessorNode.h>
 
-class GraphEditor;
-
-class SimpleDelayNode : public AudioProcessorNodeUI,
-                      public TextEditor::Listener
+class GainNode : public AudioProcessorNodeUI,
+               public TextEditor::Listener
 {
 public:
-    SimpleDelayNode(AudioProcessorNodeType type);
-    ~SimpleDelayNode();
+    GainNode(AudioProcessorNodeType type);
+    ~GainNode();
 
     void textEditorTextChanged(TextEditor& textEditor) override;
 
@@ -30,5 +28,6 @@ public:
 
 private:
     virtual void setUIParameters() override;
-    NumberParameter delayTime;
+
+    NumberParameter gainParameter;
 };

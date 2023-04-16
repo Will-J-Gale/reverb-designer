@@ -10,7 +10,7 @@
 
 #pragma once
 
-#include <ui/audioProcessorNodes/AudioProcessorNodeUI.h>
+#include <ui/nodes/audioProcessors/AudioProcessorNodeUI.h>
 #include <ui/parameters/ComboBoxParameter.h>
 #include <ui/parameters/SliderParameter.h>
 

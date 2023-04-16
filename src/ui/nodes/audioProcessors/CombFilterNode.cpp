@@ -8,7 +8,7 @@
   ==============================================================================
 */
 
-#include <ui/audioProcessorNodes/CombFilterNode.h>
+#include <ui/nodes/audioProcessors/CombFilterNode.h>
 #include <utils/Constants.h>
 #include <utils/XmlUtils.h>
 

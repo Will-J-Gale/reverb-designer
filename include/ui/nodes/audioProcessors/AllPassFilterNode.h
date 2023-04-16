@@ -1,41 +1,39 @@
 /*
   ==============================================================================
 
-    NestedAPFNode.h
-    Created: 5 Oct 2020 6:53:26pm
+    AllPassFilterNode.h
+    Created: 25 Sep 2020 8:21:25pm
     Author:  Will
 
   ==============================================================================
 */
 
 #pragma once
-#include <ui/audioProcessorNodes/AudioProcessorNodeUI.h>
-#include <JuceHeader.h>
-#include <ui/parameters/BoolParameter.h>
+#include <ui/nodes/audioProcessors/AudioProcessorNodeUI.h>
+#include <dsp/DelayAPF.h>
 #include <ui/parameters/SliderParameter.h>
+#include <ui/nodes/audioProcessors/AudioProcessorNodeUI.h>
+#include <ui/parameters/BoolParameter.h>
+
 
 class GraphEditor;
 
-class NestedAPFNode : public AudioProcessorNodeUI,
-                    public ToggleButton::Listener,
-                    public Slider::Listener
+class AllPassFilterNode : public AudioProcessorNodeUI,
+                        public ToggleButton::Listener,
+                        public Slider::Listener
 {
 public:
-    NestedAPFNode(AudioProcessorNodeType type);
+    AllPassFilterNode(AudioProcessorNodeType type);
+    ~AllPassFilterNode();
 
     virtual void setAudioParametersFromXml(XmlElement* parametersXml) override;
     virtual XmlElement* getAudioParametersAsXml() override;
 
 private:
-    SliderParameter outerDelayTime;
-    SliderParameter outerApfG;
-
-    SliderParameter innerDelayTime;
-    SliderParameter innerApfG;
-
+    SliderParameter delayTime; 
+    SliderParameter apfG; 
     BoolParameter enableLPF;
     SliderParameter lpfG;
-
     BoolParameter enableLFO;
     SliderParameter lfoRate;
     SliderParameter lfoDepth;
@@ -44,4 +42,6 @@ private:
     virtual void buttonClicked(Button* button) override;
     virtual void sliderValueChanged(Slider* slider) override;
     virtual void setUIParameters() override;
+
+    
 };

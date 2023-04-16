@@ -9,7 +9,7 @@
 */
 
 #include <ui/interaction/SelectionHandler.h>
-#include <ui/audioProcessorNodes/AudioProcessorNodeUI.h>
+#include <ui/nodes/audioProcessors/AudioProcessorNodeUI.h>
 
 void SelectionHandler::setItems(Array<AudioProcessorNodeUI*> items)
 {

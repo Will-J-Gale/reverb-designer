@@ -7,7 +7,7 @@
 
   ==============================================================================
 */
-#include <ui/audioProcessorNodes/BiquadFilterNode.h>
+#include <ui/nodes/audioProcessors/BiquadFilterNode.h>
 #include <utils/Constants.h>
 #include <dsp/Parameters.h>
 #include <utils/XmlUtils.h>

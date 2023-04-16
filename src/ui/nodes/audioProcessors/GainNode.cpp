@@ -8,7 +8,7 @@
   ==============================================================================
 */
 
-#include <ui/audioProcessorNodes/GainNode.h>
+#include <ui/nodes/audioProcessors/GainNode.h>
 #include <utils/Constants.h>
 #include <utils/XmlUtils.h>
 
