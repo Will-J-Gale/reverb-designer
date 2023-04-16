@@ -16,6 +16,7 @@ public:
     virtual XmlElement* getAudioParametersAsXml() {};
 
     void mouseDoubleClick(const MouseEvent& e) override;
+    std::string getIdAsString() override;
 
 private:
     void closeWindow();

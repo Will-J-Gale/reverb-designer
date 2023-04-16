@@ -12,7 +12,7 @@
 #include <JuceHeader.h>
 #include <utils/Constants.h>
 
-class Node;
+class AudioProcessorNodeConnectorUI;
 class GraphEditor;
 
 namespace NodeConnectionDrawer
@@ -44,7 +44,7 @@ namespace NodeConnectionDrawer
         g.drawArrow(line, CONNECTION_THICKNESS, ARROW_SIZE, ARROW_SIZE);
     }
 
-    inline void drawConnection(Graphics& g, GraphEditor* graphEditor, Node* startNode, Node* endNode)
+    inline void drawConnection(Graphics& g, GraphEditor* graphEditor, AudioProcessorNodeConnectorUI* startNode, AudioProcessorNodeConnectorUI* endNode)
     {
         auto fromPos = startNode->getScreenPosition();
         auto toPos = endNode->getScreenPosition();

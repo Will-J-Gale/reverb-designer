@@ -17,23 +17,23 @@
 class GraphEditor;
 class AudioProcessorNodeUI;
 
-#define NodePtr std::shared_ptr<Node>
+#define NodePtr std::shared_ptr<AudioProcessorNodeConnectorUI>
 
-class Node : public Component
+class AudioProcessorNodeConnectorUI : public Component
 {
 public:
     class Listener
     {
     public:
-        virtual void onNodeLeftClick(Node* node, const MouseEvent& e) = 0;
-        virtual void onNodeRightClick(Node* node, const MouseEvent& e) = 0;
-        virtual void onNodeDrag(Node* node, const MouseEvent& e) = 0;
-        virtual void onNodeLeftRelease(Node* node, const MouseEvent& e) = 0;
+        virtual void onNodeLeftClick(AudioProcessorNodeConnectorUI* node, const MouseEvent& e) = 0;
+        virtual void onNodeRightClick(AudioProcessorNodeConnectorUI* node, const MouseEvent& e) = 0;
+        virtual void onNodeDrag(AudioProcessorNodeConnectorUI* node, const MouseEvent& e) = 0;
+        virtual void onNodeLeftRelease(AudioProcessorNodeConnectorUI* node, const MouseEvent& e) = 0;
     };
 
-    Node();
-    Node(AudioProcessorNodeUI* attachedProcessorUI);
-    ~Node();
+    AudioProcessorNodeConnectorUI();
+    AudioProcessorNodeConnectorUI(AudioProcessorNodeUI* attachedProcessorUI);
+    ~AudioProcessorNodeConnectorUI();
 
     void initialize();
 
@@ -50,16 +50,16 @@ public:
 
     Uuid getId();
 
-    void addListener(Node::Listener* listener);
+    void addListener(AudioProcessorNodeConnectorUI::Listener* listener);
 
-    AudioProcessorNodeUI* getAttachedProcessor();
+    AudioProcessorNodeUI* getAttachedProcessorUI();
 
 private:
     Uuid id;
     NodeType type = NodeType::AudioInput;
     Point<float> position;
-    Node* connectedTo = nullptr;
+    AudioProcessorNodeConnectorUI* connectedTo = nullptr;
     GraphEditor* parent = nullptr;
     AudioProcessorNodeUI* attachedProcessorUI;
-    Array<Node::Listener*> listeners;
+    Array<AudioProcessorNodeConnectorUI::Listener*> listeners;
 };

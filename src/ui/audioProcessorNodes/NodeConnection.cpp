@@ -9,7 +9,7 @@
 */
 
 #include <ui/audioProcessorNodes/NodeConnection.h>
-#include <ui/audioProcessorNodes/Node.h>
+#include <ui/audioProcessorNodes/AudioProcessorNodeConnectorUI.h>
 #include <utils/Constants.h>
 
 NodeConnection::NodeConnection()
@@ -22,25 +22,25 @@ NodeConnection::~NodeConnection()
     end = nullptr;
 }
 
-NodeConnection::NodeConnection(Node* start, Node* end)
+NodeConnection::NodeConnection(AudioProcessorNodeConnectorUI* start, AudioProcessorNodeConnectorUI* end)
 {
     this->start = start;
     this->end = end;
 }
 
-NodeConnection::NodeConnection(Node* start, Node* end, ConnectionType type)
+NodeConnection::NodeConnection(AudioProcessorNodeConnectorUI* start, AudioProcessorNodeConnectorUI* end, ConnectionType type)
 {
     this->start = start;
     this->end = end;
     this->connectionType = type;
 }
 
-Node* NodeConnection::getStart()
+AudioProcessorNodeConnectorUI* NodeConnection::getStartConnector()
 {
     return start;
 }
 
-Node* NodeConnection::getEnd()
+AudioProcessorNodeConnectorUI* NodeConnection::getEndConnector()
 {
     return end;
 }

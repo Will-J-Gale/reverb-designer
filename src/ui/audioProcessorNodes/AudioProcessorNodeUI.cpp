@@ -104,9 +104,9 @@ void AudioProcessorNodeUI::updateNameAndReCenter(String name)
     nameLabel.setSize(getBounds().getWidth(), nameLabel.getBounds().getHeight());
 }
 
-Array<Node*> AudioProcessorNodeUI::getAllNodes()
+Array<AudioProcessorNodeConnectorUI*> AudioProcessorNodeUI::getAllNodes()
 {
-    Array<Node*> nodes;
+    Array<AudioProcessorNodeConnectorUI*> nodes;
 
     if (input != nullptr)
         nodes.add(input.get());
@@ -117,19 +117,19 @@ Array<Node*> AudioProcessorNodeUI::getAllNodes()
     return nodes;
 }
 
-Node* AudioProcessorNodeUI::getInputNode()
+AudioProcessorNodeConnectorUI* AudioProcessorNodeUI::getInputNode()
 {
     return input.get();
 }
 
-Node* AudioProcessorNodeUI::getOutputNode()
+AudioProcessorNodeConnectorUI* AudioProcessorNodeUI::getOutputNode()
 {
 	return output.get();
 }
 
 void AudioProcessorNodeUI::addInputNode()
 {
-    input = std::make_shared<Node>(this);
+    input = std::make_shared<AudioProcessorNodeConnectorUI>(this);
     input->setType(NodeType::AudioInput);
     input->setCentrePosition(NODE_SIZE / 2, getHeight() / 2);
     
@@ -138,7 +138,7 @@ void AudioProcessorNodeUI::addInputNode()
 
 void AudioProcessorNodeUI::addOutputNode()
 {
-    output = std::make_shared<Node>(this);
+    output = std::make_shared<AudioProcessorNodeConnectorUI>(this);
     output->setType(NodeType::AudioOutput);
     output->setCentrePosition(getWidth() - (NODE_SIZE / 2), getHeight() / 2);
     

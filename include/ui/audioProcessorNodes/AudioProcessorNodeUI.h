@@ -11,7 +11,7 @@
 #pragma once
 #include <vector>
 #include <JuceHeader.h>
-#include <ui/audioProcessorNodes/Node.h>
+#include <ui/audioProcessorNodes/AudioProcessorNodeConnectorUI.h>
 #include <utils/Constants.h>
 #include <utils/ManagedArray.h>
 #include <dsp/IAudioProcessor.h>
@@ -50,9 +50,9 @@ public:
     
     void addInputNode();
     void addOutputNode();
-    Array<Node*> getAllNodes();
-    Node* getInputNode();
-    Node* getOutputNode();
+    Array<AudioProcessorNodeConnectorUI*> getAllNodes();
+    AudioProcessorNodeConnectorUI* getInputNode();
+    AudioProcessorNodeConnectorUI* getOutputNode();
     
     void connectInput(AudioProcessorNodeUI* connection);
     void connectFeedbackInput(AudioProcessorNodeUI* connection);
@@ -79,7 +79,7 @@ public:
     bool isReversed();
     void reverse();
 
-    std::string getIdAsString();
+    virtual std::string getIdAsString();
 
     template<class T>
     T* getAudioProcessorAs();

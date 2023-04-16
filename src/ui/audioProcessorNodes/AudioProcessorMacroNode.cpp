@@ -25,3 +25,8 @@ void AudioProcessorMacroNode::closeWindow()
 {
     window.reset();
 }
+
+std::string AudioProcessorMacroNode::getIdAsString()
+{
+    return id.toString().toStdString();
+}

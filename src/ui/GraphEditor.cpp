@@ -137,7 +137,7 @@ void GraphEditor::drawConnections(Graphics& g)
     g.setColour(Colour::fromString(CONNECTION_COLOUR));
 
     for (auto connection : connections)
-        NodeConnectionDrawer::drawConnection(g, this, connection->getStart(), connection->getEnd());
+        NodeConnectionDrawer::drawConnection(g, this, connection->getStartConnector(), connection->getEndConnector());
 }
 
 void GraphEditor::drawPotentialConnection(Graphics& g)
@@ -169,7 +169,7 @@ void GraphEditor::drawPotentialConnection(Graphics& g)
     }
 }
 
-void GraphEditor::addNodeListeners(Array<Node*> nodes)
+void GraphEditor::addNodeListeners(Array<AudioProcessorNodeConnectorUI*> nodes)
 {
     for (auto node : nodes)
         node->addListener(this);
@@ -349,7 +349,7 @@ void GraphEditor::deleteSelectedProcessors()
     selectionHandler.clear();
 }
 
-Node* GraphEditor::getNodeAtPosition(Point<int> screenPos)
+AudioProcessorNodeConnectorUI* GraphEditor::getNodeAtPosition(Point<int> screenPos)
 {
     for (auto* node : nodes)
     {
@@ -514,18 +514,18 @@ void GraphEditor::clear()
     selectionHandler.clear();
 }
 
-void GraphEditor::onNodeLeftClick(Node* node, const MouseEvent& e)
+void GraphEditor::onNodeLeftClick(AudioProcessorNodeConnectorUI* node, const MouseEvent& e)
 {
     interactionState = InteractionState::DragConnection;
     clickedNode = node;
 }
 
-void GraphEditor::onNodeRightClick(Node* node, const MouseEvent& e)
+void GraphEditor::onNodeRightClick(AudioProcessorNodeConnectorUI* node, const MouseEvent& e)
 {
     connectionHandler.deleteConnection(node);
 }
 
-void GraphEditor::onNodeDrag(Node* node, const MouseEvent& e)
+void GraphEditor::onNodeDrag(AudioProcessorNodeConnectorUI* node, const MouseEvent& e)
 {
     auto pos = e.getScreenPosition();
     mousePosition = getLocalPoint(nullptr, pos);
@@ -533,7 +533,7 @@ void GraphEditor::onNodeDrag(Node* node, const MouseEvent& e)
     repaint();
 }
 
-void GraphEditor::onNodeLeftRelease(Node* node, const MouseEvent& e)
+void GraphEditor::onNodeLeftRelease(AudioProcessorNodeConnectorUI* node, const MouseEvent& e)
 {
     auto* mouseUpNode = getNodeAtPosition(e.getScreenPosition());
 

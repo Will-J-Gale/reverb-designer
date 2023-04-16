@@ -24,5 +24,5 @@ GraphEditorContextMenu::GraphEditorContextMenu()
     addSubMenu("Add DSP Object", dspObjectMenu);
 
     addItem((int)GraphEditorContextMenuItems::Duplicate, "Duplicate Seleciton", true, false);
-    addItem((int)GraphEditorContextMenuItems::Macro, "Create audio processor macro", false, false);
+    addItem((int)GraphEditorContextMenuItems::Macro, "Create audio processor macro", true, false);
 }

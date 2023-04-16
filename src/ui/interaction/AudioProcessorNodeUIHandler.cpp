@@ -60,7 +60,7 @@ void AudioProcessorNodeUIHandler::initializeProcessor(AudioProcessorNodeUIPtr pr
 
 void AudioProcessorNodeUIHandler::deleteProcessor(AudioProcessorNodeUI* processorNodeUI)
 {
-    Array<Node*> processorNodes = processorNodeUI->getAllNodes();
+    Array<AudioProcessorNodeConnectorUI*> processorNodes = processorNodeUI->getAllNodes();
     for (auto* node : processorNodes)
     {
         graphEditor->connectionHandler.deleteConnection(node);

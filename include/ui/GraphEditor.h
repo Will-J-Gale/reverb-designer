@@ -28,14 +28,14 @@
 #include <ui/interaction/AudioProcessorNodeUIHandler.h>
 
 //Forward declarations
-class Node;
+class AudioProcessorNodeConnectorUI;
 class GainNode;
 class PluginGraph;
 
 class GraphEditor : public Component,
                     public ManagedArray,
                     public AudioProcessorNodeUI::Listener,
-                    public Node::Listener,
+                    public AudioProcessorNodeConnectorUI::Listener,
                     public MainMenu::Listener
 {
 public:
@@ -62,10 +62,10 @@ public:
     virtual void onProcessorReleased(AudioProcessorNodeUI* processor, const MouseEvent& e) override;
     virtual void onContextSelection(AudioProcessorNodeUI* processor, AudioProcessorConextMenuItems selection) override;
 
-    virtual void onNodeLeftClick(Node* node, const MouseEvent& e) override;
-    virtual void onNodeRightClick(Node* node, const MouseEvent& e) override;
-    virtual void onNodeDrag(Node* node, const MouseEvent& e) override;
-    virtual void onNodeLeftRelease(Node* node, const MouseEvent& e) override;
+    virtual void onNodeLeftClick(AudioProcessorNodeConnectorUI* nodeConnector, const MouseEvent& e) override;
+    virtual void onNodeRightClick(AudioProcessorNodeConnectorUI* nodeConnector, const MouseEvent& e) override;
+    virtual void onNodeDrag(AudioProcessorNodeConnectorUI* nodeConnector, const MouseEvent& e) override;
+    virtual void onNodeLeftRelease(AudioProcessorNodeConnectorUI* nodeConnector, const MouseEvent& e) override;
     
     XmlElementPtr generatePluginState();
     void loadFromExistingState(XmlElement* state);
@@ -84,12 +84,12 @@ private:
 
     void drawConnections(Graphics& g);
     void drawPotentialConnection(Graphics& g);
-    void addNodeListeners(Array<Node*> nodes);
+    void addNodeListeners(Array<AudioProcessorNodeConnectorUI*> nodes);
     void createIOProcessors();
 
     void createAllConnections(std::map<std::string, AudioProcessorNodeUIPtr> processorUIMap, std::map<std::string, XmlElement*> xmlMap);
 
-    Node* getNodeAtPosition(Point<int> screenPos);
+    AudioProcessorNodeConnectorUI* getNodeAtPosition(Point<int> screenPos);
     Array<AudioProcessorNodeUI*> getOverlappingProcessors(Rectangle<int> bounds);
 
     Array<AudioProcessorNodeUIPtr> inputs;
@@ -97,8 +97,8 @@ private:
     Array<AudioProcessorNodeUIPtr> processors;
     Array<NodeConnectionPtr> connections;
     NodeConnection potentialConnection;
-    Array<Node*> nodes;
-    Node* clickedNode = nullptr;
+    Array<AudioProcessorNodeConnectorUI*> nodes;
+    AudioProcessorNodeConnectorUI* clickedNode = nullptr;
 
     PluginGraph* pluginGraph = nullptr;
 

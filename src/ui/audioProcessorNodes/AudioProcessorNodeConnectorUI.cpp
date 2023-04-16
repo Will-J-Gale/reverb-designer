@@ -8,36 +8,36 @@
   ==============================================================================
 */
 
-#include <ui/audioProcessorNodes/Node.h>
+#include <ui/audioProcessorNodes/AudioProcessorNodeConnectorUI.h>
 #include <utils/Constants.h>
 #include <ui/GraphEditor.h>
 #include <ui/audioProcessorNodes/AudioProcessorNodeUI.h>
 
-Node::Node()
+AudioProcessorNodeConnectorUI::AudioProcessorNodeConnectorUI()
 {
     initialize();
 }
 
-Node::Node(AudioProcessorNodeUI* attachedProcessorUI)
+AudioProcessorNodeConnectorUI::AudioProcessorNodeConnectorUI(AudioProcessorNodeUI* attachedProcessorUI)
 {
     this->attachedProcessorUI = attachedProcessorUI;
     initialize();
 }
 
-Node::~Node()
+AudioProcessorNodeConnectorUI::~AudioProcessorNodeConnectorUI()
 {
     connectedTo = nullptr;
     parent = nullptr;
 }
 
-void Node::initialize()
+void AudioProcessorNodeConnectorUI::initialize()
 {
     setAlwaysOnTop(true);
     setPosition(0.0, 0.0);
     setBounds(0, 0, NODE_SIZE, NODE_SIZE);
 }
 
-void Node::paint(Graphics& g)
+void AudioProcessorNodeConnectorUI::paint(Graphics& g)
 {
     g.setColour(Colour::fromString(NODE_COLOUR));
 
@@ -59,18 +59,18 @@ void Node::paint(Graphics& g)
     }
 }
 
-void Node::setPosition(float x, float y)
+void AudioProcessorNodeConnectorUI::setPosition(float x, float y)
 {
     position.setX(x);
     position.setY(y);
 }
 
-void Node::setPosition(Point<float> newPosition)
+void AudioProcessorNodeConnectorUI::setPosition(Point<float> newPosition)
 {
     position = newPosition;
 }
 
-void Node::mouseDown(const MouseEvent& e)
+void AudioProcessorNodeConnectorUI::mouseDown(const MouseEvent& e)
 {
     for (auto listener : listeners)
     {
@@ -81,7 +81,7 @@ void Node::mouseDown(const MouseEvent& e)
     }
 }
 
-void Node::mouseDrag(const MouseEvent& e)
+void AudioProcessorNodeConnectorUI::mouseDrag(const MouseEvent& e)
 {
     for (auto listener : listeners)
     {
@@ -89,7 +89,7 @@ void Node::mouseDrag(const MouseEvent& e)
     }
 }
 
-void Node::mouseUp(const MouseEvent& e)
+void AudioProcessorNodeConnectorUI::mouseUp(const MouseEvent& e)
 {
     if (e.mods.isLeftButtonDown())
     {
@@ -100,27 +100,27 @@ void Node::mouseUp(const MouseEvent& e)
     }
 }
 
-void Node::setType(NodeType type)
+void AudioProcessorNodeConnectorUI::setType(NodeType type)
 {
     this->type = type;
 }
 
-NodeType Node::getType()
+NodeType AudioProcessorNodeConnectorUI::getType()
 {
     return type;
 }
 
-Uuid Node::getId()
+Uuid AudioProcessorNodeConnectorUI::getId()
 {
     return id;
 }
 
-void Node::addListener(Node::Listener* listener)
+void AudioProcessorNodeConnectorUI::addListener(AudioProcessorNodeConnectorUI::Listener* listener)
 {
     listeners.add(listener);
 }
 
-AudioProcessorNodeUI* Node::getAttachedProcessor()
+AudioProcessorNodeUI* AudioProcessorNodeConnectorUI::getAttachedProcessorUI()
 {
     return attachedProcessorUI;
 }

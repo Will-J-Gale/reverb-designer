@@ -10,18 +10,18 @@
 
 #pragma once
 class GraphEditor;
-class Node;
+class AudioProcessorNodeConnectorUI;
 
 class ConnectionHandler
 {
 public:
     ConnectionHandler(GraphEditor* graphEditor);
-    void createConnection(Node* start, Node* end);
-    void createFeedbackConnection(Node* start, Node* end);
-    void deleteConnection(Node* node);
-    bool connectionExists(Node* start, Node* end);
-    bool isCreatingFeedback(Node* start, Node* end);
-    bool nodesAreCompatible(Node* start, Node* end);
+    void createConnection(AudioProcessorNodeConnectorUI* start, AudioProcessorNodeConnectorUI* end);
+    void createFeedbackConnection(AudioProcessorNodeConnectorUI* start, AudioProcessorNodeConnectorUI* end);
+    void deleteConnection(AudioProcessorNodeConnectorUI* nodeConnector);
+    bool connectionExists(AudioProcessorNodeConnectorUI* start, AudioProcessorNodeConnectorUI* end);
+    bool isCreatingFeedback(AudioProcessorNodeConnectorUI* start, AudioProcessorNodeConnectorUI* end);
+    bool nodesAreCompatible(AudioProcessorNodeConnectorUI* start, AudioProcessorNodeConnectorUI* end);
 
 private:
     GraphEditor* graphEditor;

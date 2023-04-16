@@ -183,6 +183,5 @@ void AudioProcessorNode::setFinishedProcessing(bool hasFinished)
 
 std::string AudioProcessorNode::getIdAsString()
 {
-    auto test = id.toString();
     return id.toString().toStdString();
 }
