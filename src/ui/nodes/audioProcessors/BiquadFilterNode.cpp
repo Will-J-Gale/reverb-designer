@@ -12,7 +12,7 @@
 #include <dsp/Parameters.h>
 #include <utils/XmlUtils.h>
 
-BiquadFilterNode::BiquadFilterNode(AudioProcessorNodeType type) : AudioProcessorNodeUI(type)
+BiquadFilterNode::BiquadFilterNode(NodeType type) : AudioProcessorNodeUI(type)
 {
     setBounds(0, 0, FILTER_WIDTH, FILTER_HEIGHT);
 

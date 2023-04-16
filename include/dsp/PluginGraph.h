@@ -26,12 +26,12 @@ public:
     void process(std::vector<float>& inputFrame, size_t numInputChannels);
     bool canProcessAudioFrame();
 
-    void createDSPObject(AudioProcessorNodeType dspObjectType);
+    void createDSPObject(NodeType dspObjectType);
     void initialiseDspObject(IAudioProcessor* dspObject);
     void addProcessorNode(AudioProcessorNodePtr processorNode);
     void deleteProcessorNode(AudioProcessorNodePtr processorNode);
 
-    AudioProcessorNodePtr generateProcessorNode(AudioProcessorNodeType type);
+    AudioProcessorNodePtr generateProcessorNode(NodeType type);
 
     bool isCreatingFeedback(AudioProcessorNode* start, AudioProcessorNode* end);
 

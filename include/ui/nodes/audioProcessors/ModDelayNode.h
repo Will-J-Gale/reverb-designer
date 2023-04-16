@@ -19,7 +19,7 @@ class ModDelayNode : public AudioProcessorNodeUI,
                    public ComboBox::Listener
 {
 public:
-    ModDelayNode(AudioProcessorNodeType type);
+    ModDelayNode(NodeType type);
     ~ModDelayNode();
 
     virtual void sliderValueChanged(Slider* slider) override;

@@ -25,7 +25,7 @@ void NodeUI::initialize()
 void NodeUI::addInputConnector()
 {
     input = std::make_shared<NodeConnectorUI>(this);
-    input->setType(NodeType::AudioInput);
+    input->setType(NodeConnectorType::AudioInput);
     input->setCentrePosition(NODE_SIZE / 2, getHeight() / 2);
     
     addAndMakeVisible(input.get());  
@@ -34,7 +34,7 @@ void NodeUI::addInputConnector()
 void NodeUI::addOutputConnector()
 {
     output = std::make_shared<NodeConnectorUI>(this);
-    output->setType(NodeType::AudioOutput);
+    output->setType(NodeConnectorType::AudioOutput);
     output->setCentrePosition(getWidth() - (NODE_SIZE / 2), getHeight() / 2);
     
     addAndMakeVisible(output.get());

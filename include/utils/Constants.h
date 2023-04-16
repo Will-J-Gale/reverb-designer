@@ -216,7 +216,7 @@ const String FIGURE8_PRESET_TEXT = "Figure 8 Reverb";
 //Fonts
 constexpr int FONT_SIZE = 12.00f;
 
-enum class NodeType
+enum class NodeConnectorType
 {
     AudioInput,
     AudioOutput,
@@ -230,12 +230,14 @@ enum class ConnectionType
     Feedback
 };
 
-enum class AudioProcessorNodeType
+enum class NodeType
 {
     Macro = -3,
     Input = -2,
     Output = -1,
     EMPTY = 0,
+    
+    //Audio processor nodes
     Gain,
     Delay,
     Filter,
@@ -256,15 +258,15 @@ enum class NodeUIType
 enum class GraphEditorContextMenuItems
 {
     //DSP Objects
-    EMPTY = (int)AudioProcessorNodeType::EMPTY,
-    Gain = (int)AudioProcessorNodeType::Gain,
-    Delay = (int)AudioProcessorNodeType::Delay,
-    Filter = (int)AudioProcessorNodeType::Filter,
-    APF = (int)AudioProcessorNodeType::APF,
-    Comb = (int)AudioProcessorNodeType::Comb,
-    ModDelay = (int)AudioProcessorNodeType::ModDelay,
-    NestedApf = (int)AudioProcessorNodeType::NestedApf,
-    Macro = (int)AudioProcessorNodeType::Macro,
+    EMPTY = (int)NodeType::EMPTY,
+    Gain = (int)NodeType::Gain,
+    Delay = (int)NodeType::Delay,
+    Filter = (int)NodeType::Filter,
+    APF = (int)NodeType::APF,
+    Comb = (int)NodeType::Comb,
+    ModDelay = (int)NodeType::ModDelay,
+    NestedApf = (int)NodeType::NestedApf,
+    Macro = (int)NodeType::Macro,
 
     //Actions
     Duplicate,

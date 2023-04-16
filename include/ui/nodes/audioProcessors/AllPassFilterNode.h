@@ -22,7 +22,7 @@ class AllPassFilterNode : public AudioProcessorNodeUI,
                         public Slider::Listener
 {
 public:
-    AllPassFilterNode(AudioProcessorNodeType type);
+    AllPassFilterNode(NodeType type);
     ~AllPassFilterNode();
 
     virtual void setAudioParametersFromXml(XmlElement* parametersXml) override;

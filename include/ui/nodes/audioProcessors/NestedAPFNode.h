@@ -21,7 +21,7 @@ class NestedAPFNode : public AudioProcessorNodeUI,
                     public Slider::Listener
 {
 public:
-    NestedAPFNode(AudioProcessorNodeType type);
+    NestedAPFNode(NodeType type);
 
     virtual void setAudioParametersFromXml(XmlElement* parametersXml) override;
     virtual XmlElement* getAudioParametersAsXml() override;

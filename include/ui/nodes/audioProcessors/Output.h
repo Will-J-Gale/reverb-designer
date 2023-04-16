@@ -9,9 +9,9 @@
 */
 
 #pragma once
-#include <ui/nodes/NodeUI.h>
+#include <ui/nodes/audioProcessors/AudioProcessorNodeUI.h>
 
-class Output : public NodeUI
+class Output : public AudioProcessorNodeUI
 {
 public:
     Output();

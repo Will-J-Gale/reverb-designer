@@ -30,7 +30,7 @@ class AudioProcessorNodeUI : public NodeUI
 {
 public:
     AudioProcessorNodeUI(String name);
-    AudioProcessorNodeUI(AudioProcessorNodeType type);
+    AudioProcessorNodeUI(NodeType type);
     ~AudioProcessorNodeUI();
     
     void addInputConnector();
@@ -55,7 +55,7 @@ public:
     void setProcessorNode(AudioProcessorNodePtr processorNode);
 
     IAudioProcessor* getAudioProcessor();
-    AudioProcessorNodeType getType();
+    NodeType getType();
     
     bool isReversed();
     void reverse();
@@ -75,7 +75,7 @@ protected:
     Array<NodeConnectorUI*> inputConnections;
     Array<NodeConnectorUI*> outputConnections;
     Array<NodeConnectorUI*> feedbackConnections;
-    AudioProcessorNodeType type;
+    NodeType type;
 };
 
 template<class T>

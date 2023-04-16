@@ -127,9 +127,6 @@ bool ReverbDesignerAudioProcessor::isBusesLayoutSupported (const BusesLayout& la
 void ReverbDesignerAudioProcessor::prepareToPlay(double sampleRate, int samplesPerBlock)
 {
     pluginGraph->reset(sampleRate);  
-    /*pluginGraph.addInputs(1);
-    pluginGraph.addOutputs(2);*/
-
     pluginGraph->addInputs(getNumInputChannels());
     pluginGraph->addOutputs(getNumOutputChannels());
 }

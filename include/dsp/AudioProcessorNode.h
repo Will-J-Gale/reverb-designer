@@ -23,7 +23,7 @@ class AudioProcessorNode
 {
 public:
     AudioProcessorNode() {};
-    AudioProcessorNode(AudioProcessorNodeType type) { this->type = type; };
+    AudioProcessorNode(NodeType type) { this->type = type; };
     ~AudioProcessorNode();
 
     void process(double xn);
@@ -46,7 +46,7 @@ public:
     bool hasFinishedProcessing();
     void setFinishedProcessing(bool hasFinished);
     std::string getIdAsString();
-    AudioProcessorNodeType getType() { return type; }
+    NodeType getType() { return type; }
 
 private:
     Uuid id;
@@ -54,7 +54,7 @@ private:
     Array<AudioProcessorNode*> inputs;
     Array<AudioProcessorNode*> outputs;
     Array<AudioProcessorNode*> feedbackConnections;
-    AudioProcessorNodeType type;
+    NodeType type;
     double xn = 0.0;
     double yn = 0.0;
     bool finishedProcessing = false;

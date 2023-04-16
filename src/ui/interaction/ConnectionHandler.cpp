@@ -108,5 +108,5 @@ bool ConnectionHandler::isCreatingFeedback(NodeConnectorUI* start, NodeConnector
 
 bool ConnectionHandler::nodesAreCompatible(NodeConnectorUI* start, NodeConnectorUI* end)
 {
-    return (start->getType() == NodeType::AudioOutput && end->getType() == NodeType::AudioInput);
+    return (start->getType() == NodeConnectorType::AudioOutput && end->getType() == NodeConnectorType::AudioInput);
 }

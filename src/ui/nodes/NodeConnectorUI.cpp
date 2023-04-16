@@ -44,7 +44,7 @@ void NodeConnectorUI::paint(Graphics& g)
     double x = getLocalBounds().getX();
     double y = getLocalBounds().getY();
     
-    if (type == NodeType::AudioInput)
+    if (type == NodeConnectorType::AudioInput)
     {
         //This is to draw circle in center of bounds
         //becuase it gets clipped otherwise
@@ -100,12 +100,12 @@ void NodeConnectorUI::mouseUp(const MouseEvent& e)
     }
 }
 
-void NodeConnectorUI::setType(NodeType type)
+void NodeConnectorUI::setType(NodeConnectorType type)
 {
     this->type = type;
 }
 
-NodeType NodeConnectorUI::getType()
+NodeConnectorType NodeConnectorUI::getType()
 {
     return type;
 }

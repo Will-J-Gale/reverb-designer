@@ -11,6 +11,7 @@
 #pragma once
 #include <stdexcept>
 #include <utils/Constants.h>
+#include <ui/nodes/NodeUI.h>
 #include <ui/nodes/audioProcessors/AudioProcessorNodeUI.h>
 #include <ui/nodes/audioProcessors/GainNode.h>
 #include <ui/nodes/audioProcessors/BiquadFilterNode.h>
@@ -23,43 +24,40 @@
 #include <ui/nodes/audioProcessors/NestedAPFNode.h>
 #include <ui/nodes/audioProcessors/AudioProcessorMacroNode.h>
 
-class GraphEditor;
-
-class AudioProcessorNodeUIFactory
+namespace AudioProcessorNodeUIFactory
 {
-public:
-    static AudioProcessorNodeUIPtr Generate(AudioProcessorNodeType type)
+    inline NodeUIPtr Generate(NodeType type)
     {
         switch (type)
         {
-            // case AudioProcessorNodeType::Input:
-            //     return std::make_shared<Input>(type);
+            case NodeType::Input:
+                return std::make_shared<Input>();
 
-            // case AudioProcessorNodeType::Output:
-            //     return std::make_shared<Output>(type);
+            case NodeType::Output:
+                return std::make_shared<Output>();
 
-            case AudioProcessorNodeType::Gain:
+            case NodeType::Gain:
                 return std::make_shared<GainNode>(type);
 
-            case AudioProcessorNodeType::Delay:
+            case NodeType::Delay:
                 return std::make_shared<SimpleDelayNode>(type);
 
-            case AudioProcessorNodeType::Filter:
+            case NodeType::Filter:
                 return std::make_shared<BiquadFilterNode>(type);
 
-            case AudioProcessorNodeType::APF:
+            case NodeType::APF:
                 return std::make_shared<AllPassFilterNode>(type);
 
-            case AudioProcessorNodeType::Comb:
+            case NodeType::Comb:
                 return std::make_shared<CombFilterNode>(type);
 
-            case AudioProcessorNodeType::ModDelay:
+            case NodeType::ModDelay:
                 return std::make_shared<ModDelayNode>(type);
 
-            case AudioProcessorNodeType::NestedApf:
+            case NodeType::NestedApf:
                 return std::make_shared<NestedAPFNode>(type);
             
-            case AudioProcessorNodeType::Macro:
+            case NodeType::Macro:
                 return std::make_shared<AudioProcessorMacroNode>(type);
 
             default:

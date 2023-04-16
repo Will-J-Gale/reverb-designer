@@ -18,7 +18,7 @@ class GainNode : public AudioProcessorNodeUI,
                public TextEditor::Listener
 {
 public:
-    GainNode(AudioProcessorNodeType type);
+    GainNode(NodeType type);
     ~GainNode();
 
     void textEditorTextChanged(TextEditor& textEditor) override;

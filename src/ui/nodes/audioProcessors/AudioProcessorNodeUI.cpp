@@ -18,7 +18,7 @@ AudioProcessorNodeUI::AudioProcessorNodeUI(String name) : NodeUI(name, NodeUITyp
     initialize();
 }
 
-AudioProcessorNodeUI::AudioProcessorNodeUI(AudioProcessorNodeType type)
+AudioProcessorNodeUI::AudioProcessorNodeUI(NodeType type)
 {
     this->type = type;
     initialize();
@@ -54,7 +54,7 @@ NodeConnectorUI* AudioProcessorNodeUI::getOutputNode()
 void AudioProcessorNodeUI::addInputConnector()
 {
     input = std::make_shared<NodeConnectorUI>(this);
-    input->setType(NodeType::AudioInput);
+    input->setType(NodeConnectorType::AudioInput);
     input->setCentrePosition(NODE_SIZE / 2, getHeight() / 2);
     
     addAndMakeVisible(input.get());  
@@ -63,7 +63,7 @@ void AudioProcessorNodeUI::addInputConnector()
 void AudioProcessorNodeUI::addOutputConnector()
 {
     output = std::make_shared<NodeConnectorUI>(this);
-    output->setType(NodeType::AudioOutput);
+    output->setType(NodeConnectorType::AudioOutput);
     output->setCentrePosition(getWidth() - (NODE_SIZE / 2), getHeight() / 2);
     
     addAndMakeVisible(output.get());
@@ -109,7 +109,7 @@ std::string AudioProcessorNodeUI::getIdAsString()
     return processorNode->getIdAsString();
 }
 
-AudioProcessorNodeType AudioProcessorNodeUI::getType()
+NodeType AudioProcessorNodeUI::getType()
 {
     return type;
 }

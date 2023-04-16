@@ -8,9 +8,9 @@
   ==============================================================================
 */
 
+#include <dsp/AudioProcessorNode.h>
 #include <ui/interaction/NodeUIHandler.h>
 #include <ui/nodes/audioProcessors/AudioProcessorNodeUI.h>
-#include <dsp/AudioProcessorNode.h>
 #include <ui/nodes/audioProcessors/AudioProcessorNodeUIFactory.h>
 #include <ui/GraphEditor.h>
 #include <dsp/PluginGraph.h>
@@ -24,26 +24,24 @@ void NodeUIHandler::initialize(GraphEditor* graphEditor, PluginGraph* pluginGrap
     this->pluginGraph = pluginGraph;
 }
 
-NodeUIPtr NodeUIHandler::createNode(AudioProcessorNodeType type, Point<int> position)
+NodeUIPtr NodeUIHandler::createNode(NodeType type, Point<int> position)
 {
-    // if (type == AudioProcessorNodeType::Input || type == AudioProcessorNodeType::Output)
-    //     jassert("Cannot create input or output processor without providing AudioProcessorNode");
+    if (type == NodeType::Input || type == NodeType::Output)
+        jassert("Cannot create input or output processor without providing AudioProcessorNode");
 
-    // auto processorNode = pluginGraph->generateProcessorNode(type);
-    // return createNode(type, position, processorNode);
+    auto processorNode = pluginGraph->generateProcessorNode(type);
+    return createNode(type, position, processorNode);
 
-    return std::make_shared<NodeUI>("Test", NodeUIType::AudioProcessor);
 }
 
-NodeUIPtr NodeUIHandler::createNode(AudioProcessorNodeType type, Point<int> position, AudioProcessorNodePtr processorNode)
+NodeUIPtr NodeUIHandler::createNode(NodeType type, Point<int> position, AudioProcessorNodePtr processorNode)
 {
-    // NodeUIPtr processorNodeUI = AudioProcessorNodeUIFactory::Generate(type);
+    NodeUIPtr nodeUI = AudioProcessorNodeUIFactory::Generate(type);
 
-    // processorNodeUI->setProcessorNode(processorNode);
-    // processorNodeUI->setTopLeftPosition(position);
+    dynamic_cast<AudioProcessorNodeUI*>(nodeUI.get())->setProcessorNode(processorNode);
+    nodeUI->setTopLeftPosition(position);
 
-    // return processorNodeUI;
-    return nullptr;
+    return nodeUI;
 }
 
 void NodeUIHandler::initializeProcessor(NodeUIPtr processorNodeUI)
@@ -71,7 +69,7 @@ void NodeUIHandler::deleteProcessor(NodeUI* processorNodeUI)
 
 void NodeUIHandler::duplicateProcessor(NodeUI* processorNodeUI)
 {
-    // AudioProcessorNodeType type = processorNodeUI->getType();
+    // NodeType type = processorNodeUI->getType();
 
     // auto newProcessor = createNode(type, processorNodeUI->getPosition () + Point<int>(DUPLICATE_OFFSET_X, DUPLICATE_OFFSET_Y));
     // auto parameters = processorNodeUI->getAudioParametersAsXml();

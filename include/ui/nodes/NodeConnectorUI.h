@@ -45,8 +45,8 @@ public:
     void mouseDrag(const MouseEvent& e) override;
     void mouseUp(const MouseEvent& e) override;
 
-    void setType(NodeType type);
-    NodeType getType();
+    void setType(NodeConnectorType type);
+    NodeConnectorType getType();
 
     Uuid getId();
 
@@ -56,7 +56,7 @@ public:
 
 private:
     Uuid id;
-    NodeType type = NodeType::AudioInput;
+    NodeConnectorType type = NodeConnectorType::AudioInput;
     Point<float> position;
     NodeConnectorUI* connectedTo = nullptr;
     GraphEditor* parent = nullptr;

@@ -28,9 +28,11 @@ public:
     void initialize(GraphEditor* graphEditor, PluginGraph* pluginGraph);
 
     /// Creates an audio processor node with UI and AuidoProcessorNode
-    NodeUIPtr createNode(AudioProcessorNodeType type, Point<int> position);
+    NodeUIPtr createNode(NodeType type, Point<int> position);
     /// Creates an audio processor node with UI and uses existing AudioProcessorNode
-    NodeUIPtr createNode(AudioProcessorNodeType type, Point<int> position, AudioProcessorNodePtr processorNode);
+    NodeUIPtr createNode(NodeType type, Point<int> position, AudioProcessorNodePtr processorNode);
+    //Cretes just ther UI for a node
+    
     /// Adds NodeUI to processors list and displays in on the screen
     void initializeProcessor(NodeUIPtr processor);
     /// Removed UI from screen and removes AudioProcessorNode from plugin graph
