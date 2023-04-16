@@ -10,7 +10,7 @@
 
 #pragma once
 #include <dsp/IAudioProcessor.h>
-#include <dsp/AudioProcessingBlock.h>
+#include <dsp/AudioProcessorNode.h>
 #include <utils/ManagedArray.h>
 #include <dsp/AudioProcessorState.h>
 #include <utils/XmlUtils.h>
@@ -28,19 +28,19 @@ public:
 
     void createDSPObject(DspObjectType dspObjectType);
     void initialiseDspObject(IAudioProcessor* dspObject);
-    void addProcessingBlock(AudioProcessingBlockPtr processingBlock);
-    void deleteProcessingBlock(AudioProcessingBlockPtr processingBlock);
+    void addProcessingBlock(AudioProcessorNodePtr processingBlock);
+    void deleteProcessingBlock(AudioProcessorNodePtr processingBlock);
 
-    AudioProcessingBlockPtr generateProcessingBlock(DspObjectType type);
+    AudioProcessorNodePtr generateProcessingBlock(DspObjectType type);
 
-    bool isCreatingFeedback(AudioProcessingBlock* start, AudioProcessingBlock* end);
+    bool isCreatingFeedback(AudioProcessorNode* start, AudioProcessorNode* end);
 
     void addInputs(int numInputs);
     void addOutputs(int numOutputs);
 
-    Array<AudioProcessingBlockPtr> getInputs();
-    Array<AudioProcessingBlockPtr> getOutputs();
-    Array<AudioProcessingBlockPtr> getAllBlocks();
+    Array<AudioProcessorNodePtr> getInputs();
+    Array<AudioProcessorNodePtr> getOutputs();
+    Array<AudioProcessorNodePtr> getAllBlocks();
 
     int getNumInputs();
     int getNumOutputs();
@@ -52,7 +52,7 @@ public:
     void setPluginState(XmlElementPtr pluginState);
     XmlElementPtr getPluginState();
 
-    std::map<std::string, AudioProcessingBlockPtr> getAudioProcessingBlockMap();
+    std::map<std::string, AudioProcessorNodePtr> getAudioProcessorNodeMap();
 
     void clear();
     void deleteAndReplaceAudioBlocks(std::function<std::shared_ptr<AudioProcessorState>()> callback);
@@ -65,19 +65,19 @@ public:
 private:
     void updateProcessors();
     void resetProcessors();
-    Array<AudioProcessingBlock*> processBlocks(Array<AudioProcessingBlock*> blockToProcess);
+    Array<AudioProcessorNode*> processBlocks(Array<AudioProcessorNode*> blockToProcess);
 
     double sampleRate = 0;
-    Array<AudioProcessingBlockPtr> allBlocks;
-    Array<AudioProcessingBlockPtr> inputs;
-    Array<AudioProcessingBlockPtr> outputs;
+    Array<AudioProcessorNodePtr> allBlocks;
+    Array<AudioProcessorNodePtr> inputs;
+    Array<AudioProcessorNodePtr> outputs;
 
     XmlElementPtr pluginState = nullptr;
     
     bool updateProcessorsFlag = false;
     std::function<std::shared_ptr<AudioProcessorState>()> generateCallback;
     bool processPathNeedsUpdating = false;
-    Array<Array<AudioProcessingBlock*>> processPath;
+    Array<Array<AudioProcessorNode*>> processPath;
 
     std::shared_ptr<AudioProcessorState> tempProcessorState;
 };

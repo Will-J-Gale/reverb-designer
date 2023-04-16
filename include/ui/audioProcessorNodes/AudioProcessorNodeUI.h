@@ -15,7 +15,7 @@
 #include <utils/Constants.h>
 #include <utils/ManagedArray.h>
 #include <dsp/IAudioProcessor.h>
-#include <dsp/AudioProcessingBlock.h>
+#include <dsp/AudioProcessorNode.h>
 #include <ui/menus/AudioProcessorUIContextMenu.h>
 #include <utils/XmlUtils.h>
 #include <ui/interaction/DragHandler.h>
@@ -70,8 +70,8 @@ public:
     
     void addListener(AudioProcessorNodeUI::Listener* listener);
 
-    AudioProcessingBlockPtr getProcessingBlock();
-    void setProcessingBlock(AudioProcessingBlockPtr processingBlock);
+    AudioProcessorNodePtr getProcessingBlock();
+    void setProcessingBlock(AudioProcessorNodePtr processingBlock);
 
     IAudioProcessor* getAudioProcessor();
     DspObjectType getType();
@@ -96,7 +96,7 @@ protected:
     NodePtr input = nullptr;
     NodePtr output = nullptr;
 
-    AudioProcessingBlockPtr processingBlock = nullptr;
+    AudioProcessorNodePtr processingBlock = nullptr;
 
     Array<AudioProcessorNodeUI*> inputConnections;
     Array<AudioProcessorNodeUI*> outputConnections;

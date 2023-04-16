@@ -1,16 +1,16 @@
 /*
   ==============================================================================
 
-    AudioProcessingBlock.cpp
+    AudioProcessorNode.cpp
     Created: 20 Sep 2020 4:16:08pm
     Author:  Will
 
   ==============================================================================
 */
 
-#include <dsp/AudioProcessingBlock.h>
+#include <dsp/AudioProcessorNode.h>
 
-AudioProcessingBlock::~AudioProcessingBlock()
+AudioProcessorNode::~AudioProcessorNode()
 {
     /*if (processor != nullptr)
     {
@@ -20,13 +20,13 @@ AudioProcessingBlock::~AudioProcessingBlock()
 }
 
 
-void AudioProcessingBlock::process(double xn)
+void AudioProcessorNode::process(double xn)
 {
     yn = xn;
     finishedProcessing = true;
 }
 
-void AudioProcessingBlock::process()
+void AudioProcessorNode::process()
 {
     xn = 0.0;
 
@@ -51,13 +51,13 @@ void AudioProcessingBlock::process()
     }
 }
 
-void AudioProcessingBlock::reset()
+void AudioProcessorNode::reset()
 {
     inputs.clear();
     outputs.clear();
 }
 
-void AudioProcessingBlock::connectInput(AudioProcessingBlock* connection)
+void AudioProcessorNode::connectInput(AudioProcessorNode* connection)
 {
     if (!inputs.contains(connection))
     {
@@ -65,7 +65,7 @@ void AudioProcessingBlock::connectInput(AudioProcessingBlock* connection)
     }
 }
 
-void AudioProcessingBlock::connectFeedbackInput(AudioProcessingBlock* connection)
+void AudioProcessorNode::connectFeedbackInput(AudioProcessorNode* connection)
 {
     if (!feedbackConnections.contains(connection))
     {
@@ -73,7 +73,7 @@ void AudioProcessingBlock::connectFeedbackInput(AudioProcessingBlock* connection
     }  
 }
 
-void AudioProcessingBlock::connectOutput(AudioProcessingBlock* connection)
+void AudioProcessorNode::connectOutput(AudioProcessorNode* connection)
 {
     if (!outputs.contains(connection))
     {
@@ -81,7 +81,7 @@ void AudioProcessingBlock::connectOutput(AudioProcessingBlock* connection)
     }
 }
 
-void AudioProcessingBlock::disconnectInput(AudioProcessingBlock* connection)
+void AudioProcessorNode::disconnectInput(AudioProcessorNode* connection)
 {
     int index = inputs.indexOf(connection);
     int feedbackIndex = feedbackConnections.indexOf(connection);
@@ -93,7 +93,7 @@ void AudioProcessingBlock::disconnectInput(AudioProcessingBlock* connection)
         feedbackConnections.remove(feedbackIndex);
 }
 
-void AudioProcessingBlock::disconnectOutput(AudioProcessingBlock* connection)
+void AudioProcessorNode::disconnectOutput(AudioProcessorNode* connection)
 {
     int index = outputs.indexOf(connection);
 
@@ -101,7 +101,7 @@ void AudioProcessingBlock::disconnectOutput(AudioProcessingBlock* connection)
         outputs.remove(index);
 }
 
-bool AudioProcessingBlock::isReady()
+bool AudioProcessorNode::isReady()
 {
     bool ready = true;
     for (auto input : inputs)
@@ -120,45 +120,45 @@ bool AudioProcessingBlock::isReady()
     return ready;
 }
 
-void AudioProcessingBlock::setProcessor(IAudioProcessorPtr processor)
+void AudioProcessorNode::setProcessor(IAudioProcessorPtr processor)
 {
     this->processor = processor;
 }
 
-IAudioProcessor* AudioProcessingBlock::getProcessor()
+IAudioProcessor* AudioProcessorNode::getProcessor()
 {
     return processor.get();
 }
 
-double AudioProcessingBlock::getInputSample()
+double AudioProcessorNode::getInputSample()
 {
 	return xn;
 }
 
-double AudioProcessingBlock::getOutputSample()
+double AudioProcessorNode::getOutputSample()
 {
     return yn;
 }
 
-void AudioProcessingBlock::setOutputSample(double sample)
+void AudioProcessorNode::setOutputSample(double sample)
 {
     yn = sample;
     finishedProcessing = true;
 }
 
-Array<AudioProcessingBlock*> AudioProcessingBlock::getInputConnections()
+Array<AudioProcessorNode*> AudioProcessorNode::getInputConnections()
 {
     return inputs;
 }
 
-Array<AudioProcessingBlock*> AudioProcessingBlock::getOutputConnections()
+Array<AudioProcessorNode*> AudioProcessorNode::getOutputConnections()
 {
     return outputs;
 }
 
-Array<AudioProcessingBlock*> AudioProcessingBlock::getReadyOutputConnections()
+Array<AudioProcessorNode*> AudioProcessorNode::getReadyOutputConnections()
 {
-    Array<AudioProcessingBlock*> readyBlocks;
+    Array<AudioProcessorNode*> readyBlocks;
 
     for (auto output : outputs)
     {
@@ -171,17 +171,17 @@ Array<AudioProcessingBlock*> AudioProcessingBlock::getReadyOutputConnections()
     return readyBlocks;
 }
 
-bool AudioProcessingBlock::hasFinishedProcessing()
+bool AudioProcessorNode::hasFinishedProcessing()
 {
     return finishedProcessing;
 }
 
-void AudioProcessingBlock::setFinishedProcessing(bool hasFinished)
+void AudioProcessorNode::setFinishedProcessing(bool hasFinished)
 {
     finishedProcessing = hasFinished;
 }
 
-std::string AudioProcessingBlock::getIdAsString()
+std::string AudioProcessorNode::getIdAsString()
 {
     auto test = id.toString();
     return id.toString().toStdString();

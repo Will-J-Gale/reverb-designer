@@ -12,7 +12,7 @@
 #include <ui/audioProcessorNodes/AudioProcessorNodeUI.h>
 #include <dsp/Gain.h>
 #include <ui/parameters/NumberParameter.h>
-#include <dsp/AudioProcessingBlock.h>
+#include <dsp/AudioProcessorNode.h>
 
 class GainNode : public AudioProcessorNodeUI,
                public TextEditor::Listener

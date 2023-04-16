@@ -437,9 +437,9 @@ std::shared_ptr<AudioProcessorState> GraphEditor::loadStateFromFile(std::string 
         return nullptr;
     }
     
-    auto tempInputs = Array<AudioProcessingBlockPtr>();
-    auto tempOutputs = Array<AudioProcessingBlockPtr>();
-    auto tempAllBlocks = Array<AudioProcessingBlockPtr>();
+    auto tempInputs = Array<AudioProcessorNodePtr>();
+    auto tempOutputs = Array<AudioProcessorNodePtr>();
+    auto tempAllBlocks = Array<AudioProcessorNodePtr>();
 
     auto xmlMap = XmlGenerator::generateXmlMap(state);
 
@@ -577,7 +577,7 @@ void GraphEditor::loadFromExistingState(XmlElement* state)
     }
     
     auto xmlMap = XmlGenerator::generateXmlMap(state);
-    auto processingBlockMap = pluginGraph->getAudioProcessingBlockMap();
+    auto processingBlockMap = pluginGraph->getAudioProcessorNodeMap();
 
     std::map<std::string, AudioProcessorNodeUIPtr> processorUIMap;
     

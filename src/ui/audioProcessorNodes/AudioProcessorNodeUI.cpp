@@ -150,7 +150,7 @@ void AudioProcessorNodeUI::addListener(AudioProcessorNodeUI::Listener* listener)
     listeners.add(listener);
 }
 
-AudioProcessingBlockPtr AudioProcessorNodeUI::getProcessingBlock()
+AudioProcessorNodePtr AudioProcessorNodeUI::getProcessingBlock()
 {
 	return processingBlock;
 }
@@ -165,7 +165,7 @@ void AudioProcessorNodeUI::handleRightClick()
     }
 }
 
-void AudioProcessorNodeUI::setProcessingBlock(AudioProcessingBlockPtr processingBlock)
+void AudioProcessorNodeUI::setProcessingBlock(AudioProcessorNodePtr processingBlock)
 {
     if (processingBlock->getType() != type)
     {

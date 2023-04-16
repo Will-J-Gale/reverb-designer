@@ -1,5 +1,5 @@
 #pragma once
-#include <dsp/AudioProcessingBlock.h>
+#include <dsp/AudioProcessorNode.h>
 #include <dsp/Gain.h>
 #include <ui/audioProcessorNodes/AudioProcessorNodeUI.h>
 #include <ui/parameters/NumberParameter.h>

@@ -10,7 +10,7 @@
 
 #include <ui/interaction/ProcessorUIHandler.h>
 #include <ui/audioProcessorNodes/AudioProcessorNodeUI.h>
-#include <dsp/AudioProcessingBlock.h>
+#include <dsp/AudioProcessorNode.h>
 #include <ui/audioProcessorNodes/AudioProcessorNodeUIFactory.h>
 #include <ui/GraphEditor.h>
 #include <dsp/PluginGraph.h>
@@ -24,7 +24,7 @@ ProcessorUIHandler::ProcessorUIHandler(GraphEditor* graphEditor)
 AudioProcessorNodeUIPtr ProcessorUIHandler::createDspObject(DspObjectType type, Point<int> position)
 {
     if (type == DspObjectType::Input || type == DspObjectType::Output)
-        jassert("Cannot create input or output processor without existing providing AudioProcessingBlock");
+        jassert("Cannot create input or output processor without existing providing AudioProcessorNode");
 
     auto processorUI = AudioProcessorNodeUIFactory::Generate(type);
     auto processingBlock = graphEditor->pluginGraph->generateProcessingBlock(type);
@@ -35,7 +35,7 @@ AudioProcessorNodeUIPtr ProcessorUIHandler::createDspObject(DspObjectType type, 
     return processorUI;
 }
 
-AudioProcessorNodeUIPtr ProcessorUIHandler::createDspObject(DspObjectType type, Point<int> position, AudioProcessingBlockPtr processingBlock)
+AudioProcessorNodeUIPtr ProcessorUIHandler::createDspObject(DspObjectType type, Point<int> position, AudioProcessorNodePtr processingBlock)
 {
     AudioProcessorNodeUIPtr processorUI = AudioProcessorNodeUIFactory::Generate(type);
 

@@ -72,9 +72,9 @@ bool PluginGraph::canProcessAudioFrame()
 	return false;
 }
 
-Array<AudioProcessingBlock*> PluginGraph::processBlocks(Array<AudioProcessingBlock*> blockToProcess)
+Array<AudioProcessorNode*> PluginGraph::processBlocks(Array<AudioProcessorNode*> blockToProcess)
 {
-    Array<AudioProcessingBlock*> outputConnections;
+    Array<AudioProcessorNode*> outputConnections;
 
     for (auto* block : blockToProcess)
     {
@@ -109,20 +109,20 @@ void PluginGraph::initialiseDspObject(IAudioProcessor *dspObject)
     }
 }
 
-void PluginGraph::addProcessingBlock(AudioProcessingBlockPtr processingBlock)
+void PluginGraph::addProcessingBlock(AudioProcessorNodePtr processingBlock)
 {
     allBlocks.add(processingBlock);
 }
 
-void PluginGraph::deleteProcessingBlock(AudioProcessingBlockPtr processingBlock)
+void PluginGraph::deleteProcessingBlock(AudioProcessorNodePtr processingBlock)
 {
     removeFromArray(allBlocks, processingBlock);
 }
 
-AudioProcessingBlockPtr PluginGraph::generateProcessingBlock(DspObjectType type)
+AudioProcessorNodePtr PluginGraph::generateProcessingBlock(DspObjectType type)
 {
     auto audioProcessor = AudioProcessorFactory::Generate(type);
-    auto processingBlock = std::make_shared<AudioProcessingBlock>(type);
+    auto processingBlock = std::make_shared<AudioProcessorNode>(type);
 
     initialiseDspObject(audioProcessor.get());
     processingBlock->setProcessor(audioProcessor);
@@ -132,15 +132,15 @@ AudioProcessingBlockPtr PluginGraph::generateProcessingBlock(DspObjectType type)
     return processingBlock;
 }
 
-bool PluginGraph::isCreatingFeedback(AudioProcessingBlock* start, AudioProcessingBlock* end)
+bool PluginGraph::isCreatingFeedback(AudioProcessorNode* start, AudioProcessorNode* end)
 {
-    Array<AudioProcessingBlock*> outputConnections;
+    Array<AudioProcessorNode*> outputConnections;
 
     outputConnections.addArray(start->getOutputConnections());
 
     while (outputConnections.size() > 0)
     {
-        Array<AudioProcessingBlock*> outputs;
+        Array<AudioProcessorNode*> outputs;
 
         for (auto output : outputConnections)
         {
@@ -167,7 +167,7 @@ void PluginGraph::addInputs(int numInputs)
 {
     for (int i = 0; i < numInputs; i++)
     {
-        inputs.add(std::make_shared<AudioProcessingBlock>());
+        inputs.add(std::make_shared<AudioProcessorNode>());
     }
 }
 
@@ -175,16 +175,16 @@ void PluginGraph::addOutputs(int numOutputs)
 {
     for (int i = 0; i < numOutputs; i++)
     {
-        outputs.add(std::make_shared<AudioProcessingBlock>());
+        outputs.add(std::make_shared<AudioProcessorNode>());
     }
 }
 
-Array<AudioProcessingBlockPtr> PluginGraph::getInputs()
+Array<AudioProcessorNodePtr> PluginGraph::getInputs()
 {
     return inputs;
 }
 
-Array<AudioProcessingBlockPtr>PluginGraph::getOutputs()
+Array<AudioProcessorNodePtr>PluginGraph::getOutputs()
 {
     return outputs;
 }
@@ -233,9 +233,9 @@ XmlElementPtr PluginGraph::getPluginState()
     return pluginState;
 }
 
-std::map<std::string, AudioProcessingBlockPtr> PluginGraph::getAudioProcessingBlockMap()
+std::map<std::string, AudioProcessorNodePtr> PluginGraph::getAudioProcessorNodeMap()
 {
-    auto map = std::map<std::string, AudioProcessingBlockPtr>();
+    auto map = std::map<std::string, AudioProcessorNodePtr>();
     
     for (auto block : inputs)
     {
@@ -258,7 +258,7 @@ std::map<std::string, AudioProcessingBlockPtr> PluginGraph::getAudioProcessingBl
     return map;
 }
 
-Array<AudioProcessingBlockPtr> PluginGraph::getAllBlocks()
+Array<AudioProcessorNodePtr> PluginGraph::getAllBlocks()
 {
     return allBlocks;
 }
@@ -289,8 +289,8 @@ void PluginGraph::calculateProcessPath()
     processPathNeedsUpdating = false;
     processPath.clear();
 
-    Array<AudioProcessingBlock*> currentlyProcessing;
-    Array<AudioProcessingBlock*> finishedProcessing;
+    Array<AudioProcessorNode*> currentlyProcessing;
+    Array<AudioProcessorNode*> finishedProcessing;
 
     for (int i = 0; i < inputs.size(); i++)
     {
@@ -303,7 +303,7 @@ void PluginGraph::calculateProcessPath()
 
     while (!currentlyProcessing.isEmpty())
     {
-        Array<AudioProcessingBlock*> outputConnections;
+        Array<AudioProcessorNode*> outputConnections;
 
         for (auto* block : currentlyProcessing)
         {

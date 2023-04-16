@@ -11,22 +11,22 @@
 #pragma once
 #include <JuceHeader.h>
 
-class AudioProcessingBlock;
-#define AudioProcessingBlockPtr std::shared_ptr<AudioProcessingBlock>
+class AudioProcessorNode;
+#define AudioProcessorNodePtr std::shared_ptr<AudioProcessorNode>
 
 struct AudioProcessorState
 {
     AudioProcessorState(
-        Array<AudioProcessingBlockPtr> inputs,
-        Array<AudioProcessingBlockPtr> outputs,
-        Array<AudioProcessingBlockPtr> allBlocks)
+        Array<AudioProcessorNodePtr> inputs,
+        Array<AudioProcessorNodePtr> outputs,
+        Array<AudioProcessorNodePtr> allBlocks)
     {
         this->inputs = inputs;
         this->outputs = outputs;
         this->allBlocks = allBlocks;
     }
 
-    Array<AudioProcessingBlockPtr> inputs;
-    Array<AudioProcessingBlockPtr> outputs;
-    Array<AudioProcessingBlockPtr> allBlocks;
+    Array<AudioProcessorNodePtr> inputs;
+    Array<AudioProcessorNodePtr> outputs;
+    Array<AudioProcessorNodePtr> allBlocks;
 };
