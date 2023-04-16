@@ -116,6 +116,7 @@ void GraphEditor::setPluginGraph(PluginGraph* pluginGraph)
 {
     this->pluginGraph = pluginGraph;
     auto pluginState = pluginGraph->getPluginState();
+    processorUIHandler.initialize(this, pluginGraph);
 
     if (pluginState != nullptr)
         loadFromExistingState(pluginState.get());
@@ -296,7 +297,7 @@ void GraphEditor::handleRightClick(const MouseEvent& e)
     }
     else if (contextSelection == (int)GraphEditorContextMenuItems::Macro)
     {
-        auto processorUI = AudioProcessorNodeUIFactory::Generate(AudioProcessorNodeType::Macro);
+        auto processorUI = processorUIHandler.createAudioProcessorNodeUI((AudioProcessorNodeType)contextSelection, e.getPosition());
         processorUIHandler.initializeProcessor(processorUI);
     }
     else if (contextSelection > 0)

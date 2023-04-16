@@ -16,9 +16,10 @@
 #include <dsp/PluginGraph.h>
 #include <ui/interaction/ConnectionHandler.h>
 
-AudioProcessorNodeUIHandler::AudioProcessorNodeUIHandler(GraphEditor* graphEditor)
+void AudioProcessorNodeUIHandler::initialize(GraphEditor* graphEditor, PluginGraph* pluginGraph)
 {
     this->graphEditor = graphEditor;
+    this->pluginGraph = pluginGraph;
 }
 
 AudioProcessorNodeUIPtr AudioProcessorNodeUIHandler::createAudioProcessorNode(AudioProcessorNodeType type, Point<int> position)
@@ -26,13 +27,8 @@ AudioProcessorNodeUIPtr AudioProcessorNodeUIHandler::createAudioProcessorNode(Au
     if (type == AudioProcessorNodeType::Input || type == AudioProcessorNodeType::Output)
         jassert("Cannot create input or output processor without providing AudioProcessorNode");
 
-    auto processorNodeUI = AudioProcessorNodeUIFactory::Generate(type);
-    auto processorNode = graphEditor->pluginGraph->generateProcessorNode(type);
-
-    processorNodeUI->setProcessorNode(processorNode);
-    processorNodeUI->setTopLeftPosition(position);
-
-    return processorNodeUI;
+    auto processorNode = pluginGraph->generateProcessorNode(type);
+    return createAudioProcessorNode(type, position, processorNode);
 }
 
 AudioProcessorNodeUIPtr AudioProcessorNodeUIHandler::createAudioProcessorNode(AudioProcessorNodeType type, Point<int> position, AudioProcessorNodePtr processorNode)
@@ -40,6 +36,14 @@ AudioProcessorNodeUIPtr AudioProcessorNodeUIHandler::createAudioProcessorNode(Au
     AudioProcessorNodeUIPtr processorNodeUI = AudioProcessorNodeUIFactory::Generate(type);
 
     processorNodeUI->setProcessorNode(processorNode);
+    processorNodeUI->setTopLeftPosition(position);
+
+    return processorNodeUI;
+}
+
+AudioProcessorNodeUIPtr AudioProcessorNodeUIHandler::createAudioProcessorNodeUI(AudioProcessorNodeType type, Point<int> position)
+{
+    AudioProcessorNodeUIPtr processorNodeUI = AudioProcessorNodeUIFactory::Generate(type);
     processorNodeUI->setTopLeftPosition(position);
 
     return processorNodeUI;
@@ -63,9 +67,9 @@ void AudioProcessorNodeUIHandler::deleteProcessor(AudioProcessorNodeUI* processo
         graphEditor->removeFromArray(graphEditor->nodes, node);
     }
 
-    graphEditor->pluginGraph->deleteProcessorNode(processorNodeUI->getProcessorNode());
+    pluginGraph->deleteProcessorNode(processorNodeUI->getProcessorNode());
     graphEditor->removeFromArray(graphEditor->processors, processorNodeUI);
-    graphEditor->pluginGraph->updateProcessPath();
+    pluginGraph->updateProcessPath();
 }
 
 void AudioProcessorNodeUIHandler::duplicateProcessor(AudioProcessorNodeUI* processorNodeUI)

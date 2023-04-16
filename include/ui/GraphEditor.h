@@ -120,5 +120,5 @@ private:
     ZoomHandler zoomHandler = ZoomHandler(this);
     DragHandler dragHandler = DragHandler(this);
     ConnectionHandler connectionHandler = ConnectionHandler(this);
-    AudioProcessorNodeUIHandler processorUIHandler = AudioProcessorNodeUIHandler(this);
+    AudioProcessorNodeUIHandler processorUIHandler; 
 };
