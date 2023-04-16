@@ -60,7 +60,7 @@ public:
     virtual void onProcessorClicked(AudioProcessorNodeUI* processor, const MouseEvent& e) override;
     virtual void onProcessorMoved(AudioProcessorNodeUI* processor, const MouseEvent& e) override;
     virtual void onProcessorReleased(AudioProcessorNodeUI* processor, const MouseEvent& e) override;
-    virtual void onContextSelection(AudioProcessorNodeUI* processor, AudioProcessorConextMenuItems selection) override;
+    virtual void onContextSelection(AudioProcessorNodeUI* processor, NodeUIConextMenuItems selection) override;
 
     virtual void onNodeLeftClick(AudioProcessorNodeConnectorUI* nodeConnector, const MouseEvent& e) override;
     virtual void onNodeRightClick(AudioProcessorNodeConnectorUI* nodeConnector, const MouseEvent& e) override;

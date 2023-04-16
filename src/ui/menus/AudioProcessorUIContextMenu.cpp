@@ -13,7 +13,7 @@
 
 AudioProcessorUIContextMenu::AudioProcessorUIContextMenu()
 {
-    addItem((int)AudioProcessorConextMenuItems::Delete, "Delete", true, false);
-    addItem((int)AudioProcessorConextMenuItems::Reverse, "Reverse", true, false);
-    addItem((int)AudioProcessorConextMenuItems::Duplicate, "Duplicate", true, false);
+    addItem((int)NodeUIConextMenuItems::Delete, "Delete", true, false);
+    addItem((int)NodeUIConextMenuItems::Reverse, "Reverse", true, false);
+    addItem((int)NodeUIConextMenuItems::Duplicate, "Duplicate", true, false);
 }

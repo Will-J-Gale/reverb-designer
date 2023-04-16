@@ -35,7 +35,7 @@ public:
         virtual void onProcessorClicked(AudioProcessorNodeUI* processor, const MouseEvent& e) = 0;
         virtual void onProcessorMoved(AudioProcessorNodeUI* processor, const MouseEvent& e) = 0;
         virtual void onProcessorReleased(AudioProcessorNodeUI* processor, const MouseEvent& e) = 0;
-        virtual void onContextSelection(AudioProcessorNodeUI* processor, AudioProcessorConextMenuItems selection) = 0;
+        virtual void onContextSelection(AudioProcessorNodeUI* processor, NodeUIConextMenuItems selection) = 0;
     };
 
     AudioProcessorNodeUI();

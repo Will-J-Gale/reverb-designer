@@ -157,7 +157,7 @@ AudioProcessorNodePtr AudioProcessorNodeUI::getProcessorNode()
 
 void AudioProcessorNodeUI::handleRightClick()
 {
-    AudioProcessorConextMenuItems selection = (AudioProcessorConextMenuItems)contextMenu.show();
+    NodeUIConextMenuItems selection = (NodeUIConextMenuItems)contextMenu.show();
 
     for (auto listener : listeners)
     {

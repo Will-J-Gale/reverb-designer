@@ -261,7 +261,7 @@ enum class GraphEditorContextMenuItems
     Paste
 };
 
-enum class AudioProcessorConextMenuItems
+enum class NodeUIConextMenuItems
 {
     EMPTY,
     Delete,

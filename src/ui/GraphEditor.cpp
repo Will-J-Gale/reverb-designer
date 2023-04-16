@@ -664,23 +664,23 @@ void GraphEditor::onProcessorReleased(AudioProcessorNodeUI* processor, const Mou
     selectionHandler.updateItemPositions();
 }
 
-void GraphEditor::onContextSelection(AudioProcessorNodeUI* processor, AudioProcessorConextMenuItems selection)
+void GraphEditor::onContextSelection(AudioProcessorNodeUI* processor, NodeUIConextMenuItems selection)
 {
-    if (selection == AudioProcessorConextMenuItems::Delete)
+    if (selection == NodeUIConextMenuItems::Delete)
     {
         if (!selectionHandler.isEmpty())
             deleteSelectedProcessors();
         else
             processorNodeUIHandler.deleteProcessor(processor);
     }
-    else if (selection == AudioProcessorConextMenuItems::Duplicate)
+    else if (selection == NodeUIConextMenuItems::Duplicate)
     {
         if (!selectionHandler.isEmpty())
             duplicateSelectedProcessors();
         else
             processorNodeUIHandler.duplicateProcessor(processor);
     }
-    else if (selection == AudioProcessorConextMenuItems::Reverse)
+    else if (selection == NodeUIConextMenuItems::Reverse)
     {
         if (!selectionHandler.isEmpty())
             reverseSelectedProcessors();
