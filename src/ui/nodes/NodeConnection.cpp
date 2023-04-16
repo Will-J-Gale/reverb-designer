@@ -8,8 +8,8 @@
   ==============================================================================
 */
 
-#include <ui/nodes/audioProcessors/NodeConnection.h>
-#include <ui/nodes/audioProcessors/AudioProcessorNodeConnectorUI.h>
+#include <ui/nodes/NodeConnection.h>
+#include <ui/nodes/NodeConnectorUI.h>
 #include <utils/Constants.h>
 
 NodeConnection::NodeConnection()
@@ -22,25 +22,25 @@ NodeConnection::~NodeConnection()
     end = nullptr;
 }
 
-NodeConnection::NodeConnection(AudioProcessorNodeConnectorUI* start, AudioProcessorNodeConnectorUI* end)
+NodeConnection::NodeConnection(NodeConnectorUI* start, NodeConnectorUI* end)
 {
     this->start = start;
     this->end = end;
 }
 
-NodeConnection::NodeConnection(AudioProcessorNodeConnectorUI* start, AudioProcessorNodeConnectorUI* end, ConnectionType type)
+NodeConnection::NodeConnection(NodeConnectorUI* start, NodeConnectorUI* end, ConnectionType type)
 {
     this->start = start;
     this->end = end;
     this->connectionType = type;
 }
 
-AudioProcessorNodeConnectorUI* NodeConnection::getStartConnector()
+NodeConnectorUI* NodeConnection::getStartConnector()
 {
     return start;
 }
 
-AudioProcessorNodeConnectorUI* NodeConnection::getEndConnector()
+NodeConnectorUI* NodeConnection::getEndConnector()
 {
     return end;
 }

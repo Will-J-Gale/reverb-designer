@@ -12,6 +12,7 @@
 #include <vector>
 #include <JuceHeader.h>
 #include <ui/menus/NodeUIContextMenu.h>
+#include <ui/nodes/NodeConnectorUI.h>
 #include <ui/interaction/DragHandler.h>
 #include <utils/Constants.h>
 #include <utils/ManagedArray.h>
@@ -21,6 +22,7 @@
 class GraphEditor;
 
 #define NodeUIPtr std::shared_ptr<NodeUI>
+#define NodeConnectorUIPtr std::shared_ptr<NodeConnectorUI>
 
 class NodeUI :  public Component,
                 public ManagedArray
@@ -39,15 +41,17 @@ public:
     NodeUI(String name, NodeUIType type);
     ~NodeUI(){};
 
-    void paint(Graphics& g) override;
-    void mouseDown(const MouseEvent& e) override;
-    void mouseDrag(const MouseEvent& e) override;
-    void mouseUp(const MouseEvent& e) override;
-    void handleRightClick();
-    void updateNameAndReCenter(String name);
-    void addListener(Listener* listener);
-    bool isReversed();
+    void addInputConnector();
+    void addOutputConnector();
 
+    virtual void paint(Graphics& g) override;
+    virtual void mouseDown(const MouseEvent& e) override;
+    virtual void mouseDrag(const MouseEvent& e) override;
+    virtual void mouseUp(const MouseEvent& e) override;
+    virtual void handleRightClick();
+    virtual void updateNameAndReCenter(String name);
+    virtual void addListener(Listener* listener);
+    virtual bool isReversed();
     virtual std::string getIdAsString();
     virtual void reverse(){};
 
@@ -62,4 +66,7 @@ protected:
     NodeUIContextMenu contextMenu;
     Array<Listener*> listeners;
     DragHandler dragHandler = DragHandler(this);
+
+    NodeConnectorUIPtr input;
+    NodeConnectorUIPtr output;
 };

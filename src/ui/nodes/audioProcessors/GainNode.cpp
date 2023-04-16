@@ -16,8 +16,8 @@ GainNode::GainNode(AudioProcessorNodeType type) : AudioProcessorNodeUI(type)
 {
     setBounds(0, 0, GAIN_WIDTH, GAIN_HEIGHT);
 
-    addInputNode();
-    addOutputNode();
+    addInputConnector();
+    addOutputConnector();
     addAndMakeVisible(gainParameter);
 
     gainParameter.setTopLeftPosition(PARAMETER_X_OFFSET, PARAMETER_Y_OFFSET);

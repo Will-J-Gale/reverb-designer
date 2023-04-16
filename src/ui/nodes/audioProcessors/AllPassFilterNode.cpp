@@ -59,8 +59,8 @@ AllPassFilterNode::AllPassFilterNode(AudioProcessorNodeType type) : AudioProcess
     addAndMakeVisible(lfoDepth);
     addAndMakeVisible(maxModulation);
 
-    addInputNode();
-    addOutputNode();
+    addInputConnector();
+    addOutputConnector();
 }
 
 AllPassFilterNode::~AllPassFilterNode()

@@ -11,64 +11,45 @@
 #pragma once
 #include <vector>
 #include <JuceHeader.h>
-#include <ui/nodes/audioProcessors/AudioProcessorNodeConnectorUI.h>
-#include <utils/Constants.h>
-#include <utils/ManagedArray.h>
 #include <dsp/IAudioProcessor.h>
 #include <dsp/AudioProcessorNode.h>
+#include <ui/nodes/NodeConnectorUI.h>
 #include <ui/menus/NodeUIContextMenu.h>
-#include <utils/XmlUtils.h>
 #include <ui/interaction/DragHandler.h>
+#include <ui/nodes/NodeUI.h>
+#include <utils/XmlUtils.h>
+#include <utils/Constants.h>
+#include <utils/ManagedArray.h>
 
 //Forward declarations
 class GraphEditor;
 
 #define AudioProcessorNodeUIPtr std::shared_ptr<AudioProcessorNodeUI>
 
-class AudioProcessorNodeUI : public Component,
-                         public ManagedArray
+class AudioProcessorNodeUI : public NodeUI
 {
 public:
-    class Listener
-    {
-    public:
-        virtual void onProcessorClicked(AudioProcessorNodeUI* processor, const MouseEvent& e) = 0;
-        virtual void onProcessorMoved(AudioProcessorNodeUI* processor, const MouseEvent& e) = 0;
-        virtual void onProcessorReleased(AudioProcessorNodeUI* processor, const MouseEvent& e) = 0;
-        virtual void onContextSelection(AudioProcessorNodeUI* processor, NodeUIConextMenuItems selection) = 0;
-    };
-
-    AudioProcessorNodeUI();
+    AudioProcessorNodeUI(String name);
     AudioProcessorNodeUI(AudioProcessorNodeType type);
     ~AudioProcessorNodeUI();
-    void paint(Graphics& g) override;
-    void mouseDown(const MouseEvent& e) override;
-    void mouseDrag(const MouseEvent& e) override;
-    void mouseUp(const MouseEvent& e) override;
-    void handleRightClick();
-    void updateNameAndReCenter(String name);
     
-    void addInputNode();
-    void addOutputNode();
-    Array<AudioProcessorNodeConnectorUI*> getAllNodeConnectors();
-    AudioProcessorNodeConnectorUI* getInputNode();
-    AudioProcessorNodeConnectorUI* getOutputNode();
+    void addInputConnector();
+    void addOutputConnector();
+    Array<NodeConnectorUI*> getAllNodeConnectors();
+    NodeConnectorUI* getInputNode();
+    NodeConnectorUI* getOutputNode();
     
-    void connectInput(AudioProcessorNodeUI* connection);
-    void connectFeedbackInput(AudioProcessorNodeUI* connection);
-    void connectOutput(AudioProcessorNodeUI* connection);
-    void disconnectInput(AudioProcessorNodeUI* connection);
-    void disconnectOutput(AudioProcessorNodeUI* connection);
-    Array<AudioProcessorNodeUI*> getOutputConnections();
-    Array<AudioProcessorNodeUI*> getInputConnections();
-    Array<AudioProcessorNodeUI*> getFeedbackConnections();
+    void connectInput(NodeConnectorUI* connection);
+    void connectFeedbackInput(NodeConnectorUI* connection);
+    void connectOutput(NodeConnectorUI* connection);
+    void disconnectInput(NodeConnectorUI* connection);
+    void disconnectOutput(NodeConnectorUI* connection);
+    Array<NodeConnectorUI*> getOutputConnections();
+    Array<NodeConnectorUI*> getInputConnections();
+    Array<NodeConnectorUI*> getFeedbackConnections();
     
-    virtual void setUIParameters() {};
-
-    void addExistingInput(AudioProcessorNodeUI* outputProcessor);
-    void addExistingOutput(AudioProcessorNodeUI* inputProcessor);
-    
-    void addListener(AudioProcessorNodeUI::Listener* listener);
+    void addExistingInput(NodeConnectorUI* outputProcessor);
+    void addExistingOutput(NodeConnectorUI* inputProcessor);
 
     AudioProcessorNodePtr getProcessorNode();
     void setProcessorNode(AudioProcessorNodePtr processorNode);
@@ -79,41 +60,22 @@ public:
     bool isReversed();
     void reverse();
 
-    virtual std::string getIdAsString();
-
     template<class T>
     T* getAudioProcessorAs();
 
+    virtual std::string getIdAsString();
+    virtual void setUIParameters() {};
     virtual void setAudioParametersFromXml(XmlElement* parametersXml) = 0;
     virtual XmlElement* getAudioParametersAsXml() = 0;
 
 protected:
-    void initialize();
-    Point<int> getCenterPosition();
-    
-    Uuid id;
-
     NodePtr input = nullptr;
     NodePtr output = nullptr;
-
     AudioProcessorNodePtr processorNode = nullptr;
-
-    Array<AudioProcessorNodeUI*> inputConnections;
-    Array<AudioProcessorNodeUI*> outputConnections;
-    Array<AudioProcessorNodeUI*> feedbackConnections;
-
-    Label nameLabel;
-    String name;
-
+    Array<NodeConnectorUI*> inputConnections;
+    Array<NodeConnectorUI*> outputConnections;
+    Array<NodeConnectorUI*> feedbackConnections;
     AudioProcessorNodeType type;
-
-    bool reversed = false;
-
-    NodeUIContextMenu contextMenu;
-
-    Array<Listener*> listeners;
-
-    DragHandler dragHandler = DragHandler(this);
 };
 
 template<class T>

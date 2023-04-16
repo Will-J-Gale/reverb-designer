@@ -14,7 +14,7 @@
 #include <utils/Constants.h>
 
 //Forward declarations
-class AudioProcessorNodeConnectorUI;
+class NodeConnectorUI;
 
 #define NodeConnectionPtr std::shared_ptr<NodeConnection>
 
@@ -22,12 +22,12 @@ class NodeConnection
 {
 public:
     NodeConnection();
-    NodeConnection(AudioProcessorNodeConnectorUI* start, AudioProcessorNodeConnectorUI* end);
-    NodeConnection(AudioProcessorNodeConnectorUI* start, AudioProcessorNodeConnectorUI* end, ConnectionType type);
+    NodeConnection(NodeConnectorUI* start, NodeConnectorUI* end);
+    NodeConnection(NodeConnectorUI* start, NodeConnectorUI* end, ConnectionType type);
     ~NodeConnection();
     
-    AudioProcessorNodeConnectorUI* getStartConnector();
-    AudioProcessorNodeConnectorUI* getEndConnector();
+    NodeConnectorUI* getStartConnector();
+    NodeConnectorUI* getEndConnector();
 
     void setType(ConnectionType type);
     ConnectionType getType();
@@ -36,8 +36,8 @@ private:
     Point<int> startPosition;
     Point<int> endPosition;
 
-    AudioProcessorNodeConnectorUI* start = nullptr;
-    AudioProcessorNodeConnectorUI* end = nullptr;
+    NodeConnectorUI* start = nullptr;
+    NodeConnectorUI* end = nullptr;
 
     ConnectionType connectionType = ConnectionType::Normal;
 };

@@ -32,11 +32,11 @@ public:
     {
         switch (type)
         {
-            case AudioProcessorNodeType::Input:
-                return std::make_shared<Input>(type);
+            // case AudioProcessorNodeType::Input:
+            //     return std::make_shared<Input>(type);
 
-            case AudioProcessorNodeType::Output:
-                return std::make_shared<Output>(type);
+            // case AudioProcessorNodeType::Output:
+            //     return std::make_shared<Output>(type);
 
             case AudioProcessorNodeType::Gain:
                 return std::make_shared<GainNode>(type);

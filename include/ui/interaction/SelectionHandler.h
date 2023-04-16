@@ -10,23 +10,22 @@
 
 #pragma once
 #include <JuceHeader.h>
-
-class AudioProcessorNodeUI;
+#include <ui/nodes/NodeUI.h>
 
 class SelectionHandler
 {
 public:
-    void setItems(Array<AudioProcessorNodeUI*> items);
+    void setItems(Array<NodeUI*> items);
 
-    Array<AudioProcessorNodeUI*> getItems();
+    Array<NodeUI*> getItems();
     void moveItems(Point<int> velocity);
     void updateItemPositions();
     void clear();
-    bool contains(AudioProcessorNodeUI* item);
+    bool contains(NodeUI* item);
     bool isEmpty();
     size_t size();
    
 private:
-    Array<AudioProcessorNodeUI*> items;
-    std::map<AudioProcessorNodeUI*, Point<int>> originalPositions;
+    Array<NodeUI*> items;
+    std::map<NodeUI*, Point<int>> originalPositions;
 };

@@ -10,9 +10,9 @@
 
 #include <memory>
 #include <ui/interaction/ConnectionHandler.h>
-#include <ui/nodes/audioProcessors/AudioProcessorNodeConnectorUI.h>
+#include <ui/nodes/NodeConnectorUI.h>
 #include <ui/GraphEditor.h>
-#include <ui/nodes/audioProcessors/NodeConnection.h>
+#include <ui/nodes/NodeConnection.h>
 #include <dsp/PluginGraph.h>
 
 void ConnectionHandler::initialize(GraphEditor* graphEditor, PluginGraph* pluginGraph)
@@ -21,60 +21,60 @@ void ConnectionHandler::initialize(GraphEditor* graphEditor, PluginGraph* plugin
     this->pluginGraph = pluginGraph;
 }
 
-void ConnectionHandler::createConnection(AudioProcessorNodeConnectorUI* start, AudioProcessorNodeConnectorUI* end)
+void ConnectionHandler::createConnection(NodeConnectorUI* start, NodeConnectorUI* end)
 {
-    auto connection = std::make_shared<NodeConnection>(start, end);
-    graphEditor->connections.add(connection);
+    // auto connection = std::make_shared<NodeConnection>(start, end);
+    // graphEditor->connections.add(connection);
 
-    auto* startProcessorUI = (AudioProcessorNodeUI*)start->getParentComponent();
-    auto* endProcessorUI = (AudioProcessorNodeUI*)end->getParentComponent();
+    // auto* startProcessorUI = (NodeUI*)start->getParentComponent();
+    // auto* endProcessorUI = (NodeUI*)end->getParentComponent();
 
-    endProcessorUI->connectInput(startProcessorUI);
-    startProcessorUI->connectOutput(endProcessorUI);
-    graphEditor->pluginGraph->updateProcessPath();
+    // endProcessorUI->connectInput(startProcessorUI);
+    // startProcessorUI->connectOutput(endProcessorUI);
+    // graphEditor->pluginGraph->updateProcessPath();
 }
 
-void ConnectionHandler::createFeedbackConnection(AudioProcessorNodeConnectorUI* start, AudioProcessorNodeConnectorUI* end)
+void ConnectionHandler::createFeedbackConnection(NodeConnectorUI* start, NodeConnectorUI* end)
 {
-    auto connection = std::make_shared<NodeConnection>(start, end);
-    graphEditor->connections.add(connection);
+    // auto connection = std::make_shared<NodeConnection>(start, end);
+    // graphEditor->connections.add(connection);
 
-    auto* startProcessorUI = (AudioProcessorNodeUI*)start->getParentComponent();
-    auto* endProcessorUI = (AudioProcessorNodeUI*)end->getParentComponent();
+    // auto* startProcessorUI = (NodeUI*)start->getParentComponent();
+    // auto* endProcessorUI = (NodeUI*)end->getParentComponent();
 
-    endProcessorUI->connectFeedbackInput(startProcessorUI);
-    graphEditor->pluginGraph->updateProcessPath();
+    // endProcessorUI->connectFeedbackInput(startProcessorUI);
+    // graphEditor->pluginGraph->updateProcessPath();
 }
 
-void ConnectionHandler::deleteConnection(AudioProcessorNodeConnectorUI* nodeConnector)
+void ConnectionHandler::deleteConnection(NodeConnectorUI* nodeConnector)
 {
-    Array<NodeConnection*> nodeConnections;
+    // Array<NodeConnection*> nodeConnections;
 
-    for (auto connection : graphEditor->connections)
-    {
-        if (connection->getEndConnector() == nodeConnector || connection->getStartConnector() == nodeConnector)
-        {
-            nodeConnections.add(connection.get());
-        }
-    }
+    // for (auto connection : graphEditor->connections)
+    // {
+    //     if (connection->getEndConnector() == nodeConnector || connection->getStartConnector() == nodeConnector)
+    //     {
+    //         nodeConnections.add(connection.get());
+    //     }
+    // }
 
-    for (auto connection : nodeConnections)
-    {
-        auto* startProcessor = (AudioProcessorNodeUI*)connection->getStartConnector()->getParentComponent();
-        auto* endProcessor = (AudioProcessorNodeUI*)connection->getEndConnector()->getParentComponent();
+    // for (auto connection : nodeConnections)
+    // {
+    //     auto* startProcessor = (NodeUI*)connection->getStartConnector()->getParentComponent();
+    //     auto* endProcessor = (NodeUI*)connection->getEndConnector()->getParentComponent();
 
-        startProcessor->disconnectOutput(endProcessor);
-        endProcessor->disconnectInput(startProcessor);
+    //     startProcessor->disconnectOutput(endProcessor);
+    //     endProcessor->disconnectInput(startProcessor);
 
-        graphEditor->removeFromArray(graphEditor->connections, connection);
-    }
+    //     graphEditor->removeFromArray(graphEditor->connections, connection);
+    // }
 
-    graphEditor->pluginGraph->updateProcessPath();
+    // graphEditor->pluginGraph->updateProcessPath();
 
     graphEditor->repaint();
 }
 
-bool ConnectionHandler::connectionExists(AudioProcessorNodeConnectorUI* start, AudioProcessorNodeConnectorUI* end)
+bool ConnectionHandler::connectionExists(NodeConnectorUI* start, NodeConnectorUI* end)
 {
     bool exists = false;
 
@@ -90,23 +90,23 @@ bool ConnectionHandler::connectionExists(AudioProcessorNodeConnectorUI* start, A
     return exists;
 }
 
-bool ConnectionHandler::isCreatingFeedback(AudioProcessorNodeConnectorUI* start, AudioProcessorNodeConnectorUI* end)
+bool ConnectionHandler::isCreatingFeedback(NodeConnectorUI* start, NodeConnectorUI* end)
 {
-    auto startProcessorNode = start->getAttachedProcessorUI()->getProcessorNode();
-    auto endProcessorNode = end->getAttachedProcessorUI()->getProcessorNode();
+    // auto startProcessorNode = start->getAttachedNodeUI()->getProcessorNode();
+    // auto endProcessorNode = end->getAttachedNodeUI()->getProcessorNode();
 
-    if (startProcessorNode == nullptr || endProcessorNode == nullptr) { return false; }
-    if (startProcessorNode == endProcessorNode) { return true; }
+    // if (startProcessorNode == nullptr || endProcessorNode == nullptr) { return false; }
+    // if (startProcessorNode == endProcessorNode) { return true; }
 
-    if (graphEditor->pluginGraph->isCreatingFeedback(endProcessorNode.get(), startProcessorNode.get()))
-    {
-        return true;
-    }
+    // if (graphEditor->pluginGraph->isCreatingFeedback(endProcessorNode.get(), startProcessorNode.get()))
+    // {
+    //     return true;
+    // }
 
     return false;
 }
 
-bool ConnectionHandler::nodesAreCompatible(AudioProcessorNodeConnectorUI* start, AudioProcessorNodeConnectorUI* end)
+bool ConnectionHandler::nodesAreCompatible(NodeConnectorUI* start, NodeConnectorUI* end)
 {
     return (start->getType() == NodeType::AudioOutput && end->getType() == NodeType::AudioInput);
 }

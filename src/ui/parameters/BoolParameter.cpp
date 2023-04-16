@@ -8,7 +8,6 @@
   ==============================================================================
 */
 
-#include <ui/nodes/audioProcessors/AudioProcessorNodeUI.h>
 #include <ui/parameters/BoolParameter.h>
 #include <utils/Constants.h>
 

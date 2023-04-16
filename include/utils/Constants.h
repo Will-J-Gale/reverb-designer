@@ -82,6 +82,8 @@ constexpr int CONNECTION_THICKNESS = 3;
 constexpr int ARROW_SIZE = 15;
 
 //Input/Output
+const std::string INPUT_TEXT = "Input";
+const std::string OUTPUT_TEXT = "Output";
 constexpr int IO_WIDTH = 75;
 constexpr int IO_HEIGHT = 20;
 constexpr int INPUT_START_X = 0;
@@ -245,6 +247,7 @@ enum class AudioProcessorNodeType
 
 enum class NodeUIType
 {
+    IO,
     AudioProcessor,
     Macro,
     Control

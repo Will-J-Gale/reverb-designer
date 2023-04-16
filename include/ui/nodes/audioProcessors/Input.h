@@ -9,14 +9,12 @@
 */
 
 #pragma once
-#include <ui/nodes/audioProcessors/AudioProcessorNodeUI.h>
+#include <ui/nodes/NodeUI.h>
 
-class GraphEditor;
-
-class Input : public AudioProcessorNodeUI
+class Input : public NodeUI
 {
 public:
-    Input(AudioProcessorNodeType type);
+    Input();
 
     virtual void setAudioParametersFromXml(XmlElement* parametersXml);
     virtual XmlElement* getAudioParametersAsXml();

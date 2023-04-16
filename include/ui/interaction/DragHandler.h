@@ -11,8 +11,6 @@
 #pragma once
 #include "JuceHeader.h"
 
-class GraphEditor;
-
 class DragHandler
 {
 public:

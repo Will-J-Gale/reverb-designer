@@ -40,8 +40,8 @@ CombFilterNode::CombFilterNode(AudioProcessorNodeType type) : AudioProcessorNode
     addAndMakeVisible(lpfG);
     addAndMakeVisible(enableLPF);
 
-    addInputNode();
-    addOutputNode();
+    addInputConnector();
+    addOutputConnector();
 }
 
 CombFilterNode::~CombFilterNode()

@@ -11,8 +11,7 @@
 #pragma once
 
 #include <JuceHeader.h>
-#include "PluginProcessor.h"
-#include <ui/nodes/audioProcessors/AudioProcessorNodeUI.h>
+#include <PluginProcessor.h>
 #include <ui/GraphEditor.h>
 
 //==============================================================================

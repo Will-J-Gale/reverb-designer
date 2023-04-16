@@ -11,19 +11,19 @@
 #pragma once
 class GraphEditor;
 class PluginGraph;
-class AudioProcessorNodeConnectorUI;
+class NodeConnectorUI;
 
 class ConnectionHandler
 {
 public:
     ConnectionHandler(){};
     void initialize(GraphEditor* graphEditor, PluginGraph* pluginGraph);
-    void createConnection(AudioProcessorNodeConnectorUI* start, AudioProcessorNodeConnectorUI* end);
-    void createFeedbackConnection(AudioProcessorNodeConnectorUI* start, AudioProcessorNodeConnectorUI* end);
-    void deleteConnection(AudioProcessorNodeConnectorUI* nodeConnector);
-    bool connectionExists(AudioProcessorNodeConnectorUI* start, AudioProcessorNodeConnectorUI* end);
-    bool isCreatingFeedback(AudioProcessorNodeConnectorUI* start, AudioProcessorNodeConnectorUI* end);
-    bool nodesAreCompatible(AudioProcessorNodeConnectorUI* start, AudioProcessorNodeConnectorUI* end);
+    void createConnection(NodeConnectorUI* start, NodeConnectorUI* end);
+    void createFeedbackConnection(NodeConnectorUI* start, NodeConnectorUI* end);
+    void deleteConnection(NodeConnectorUI* nodeConnector);
+    bool connectionExists(NodeConnectorUI* start, NodeConnectorUI* end);
+    bool isCreatingFeedback(NodeConnectorUI* start, NodeConnectorUI* end);
+    bool nodesAreCompatible(NodeConnectorUI* start, NodeConnectorUI* end);
 
 private:
     GraphEditor* graphEditor;

@@ -36,8 +36,8 @@ BiquadFilterNode::BiquadFilterNode(AudioProcessorNodeType type) : AudioProcessor
     addAndMakeVisible(filterType);
     addAndMakeVisible(frequency);
     
-    addInputNode();
-    addOutputNode();
+    addInputConnector();
+    addOutputConnector();
 
     nameLabel.setBounds(0, 0, FILTER_WIDTH, TEXT_HEIGHT);
     updateNameAndReCenter(FILTER_NAME);

@@ -16,8 +16,8 @@
 SimpleDelayNode::SimpleDelayNode(AudioProcessorNodeType type) : AudioProcessorNodeUI(type)
 {
     setBounds(0, 0, DELAY_WIDTH, DELAY_HEIGHT);
-    addInputNode();
-    addOutputNode();
+    addInputConnector();
+    addOutputConnector();
 
     delayTime.setBounds(PARAMETER_X_OFFSET, PARAMETER_Y_OFFSET, DELAY_TIME_WIDTH, DELAY_TIME_HEIGHT);
     delayTime.setParameterName(DELAY_TIME_TEXT);

@@ -9,15 +9,12 @@
 */
 
 #pragma once
-#include <ui/nodes/audioProcessors/AudioProcessorNodeUI.h>
+#include <ui/nodes/NodeUI.h>
 
-//Forward declaration
-class GraphEditor;
-
-class Output : public AudioProcessorNodeUI
+class Output : public NodeUI
 {
 public:
-    Output(AudioProcessorNodeType type);
+    Output();
 
     virtual void setAudioParametersFromXml(XmlElement* parametersXml);
     virtual XmlElement* getAudioParametersAsXml();

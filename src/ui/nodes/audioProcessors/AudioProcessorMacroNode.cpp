@@ -4,8 +4,8 @@ AudioProcessorMacroNode::AudioProcessorMacroNode(AudioProcessorNodeType type) : 
 {
     setBounds(0, 0, GAIN_WIDTH, GAIN_HEIGHT);
 
-    addInputNode();
-    addOutputNode();
+    addInputConnector();
+    addOutputConnector();
 
     nameLabel.setBounds(0, 0, GAIN_WIDTH, TEXT_HEIGHT);
     updateNameAndReCenter("Hello there");

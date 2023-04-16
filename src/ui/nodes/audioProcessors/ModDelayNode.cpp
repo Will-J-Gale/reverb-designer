@@ -44,8 +44,8 @@ ModDelayNode::ModDelayNode(AudioProcessorNodeType type) : AudioProcessorNodeUI(t
     algorithm.addItem("Flanger", (int)ModulatedDelayAlgorithm::kFlanger + 1);
     algorithm.addItem("Chorus", (int)ModulatedDelayAlgorithm::kChorus + 1);
 
-    addInputNode();
-    addOutputNode();
+    addInputConnector();
+    addOutputConnector();
 }
 
 ModDelayNode::~ModDelayNode()

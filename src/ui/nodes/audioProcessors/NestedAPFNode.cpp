@@ -69,8 +69,8 @@ NestedAPFNode::NestedAPFNode(AudioProcessorNodeType type) : AudioProcessorNodeUI
     addAndMakeVisible(lfoDepth);
     addAndMakeVisible(maxModulation);
 
-    addInputNode();
-    addOutputNode();
+    addInputConnector();
+    addOutputConnector();
 }
 
 void NestedAPFNode::buttonClicked(Button* button)

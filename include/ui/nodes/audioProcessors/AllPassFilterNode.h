@@ -9,7 +9,6 @@
 */
 
 #pragma once
-#include <ui/nodes/audioProcessors/AudioProcessorNodeUI.h>
 #include <dsp/DelayAPF.h>
 #include <ui/parameters/SliderParameter.h>
 #include <ui/nodes/audioProcessors/AudioProcessorNodeUI.h>

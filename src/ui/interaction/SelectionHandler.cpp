@@ -9,9 +9,8 @@
 */
 
 #include <ui/interaction/SelectionHandler.h>
-#include <ui/nodes/audioProcessors/AudioProcessorNodeUI.h>
 
-void SelectionHandler::setItems(Array<AudioProcessorNodeUI*> items)
+void SelectionHandler::setItems(Array<NodeUI*> items)
 {
     this->items = items;
     
@@ -43,7 +42,7 @@ void SelectionHandler::updateItemPositions()
     }
 }
 
-bool SelectionHandler::contains(AudioProcessorNodeUI* item)
+bool SelectionHandler::contains(NodeUI* item)
 {
 	return items.contains(item);
 }
@@ -58,7 +57,7 @@ size_t SelectionHandler::size()
     return items.size();
 }
 
-Array<AudioProcessorNodeUI*> SelectionHandler::getItems()
+Array<NodeUI*> SelectionHandler::getItems()
 {
     return items;
 }
