@@ -22,7 +22,6 @@
 #include <ui/menus/MainMenu.h>
 #include <dsp/AudioProcessorState.h>
 #include <ui/interaction/ZoomHandler.h>
-#include <ui/interaction/DragHandler.h>
 #include <ui/interaction/ConnectionHandler.h>
 #include <ui/interaction/NodeUIInteractionHandler.h>
 #include <ui/interaction/NodeConnectorInteractionHandler.h>
@@ -30,8 +29,6 @@
 #include <ui/nodes/NodeUI.h>
 
 //Forward declarations
-class NodeConnectorUI;
-class GainNode;
 class PluginGraph;
 
 class GraphEditor : public Component,
@@ -101,10 +98,11 @@ private:
     friend class NodeConnectorInteractionHandler;
     friend class MainMenuInteractionHandler;
     
+    //Used for moving all elements around with middle mouse button
     SelectionHandler globalSelection;
+    //Used to only move selected items
     SelectionHandler selectionHandler;
     ZoomHandler zoomHandler{this};
-    DragHandler dragHandler{this};
     ConnectionHandler connectionHandler; 
     NodeUIInteractionHandler nodeInteractionHandler; 
     NodeConnectorInteractionHandler nodeConnectorInteractionHandler{this};

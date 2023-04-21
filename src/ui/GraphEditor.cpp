@@ -37,8 +37,6 @@ GraphEditor::~GraphEditor()
 
 void GraphEditor::mouseDown(const MouseEvent& e)
 {
-    dragHandler.mouseDown(e);
-
     Array<NodeUI*> tempNodes;
     for (auto node : nodes)
     {
