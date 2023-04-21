@@ -93,7 +93,7 @@ NodeUIPtr NodeUIInteractionHandler::createNode(NodeInstance type, Point<int> pos
     return nodeUI;
 }
 
-void NodeUIInteractionHandler::initializeProcessor(NodeUIPtr node)
+void NodeUIInteractionHandler::initializeNode(NodeUIPtr node)
 {
     node->addListener(this);
     graphEditor->nodes.add(node);
@@ -122,5 +122,5 @@ void NodeUIInteractionHandler::duplicateProcessor(NodeUI* node)
     // auto parameters = node->getAudioParametersAsXml();
     // newProcessor->setAudioParametersFromXml(parameters);
     // delete parameters;
-    initializeProcessor(newProcessor);
+    initializeNode(newProcessor);
 }

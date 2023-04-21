@@ -184,7 +184,7 @@ void GraphEditor::createIOProcessors()
     {
         auto audioInput = audioInputs[i];
         auto newInput = nodeInteractionHandler.createNode(NodeInstance::Input, Point<int>(), audioInput);
-        nodeInteractionHandler.initializeProcessor(newInput);
+        nodeInteractionHandler.initializeNode(newInput);
         inputs.add(newInput);
         ((Input*)newInput.get())->setChannel(i);
         newInput->setTopLeftPosition(INPUT_START_X, y);
@@ -196,7 +196,7 @@ void GraphEditor::createIOProcessors()
     {
         auto audioOutput = audioOutputs[i];
         auto newOutput = nodeInteractionHandler.createNode(NodeInstance::Output, Point<int>(), audioOutput);
-        nodeInteractionHandler.initializeProcessor(newOutput);
+        nodeInteractionHandler.initializeNode(newOutput);
 
         outputs.add(newOutput);
         ((Output*)newOutput.get())->setChannel(i);
@@ -296,13 +296,14 @@ void GraphEditor::handleRightClick(const MouseEvent& e)
     }
     else if (contextSelection == (int)GraphEditorContextMenuItems::Macro)
     {
-        // auto processorUI = processorNodeUIInteractionHandler.createNodeUI((NodeType)contextSelection, e.getPosition());
-        // processorNodeUIInteractionHandler.initializeProcessor(processorUI);
+        //Duplicate code - Same as below
+        // auto node = nodeInteractionHandler.createNode((NodeInstance)contextSelection, e.getPosition());
+        // nodeInteractionHandler.initializeNode(node);
     }
     else if (contextSelection > 0)
     {
-        auto processorUI = nodeInteractionHandler.createNode((NodeInstance)contextSelection, e.getPosition());
-        nodeInteractionHandler.initializeProcessor(processorUI);
+        auto node = nodeInteractionHandler.createNode((NodeInstance)contextSelection, e.getPosition());
+        nodeInteractionHandler.initializeNode(node);
     }
 }
 
