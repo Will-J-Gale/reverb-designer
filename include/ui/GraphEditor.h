@@ -26,6 +26,7 @@
 #include <ui/interaction/ConnectionHandler.h>
 #include <ui/interaction/NodeUIInteractionHandler.h>
 #include <ui/interaction/NodeConnectorInteractionHandler.h>
+#include <ui/interaction/MainMenuInteractionHandler.h>
 #include <ui/nodes/NodeUI.h>
 
 //Forward declarations
@@ -34,10 +35,7 @@ class GainNode;
 class PluginGraph;
 
 class GraphEditor : public Component,
-                    public ManagedArray,
-                    // public NodeConnectorUI::Listener,
-                    public MainMenu::Listener
-                    // public NodeUI::Listener
+                    public ManagedArray
 {
 public:
     GraphEditor();
@@ -57,19 +55,9 @@ public:
     void reverseSelectedProcessors();
     void deleteSelectedProcessors();
 
-    // virtual void onNodeConnectorLeftClick(NodeConnectorUI* nodeConnector, const MouseEvent& e) override;
-    // virtual void onNodeConnectorRightClick(NodeConnectorUI* nodeConnector, const MouseEvent& e) override;
-    // virtual void onNodeConnectorDrag(NodeConnectorUI* nodeConnector, const MouseEvent& e) override;
-    // virtual void onNodeConnectorLeftRelease(NodeConnectorUI* nodeConnector, const MouseEvent& e) override;
-    
     // XmlElementPtr generatePluginState();
     void loadFromExistingState(XmlElement* state);
     std::shared_ptr<AudioProcessorState> loadStateFromFile(std::string xmlString);
-
-    virtual void onSave(std::string savePath) override;
-    virtual void onLoad(std::string filepath) override;
-    virtual void onNewProject() override;
-    virtual void onPresetSelected(Presets presetId) override;
 
     void clear();
 
@@ -111,6 +99,7 @@ private:
     friend class ConnectionHandler;
     friend class NodeUIInteractionHandler;
     friend class NodeConnectorInteractionHandler;
+    friend class MainMenuInteractionHandler;
     
     SelectionHandler globalSelection;
     SelectionHandler selectionHandler;
@@ -119,4 +108,5 @@ private:
     ConnectionHandler connectionHandler; 
     NodeUIInteractionHandler nodeInteractionHandler; 
     NodeConnectorInteractionHandler nodeConnectorInteractionHandler{this};
+    MainMenuInteractionHandler mainMenuInteractionHandler{this};
 };

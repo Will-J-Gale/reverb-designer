@@ -26,8 +26,7 @@ public:
         virtual void onLoad(std::string filepath) = 0;
         //Clears the screen
         virtual void onNewProject() = 0;
-        
-        virtual void onPresetSelected(Presets presetId) = 0;
+        virtual void onPresetSelected(PresetType presetId) = 0;
     };
 
     MainMenu();
@@ -44,7 +43,7 @@ private:
     void newProject();
     void saveFile();
     void loadFile();
-    void presetSelected(Presets presetId);
+    void presetSelected(PresetType presetId);
 
     std::unique_ptr<FileChooser> fileChooser;
     std::unique_ptr<MenuBarComponent> menuBar;

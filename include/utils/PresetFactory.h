@@ -15,23 +15,23 @@
 class PresetFactory
 {
 public:
-    static std::string getPreset(Presets presetId)
+    static std::string getPreset(PresetType presetId)
     {
         switch (presetId)
         {
-            case Presets::APF:
+            case PresetType::APF:
                 return BinaryData::APF_xml;
-            case Presets::FeedbackComb:
+            case PresetType::FeedbackComb:
                 return BinaryData::FeedbackComb_xml;
-            case Presets::FeedforwardComb:
+            case PresetType::FeedforwardComb:
                 return BinaryData::FeedforwardComb_xml;
-            case Presets::StereoDelay:
+            case PresetType::StereoDelay:
                 return BinaryData::StereoDelay_xml;
-            case Presets::SchroederReverb:
+            case PresetType::SchroederReverb:
                 return BinaryData::SchroederReverb_xml;
-            case Presets::SpinSemiconductorReverb:
+            case PresetType::SpinSemiconductorReverb:
                 return BinaryData::SpinSemiconductorReverb_xml;
-            case Presets::Figure8Reverb:
+            case PresetType::Figure8Reverb:
                 return BinaryData::Figure8Reverb_xml;
         }
     }

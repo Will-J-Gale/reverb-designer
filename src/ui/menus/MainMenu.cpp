@@ -44,13 +44,13 @@ PopupMenu MainMenu::getMenuForIndex(int menuIndex, const String& menuName)
     }
     else if (menuIndex == 1)
     {
-        menu.addItem(STEREO_DELAY_PRESET_TEXT, std::bind(&MainMenu::presetSelected, this, Presets::StereoDelay));
-        menu.addItem(FEEDFORWARD_COMB_PRESET_TEXT, std::bind(&MainMenu::presetSelected, this, Presets::FeedbackComb));
-        menu.addItem(FEEDBACK_COMB_PRESET_TEXT, std::bind(&MainMenu::presetSelected, this, Presets::FeedforwardComb));
-        menu.addItem(APF_PRESET_TEXT, std::bind(&MainMenu::presetSelected, this, Presets::APF));
-        menu.addItem(SCHROEDER_PRESET_TEXT, std::bind(&MainMenu::presetSelected, this, Presets::SchroederReverb));
-        menu.addItem(SPIN_SEMICONDUCTOR_PRESET_TEXT, std::bind(&MainMenu::presetSelected, this, Presets::SpinSemiconductorReverb));
-        menu.addItem(FIGURE8_PRESET_TEXT, std::bind(&MainMenu::presetSelected, this, Presets::Figure8Reverb));
+        menu.addItem(STEREO_DELAY_PRESET_TEXT, std::bind(&MainMenu::presetSelected, this, PresetType::StereoDelay));
+        menu.addItem(FEEDFORWARD_COMB_PRESET_TEXT, std::bind(&MainMenu::presetSelected, this, PresetType::FeedbackComb));
+        menu.addItem(FEEDBACK_COMB_PRESET_TEXT, std::bind(&MainMenu::presetSelected, this, PresetType::FeedforwardComb));
+        menu.addItem(APF_PRESET_TEXT, std::bind(&MainMenu::presetSelected, this, PresetType::APF));
+        menu.addItem(SCHROEDER_PRESET_TEXT, std::bind(&MainMenu::presetSelected, this, PresetType::SchroederReverb));
+        menu.addItem(SPIN_SEMICONDUCTOR_PRESET_TEXT, std::bind(&MainMenu::presetSelected, this, PresetType::SpinSemiconductorReverb));
+        menu.addItem(FIGURE8_PRESET_TEXT, std::bind(&MainMenu::presetSelected, this, PresetType::Figure8Reverb));
     }
     return menu;
 }
@@ -88,7 +88,7 @@ void MainMenu::loadFile()
     }
 }
 
-void MainMenu::presetSelected(Presets presetId)
+void MainMenu::presetSelected(PresetType presetId)
 {
     for (auto listener : listeners)
     {

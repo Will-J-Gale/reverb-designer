@@ -27,7 +27,7 @@ GraphEditor::GraphEditor()
 
     mainMenu.setAlwaysOnTop(true);
     addAndMakeVisible(mainMenu);
-    mainMenu.addListener(this);
+    mainMenu.addListener(&mainMenuInteractionHandler);
 }
 
 GraphEditor::~GraphEditor()
@@ -380,55 +380,6 @@ Array<NodeUI*> GraphEditor::getOverlappingProcessors(Rectangle<int> bounds)
     return selectedProcessors;
 }
 
-void GraphEditor::onNewProject()
-{
-    auto io = Array<NodeUIPtr>();
-    io.addArray(inputs);
-    io.addArray(outputs);
-
-    auto nodesToDelete = nodes;
-    nodesToDelete.removeValuesIn(io);
-    nodes.removeValuesNotIn(io);
-
-    for (auto node : nodesToDelete)
-    {
-        if (!io.contains(node))
-        {
-            nodeInteractionHandler.deleteProcessor(node.get());
-        }
-    }
-
-    repaint();
-}
-
-void GraphEditor::onPresetSelected(Presets presetId)
-{
-    // clear();
-
-    // auto xmlString = PresetFactory::getPreset(presetId);
-    // auto callback = std::bind(&GraphEditor::loadStateFromFile, this, xmlString);
-    
-    // auto state = loadStateFromFile(xmlString);
-    // pluginGraph->deleteAndReplaceAudioBlocks(state);
-}
-
-void GraphEditor::onSave(std::string savePath)
-{
-    // auto state = generatePluginState();
-    // StorageManager::saveXML(savePath, state->toString().toStdString());
-}
-
-void GraphEditor::onLoad(std::string filepath)
-{
-    clear();
-
-    auto file = File(filepath);
-    auto xmlString = file.loadFileAsString().toStdString();
-    auto callback = std::bind(&GraphEditor::loadStateFromFile, this, xmlString);
-    
-    pluginGraph->deleteAndReplaceAudioBlocks(callback);
-}
-
 std::shared_ptr<AudioProcessorState> GraphEditor::loadStateFromFile(std::string xmlString)
 {
     // const MessageManagerLock mmlock;
@@ -516,61 +467,6 @@ void GraphEditor::clear()
     globalSelection.clear();
     selectionHandler.clear();
 }
-
-// void GraphEditor::onNodeConnectorLeftClick(NodeConnectorUI* node, const MouseEvent& e)
-// {
-//     interactionState = InteractionState::DragConnection;
-//     clickedNode = node;
-// }
-
-// void GraphEditor::onNodeConnectorRightClick(NodeConnectorUI* node, const MouseEvent& e)
-// {
-//     connectionHandler.deleteConnection(node);
-// }
-
-// void GraphEditor::onNodeConnectorDrag(NodeConnectorUI* nodeConnector, const MouseEvent& e)
-// {
-//     auto pos = e.getScreenPosition();
-//     mousePosition = getLocalPoint(nullptr, pos);
-
-//     repaint();
-// }
-
-// void GraphEditor::onNodeConnectorLeftRelease(NodeConnectorUI* nodeConnecctor, const MouseEvent& e)
-// {
-//     auto* mouseUpNodeConnector = getNodeConnectorAtPosition(e.getScreenPosition());
-
-//     if (mouseUpNodeConnector)
-//     {
-//         auto* startNode = clickedNode->getType() == NodeConnectorType::AudioOutput ? clickedNode : mouseUpNodeConnector;
-//         auto* endNode = mouseUpNodeConnector->getType() == NodeConnectorType::AudioInput ? mouseUpNodeConnector : clickedNode;
-
-//         if (!connectionHandler.connectionExists(startNode, endNode) 
-//             && connectionHandler.nodesAreCompatible(startNode, endNode))
-//         {
-//             if (connectionHandler.isCreatingFeedback(startNode, endNode))
-//                 connectionHandler.createFeedbackConnection(startNode, endNode);
-//             else
-//                 connectionHandler.createConnection(startNode, endNode);
-//         }
-//     }
-
-//     clickedNode = nullptr;
-//     interactionState = InteractionState::None;
-
-//     repaint();
-// }
-
-// XmlElementPtr GraphEditor::generatePluginState()
-// {
-//     auto processorsToSave = nodes;
-//     processorsToSave.removeValuesIn(inputs);
-//     processorsToSave.removeValuesIn(outputs);
-
-//     auto state = XmlGenerator::generatePluginState(inputs, outputs, processorsToSave);
-
-//     return state;
-// }
 
 void GraphEditor::loadFromExistingState(XmlElement* state)
 {

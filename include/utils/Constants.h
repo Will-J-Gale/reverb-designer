@@ -296,7 +296,7 @@ enum class SliderInteraction
     Slide = 0
 };
 
-enum class Presets
+enum class PresetType
 {
     None,
     StereoDelay,
