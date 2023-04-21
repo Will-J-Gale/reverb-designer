@@ -331,13 +331,13 @@ void GraphEditor::duplicateSelectedProcessors()
 
 void GraphEditor::reverseSelectedProcessors()
 {
-    // for (auto processor : selectionHandler.getItems())
-    // {
-    //     if (arrayContains(inputs, processor) || arrayContains(outputs, processor))
-    //         continue;
+    for (auto processor : selectionHandler.getItems())
+    {
+        if (arrayContains(inputs, processor) || arrayContains(outputs, processor))
+            continue;
 
-    //     processor->reverse();
-    // }
+        processor->reverse();
+    }
 }
 
 void GraphEditor::deleteSelectedProcessors()
