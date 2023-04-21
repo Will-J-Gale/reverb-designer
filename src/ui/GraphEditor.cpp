@@ -87,7 +87,6 @@ void GraphEditor::mouseWheelMove(const MouseEvent& event, const MouseWheelDetail
         zoomHandler.zoomOut();
 }
 
-
 void GraphEditor::paint(Graphics& g)
 {
     g.fillAll(Colour::fromString(BACKGROUND_COLOUR_STRING));
@@ -117,7 +116,7 @@ void GraphEditor::setPluginGraph(PluginGraph* pluginGraph)
 {
     this->pluginGraph = pluginGraph;
     auto pluginState = pluginGraph->getPluginState();
-    processorNodeUIInteractionHandler.initialize(this, pluginGraph);
+    nodeInteractionHandler.initialize(this, pluginGraph);
     connectionHandler.initialize(this, pluginGraph);
 
     if (pluginState != nullptr)
@@ -133,7 +132,7 @@ void GraphEditor::resized()
 
 void GraphEditor::drawConnections(Graphics& g)
 {
-    if (clickedNode != nullptr)
+    if (clickedNodeConnector != nullptr)
         drawPotentialConnection(g);
 
     g.setColour(Colour::fromString(CONNECTION_COLOUR));
@@ -148,10 +147,10 @@ void GraphEditor::drawPotentialConnection(Graphics& g)
     {
         g.setColour(Colour::fromString(CONNECTION_COLOUR));
 
-        Point<int> pos = clickedNode->getScreenPosition();
+        Point<int> pos = clickedNodeConnector->getScreenPosition();
         pos = getLocalPoint(nullptr, pos);
 
-        auto processor = (NodeUI*)(clickedNode->getParentComponent());
+        auto processor = (NodeUI*)(clickedNodeConnector->getParentComponent());
         auto isReversed = processor->isReversed();
 
         int x1 = pos.getX() + NODE_RADIUS;
@@ -159,7 +158,7 @@ void GraphEditor::drawPotentialConnection(Graphics& g)
         int x2 = mousePosition.getX();
         int y2 = mousePosition.getY();
 
-        if (clickedNode->getType() == NodeConnectorType::AudioInput)
+        if (clickedNodeConnector->getType() == NodeConnectorType::AudioInput)
         {
             x1 = mousePosition.getX();
             y1 = mousePosition.getY();
@@ -174,7 +173,7 @@ void GraphEditor::drawPotentialConnection(Graphics& g)
 void GraphEditor::addNodeConnectorListeners(Array<NodeConnectorUI*> nodeConnectors)
 {
     for (auto nodeConnector : nodeConnectors)
-        nodeConnector->addListener(this);
+        nodeConnector->addListener(&nodeConnectorInteractionHandler);
 }
 
 void GraphEditor::createIOProcessors()
@@ -186,8 +185,8 @@ void GraphEditor::createIOProcessors()
     for (int i = 0; i < audioInputs.size(); i++)
     {
         auto audioInput = audioInputs[i];
-        auto newInput = processorNodeUIInteractionHandler.createNode(NodeInstance::Input, Point<int>(), audioInput);
-        processorNodeUIInteractionHandler.initializeProcessor(newInput);
+        auto newInput = nodeInteractionHandler.createNode(NodeInstance::Input, Point<int>(), audioInput);
+        nodeInteractionHandler.initializeProcessor(newInput);
         inputs.add(newInput);
         ((Input*)newInput.get())->setChannel(i);
         newInput->setTopLeftPosition(INPUT_START_X, y);
@@ -198,8 +197,8 @@ void GraphEditor::createIOProcessors()
     for (int i = 0; i < audioOutputs.size(); i++)
     {
         auto audioOutput = audioOutputs[i];
-        auto newOutput = processorNodeUIInteractionHandler.createNode(NodeInstance::Output, Point<int>(), audioOutput);
-        processorNodeUIInteractionHandler.initializeProcessor(newOutput);
+        auto newOutput = nodeInteractionHandler.createNode(NodeInstance::Output, Point<int>(), audioOutput);
+        nodeInteractionHandler.initializeProcessor(newOutput);
 
         outputs.add(newOutput);
         ((Output*)newOutput.get())->setChannel(i);
@@ -304,8 +303,8 @@ void GraphEditor::handleRightClick(const MouseEvent& e)
     }
     else if (contextSelection > 0)
     {
-        auto processorUI = processorNodeUIInteractionHandler.createNode((NodeInstance)contextSelection, e.getPosition());
-        processorNodeUIInteractionHandler.initializeProcessor(processorUI);
+        auto processorUI = nodeInteractionHandler.createNode((NodeInstance)contextSelection, e.getPosition());
+        nodeInteractionHandler.initializeProcessor(processorUI);
     }
 }
 
@@ -324,7 +323,7 @@ void GraphEditor::duplicateSelectedProcessors()
         if (nodeInstance == NodeInstance::Input || nodeInstance == NodeInstance::Output)
             continue;
 
-        processorNodeUIInteractionHandler.duplicateProcessor(node);
+        nodeInteractionHandler.duplicateProcessor(node);
     }
 }
 
@@ -347,7 +346,7 @@ void GraphEditor::deleteSelectedProcessors()
         if (nodeInstance == NodeInstance::Input || nodeInstance == NodeInstance::Output)
             continue;
 
-        processorNodeUIInteractionHandler.deleteProcessor(node);
+        nodeInteractionHandler.deleteProcessor(node);
     }
 
     selectionHandler.clear();
@@ -395,7 +394,7 @@ void GraphEditor::onNewProject()
     {
         if (!io.contains(node))
         {
-            processorNodeUIInteractionHandler.deleteProcessor(node.get());
+            nodeInteractionHandler.deleteProcessor(node.get());
         }
     }
 
@@ -518,49 +517,49 @@ void GraphEditor::clear()
     selectionHandler.clear();
 }
 
-void GraphEditor::onNodeConnectorLeftClick(NodeConnectorUI* node, const MouseEvent& e)
-{
-    interactionState = InteractionState::DragConnection;
-    clickedNode = node;
-}
+// void GraphEditor::onNodeConnectorLeftClick(NodeConnectorUI* node, const MouseEvent& e)
+// {
+//     interactionState = InteractionState::DragConnection;
+//     clickedNode = node;
+// }
 
-void GraphEditor::onNodeConnectorRightClick(NodeConnectorUI* node, const MouseEvent& e)
-{
-    connectionHandler.deleteConnection(node);
-}
+// void GraphEditor::onNodeConnectorRightClick(NodeConnectorUI* node, const MouseEvent& e)
+// {
+//     connectionHandler.deleteConnection(node);
+// }
 
-void GraphEditor::onNodeConnectorDrag(NodeConnectorUI* nodeConnector, const MouseEvent& e)
-{
-    auto pos = e.getScreenPosition();
-    mousePosition = getLocalPoint(nullptr, pos);
+// void GraphEditor::onNodeConnectorDrag(NodeConnectorUI* nodeConnector, const MouseEvent& e)
+// {
+//     auto pos = e.getScreenPosition();
+//     mousePosition = getLocalPoint(nullptr, pos);
 
-    repaint();
-}
+//     repaint();
+// }
 
-void GraphEditor::onNodeConnectorLeftRelease(NodeConnectorUI* nodeConnecctor, const MouseEvent& e)
-{
-    auto* mouseUpNodeConnector = getNodeConnectorAtPosition(e.getScreenPosition());
+// void GraphEditor::onNodeConnectorLeftRelease(NodeConnectorUI* nodeConnecctor, const MouseEvent& e)
+// {
+//     auto* mouseUpNodeConnector = getNodeConnectorAtPosition(e.getScreenPosition());
 
-    if (mouseUpNodeConnector)
-    {
-        auto* startNode = clickedNode->getType() == NodeConnectorType::AudioOutput ? clickedNode : mouseUpNodeConnector;
-        auto* endNode = mouseUpNodeConnector->getType() == NodeConnectorType::AudioInput ? mouseUpNodeConnector : clickedNode;
+//     if (mouseUpNodeConnector)
+//     {
+//         auto* startNode = clickedNode->getType() == NodeConnectorType::AudioOutput ? clickedNode : mouseUpNodeConnector;
+//         auto* endNode = mouseUpNodeConnector->getType() == NodeConnectorType::AudioInput ? mouseUpNodeConnector : clickedNode;
 
-        if (!connectionHandler.connectionExists(startNode, endNode) 
-            && connectionHandler.nodesAreCompatible(startNode, endNode))
-        {
-            if (connectionHandler.isCreatingFeedback(startNode, endNode))
-                connectionHandler.createFeedbackConnection(startNode, endNode);
-            else
-                connectionHandler.createConnection(startNode, endNode);
-        }
-    }
+//         if (!connectionHandler.connectionExists(startNode, endNode) 
+//             && connectionHandler.nodesAreCompatible(startNode, endNode))
+//         {
+//             if (connectionHandler.isCreatingFeedback(startNode, endNode))
+//                 connectionHandler.createFeedbackConnection(startNode, endNode);
+//             else
+//                 connectionHandler.createConnection(startNode, endNode);
+//         }
+//     }
 
-    clickedNode = nullptr;
-    interactionState = InteractionState::None;
+//     clickedNode = nullptr;
+//     interactionState = InteractionState::None;
 
-    repaint();
-}
+//     repaint();
+// }
 
 // XmlElementPtr GraphEditor::generatePluginState()
 // {
@@ -641,55 +640,4 @@ void GraphEditor::loadFromExistingState(XmlElement* state)
     // createAllConnections(processorUIMap, xmlMap);
 
     // state->deleteAllChildElements();
-}
-
-void GraphEditor::onNodeClicked(NodeUI* node, const MouseEvent& e)
-{
-    if (!selectionHandler.contains(node))
-    {
-        selectionHandler.clear();
-    }
-
-    repaint();
-}
-
-void GraphEditor::onNodeMoved(NodeUI* node, const MouseEvent& e)
-{
-    auto newE = e.getEventRelativeTo(this);
-    selectionHandler.moveItems(newE.getOffsetFromDragStart());
-   
-    repaint();
-}
-
-void GraphEditor::onNodeReleased(NodeUI* node, const MouseEvent& e)
-{
-    globalSelection.updateItemPositions();
-    selectionHandler.updateItemPositions();
-}
-
-void GraphEditor::onNodeContextSelection(NodeUI* node, NodeUIConextMenuItems selection)
-{
-    if (selection == NodeUIConextMenuItems::Delete)
-    {
-        if (!selectionHandler.isEmpty())
-            deleteSelectedProcessors();
-        else
-            processorNodeUIInteractionHandler.deleteProcessor(node);
-    }
-    else if (selection == NodeUIConextMenuItems::Duplicate)
-    {
-        if (!selectionHandler.isEmpty())
-            duplicateSelectedProcessors();
-        else
-            processorNodeUIInteractionHandler.duplicateProcessor(node);
-    }
-    else if (selection == NodeUIConextMenuItems::Reverse)
-    {
-        if (!selectionHandler.isEmpty())
-            reverseSelectedProcessors();
-        else
-            node->reverse();
-    }
-
-    repaint();
 }

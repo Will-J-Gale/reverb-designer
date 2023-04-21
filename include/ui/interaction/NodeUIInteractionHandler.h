@@ -12,28 +12,28 @@
 #include <memory>
 #include <JuceHeader.h>
 #include <utils/Constants.h>
+#include <ui/nodes/NodeUI.h>
 
 class GraphEditor;
 class PluginGraph;
-class NodeUI;
 class AudioProcessorNode;
 
 #define NodeUIPtr std::shared_ptr<NodeUI>
 #define AudioProcessorNodePtr std::shared_ptr<AudioProcessorNode>
 
-class NodeUIInteractionHandler
+class NodeUIInteractionHandler : public NodeUI::Listener
 {
 public:
     NodeUIInteractionHandler() {};
     void initialize(GraphEditor* graphEditor, PluginGraph* pluginGraph);
 
-    /// Creates an audio processor node with UI and AuidoProcessorNode
-    NodeUIPtr createNode(NodeInstance type, Point<int> position);
-    /// Creates an audio processor node with UI and uses existing AudioProcessorNode
-    NodeUIPtr createNode(NodeInstance type, Point<int> position, AudioProcessorNodePtr processorNode);
-    //Cretes just ther UI for a node
+    void onNodeClicked(NodeUI* processor, const MouseEvent& e) override;
+    void onNodeMoved(NodeUI* processor, const MouseEvent& e) override;
+    void onNodeReleased(NodeUI* processor, const MouseEvent& e) override;
+    void onNodeContextSelection(NodeUI* processor, NodeUIConextMenuItems selection) override;
     
-    /// Adds NodeUI to processors list and displays in on the screen
+    NodeUIPtr createNode(NodeInstance type, Point<int> position);
+    NodeUIPtr createNode(NodeInstance type, Point<int> position, AudioProcessorNodePtr processorNode);
     void initializeProcessor(NodeUIPtr processor);
     /// Removed UI from screen and removes AudioProcessorNode from plugin graph
     void deleteProcessor(NodeUI* processor);

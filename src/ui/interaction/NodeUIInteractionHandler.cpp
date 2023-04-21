@@ -24,12 +24,62 @@ void NodeUIInteractionHandler::initialize(GraphEditor* graphEditor, PluginGraph*
     this->pluginGraph = pluginGraph;
 }
 
+void NodeUIInteractionHandler::onNodeClicked(NodeUI* node, const MouseEvent& e)
+{
+    if (!graphEditor->selectionHandler.contains(node))
+    {
+        graphEditor->selectionHandler.clear();
+    }
+
+    graphEditor->repaint();
+}
+
+void NodeUIInteractionHandler::onNodeMoved(NodeUI* node, const MouseEvent& e)
+{
+    auto newE = e.getEventRelativeTo(graphEditor);
+    graphEditor->selectionHandler.moveItems(newE.getOffsetFromDragStart());
+   
+    graphEditor->repaint();
+}
+
+void NodeUIInteractionHandler::onNodeReleased(NodeUI* node, const MouseEvent& e)
+{
+    graphEditor->selectionHandler.updateItemPositions();
+}
+
+void NodeUIInteractionHandler::onNodeContextSelection(NodeUI* node, NodeUIConextMenuItems selection)
+{
+    if (selection == NodeUIConextMenuItems::Delete)
+    {
+        if (!graphEditor->selectionHandler.isEmpty())
+            graphEditor->deleteSelectedProcessors();
+        else
+            deleteProcessor(node);
+    }
+    else if (selection == NodeUIConextMenuItems::Duplicate)
+    {
+        if (!graphEditor->selectionHandler.isEmpty())
+            graphEditor->duplicateSelectedProcessors();
+        else
+            duplicateProcessor(node);
+    }
+    else if (selection == NodeUIConextMenuItems::Reverse)
+    {
+        if (!graphEditor->selectionHandler.isEmpty())
+            graphEditor->reverseSelectedProcessors();
+        else
+            node->reverse();
+    }
+
+    graphEditor->repaint();
+}
+
 NodeUIPtr NodeUIInteractionHandler::createNode(NodeInstance type, Point<int> position)
 {
     jassert((type != NodeInstance::Input || type != NodeInstance::Output));
 
-    auto processorNode = pluginGraph->generateProcessorNode(type);
-    return createNode(type, position, processorNode);
+    auto node = graphEditor->pluginGraph->generateProcessorNode(type);
+    return createNode(type, position, node);
 
 }
 
@@ -43,13 +93,13 @@ NodeUIPtr NodeUIInteractionHandler::createNode(NodeInstance type, Point<int> pos
     return nodeUI;
 }
 
-void NodeUIInteractionHandler::initializeProcessor(NodeUIPtr processorNodeUI)
+void NodeUIInteractionHandler::initializeProcessor(NodeUIPtr node)
 {
-    processorNodeUI->addListener(graphEditor);
-    graphEditor->nodes.add(processorNodeUI);
-    graphEditor->nodeConnectors.addArray(processorNodeUI->getAllNodeConnectors());
-    graphEditor->addNodeConnectorListeners(processorNodeUI->getAllNodeConnectors());
-    graphEditor->addAndMakeVisible(processorNodeUI.get());
+    node->addListener(this);
+    graphEditor->nodes.add(node);
+    graphEditor->nodeConnectors.addArray(node->getAllNodeConnectors());
+    graphEditor->addNodeConnectorListeners(node->getAllNodeConnectors());
+    graphEditor->addAndMakeVisible(node.get());
 }
 
 void NodeUIInteractionHandler::deleteProcessor(NodeUI* node)

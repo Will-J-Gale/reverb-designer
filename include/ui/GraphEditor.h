@@ -25,6 +25,7 @@
 #include <ui/interaction/DragHandler.h>
 #include <ui/interaction/ConnectionHandler.h>
 #include <ui/interaction/NodeUIInteractionHandler.h>
+#include <ui/interaction/NodeConnectorInteractionHandler.h>
 #include <ui/nodes/NodeUI.h>
 
 //Forward declarations
@@ -34,9 +35,9 @@ class PluginGraph;
 
 class GraphEditor : public Component,
                     public ManagedArray,
-                    public NodeConnectorUI::Listener,
-                    public MainMenu::Listener,
-                    public NodeUI::Listener
+                    // public NodeConnectorUI::Listener,
+                    public MainMenu::Listener
+                    // public NodeUI::Listener
 {
 public:
     GraphEditor();
@@ -56,16 +57,10 @@ public:
     void reverseSelectedProcessors();
     void deleteSelectedProcessors();
 
-    //Listener callbacks
-    virtual void onNodeClicked(NodeUI* processor, const MouseEvent& e) override;
-    virtual void onNodeMoved(NodeUI* processor, const MouseEvent& e) override;
-    virtual void onNodeReleased(NodeUI* processor, const MouseEvent& e) override;
-    virtual void onNodeContextSelection(NodeUI* processor, NodeUIConextMenuItems selection) override;
-
-    virtual void onNodeConnectorLeftClick(NodeConnectorUI* nodeConnector, const MouseEvent& e) override;
-    virtual void onNodeConnectorRightClick(NodeConnectorUI* nodeConnector, const MouseEvent& e) override;
-    virtual void onNodeConnectorDrag(NodeConnectorUI* nodeConnector, const MouseEvent& e) override;
-    virtual void onNodeConnectorLeftRelease(NodeConnectorUI* nodeConnector, const MouseEvent& e) override;
+    // virtual void onNodeConnectorLeftClick(NodeConnectorUI* nodeConnector, const MouseEvent& e) override;
+    // virtual void onNodeConnectorRightClick(NodeConnectorUI* nodeConnector, const MouseEvent& e) override;
+    // virtual void onNodeConnectorDrag(NodeConnectorUI* nodeConnector, const MouseEvent& e) override;
+    // virtual void onNodeConnectorLeftRelease(NodeConnectorUI* nodeConnector, const MouseEvent& e) override;
     
     // XmlElementPtr generatePluginState();
     void loadFromExistingState(XmlElement* state);
@@ -98,7 +93,7 @@ private:
     Array<NodeConnectionPtr> connections;
     NodeConnection potentialConnection;
     Array<NodeConnectorUI*> nodeConnectors;
-    NodeConnectorUI* clickedNode = nullptr;
+    NodeConnectorUI* clickedNodeConnector = nullptr;
 
     PluginGraph* pluginGraph = nullptr;
 
@@ -115,10 +110,13 @@ private:
     //Interaction
     friend class ConnectionHandler;
     friend class NodeUIInteractionHandler;
+    friend class NodeConnectorInteractionHandler;
+    
     SelectionHandler globalSelection;
     SelectionHandler selectionHandler;
-    ZoomHandler zoomHandler = ZoomHandler(this);
-    DragHandler dragHandler = DragHandler(this);
+    ZoomHandler zoomHandler{this};
+    DragHandler dragHandler{this};
     ConnectionHandler connectionHandler; 
-    NodeUIInteractionHandler processorNodeUIInteractionHandler; 
+    NodeUIInteractionHandler nodeInteractionHandler; 
+    NodeConnectorInteractionHandler nodeConnectorInteractionHandler{this};
 };

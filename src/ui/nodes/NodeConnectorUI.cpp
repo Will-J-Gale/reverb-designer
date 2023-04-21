@@ -95,6 +95,7 @@ void NodeConnectorUI::mouseUp(const MouseEvent& e)
     {
         for (auto listener : listeners)
         {
+            int x = 1;
             listener->onNodeConnectorLeftRelease(this, e);
         }
     }
