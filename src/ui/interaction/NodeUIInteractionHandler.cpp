@@ -1,7 +1,7 @@
 /*
   ==============================================================================
 
-    NodeUIHandler.cpp
+    NodeUIInteractionHandler.cpp
     Created: 26 Oct 2020 9:45:05pm
     Author:  Will
 
@@ -9,7 +9,7 @@
 */
 
 #include <dsp/AudioProcessorNode.h>
-#include <ui/interaction/NodeUIHandler.h>
+#include <ui/interaction/NodeUIInteractionHandler.h>
 #include <ui/nodes/audioProcessors/AudioProcessorNodeUI.h>
 #include <ui/nodes/audioProcessors/AudioProcessorNodeUIFactory.h>
 #include <ui/GraphEditor.h>
@@ -18,13 +18,13 @@
 #include <ui/nodes/NodeUI.h>
 #include <utils/Constants.h>
 
-void NodeUIHandler::initialize(GraphEditor* graphEditor, PluginGraph* pluginGraph)
+void NodeUIInteractionHandler::initialize(GraphEditor* graphEditor, PluginGraph* pluginGraph)
 {
     this->graphEditor = graphEditor;
     this->pluginGraph = pluginGraph;
 }
 
-NodeUIPtr NodeUIHandler::createNode(NodeInstance type, Point<int> position)
+NodeUIPtr NodeUIInteractionHandler::createNode(NodeInstance type, Point<int> position)
 {
     jassert((type != NodeInstance::Input || type != NodeInstance::Output));
 
@@ -33,7 +33,7 @@ NodeUIPtr NodeUIHandler::createNode(NodeInstance type, Point<int> position)
 
 }
 
-NodeUIPtr NodeUIHandler::createNode(NodeInstance type, Point<int> position, AudioProcessorNodePtr processorNode)
+NodeUIPtr NodeUIInteractionHandler::createNode(NodeInstance type, Point<int> position, AudioProcessorNodePtr processorNode)
 {
     NodeUIPtr nodeUI = AudioProcessorNodeUIFactory::Generate(type);
 
@@ -43,7 +43,7 @@ NodeUIPtr NodeUIHandler::createNode(NodeInstance type, Point<int> position, Audi
     return nodeUI;
 }
 
-void NodeUIHandler::initializeProcessor(NodeUIPtr processorNodeUI)
+void NodeUIInteractionHandler::initializeProcessor(NodeUIPtr processorNodeUI)
 {
     processorNodeUI->addListener(graphEditor);
     graphEditor->nodes.add(processorNodeUI);
@@ -52,7 +52,7 @@ void NodeUIHandler::initializeProcessor(NodeUIPtr processorNodeUI)
     graphEditor->addAndMakeVisible(processorNodeUI.get());
 }
 
-void NodeUIHandler::deleteProcessor(NodeUI* node)
+void NodeUIInteractionHandler::deleteProcessor(NodeUI* node)
 {
     Array<NodeConnectorUI*> nodeConnectors = node->getAllNodeConnectors();
     for (auto* nodeConnector : nodeConnectors)
@@ -66,7 +66,7 @@ void NodeUIHandler::deleteProcessor(NodeUI* node)
     // pluginGraph->updateProcessPath();
 }
 
-void NodeUIHandler::duplicateProcessor(NodeUI* node)
+void NodeUIInteractionHandler::duplicateProcessor(NodeUI* node)
 {
     auto newProcessor = createNode(node->getNodeInstance(), node->getPosition () + Point<int>(DUPLICATE_OFFSET_X, DUPLICATE_OFFSET_Y));
     // auto parameters = node->getAudioParametersAsXml();

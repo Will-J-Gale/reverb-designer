@@ -117,7 +117,7 @@ void GraphEditor::setPluginGraph(PluginGraph* pluginGraph)
 {
     this->pluginGraph = pluginGraph;
     auto pluginState = pluginGraph->getPluginState();
-    processorNodeUIHandler.initialize(this, pluginGraph);
+    processorNodeUIInteractionHandler.initialize(this, pluginGraph);
     connectionHandler.initialize(this, pluginGraph);
 
     if (pluginState != nullptr)
@@ -186,8 +186,8 @@ void GraphEditor::createIOProcessors()
     for (int i = 0; i < audioInputs.size(); i++)
     {
         auto audioInput = audioInputs[i];
-        auto newInput = processorNodeUIHandler.createNode(NodeInstance::Input, Point<int>(), audioInput);
-        processorNodeUIHandler.initializeProcessor(newInput);
+        auto newInput = processorNodeUIInteractionHandler.createNode(NodeInstance::Input, Point<int>(), audioInput);
+        processorNodeUIInteractionHandler.initializeProcessor(newInput);
         inputs.add(newInput);
         ((Input*)newInput.get())->setChannel(i);
         newInput->setTopLeftPosition(INPUT_START_X, y);
@@ -198,8 +198,8 @@ void GraphEditor::createIOProcessors()
     for (int i = 0; i < audioOutputs.size(); i++)
     {
         auto audioOutput = audioOutputs[i];
-        auto newOutput = processorNodeUIHandler.createNode(NodeInstance::Output, Point<int>(), audioOutput);
-        processorNodeUIHandler.initializeProcessor(newOutput);
+        auto newOutput = processorNodeUIInteractionHandler.createNode(NodeInstance::Output, Point<int>(), audioOutput);
+        processorNodeUIInteractionHandler.initializeProcessor(newOutput);
 
         outputs.add(newOutput);
         ((Output*)newOutput.get())->setChannel(i);
@@ -299,13 +299,13 @@ void GraphEditor::handleRightClick(const MouseEvent& e)
     }
     else if (contextSelection == (int)GraphEditorContextMenuItems::Macro)
     {
-        // auto processorUI = processorNodeUIHandler.createNodeUI((NodeType)contextSelection, e.getPosition());
-        // processorNodeUIHandler.initializeProcessor(processorUI);
+        // auto processorUI = processorNodeUIInteractionHandler.createNodeUI((NodeType)contextSelection, e.getPosition());
+        // processorNodeUIInteractionHandler.initializeProcessor(processorUI);
     }
     else if (contextSelection > 0)
     {
-        auto processorUI = processorNodeUIHandler.createNode((NodeInstance)contextSelection, e.getPosition());
-        processorNodeUIHandler.initializeProcessor(processorUI);
+        auto processorUI = processorNodeUIInteractionHandler.createNode((NodeInstance)contextSelection, e.getPosition());
+        processorNodeUIInteractionHandler.initializeProcessor(processorUI);
     }
 }
 
@@ -324,7 +324,7 @@ void GraphEditor::duplicateSelectedProcessors()
         if (nodeInstance == NodeInstance::Input || nodeInstance == NodeInstance::Output)
             continue;
 
-        processorNodeUIHandler.duplicateProcessor(node);
+        processorNodeUIInteractionHandler.duplicateProcessor(node);
     }
 }
 
@@ -347,7 +347,7 @@ void GraphEditor::deleteSelectedProcessors()
         if (nodeInstance == NodeInstance::Input || nodeInstance == NodeInstance::Output)
             continue;
 
-        processorNodeUIHandler.deleteProcessor(node);
+        processorNodeUIInteractionHandler.deleteProcessor(node);
     }
 
     selectionHandler.clear();
@@ -395,7 +395,7 @@ void GraphEditor::onNewProject()
     {
         if (!io.contains(node))
         {
-            processorNodeUIHandler.deleteProcessor(node.get());
+            processorNodeUIInteractionHandler.deleteProcessor(node.get());
         }
     }
 
@@ -467,7 +467,7 @@ std::shared_ptr<AudioProcessorState> GraphEditor::loadStateFromFile(std::string 
     //     {
     //         auto channel = parametersXML->getChildByName(IO_CHANNEL_TAG)->getAllSubText().getIntValue();
 
-    //         processorUI = processorNodeUIHandler.createNode(NodeType::Input, Point<int>(x, y));
+    //         processorUI = processorNodeUIInteractionHandler.createNode(NodeType::Input, Point<int>(x, y));
     //         processorUI->setAudioParametersFromXml(parametersXML);
 
     //         inputs.add(processorUI);
@@ -477,7 +477,7 @@ std::shared_ptr<AudioProcessorState> GraphEditor::loadStateFromFile(std::string 
     //     {
     //         auto channel = parametersXML->getChildByName(IO_CHANNEL_TAG)->getAllSubText().getIntValue();
 
-    //         processorUI = processorNodeUIHandler.createNode(NodeType::Output, Point<int>(x, y));
+    //         processorUI = processorNodeUIInteractionHandler.createNode(NodeType::Output, Point<int>(x, y));
     //         processorUI->setAudioParametersFromXml(parametersXML);
 
     //         outputs.add(processorUI);
@@ -485,7 +485,7 @@ std::shared_ptr<AudioProcessorState> GraphEditor::loadStateFromFile(std::string 
     //     }
     //     else //Processor does not exist
     //     {
-    //         processorUI = processorNodeUIHandler.createNode(type, Point<int>(x, y));
+    //         processorUI = processorNodeUIInteractionHandler.createNode(type, Point<int>(x, y));
     //         processorUI->setAudioParametersFromXml(parametersXML);
 
     //         tempAllBlocks.add(processorUI->getProcessorNode());
@@ -494,7 +494,7 @@ std::shared_ptr<AudioProcessorState> GraphEditor::loadStateFromFile(std::string 
     //     if (isReversed)
     //         processorUI->reverse();
 
-    //     processorNodeUIHandler.initializeProcessor(processorUI);
+    //     processorNodeUIInteractionHandler.initializeProcessor(processorUI);
 
     //     processorUIMap[id] = processorUI;
     // }
@@ -604,7 +604,7 @@ void GraphEditor::loadFromExistingState(XmlElement* state)
     //         auto channel = parametersXML->getChildByName(IO_CHANNEL_TAG)->getAllSubText().getIntValue();
     //         auto processorNode = pluginGraph->getInputs()[channel];
 
-    //         processorUI = processorNodeUIHandler.createNode(NodeType::Input, Point<int>(x, y), processorNode);
+    //         processorUI = processorNodeUIInteractionHandler.createNode(NodeType::Input, Point<int>(x, y), processorNode);
     //         processorUI->setAudioParametersFromXml(parametersXML);
 
     //         inputs.add(processorUI);
@@ -614,7 +614,7 @@ void GraphEditor::loadFromExistingState(XmlElement* state)
     //         auto channel = parametersXML->getChildByName(IO_CHANNEL_TAG)->getAllSubText().getIntValue();
     //         auto processorNode = pluginGraph->getOutputs()[channel];
 
-    //         processorUI = processorNodeUIHandler.createNode(NodeType::Output, Point<int>(), processorNode);
+    //         processorUI = processorNodeUIInteractionHandler.createNode(NodeType::Output, Point<int>(), processorNode);
     //         processorUI->setTopLeftPosition(Point<int>(x, y));
     //         processorUI->setAudioParametersFromXml(parametersXML);
 
@@ -623,18 +623,18 @@ void GraphEditor::loadFromExistingState(XmlElement* state)
     //     else if (processorNodeMap.count(id) > 0)//Processor Exists
     //     {
     //         auto processorNode = processorNodeMap[id];
-    //         processorUI = processorNodeUIHandler.createNode(type, Point<int>(x, y), processorNode);
+    //         processorUI = processorNodeUIInteractionHandler.createNode(type, Point<int>(x, y), processorNode);
     //     }
     //     else //Processor does not exist
     //     {
-    //         processorUI = processorNodeUIHandler.createNode(type, Point<int>(x, y));
+    //         processorUI = processorNodeUIInteractionHandler.createNode(type, Point<int>(x, y));
     //         processorUI->setAudioParametersFromXml(parametersXML);
     //     }
 
     //     if (isReversed)
     //         processorUI->reverse();
 
-    //     processorNodeUIHandler.initializeProcessor(processorUI);
+    //     processorNodeUIInteractionHandler.initializeProcessor(processorUI);
     //     processorUIMap[id] = processorUI;
     // }
 
@@ -674,14 +674,14 @@ void GraphEditor::onNodeContextSelection(NodeUI* node, NodeUIConextMenuItems sel
         if (!selectionHandler.isEmpty())
             deleteSelectedProcessors();
         else
-            processorNodeUIHandler.deleteProcessor(node);
+            processorNodeUIInteractionHandler.deleteProcessor(node);
     }
     else if (selection == NodeUIConextMenuItems::Duplicate)
     {
         if (!selectionHandler.isEmpty())
             duplicateSelectedProcessors();
         else
-            processorNodeUIHandler.duplicateProcessor(node);
+            processorNodeUIInteractionHandler.duplicateProcessor(node);
     }
     else if (selection == NodeUIConextMenuItems::Reverse)
     {
