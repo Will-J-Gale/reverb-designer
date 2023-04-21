@@ -187,7 +187,6 @@ void GraphEditor::createIOProcessors()
     {
         auto audioInput = audioInputs[i];
         auto newInput = processorNodeUIHandler.createNode(NodeType::Input, Point<int>(), audioInput);
-        // auto newInput = std::make_shared<Input>();
         processorNodeUIHandler.initializeProcessor(newInput);
         inputs.add(newInput);
         ((Input*)newInput.get())->setChannel(i);
@@ -200,7 +199,6 @@ void GraphEditor::createIOProcessors()
     {
         auto audioOutput = audioOutputs[i];
         auto newOutput = processorNodeUIHandler.createNode(NodeType::Output, Point<int>(), audioOutput);
-        // auto newOutput = std::make_shared<Output>();
         processorNodeUIHandler.initializeProcessor(newOutput);
 
         outputs.add(newOutput);
@@ -525,18 +523,18 @@ void GraphEditor::clear()
     selectionHandler.clear();
 }
 
-void GraphEditor::onNodeLeftClick(NodeConnectorUI* node, const MouseEvent& e)
+void GraphEditor::onNodeConnectorLeftClick(NodeConnectorUI* node, const MouseEvent& e)
 {
     interactionState = InteractionState::DragConnection;
     clickedNode = node;
 }
 
-void GraphEditor::onNodeRightClick(NodeConnectorUI* node, const MouseEvent& e)
+void GraphEditor::onNodeConnectorRightClick(NodeConnectorUI* node, const MouseEvent& e)
 {
     connectionHandler.deleteConnection(node);
 }
 
-void GraphEditor::onNodeDrag(NodeConnectorUI* node, const MouseEvent& e)
+void GraphEditor::onNodeConnectorDrag(NodeConnectorUI* node, const MouseEvent& e)
 {
     auto pos = e.getScreenPosition();
     mousePosition = getLocalPoint(nullptr, pos);
@@ -544,7 +542,7 @@ void GraphEditor::onNodeDrag(NodeConnectorUI* node, const MouseEvent& e)
     repaint();
 }
 
-void GraphEditor::onNodeLeftRelease(NodeConnectorUI* node, const MouseEvent& e)
+void GraphEditor::onNodeConnectorLeftRelease(NodeConnectorUI* node, const MouseEvent& e)
 {
     auto* mouseUpNode = getNodeConnectorAtPosition(e.getScreenPosition());
 
@@ -650,7 +648,7 @@ void GraphEditor::loadFromExistingState(XmlElement* state)
     // state->deleteAllChildElements();
 }
 
-void GraphEditor::onProcessorClicked(NodeUI* node, const MouseEvent& e)
+void GraphEditor::onNodeClicked(NodeUI* node, const MouseEvent& e)
 {
     if (!selectionHandler.contains(node))
     {
@@ -660,7 +658,7 @@ void GraphEditor::onProcessorClicked(NodeUI* node, const MouseEvent& e)
     repaint();
 }
 
-void GraphEditor::onProcessorMoved(NodeUI* node, const MouseEvent& e)
+void GraphEditor::onNodeMoved(NodeUI* node, const MouseEvent& e)
 {
     auto newE = e.getEventRelativeTo(this);
     selectionHandler.moveItems(newE.getOffsetFromDragStart());
@@ -668,13 +666,13 @@ void GraphEditor::onProcessorMoved(NodeUI* node, const MouseEvent& e)
     repaint();
 }
 
-void GraphEditor::onProcessorReleased(NodeUI* node, const MouseEvent& e)
+void GraphEditor::onNodeReleased(NodeUI* node, const MouseEvent& e)
 {
     globalSelection.updateItemPositions();
     selectionHandler.updateItemPositions();
 }
 
-void GraphEditor::onContextSelection(NodeUI* node, NodeUIConextMenuItems selection)
+void GraphEditor::onNodeContextSelection(NodeUI* node, NodeUIConextMenuItems selection)
 {
     if (selection == NodeUIConextMenuItems::Delete)
     {

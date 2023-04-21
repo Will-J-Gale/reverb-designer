@@ -25,10 +25,10 @@ public:
     class Listener
     {
     public:
-        virtual void onNodeLeftClick(NodeConnectorUI* node, const MouseEvent& e) = 0;
-        virtual void onNodeRightClick(NodeConnectorUI* node, const MouseEvent& e) = 0;
-        virtual void onNodeDrag(NodeConnectorUI* node, const MouseEvent& e) = 0;
-        virtual void onNodeLeftRelease(NodeConnectorUI* node, const MouseEvent& e) = 0;
+        virtual void onNodeConnectorLeftClick(NodeConnectorUI* node, const MouseEvent& e) = 0;
+        virtual void onNodeConnectorRightClick(NodeConnectorUI* node, const MouseEvent& e) = 0;
+        virtual void onNodeConnectorDrag(NodeConnectorUI* node, const MouseEvent& e) = 0;
+        virtual void onNodeConnectorLeftRelease(NodeConnectorUI* node, const MouseEvent& e) = 0;
     };
 
     NodeConnectorUI();

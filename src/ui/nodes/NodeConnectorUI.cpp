@@ -75,9 +75,9 @@ void NodeConnectorUI::mouseDown(const MouseEvent& e)
     for (auto listener : listeners)
     {
         if (e.mods.isLeftButtonDown())
-            listener->onNodeLeftClick(this, e);
+            listener->onNodeConnectorLeftClick(this, e);
         else if (e.mods.isRightButtonDown())
-            listener->onNodeRightClick(this, e);
+            listener->onNodeConnectorRightClick(this, e);
     }
 }
 
@@ -85,7 +85,7 @@ void NodeConnectorUI::mouseDrag(const MouseEvent& e)
 {
     for (auto listener : listeners)
     {
-        listener->onNodeDrag(this, e);
+        listener->onNodeConnectorDrag(this, e);
     }
 }
 
@@ -95,7 +95,7 @@ void NodeConnectorUI::mouseUp(const MouseEvent& e)
     {
         for (auto listener : listeners)
         {
-            listener->onNodeLeftRelease(this, e);
+            listener->onNodeConnectorLeftRelease(this, e);
         }
     }
 }

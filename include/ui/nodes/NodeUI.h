@@ -31,10 +31,10 @@ public:
     class Listener
     {
     public:
-        virtual void onProcessorClicked(NodeUI* processor, const MouseEvent& e) = 0;
-        virtual void onProcessorMoved(NodeUI* processor, const MouseEvent& e) = 0;
-        virtual void onProcessorReleased(NodeUI* processor, const MouseEvent& e) = 0;
-        virtual void onContextSelection(NodeUI* processor, NodeUIConextMenuItems selection) = 0;
+        virtual void onNodeClicked(NodeUI* processor, const MouseEvent& e) = 0;
+        virtual void onNodeMoved(NodeUI* processor, const MouseEvent& e) = 0;
+        virtual void onNodeReleased(NodeUI* processor, const MouseEvent& e) = 0;
+        virtual void onNodeContextSelection(NodeUI* processor, NodeUIConextMenuItems selection) = 0;
     };
 
     NodeUI(){};

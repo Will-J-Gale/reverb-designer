@@ -57,15 +57,15 @@ public:
     void deleteSelectedProcessors();
 
     //Listener callbacks
-    virtual void onProcessorClicked(NodeUI* processor, const MouseEvent& e) override;
-    virtual void onProcessorMoved(NodeUI* processor, const MouseEvent& e) override;
-    virtual void onProcessorReleased(NodeUI* processor, const MouseEvent& e) override;
-    virtual void onContextSelection(NodeUI* processor, NodeUIConextMenuItems selection) override;
+    virtual void onNodeClicked(NodeUI* processor, const MouseEvent& e) override;
+    virtual void onNodeMoved(NodeUI* processor, const MouseEvent& e) override;
+    virtual void onNodeReleased(NodeUI* processor, const MouseEvent& e) override;
+    virtual void onNodeContextSelection(NodeUI* processor, NodeUIConextMenuItems selection) override;
 
-    virtual void onNodeLeftClick(NodeConnectorUI* nodeConnector, const MouseEvent& e) override;
-    virtual void onNodeRightClick(NodeConnectorUI* nodeConnector, const MouseEvent& e) override;
-    virtual void onNodeDrag(NodeConnectorUI* nodeConnector, const MouseEvent& e) override;
-    virtual void onNodeLeftRelease(NodeConnectorUI* nodeConnector, const MouseEvent& e) override;
+    virtual void onNodeConnectorLeftClick(NodeConnectorUI* nodeConnector, const MouseEvent& e) override;
+    virtual void onNodeConnectorRightClick(NodeConnectorUI* nodeConnector, const MouseEvent& e) override;
+    virtual void onNodeConnectorDrag(NodeConnectorUI* nodeConnector, const MouseEvent& e) override;
+    virtual void onNodeConnectorLeftRelease(NodeConnectorUI* nodeConnector, const MouseEvent& e) override;
     
     // XmlElementPtr generatePluginState();
     void loadFromExistingState(XmlElement* state);

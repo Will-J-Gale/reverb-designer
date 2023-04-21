@@ -74,7 +74,7 @@ void NodeUI::mouseDown(const MouseEvent& e)
     {
         for (auto listener : listeners)
         {
-            listener->onProcessorClicked(this, e);
+            listener->onNodeClicked(this, e);
         }
     }
 }
@@ -85,7 +85,7 @@ void NodeUI::mouseDrag(const MouseEvent& e)
 
     for (auto listener : listeners)
     {
-        listener->onProcessorMoved(this, e);
+        listener->onNodeMoved(this, e);
     }
 }
 
@@ -93,7 +93,7 @@ void NodeUI::mouseUp(const MouseEvent& e)
 {
     for (auto listener : listeners)
     {
-        listener->onProcessorReleased(this, e);
+        listener->onNodeReleased(this, e);
     }
 }
 
@@ -103,7 +103,7 @@ void NodeUI::handleRightClick()
 
     for (auto listener : listeners)
     {
-        listener->onContextSelection(this, selection);
+        listener->onNodeContextSelection(this, selection);
     }
 }
 
