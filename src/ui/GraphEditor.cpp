@@ -301,7 +301,6 @@ void GraphEditor::handleRightClick(const MouseEvent& e)
     {
         // auto processorUI = processorNodeUIHandler.createNodeUI((NodeType)contextSelection, e.getPosition());
         // processorNodeUIHandler.initializeProcessor(processorUI);
-        jassert("Not Implemented");
     }
     else if (contextSelection > 0)
     {
@@ -352,8 +351,6 @@ void GraphEditor::deleteSelectedProcessors()
     }
 
     selectionHandler.clear();
-
-    jassert("Not implemented");
 }
 
 NodeConnectorUI* GraphEditor::getNodeConnectorAtPosition(Point<int> screenPos)

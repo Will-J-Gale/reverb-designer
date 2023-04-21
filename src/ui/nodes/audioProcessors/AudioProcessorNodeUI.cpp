@@ -30,10 +30,7 @@ AudioProcessorNodePtr AudioProcessorNodeUI::getProcessorNode()
 
 void AudioProcessorNodeUI::setProcessorNode(AudioProcessorNodePtr processorNode)
 {
-    if (processorNode->getNodeInstance() != nodeInstance)
-    {
-        jassert("Cannot pass processing block of different type to UI");
-    }
+    // jassert(processorNode->getNodeInstance() == nodeInstance);
 
     this->processorNode = processorNode;
     this->setUIParameters();

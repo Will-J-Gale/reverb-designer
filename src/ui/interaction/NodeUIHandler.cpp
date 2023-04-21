@@ -26,8 +26,7 @@ void NodeUIHandler::initialize(GraphEditor* graphEditor, PluginGraph* pluginGrap
 
 NodeUIPtr NodeUIHandler::createNode(NodeInstance type, Point<int> position)
 {
-    if (type == NodeInstance::Input || type == NodeInstance::Output)
-        jassert("Cannot create input or output processor without providing AudioProcessorNode");
+    jassert((type != NodeInstance::Input || type != NodeInstance::Output));
 
     auto processorNode = pluginGraph->generateProcessorNode(type);
     return createNode(type, position, processorNode);
