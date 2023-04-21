@@ -24,9 +24,9 @@ void NodeUIHandler::initialize(GraphEditor* graphEditor, PluginGraph* pluginGrap
     this->pluginGraph = pluginGraph;
 }
 
-NodeUIPtr NodeUIHandler::createNode(NodeType type, Point<int> position)
+NodeUIPtr NodeUIHandler::createNode(NodeInstance type, Point<int> position)
 {
-    if (type == NodeType::Input || type == NodeType::Output)
+    if (type == NodeInstance::Input || type == NodeInstance::Output)
         jassert("Cannot create input or output processor without providing AudioProcessorNode");
 
     auto processorNode = pluginGraph->generateProcessorNode(type);
@@ -34,7 +34,7 @@ NodeUIPtr NodeUIHandler::createNode(NodeType type, Point<int> position)
 
 }
 
-NodeUIPtr NodeUIHandler::createNode(NodeType type, Point<int> position, AudioProcessorNodePtr processorNode)
+NodeUIPtr NodeUIHandler::createNode(NodeInstance type, Point<int> position, AudioProcessorNodePtr processorNode)
 {
     NodeUIPtr nodeUI = AudioProcessorNodeUIFactory::Generate(type);
 
@@ -48,8 +48,8 @@ void NodeUIHandler::initializeProcessor(NodeUIPtr processorNodeUI)
 {
     processorNodeUI->addListener(graphEditor);
     graphEditor->nodes.add(processorNodeUI);
-    // graphEditor->nodeConnectors.addArray(processorNodeUI->getAllNodeConnectors());
-    // graphEditor->addNodeConnectorListeners(processorNodeUI->getAllNodeConnectors());
+    graphEditor->nodeConnectors.addArray(processorNodeUI->getAllNodeConnectors());
+    graphEditor->addNodeConnectorListeners(processorNodeUI->getAllNodeConnectors());
     graphEditor->addAndMakeVisible(processorNodeUI.get());
 }
 

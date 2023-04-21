@@ -194,6 +194,7 @@ const bool MACRO_WINDOW_RESIZABLE = true;
 const bool MACRO_WINDOW_CORNER_RESIZE = false;
 const bool MACRO_WINDOW_DEFAULT_VISIBLE = true;
 const bool MACRO_WINDOW_USE_NATIVE_WINDOW = true;
+const String MACRO_DEFAULT_NAME = "Macro";
 
 //Main menu
 constexpr int MENU_HEIGHT = 20;
@@ -230,7 +231,7 @@ enum class ConnectionType
     Feedback
 };
 
-enum class NodeType
+enum class NodeInstance
 {
     Macro = -3,
     Input = -2,
@@ -247,7 +248,7 @@ enum class NodeType
     NestedApf
 };
 
-enum class NodeUIType
+enum class NodeClass
 {
     IO,
     AudioProcessor,
@@ -258,15 +259,15 @@ enum class NodeUIType
 enum class GraphEditorContextMenuItems
 {
     //DSP Objects
-    EMPTY = (int)NodeType::EMPTY,
-    Gain = (int)NodeType::Gain,
-    Delay = (int)NodeType::Delay,
-    Filter = (int)NodeType::Filter,
-    APF = (int)NodeType::APF,
-    Comb = (int)NodeType::Comb,
-    ModDelay = (int)NodeType::ModDelay,
-    NestedApf = (int)NodeType::NestedApf,
-    Macro = (int)NodeType::Macro,
+    EMPTY = (int)NodeInstance::EMPTY,
+    Gain = (int)NodeInstance::Gain,
+    Delay = (int)NodeInstance::Delay,
+    Filter = (int)NodeInstance::Filter,
+    APF = (int)NodeInstance::APF,
+    Comb = (int)NodeInstance::Comb,
+    ModDelay = (int)NodeInstance::ModDelay,
+    NestedApf = (int)NodeInstance::NestedApf,
+    Macro = (int)NodeInstance::Macro,
 
     //Actions
     Duplicate,

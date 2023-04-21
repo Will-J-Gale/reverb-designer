@@ -12,7 +12,7 @@
 #include <utils/Constants.h>
 #include <utils/XmlUtils.h>
 
-CombFilterNode::CombFilterNode(NodeType type) : AudioProcessorNodeUI(type)
+CombFilterNode::CombFilterNode() : AudioProcessorNodeUI(COMB_NAME, NodeInstance::Comb)
 {
     setBounds(0, 0, COMB_WIDTH, COMB_HEIGHT);
     updateNameAndReCenter(COMB_NAME);

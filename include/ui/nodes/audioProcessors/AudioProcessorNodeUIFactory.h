@@ -26,39 +26,39 @@
 
 namespace AudioProcessorNodeUIFactory
 {
-    inline NodeUIPtr Generate(NodeType type)
+    inline NodeUIPtr Generate(NodeInstance type)
     {
         switch (type)
         {
-            case NodeType::Input:
+            case NodeInstance::Input:
                 return std::make_shared<Input>();
 
-            case NodeType::Output:
+            case NodeInstance::Output:
                 return std::make_shared<Output>();
 
-            case NodeType::Gain:
-                return std::make_shared<GainNode>(type);
+            case NodeInstance::Gain:
+                return std::make_shared<GainNode>();
 
-            case NodeType::Delay:
-                return std::make_shared<SimpleDelayNode>(type);
+            case NodeInstance::Delay:
+                return std::make_shared<SimpleDelayNode>();
 
-            case NodeType::Filter:
-                return std::make_shared<BiquadFilterNode>(type);
+            case NodeInstance::Filter:
+                return std::make_shared<BiquadFilterNode>();
 
-            case NodeType::APF:
-                return std::make_shared<AllPassFilterNode>(type);
+            case NodeInstance::APF:
+                return std::make_shared<AllPassFilterNode>();
 
-            case NodeType::Comb:
-                return std::make_shared<CombFilterNode>(type);
+            case NodeInstance::Comb:
+                return std::make_shared<CombFilterNode>();
 
-            case NodeType::ModDelay:
-                return std::make_shared<ModDelayNode>(type);
+            case NodeInstance::ModDelay:
+                return std::make_shared<ModDelayNode>();
 
-            case NodeType::NestedApf:
-                return std::make_shared<NestedAPFNode>(type);
+            case NodeInstance::NestedApf:
+                return std::make_shared<NestedAPFNode>();
             
-            case NodeType::Macro:
-                return std::make_shared<AudioProcessorMacroNode>(type);
+            case NodeInstance::Macro:
+                return std::make_shared<AudioProcessorMacroNode>();
 
             default:
                 throw std::invalid_argument("Missing object type");

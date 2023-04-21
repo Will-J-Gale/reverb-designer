@@ -13,10 +13,9 @@
 #include <ui/GraphEditor.h>
 #include <utils/XmlUtils.h>
 
-AllPassFilterNode::AllPassFilterNode(NodeType type) : AudioProcessorNodeUI(type)
+AllPassFilterNode::AllPassFilterNode() : AudioProcessorNodeUI(APF_NAME, NodeInstance::APF)
 {
     setBounds(0, 0, APF_WIDTH, APF_HEIGHT);
-    updateNameAndReCenter(APF_NAME);
 
     delayTime.setTopLeftPosition(PARAMETER_X_OFFSET, PARAMETER_Y_OFFSET);
     apfG.setTopLeftPosition(PARAMETER_X_OFFSET, PARAMETER_Y_OFFSET + SLIDER_SPACING);

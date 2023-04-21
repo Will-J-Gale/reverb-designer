@@ -1,6 +1,6 @@
 #include <ui/nodes/audioProcessors/AudioProcessorMacroNode.h>
 
-AudioProcessorMacroNode::AudioProcessorMacroNode(NodeType type) : AudioProcessorNodeUI(type)
+AudioProcessorMacroNode::AudioProcessorMacroNode(String name) : AudioProcessorNodeUI(name, NodeInstance::Macro)
 {
     setBounds(0, 0, GAIN_WIDTH, GAIN_HEIGHT);
 

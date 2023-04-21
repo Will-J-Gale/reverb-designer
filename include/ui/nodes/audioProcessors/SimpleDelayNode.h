@@ -20,7 +20,7 @@ class SimpleDelayNode : public AudioProcessorNodeUI,
                       public TextEditor::Listener
 {
 public:
-    SimpleDelayNode(NodeType type);
+    SimpleDelayNode();
     ~SimpleDelayNode();
 
     void textEditorTextChanged(TextEditor& textEditor) override;

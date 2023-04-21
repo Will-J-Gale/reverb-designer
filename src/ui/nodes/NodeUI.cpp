@@ -1,9 +1,10 @@
 #include <ui/nodes/NodeUI.h>
 
-NodeUI::NodeUI(String name, NodeUIType type)
+NodeUI::NodeUI(String name, NodeClass nodeClass, NodeInstance nodeInstance)
 {
-    this->type = type;
     this->name = name;
+    this->nodeClass = nodeClass;
+    this->nodeInstance = nodeInstance;
 
     initialize();
 }
@@ -39,6 +40,85 @@ void NodeUI::addOutputConnector()
     
     addAndMakeVisible(output.get());
 }
+
+NodeConnectorUI* NodeUI::getInputNode()
+{
+    return input.get();
+}
+
+NodeConnectorUI* NodeUI::getOutputNode()
+{
+	return output.get();
+}
+
+Array<NodeConnectorUI*> NodeUI::getAllNodeConnectors()
+{
+    Array<NodeConnectorUI*> nodes;
+
+    if (input != nullptr)
+        nodes.add(input.get());
+
+    if (output != nullptr)
+        nodes.add(output.get());
+
+    return nodes;
+}
+
+void NodeUI::connectInput(NodeConnectorUI* connection)
+{
+    if (!inputConnections.contains(connection))
+    {
+        inputConnections.add(connection);
+        // this->processorNode->connectInput(connection->getProcessorNode().get());
+    }
+    
+}
+
+void NodeUI::connectFeedbackInput(NodeConnectorUI* connection)
+{
+    if (!feedbackConnections.contains(connection))
+    {
+        feedbackConnections.add(connection);
+        // this->processorNode->connectFeedbackInput(connection->getProcessorNode().get());
+    }
+}
+
+void NodeUI::connectOutput(NodeConnectorUI* connection)
+{
+    if (!outputConnections.contains(connection))
+    {
+        outputConnections.add(connection);
+        // this->processorNode->connectOutput(connection->getProcessorNode().get());
+    } 
+}
+
+void NodeUI::disconnectInput(NodeConnectorUI* connection)
+{
+    removeFromArray(inputConnections, connection);
+    // this->processorNode->disconnectInput(connection->getProcessorNode().get());
+}
+
+void NodeUI::disconnectOutput(NodeConnectorUI* connection)
+{
+    removeFromArray(outputConnections, connection);
+    // this->processorNode->disconnectOutput(connection->getProcessorNode().get());
+}
+
+Array<NodeConnectorUI*> NodeUI::getOutputConnections()
+{
+    return outputConnections;
+}
+
+Array<NodeConnectorUI*> NodeUI::getInputConnections()
+{
+    return inputConnections;
+}
+
+Array<NodeConnectorUI*> NodeUI::getFeedbackConnections()
+{
+    return feedbackConnections;
+}
+
 
 Point<int> NodeUI::getCenterPosition()
 {
@@ -118,6 +198,20 @@ void NodeUI::addListener(Listener* listener)
     listeners.add(listener);
 }
 
+void NodeUI::reverse()
+{
+    reversed = !reversed;
+
+    auto inputPosition = input->getPosition();
+    auto outputPosition = output->getPosition();
+
+    inputPosition.addXY(input->getWidth() / 2, input->getHeight() / 2);
+    outputPosition.addXY(output->getWidth() / 2, output->getHeight() / 2);
+
+    input->setCentrePosition(outputPosition);
+    output->setCentrePosition(inputPosition);
+}
+
 bool NodeUI::isReversed()
 {
     return reversed;
@@ -126,4 +220,14 @@ bool NodeUI::isReversed()
 std::string NodeUI::getIdAsString()
 {
     return id.toString().toStdString();
+}
+
+NodeClass NodeUI::getNodeClass()
+{
+    return nodeClass;
+}
+
+NodeInstance NodeUI::getNodeInstance()
+{
+    return nodeInstance;
 }

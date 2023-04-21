@@ -13,7 +13,7 @@
 #include <ui/GraphEditor.h>
 #include <utils/XmlUtils.h>
 
-SimpleDelayNode::SimpleDelayNode(NodeType type) : AudioProcessorNodeUI(type)
+SimpleDelayNode::SimpleDelayNode() : AudioProcessorNodeUI(DELAY_NAME, NodeInstance::Delay)
 {
     setBounds(0, 0, DELAY_WIDTH, DELAY_HEIGHT);
     addInputConnector();
@@ -26,7 +26,6 @@ SimpleDelayNode::SimpleDelayNode(NodeType type) : AudioProcessorNodeUI(type)
     addAndMakeVisible(delayTime);
 
     nameLabel.setBounds(0, 0, DELAY_WIDTH, TEXT_HEIGHT);
-    updateNameAndReCenter(DELAY_NAME);
 }
 
 SimpleDelayNode::~SimpleDelayNode()

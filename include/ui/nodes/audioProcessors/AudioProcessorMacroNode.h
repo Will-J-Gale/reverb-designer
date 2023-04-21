@@ -4,11 +4,12 @@
 #include <ui/nodes/audioProcessors/AudioProcessorNodeUI.h>
 #include <ui/parameters/NumberParameter.h>
 #include <ui/windows/AudioProcessorMacroWindow.h>
+#include <utils/Constants.h>
 
 class AudioProcessorMacroNode : public AudioProcessorNodeUI
 {
 public:
-    AudioProcessorMacroNode(NodeType type);
+    AudioProcessorMacroNode(String name=MACRO_DEFAULT_NAME);
     ~AudioProcessorMacroNode();
 
     void setUIParameters() override {};

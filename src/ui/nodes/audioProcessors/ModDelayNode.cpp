@@ -13,7 +13,7 @@
 #include <dsp/ModulatedDelay.h>
 
 
-ModDelayNode::ModDelayNode(NodeType type) : AudioProcessorNodeUI(type)
+ModDelayNode::ModDelayNode() : AudioProcessorNodeUI(MOD_DELAY_NAME, NodeInstance::ModDelay)
 {
     setBounds(0, 0, MOD_DELAY_WIDTH, MOD_DELAY_HEIGHT);
     updateNameAndReCenter(MOD_DELAY_NAME);

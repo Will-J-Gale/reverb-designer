@@ -12,12 +12,11 @@
 #include <utils/Constants.h>
 #include <utils/XmlUtils.h>
 
-Input::Input() : AudioProcessorNodeUI(NodeType::Input)
+Input::Input() : AudioProcessorNodeUI(INPUT_TEXT, NodeInstance::Input)
 {
     setBounds(0, 0, IO_WIDTH, IO_HEIGHT);
     nameLabel.setJustificationType(Justification::centred);
     nameLabel.setBounds(getBounds());
-    updateNameAndReCenter(INPUT_TEXT);
 
     addOutputConnector();
 

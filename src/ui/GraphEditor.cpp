@@ -186,7 +186,7 @@ void GraphEditor::createIOProcessors()
     for (int i = 0; i < audioInputs.size(); i++)
     {
         auto audioInput = audioInputs[i];
-        auto newInput = processorNodeUIHandler.createNode(NodeType::Input, Point<int>(), audioInput);
+        auto newInput = processorNodeUIHandler.createNode(NodeInstance::Input, Point<int>(), audioInput);
         processorNodeUIHandler.initializeProcessor(newInput);
         inputs.add(newInput);
         ((Input*)newInput.get())->setChannel(i);
@@ -198,7 +198,7 @@ void GraphEditor::createIOProcessors()
     for (int i = 0; i < audioOutputs.size(); i++)
     {
         auto audioOutput = audioOutputs[i];
-        auto newOutput = processorNodeUIHandler.createNode(NodeType::Output, Point<int>(), audioOutput);
+        auto newOutput = processorNodeUIHandler.createNode(NodeInstance::Output, Point<int>(), audioOutput);
         processorNodeUIHandler.initializeProcessor(newOutput);
 
         outputs.add(newOutput);
@@ -305,7 +305,7 @@ void GraphEditor::handleRightClick(const MouseEvent& e)
     }
     else if (contextSelection > 0)
     {
-        auto processorUI = processorNodeUIHandler.createNode((NodeType)contextSelection, e.getPosition());
+        auto processorUI = processorNodeUIHandler.createNode((NodeInstance)contextSelection, e.getPosition());
         processorNodeUIHandler.initializeProcessor(processorUI);
     }
 }
@@ -534,7 +534,7 @@ void GraphEditor::onNodeConnectorRightClick(NodeConnectorUI* node, const MouseEv
     connectionHandler.deleteConnection(node);
 }
 
-void GraphEditor::onNodeConnectorDrag(NodeConnectorUI* node, const MouseEvent& e)
+void GraphEditor::onNodeConnectorDrag(NodeConnectorUI* nodeConnector, const MouseEvent& e)
 {
     auto pos = e.getScreenPosition();
     mousePosition = getLocalPoint(nullptr, pos);
@@ -542,14 +542,14 @@ void GraphEditor::onNodeConnectorDrag(NodeConnectorUI* node, const MouseEvent& e
     repaint();
 }
 
-void GraphEditor::onNodeConnectorLeftRelease(NodeConnectorUI* node, const MouseEvent& e)
+void GraphEditor::onNodeConnectorLeftRelease(NodeConnectorUI* nodeConnecctor, const MouseEvent& e)
 {
-    auto* mouseUpNode = getNodeConnectorAtPosition(e.getScreenPosition());
+    auto* mouseUpNodeConnector = getNodeConnectorAtPosition(e.getScreenPosition());
 
-    if (mouseUpNode)
+    if (mouseUpNodeConnector)
     {
-        auto* startNode = clickedNode->getType() == NodeConnectorType::AudioOutput ? clickedNode : mouseUpNode;
-        auto* endNode = mouseUpNode->getType() == NodeConnectorType::AudioInput ? mouseUpNode : clickedNode;
+        auto* startNode = clickedNode->getType() == NodeConnectorType::AudioOutput ? clickedNode : mouseUpNodeConnector;
+        auto* endNode = mouseUpNodeConnector->getType() == NodeConnectorType::AudioInput ? mouseUpNodeConnector : clickedNode;
 
         if (!connectionHandler.connectionExists(startNode, endNode) 
             && connectionHandler.nodesAreCompatible(startNode, endNode))

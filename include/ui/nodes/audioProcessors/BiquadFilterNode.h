@@ -21,7 +21,7 @@ class BiquadFilterNode : public AudioProcessorNodeUI,
                  public ComboBox::Listener
 {
 public:
-    BiquadFilterNode(NodeType type);
+    BiquadFilterNode();
     ~BiquadFilterNode();
 
     void textEditorTextChanged(TextEditor& textEditor) override;

@@ -23,15 +23,15 @@ void ConnectionHandler::initialize(GraphEditor* graphEditor, PluginGraph* plugin
 
 void ConnectionHandler::createConnection(NodeConnectorUI* start, NodeConnectorUI* end)
 {
-    // auto connection = std::make_shared<NodeConnection>(start, end);
-    // graphEditor->connections.add(connection);
+    auto connection = std::make_shared<NodeConnection>(start, end);
+    graphEditor->connections.add(connection);
 
-    // auto* startProcessorUI = (NodeUI*)start->getParentComponent();
-    // auto* endProcessorUI = (NodeUI*)end->getParentComponent();
+    auto* startNodeUI = (NodeUI*)start->getParentComponent();
+    auto* endNodeUI = (NodeUI*)end->getParentComponent();
 
-    // endProcessorUI->connectInput(startProcessorUI);
-    // startProcessorUI->connectOutput(endProcessorUI);
-    // graphEditor->pluginGraph->updateProcessPath();
+    endNodeUI->connectInput(start);
+    startNodeUI->connectOutput(end);
+    graphEditor->pluginGraph->updateProcessPath();
 }
 
 void ConnectionHandler::createFeedbackConnection(NodeConnectorUI* start, NodeConnectorUI* end)
@@ -48,28 +48,28 @@ void ConnectionHandler::createFeedbackConnection(NodeConnectorUI* start, NodeCon
 
 void ConnectionHandler::deleteConnection(NodeConnectorUI* nodeConnector)
 {
-    // Array<NodeConnection*> nodeConnections;
+    Array<NodeConnection*> nodeConnections;
 
-    // for (auto connection : graphEditor->connections)
-    // {
-    //     if (connection->getEndConnector() == nodeConnector || connection->getStartConnector() == nodeConnector)
-    //     {
-    //         nodeConnections.add(connection.get());
-    //     }
-    // }
+    for (auto connection : graphEditor->connections)
+    {
+        if (connection->getEndConnector() == nodeConnector || connection->getStartConnector() == nodeConnector)
+        {
+            nodeConnections.add(connection.get());
+        }
+    }
 
-    // for (auto connection : nodeConnections)
-    // {
-    //     auto* startProcessor = (NodeUI*)connection->getStartConnector()->getParentComponent();
-    //     auto* endProcessor = (NodeUI*)connection->getEndConnector()->getParentComponent();
+    for (auto connection : nodeConnections)
+    {
+        auto* startNode = connection->getStartConnector()->getAttachedNodeUI();
+        auto* endNode = connection->getEndConnector()->getAttachedNodeUI();
 
-    //     startProcessor->disconnectOutput(endProcessor);
-    //     endProcessor->disconnectInput(startProcessor);
+        startNode->disconnectOutput(connection->getEndConnector());
+        endNode->disconnectInput(connection->getStartConnector());
 
-    //     graphEditor->removeFromArray(graphEditor->connections, connection);
-    // }
+        graphEditor->removeFromArray(graphEditor->connections, connection);
+    }
 
-    // graphEditor->pluginGraph->updateProcessPath();
+    graphEditor->pluginGraph->updateProcessPath();
 
     graphEditor->repaint();
 }

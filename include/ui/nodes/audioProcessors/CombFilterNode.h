@@ -21,7 +21,7 @@ class CombFilterNode : public AudioProcessorNodeUI,
                      public ToggleButton::Listener
 {
 public:
-    CombFilterNode(NodeType type);
+    CombFilterNode();
     ~CombFilterNode();
 
     virtual void buttonClicked(Button*) override;

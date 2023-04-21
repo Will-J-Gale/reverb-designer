@@ -29,37 +29,14 @@ class GraphEditor;
 class AudioProcessorNodeUI : public NodeUI
 {
 public:
-    AudioProcessorNodeUI(String name);
-    AudioProcessorNodeUI(NodeType type);
+    AudioProcessorNodeUI(String name, NodeInstance nodeInstance);
     ~AudioProcessorNodeUI();
     
-    void addInputConnector();
-    void addOutputConnector();
-    Array<NodeConnectorUI*> getAllNodeConnectors();
-    NodeConnectorUI* getInputNode();
-    NodeConnectorUI* getOutputNode();
-    
-    void connectInput(NodeConnectorUI* connection);
-    void connectFeedbackInput(NodeConnectorUI* connection);
-    void connectOutput(NodeConnectorUI* connection);
-    void disconnectInput(NodeConnectorUI* connection);
-    void disconnectOutput(NodeConnectorUI* connection);
-    Array<NodeConnectorUI*> getOutputConnections();
-    Array<NodeConnectorUI*> getInputConnections();
-    Array<NodeConnectorUI*> getFeedbackConnections();
-    
-    void addExistingInput(NodeConnectorUI* outputProcessor);
-    void addExistingOutput(NodeConnectorUI* inputProcessor);
-
     AudioProcessorNodePtr getProcessorNode();
     void setProcessorNode(AudioProcessorNodePtr processorNode);
 
     IAudioProcessor* getAudioProcessor();
-    NodeType getType();
     
-    bool isReversed();
-    void reverse();
-
     template<class T>
     T* getAudioProcessorAs();
 
@@ -69,13 +46,7 @@ public:
     virtual XmlElement* getAudioParametersAsXml() = 0;
 
 protected:
-    NodePtr input = nullptr;
-    NodePtr output = nullptr;
     AudioProcessorNodePtr processorNode = nullptr;
-    Array<NodeConnectorUI*> inputConnections;
-    Array<NodeConnectorUI*> outputConnections;
-    Array<NodeConnectorUI*> feedbackConnections;
-    NodeType type;
 };
 
 template<class T>

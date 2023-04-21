@@ -38,11 +38,26 @@ public:
     };
 
     NodeUI(){};
-    NodeUI(String name, NodeUIType type);
+    NodeUI(String name, NodeClass nodeClass, NodeInstance nodeInstance);
     ~NodeUI(){};
 
     void addInputConnector();
     void addOutputConnector();
+    Array<NodeConnectorUI*> getAllNodeConnectors();
+    NodeConnectorUI* getInputNode();
+    NodeConnectorUI* getOutputNode();
+
+    void connectInput(NodeConnectorUI* connector);
+    void connectFeedbackInput(NodeConnectorUI* connector);
+    void connectOutput(NodeConnectorUI* connector);
+    void disconnectInput(NodeConnectorUI* connector);
+    void disconnectOutput(NodeConnectorUI* connector);
+    Array<NodeConnectorUI*> getOutputConnections();
+    Array<NodeConnectorUI*> getInputConnections();
+    Array<NodeConnectorUI*> getFeedbackConnections();
+
+    NodeClass getNodeClass();
+    NodeInstance getNodeInstance();
 
     virtual void paint(Graphics& g) override;
     virtual void mouseDown(const MouseEvent& e) override;
@@ -51,22 +66,28 @@ public:
     virtual void handleRightClick();
     virtual void updateNameAndReCenter(String name);
     virtual void addListener(Listener* listener);
-    virtual bool isReversed();
     virtual std::string getIdAsString();
-    virtual void reverse(){};
+    virtual void reverse();
+    virtual bool isReversed();
 
 protected:
     void initialize();
     Point<int> getCenterPosition();
+
+    bool reversed = false;
     Uuid id;
     Label nameLabel;
     String name;
-    NodeUIType type;
-    bool reversed = false;
+    NodeClass nodeClass;
+    NodeInstance nodeInstance;
     NodeUIContextMenu contextMenu;
     Array<Listener*> listeners;
     DragHandler dragHandler = DragHandler(this);
 
     NodeConnectorUIPtr input;
     NodeConnectorUIPtr output;
+
+    Array<NodeConnectorUI*> inputConnections;
+    Array<NodeConnectorUI*> outputConnections;
+    Array<NodeConnectorUI*> feedbackConnections; 
 };
