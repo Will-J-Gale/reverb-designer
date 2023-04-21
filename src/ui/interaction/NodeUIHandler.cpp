@@ -67,13 +67,11 @@ void NodeUIHandler::deleteProcessor(NodeUI* node)
     // pluginGraph->updateProcessPath();
 }
 
-void NodeUIHandler::duplicateProcessor(NodeUI* processorNodeUI)
+void NodeUIHandler::duplicateProcessor(NodeUI* node)
 {
-    // NodeType type = processorNodeUI->getType();
-
-    // auto newProcessor = createNode(type, processorNodeUI->getPosition () + Point<int>(DUPLICATE_OFFSET_X, DUPLICATE_OFFSET_Y));
-    // auto parameters = processorNodeUI->getAudioParametersAsXml();
+    auto newProcessor = createNode(node->getNodeInstance(), node->getPosition () + Point<int>(DUPLICATE_OFFSET_X, DUPLICATE_OFFSET_Y));
+    // auto parameters = node->getAudioParametersAsXml();
     // newProcessor->setAudioParametersFromXml(parameters);
     // delete parameters;
-    // initializeProcessor(newProcessor);
+    initializeProcessor(newProcessor);
 }

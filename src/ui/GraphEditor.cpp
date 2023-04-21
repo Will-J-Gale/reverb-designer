@@ -319,15 +319,14 @@ void GraphEditor::handleLeftClick(const MouseEvent& e)
 
 void GraphEditor::duplicateSelectedProcessors()
 {
-    // for (auto processor : selectionHandler.getItems())
-    // {
-    //     if ((int)processor->getType() <= 0)
-    //         continue;
+    for (auto node : selectionHandler.getItems())
+    {
+        NodeInstance nodeInstance = node->getNodeInstance();
+        if (nodeInstance == NodeInstance::Input || nodeInstance == NodeInstance::Output)
+            continue;
 
-    //     processorNodeUIHandler.duplicateProcessor(processor);
-    // }
-
-    jassert("Not implemented");
+        processorNodeUIHandler.duplicateProcessor(node);
+    }
 }
 
 void GraphEditor::reverseSelectedProcessors()
@@ -339,8 +338,6 @@ void GraphEditor::reverseSelectedProcessors()
 
     //     processor->reverse();
     // }
-
-    jassert("Not implemented");
 }
 
 void GraphEditor::deleteSelectedProcessors()
