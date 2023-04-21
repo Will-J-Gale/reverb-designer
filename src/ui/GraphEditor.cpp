@@ -345,15 +345,16 @@ void GraphEditor::reverseSelectedProcessors()
 
 void GraphEditor::deleteSelectedProcessors()
 {
-    // for (auto processor : selectionHandler.getItems())
-    // {
-    //     if ((int)processor->getType() <= 0)
-    //         continue;
+    for (auto node : selectionHandler.getItems())
+    {
+        NodeInstance nodeInstance = node->getNodeInstance();
+        if (nodeInstance == NodeInstance::Input || nodeInstance == NodeInstance::Output)
+            continue;
 
-    //     processorNodeUIHandler.deleteProcessor(processor);
-    // }
+        processorNodeUIHandler.deleteProcessor(node);
+    }
 
-    // selectionHandler.clear();
+    selectionHandler.clear();
 
     jassert("Not implemented");
 }

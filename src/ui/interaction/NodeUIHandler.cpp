@@ -53,17 +53,17 @@ void NodeUIHandler::initializeProcessor(NodeUIPtr processorNodeUI)
     graphEditor->addAndMakeVisible(processorNodeUI.get());
 }
 
-void NodeUIHandler::deleteProcessor(NodeUI* processorNodeUI)
+void NodeUIHandler::deleteProcessor(NodeUI* node)
 {
-    // Array<NodeConnectorUI*> processorNodes = processorNodeUI->getAllNodeConnectors();
-    // for (auto* node : processorNodes)
-    // {
-    //     graphEditor->connectionHandler.deleteConnection(node);
-    //     graphEditor->removeFromArray(graphEditor->nodeConnectors, node);
-    // }
+    Array<NodeConnectorUI*> nodeConnectors = node->getAllNodeConnectors();
+    for (auto* nodeConnector : nodeConnectors)
+    {
+        graphEditor->connectionHandler.deleteConnection(nodeConnector);
+        graphEditor->removeFromArray(graphEditor->nodeConnectors, nodeConnector);
+    }
 
     // pluginGraph->deleteProcessorNode(processorNodeUI->getProcessorNode());
-    // graphEditor->removeFromArray(graphEditor->nodes, processorNodeUI);
+    graphEditor->removeFromArray(graphEditor->nodes, node);
     // pluginGraph->updateProcessPath();
 }
 
