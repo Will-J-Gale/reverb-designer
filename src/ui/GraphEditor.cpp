@@ -297,8 +297,8 @@ void GraphEditor::handleRightClick(const MouseEvent& e)
     else if (contextSelection == (int)GraphEditorContextMenuItems::Macro)
     {
         //Duplicate code - Same as below
-        // auto node = nodeInteractionHandler.createNode((NodeInstance)contextSelection, e.getPosition());
-        // nodeInteractionHandler.initializeNode(node);
+        auto node = nodeInteractionHandler.createMacroNode(e.getPosition());
+        nodeInteractionHandler.initializeNode(node);
     }
     else if (contextSelection > 0)
     {

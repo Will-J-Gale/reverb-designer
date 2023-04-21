@@ -73,14 +73,19 @@ void NodeUIInteractionHandler::onNodeContextSelection(NodeUI* node, NodeUIConext
 
     graphEditor->repaint();
 }
+NodeUIPtr NodeUIInteractionHandler::createMacroNode(Point<int> position)
+{
+    auto nodeUI = AudioProcessorNodeUIFactory::Generate(NodeInstance::Macro);
+    nodeUI->setTopLeftPosition(position);
 
+    return nodeUI;
+}
 NodeUIPtr NodeUIInteractionHandler::createNode(NodeInstance type, Point<int> position)
 {
     jassert((type != NodeInstance::Input || type != NodeInstance::Output));
 
     auto node = graphEditor->pluginGraph->generateProcessorNode(type);
     return createNode(type, position, node);
-
 }
 
 NodeUIPtr NodeUIInteractionHandler::createNode(NodeInstance type, Point<int> position, AudioProcessorNodePtr processorNode)

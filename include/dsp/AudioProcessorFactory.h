@@ -53,7 +53,7 @@ public:
 
             case NodeInstance::NestedApf:
                 return std::make_shared<NestedDelayAPF>();
-
+            
             default:
                 throw std::invalid_argument("Missing object type");
         }

@@ -32,6 +32,7 @@ public:
     void onNodeReleased(NodeUI* processor, const MouseEvent& e) override;
     void onNodeContextSelection(NodeUI* processor, NodeUIConextMenuItems selection) override;
     
+    NodeUIPtr createMacroNode(Point<int> position);
     NodeUIPtr createNode(NodeInstance type, Point<int> position);
     NodeUIPtr createNode(NodeInstance type, Point<int> position, AudioProcessorNodePtr processorNode);
     void initializeNode(NodeUIPtr processor);
