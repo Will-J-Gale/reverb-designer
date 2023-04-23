@@ -9,12 +9,13 @@
 */
 
 #include <dsp/AudioProcessorNode.h>
+#include <dsp/PluginGraph.h>
 #include <ui/interaction/NodeUIInteractionHandler.h>
 #include <ui/nodes/audioProcessors/AudioProcessorNodeUI.h>
 #include <ui/nodes/audioProcessors/AudioProcessorNodeUIFactory.h>
 #include <ui/GraphEditor.h>
-#include <dsp/PluginGraph.h>
 #include <ui/interaction/ConnectionHandler.h>
+#include <ui/menus/InputModals.h>
 #include <ui/nodes/NodeUI.h>
 #include <utils/Constants.h>
 
@@ -38,7 +39,7 @@ void NodeUIInteractionHandler::onNodeMoved(NodeUI* node, const MouseEvent& e)
 {
     auto newE = e.getEventRelativeTo(graphEditor);
     graphEditor->selectionHandler.moveItems(newE.getOffsetFromDragStart());
-   
+
     graphEditor->repaint();
 }
 
@@ -75,7 +76,8 @@ void NodeUIInteractionHandler::onNodeContextSelection(NodeUI* node, NodeUIConext
 }
 NodeUIPtr NodeUIInteractionHandler::createMacroNode(Point<int> position)
 {
-    auto macroNode = std::make_shared<AudioProcessorMacroNode>(graphEditor->pluginGraph, MACRO_DEFAULT_NAME);
+    auto macroName = InputModals::runTextInputModal(MACRO_MODAL_TITLE, MACRO_MODAL_MESSAGE, MACRO_DEFAULT_NAME);
+    auto macroNode = std::make_shared<AudioProcessorMacroNode>(graphEditor->pluginGraph, macroName);
     macroNode->setTopLeftPosition(position);
 
     return macroNode;
@@ -90,7 +92,7 @@ NodeUIPtr NodeUIInteractionHandler::createNode(NodeInstance type, Point<int> pos
 {
     NodeUIPtr nodeUI = AudioProcessorNodeUIFactory::Generate(type);
 
-    dynamic_cast<AudioProcessorNodeUI*>(nodeUI.get())->setProcessorNode(processorNode);
+    dynamic_cast<AudioProcessorNodeUI *>(nodeUI.get())->setProcessorNode(processorNode);
     nodeUI->setTopLeftPosition(position);
 
     return nodeUI;
@@ -105,10 +107,10 @@ void NodeUIInteractionHandler::initializeNode(NodeUIPtr node)
     graphEditor->addAndMakeVisible(node.get());
 }
 
-void NodeUIInteractionHandler::deleteProcessor(NodeUI* node)
+void NodeUIInteractionHandler::deleteProcessor(NodeUI *node)
 {
-    Array<NodeConnectorUI*> nodeConnectors = node->getAllNodeConnectors();
-    for (auto* nodeConnector : nodeConnectors)
+    Array<NodeConnectorUI *> nodeConnectors = node->getAllNodeConnectors();
+    for (auto *nodeConnector : nodeConnectors)
     {
         graphEditor->connectionHandler.deleteConnection(nodeConnector);
         graphEditor->removeFromArray(graphEditor->nodeConnectors, nodeConnector);
@@ -119,9 +121,9 @@ void NodeUIInteractionHandler::deleteProcessor(NodeUI* node)
     // pluginGraph->updateProcessPath();
 }
 
-void NodeUIInteractionHandler::duplicateProcessor(NodeUI* node)
+void NodeUIInteractionHandler::duplicateProcessor(NodeUI *node)
 {
-    auto newProcessor = createNode(node->getNodeInstance(), node->getPosition () + Point<int>(DUPLICATE_OFFSET_X, DUPLICATE_OFFSET_Y));
+    auto newProcessor = createNode(node->getNodeInstance(), node->getPosition() + Point<int>(DUPLICATE_OFFSET_X, DUPLICATE_OFFSET_Y));
     // auto parameters = node->getAudioParametersAsXml();
     // newProcessor->setAudioParametersFromXml(parameters);
     // delete parameters;

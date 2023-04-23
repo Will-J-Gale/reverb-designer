@@ -195,6 +195,8 @@ const bool MACRO_WINDOW_CORNER_RESIZE = false;
 const bool MACRO_WINDOW_DEFAULT_VISIBLE = true;
 const bool MACRO_WINDOW_USE_NATIVE_WINDOW = true;
 const String MACRO_DEFAULT_NAME = "Macro";
+const String MACRO_MODAL_TITLE = "Create macro";
+const String MACRO_MODAL_MESSAGE = "Enter name for macro";
 
 //Main menu
 constexpr int MENU_HEIGHT = 20;
