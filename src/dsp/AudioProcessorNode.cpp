@@ -12,11 +12,7 @@
 
 AudioProcessorNode::~AudioProcessorNode()
 {
-    /*if (processor != nullptr)
-    {
-        delete processor;
-        processor = nullptr;
-    }*/
+    
 }
 
 

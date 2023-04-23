@@ -1,0 +1,13 @@
+#pragma once
+#include <dsp/Parameters.h>
+#include <dsp/IAudioProcessor.h>
+
+class PassThrough : public IAudioProcessor
+{
+public:
+    PassThrough();
+    // Inherited via IAudioProcessor
+    virtual bool reset(double sampleRate) override;
+    virtual double process(double xn) override;
+    virtual bool canProcessAudioFrame() override;
+};

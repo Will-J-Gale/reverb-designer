@@ -7,11 +7,12 @@
 #include <utils/Constants.h>
 
 class GraphEditor;
+class PluginGraph;
 
 class AudioProcessorMacroNode : public AudioProcessorNodeUI
 {
 public:
-    AudioProcessorMacroNode(String name=MACRO_DEFAULT_NAME);
+    AudioProcessorMacroNode(PluginGraph* pluginGraph, String name=MACRO_DEFAULT_NAME);
     ~AudioProcessorMacroNode();
 
     void setUIParameters() override {};

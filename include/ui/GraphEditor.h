@@ -36,39 +36,32 @@ class GraphEditor : public Component,
 {
 public:
     GraphEditor();
+    GraphEditor(PluginGraph* pluginGraph);
     ~GraphEditor();
 
     virtual void setPluginGraph(PluginGraph* pluginGraph);
-
-    void mouseDown(const MouseEvent& e) override;
-    void mouseDrag(const MouseEvent& e) override;
-    void mouseUp(const MouseEvent& e) override;
-    void mouseWheelMove(const MouseEvent& event, const MouseWheelDetails& wheel) override;
-    void paint(Graphics& g) override;
-
-    void duplicateSelectedProcessors();
-    void reverseSelectedProcessors();
-    void deleteSelectedProcessors();
-
+    void addInputNode();
+    void addOutputNode();
+    
     Array<NodeConnectorUI*>& getNodeConnectors();
     Array<NodeUIPtr>& getNodes();
-
-    // XmlElementPtr generatePluginState();
-    void loadFromExistingState(XmlElement* state);
-    std::shared_ptr<AudioProcessorState> loadStateFromFile(std::string xmlString);
 
     void clear();
 
 protected:
+    void mouseDown(const MouseEvent& e) override;
+    void mouseDrag(const MouseEvent& e) override;
+    void mouseUp(const MouseEvent& e) override;
+    void mouseWheelMove(const MouseEvent& event, const MouseWheelDetails& wheel) override;
     void handleRightClick(const MouseEvent& e);
     void handleLeftClick(const MouseEvent& e);
-
+    void paint(Graphics& g) override;
+    void duplicateSelectedProcessors();
+    void reverseSelectedProcessors();
+    void deleteSelectedProcessors();
     void drawConnections(Graphics& g);
     void drawPotentialConnection(Graphics& g);
     void addNodeConnectorListeners(Array<NodeConnectorUI*> nodes);
-
-    void addInputNode();
-    void addOutputNode();
 
     Array<NodeUIPtr> inputs;
     Array<NodeUIPtr> outputs;

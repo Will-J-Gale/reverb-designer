@@ -96,17 +96,13 @@ void PluginGraph::createDSPObject(NodeInstance dspObjectType)
 
 void PluginGraph::initialiseDspObject(IAudioProcessor *dspObject)
 {
-    if (dspObject == nullptr)
-        return;
+    // if (dspObject == nullptr)
+    //     return;
 
     if (auto* delayProcessor = dynamic_cast<IDelayProcessor*>(dspObject))
-    {
         delayProcessor->reset(sampleRate, 1.0);
-    }
     else
-    {
         dspObject->reset(sampleRate);
-    }
 }
 
 void PluginGraph::addProcessorNode(AudioProcessorNodePtr processorNode)
@@ -121,8 +117,8 @@ void PluginGraph::deleteProcessorNode(AudioProcessorNodePtr processorNode)
 
 AudioProcessorNodePtr PluginGraph::generateProcessorNode(NodeInstance type)
 {
-    auto audioProcessor = AudioProcessorFactory::Generate(type);
     auto processorNode = std::make_shared<AudioProcessorNode>(type);
+    auto audioProcessor = AudioProcessorFactory::Generate(type);
 
     initialiseDspObject(audioProcessor.get());
     processorNode->setProcessor(audioProcessor);

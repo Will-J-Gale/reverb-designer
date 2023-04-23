@@ -57,8 +57,8 @@ namespace AudioProcessorNodeUIFactory
             case NodeInstance::NestedApf:
                 return std::make_shared<NestedAPFNode>();
             
-            case NodeInstance::Macro:
-                return std::make_shared<AudioProcessorMacroNode>();
+            // case NodeInstance::Macro:
+            //     return std::make_shared<AudioProcessorMacroNode>();
 
             default:
                 throw std::invalid_argument("Missing object type");

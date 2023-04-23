@@ -143,4 +143,151 @@ void MainGraphEditor::createAllConnections(std::map<std::string, NodeUIPtr> proc
     //         }
     //     }
     // }
-}   
+}
+
+std::shared_ptr<AudioProcessorState> MainGraphEditor::loadStateFromFile(std::string xmlString)
+{
+    // const MessageManagerLock mmlock;
+
+    // auto xml = parseXML(xmlString);
+    // auto state = xml.get();
+
+    // if (state == nullptr || state->getTagName() != PLUGIN_STATE_TAG)
+    // {
+    //     return nullptr;
+    // }
+    
+    // auto tempInputs = Array<AudioProcessorNodePtr>();
+    // auto tempOutputs = Array<AudioProcessorNodePtr>();
+    // auto tempAllBlocks = Array<AudioProcessorNodePtr>();
+
+    // auto xmlMap = XmlGenerator::generateXmlMap(state);
+
+    // std::map<std::string, NodeUIPtr> processorUIMap;
+
+    // //Generate all processing UI
+    // for (auto pair : xmlMap)
+    // {
+    //     auto id = pair.first;
+    //     auto xml = pair.second;
+    //     auto type = (NodeType)(xml->getChildByName(TYPE_TAG)->getAllSubText().getIntValue());
+    //     auto x = xml->getChildByName(X_TAG)->getAllSubText().getIntValue();
+    //     auto y = xml->getChildByName(Y_TAG)->getAllSubText().getIntValue();
+    //     auto isReversed = xml->getChildByName(IS_REVERSED_TAG)->getAllSubText().getIntValue();
+    //     auto parametersXML = xml->getChildByName(PARAMETERTS_TAG);
+
+    //     NodeUIPtr processorUI;
+
+    //     if (type == NodeType::Input)
+    //     {
+    //         auto channel = parametersXML->getChildByName(IO_CHANNEL_TAG)->getAllSubText().getIntValue();
+
+    //         processorUI = processorNodeUIInteractionHandler.createNode(NodeType::Input, Point<int>(x, y));
+    //         processorUI->setAudioParametersFromXml(parametersXML);
+
+    //         inputs.add(processorUI);
+    //         tempInputs.add(processorUI->getProcessorNode());
+    //     }
+    //     else if (type == NodeType::Output)
+    //     {
+    //         auto channel = parametersXML->getChildByName(IO_CHANNEL_TAG)->getAllSubText().getIntValue();
+
+    //         processorUI = processorNodeUIInteractionHandler.createNode(NodeType::Output, Point<int>(x, y));
+    //         processorUI->setAudioParametersFromXml(parametersXML);
+
+    //         outputs.add(processorUI);
+    //         tempOutputs.add(processorUI->getProcessorNode());
+    //     }
+    //     else //Processor does not exist
+    //     {
+    //         processorUI = processorNodeUIInteractionHandler.createNode(type, Point<int>(x, y));
+    //         processorUI->setAudioParametersFromXml(parametersXML);
+
+    //         tempAllBlocks.add(processorUI->getProcessorNode());
+    //     }
+
+    //     if (isReversed)
+    //         processorUI->reverse();
+
+    //     processorNodeUIInteractionHandler.initializeProcessor(processorUI);
+
+    //     processorUIMap[id] = processorUI;
+    // }
+
+    // createAllConnections(processorUIMap, xmlMap);
+
+    // xml->deleteAllChildElements();
+
+    // repaint();
+    // return std::make_unique<AudioProcessorState>(tempInputs, tempOutputs, tempAllBlocks);
+}
+
+void MainGraphEditor::loadFromExistingState(XmlElement* state)
+{
+    // //Load xml 
+    // if (state == nullptr || state->getTagName() != PLUGIN_STATE_TAG)
+    // {
+    //     return;
+    // }
+    
+    // auto xmlMap = XmlGenerator::generateXmlMap(state);
+    // auto processorNodeMap = pluginGraph->getAudioProcessorNodeMap();
+
+    // std::map<std::string, NodeUIPtr> processorUIMap;
+    
+    // //Generate all processing UI
+    // for (auto pair : xmlMap)
+    // {
+    //     auto id = pair.first;
+    //     auto xml = pair.second;
+    //     auto type = (NodeType)(xml->getChildByName(TYPE_TAG)->getAllSubText().getIntValue());
+    //     auto x = xml->getChildByName(X_TAG)->getAllSubText().getIntValue();
+    //     auto y = xml->getChildByName(Y_TAG)->getAllSubText().getIntValue();
+    //     auto isReversed = xml->getChildByName(IS_REVERSED_TAG)->getAllSubText().getIntValue();
+    //     auto parametersXML = xml->getChildByName(PARAMETERTS_TAG);
+
+    //     NodeUIPtr processorUI = nullptr;
+
+    //     if (type == NodeType::Input)
+    //     {
+    //         auto channel = parametersXML->getChildByName(IO_CHANNEL_TAG)->getAllSubText().getIntValue();
+    //         auto processorNode = pluginGraph->getInputs()[channel];
+
+    //         processorUI = processorNodeUIInteractionHandler.createNode(NodeType::Input, Point<int>(x, y), processorNode);
+    //         processorUI->setAudioParametersFromXml(parametersXML);
+
+    //         inputs.add(processorUI);
+    //     }
+    //     else if (type == NodeType::Output)
+    //     {
+    //         auto channel = parametersXML->getChildByName(IO_CHANNEL_TAG)->getAllSubText().getIntValue();
+    //         auto processorNode = pluginGraph->getOutputs()[channel];
+
+    //         processorUI = processorNodeUIInteractionHandler.createNode(NodeType::Output, Point<int>(), processorNode);
+    //         processorUI->setTopLeftPosition(Point<int>(x, y));
+    //         processorUI->setAudioParametersFromXml(parametersXML);
+
+    //         outputs.add(processorUI);
+    //     }
+    //     else if (processorNodeMap.count(id) > 0)//Processor Exists
+    //     {
+    //         auto processorNode = processorNodeMap[id];
+    //         processorUI = processorNodeUIInteractionHandler.createNode(type, Point<int>(x, y), processorNode);
+    //     }
+    //     else //Processor does not exist
+    //     {
+    //         processorUI = processorNodeUIInteractionHandler.createNode(type, Point<int>(x, y));
+    //         processorUI->setAudioParametersFromXml(parametersXML);
+    //     }
+
+    //     if (isReversed)
+    //         processorUI->reverse();
+
+    //     processorNodeUIInteractionHandler.initializeProcessor(processorUI);
+    //     processorUIMap[id] = processorUI;
+    // }
+
+    // createAllConnections(processorUIMap, xmlMap);
+
+    // state->deleteAllChildElements();
+}

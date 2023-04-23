@@ -8,6 +8,10 @@ public:
     MainGraphEditor();
     ~MainGraphEditor();
     void setPluginGraph(PluginGraph* pluginGraph) override;
+    
+    // XmlElementPtr generatePluginState();
+    void loadFromExistingState(XmlElement* state);
+    std::shared_ptr<AudioProcessorState> loadStateFromFile(std::string xmlString);
 
 private:
     void createIOProcessors();

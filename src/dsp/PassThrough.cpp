@@ -1,0 +1,20 @@
+#include <dsp/PassThrough.h>
+
+PassThrough::PassThrough()
+{   
+}
+
+bool PassThrough::reset(double sampleRate)
+{
+    return true;
+}
+
+double PassThrough::process(double xn)
+{
+    return xn;
+}
+
+bool PassThrough::canProcessAudioFrame()
+{
+    return true;
+}

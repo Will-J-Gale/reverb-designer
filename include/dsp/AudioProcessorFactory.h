@@ -11,6 +11,7 @@
 #pragma once
 #include <stdexcept>
 #include <dsp/IAudioProcessor.h>
+#include <dsp/PassThrough.h>
 #include <utils/Constants.h>
 #include <dsp/Gain.h>
 #include <dsp/SimpleDelay.h>
@@ -28,10 +29,10 @@ public:
         switch (type)
         {
             case NodeInstance::Input:
-                return nullptr;
+                return std::make_shared<PassThrough>();
             
             case NodeInstance::Output:
-                return nullptr;
+                return std::make_shared<PassThrough>();
 
             case NodeInstance::Gain:
                 return std::make_shared<Gain>();

@@ -1,7 +1,8 @@
+#include <dsp/PluginGraph.h>
 #include <ui/nodes/audioProcessors/AudioProcessorMacroNode.h>
 #include <ui/GraphEditor.h>
 
-AudioProcessorMacroNode::AudioProcessorMacroNode(String name) : AudioProcessorNodeUI(name, NodeInstance::Macro)
+AudioProcessorMacroNode::AudioProcessorMacroNode(PluginGraph* pluginGraph, String name) : AudioProcessorNodeUI(name, NodeInstance::Macro)
 {
     setBounds(0, 0, GAIN_WIDTH, GAIN_HEIGHT);
 
@@ -9,9 +10,11 @@ AudioProcessorMacroNode::AudioProcessorMacroNode(String name) : AudioProcessorNo
     addOutputConnector();
 
     nameLabel.setBounds(0, 0, GAIN_WIDTH, TEXT_HEIGHT);
-    updateNameAndReCenter("Hello there");
+    updateNameAndReCenter(name);
 
-    graphEditor = std::make_shared<GraphEditor>();
+    graphEditor = std::make_shared<GraphEditor>(pluginGraph);
+    graphEditor->addInputNode();
+    graphEditor->addOutputNode();
 }
 
 AudioProcessorMacroNode::~AudioProcessorMacroNode()
