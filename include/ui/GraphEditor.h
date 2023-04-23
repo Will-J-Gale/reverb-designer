@@ -44,9 +44,7 @@ public:
     void mouseWheelMove(const MouseEvent& event, const MouseWheelDetails& wheel) override;
     void paint(Graphics& g) override;
 
-    void setPluginGraph(PluginGraph* pluginGraph);
-
-    void resized() override;
+    virtual void setPluginGraph(PluginGraph* pluginGraph);
 
     void duplicateSelectedProcessors();
     void reverseSelectedProcessors();
@@ -58,16 +56,16 @@ public:
 
     void clear();
 
-private:
+protected:
     void handleRightClick(const MouseEvent& e);
     void handleLeftClick(const MouseEvent& e);
 
     void drawConnections(Graphics& g);
     void drawPotentialConnection(Graphics& g);
     void addNodeConnectorListeners(Array<NodeConnectorUI*> nodes);
-    void createIOProcessors();
 
-    void createAllConnections(std::map<std::string, NodeUIPtr> processorUIMap, std::map<std::string, XmlElement*> xmlMap);
+    void addInputNode();
+    void addOutputNode();
 
     NodeConnectorUI* getNodeConnectorAtPosition(Point<int> screenPos);
     Array<NodeUI*> getOverlappingProcessors(Rectangle<int> bounds);
@@ -88,8 +86,6 @@ private:
     Rectangle<int> selectionArea;
     InteractionState interactionState = InteractionState::None;
     
-    //Menus
-    MainMenu mainMenu;
     GraphEditorContextMenu contextMenu;
 
     //Interaction
@@ -98,7 +94,7 @@ private:
     friend class NodeConnectorInteractionHandler;
     friend class MainMenuInteractionHandler;
     
-    //Used for moving all elements around with middle mouse button
+    //Used for moving all elements around with middle mouse button (emulating panning)
     SelectionHandler globalSelection;
     //Used to only move selected items
     SelectionHandler selectionHandler;

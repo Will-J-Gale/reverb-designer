@@ -22,9 +22,9 @@ ReverbDesignerAudioProcessorEditor::ReverbDesignerAudioProcessorEditor (ReverbDe
     setSize(PLUGIN_WIDTH, PLUGIN_HEIGHT);
     setResizable(true, true);
 
-    graphEditor.setPluginGraph(processor.getPluginGraph());
-    graphEditor.setBounds(getBounds());
-    addAndMakeVisible(graphEditor);
+    mainGraphEditor.setPluginGraph(processor.getPluginGraph());
+    mainGraphEditor.setBounds(getBounds());
+    addAndMakeVisible(mainGraphEditor);
 }
 
 ReverbDesignerAudioProcessorEditor::~ReverbDesignerAudioProcessorEditor()

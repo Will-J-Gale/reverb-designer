@@ -12,7 +12,7 @@
 
 #include <JuceHeader.h>
 #include <PluginProcessor.h>
-#include <ui/GraphEditor.h>
+#include <ui/MainGraphEditor.h>
 
 //==============================================================================
 /**
@@ -32,7 +32,7 @@ private:
     // access the processor object that created it.
     ReverbDesignerAudioProcessor& processor;
 
-    GraphEditor graphEditor;
+    MainGraphEditor mainGraphEditor;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (ReverbDesignerAudioProcessorEditor)
 };

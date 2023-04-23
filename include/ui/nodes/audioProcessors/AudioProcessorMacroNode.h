@@ -6,6 +6,8 @@
 #include <ui/windows/AudioProcessorMacroWindow.h>
 #include <utils/Constants.h>
 
+class GraphEditor;
+
 class AudioProcessorMacroNode : public AudioProcessorNodeUI
 {
 public:
@@ -22,4 +24,5 @@ public:
 private:
     void closeWindow();
     std::unique_ptr<AudioProcessorMacroWindow> window;
+    std::shared_ptr<GraphEditor> graphEditor;
 };
