@@ -14,6 +14,8 @@
 #include <ui/GraphEditor.h>
 #include <ui/nodes/NodeConnection.h>
 #include <dsp/PluginGraph.h>
+#include <ui/nodes/audioProcessors/AudioProcessorMacroNode.h>
+#include <ui/nodes/NodeUI.h>
 
 void ConnectionHandler::initialize(GraphEditor* graphEditor, PluginGraph* pluginGraph)
 {
@@ -29,6 +31,9 @@ void ConnectionHandler::createConnection(NodeConnectorUI* start, NodeConnectorUI
     auto* startNodeUI = (NodeUI*)start->getParentComponent();
     auto* endNodeUI = (NodeUI*)end->getParentComponent();
 
+    startNodeUI = handleMacroNode(startNodeUI, false);
+    endNodeUI = handleMacroNode(endNodeUI, true);
+
     endNodeUI->connectInput(startNodeUI);
     startNodeUI->connectOutput(endNodeUI);
     graphEditor->pluginGraph->updateProcessPath();
@@ -36,14 +41,17 @@ void ConnectionHandler::createConnection(NodeConnectorUI* start, NodeConnectorUI
 
 void ConnectionHandler::createFeedbackConnection(NodeConnectorUI* start, NodeConnectorUI* end)
 {
-    // auto connection = std::make_shared<NodeConnection>(start, end);
-    // graphEditor->connections.add(connection);
+    auto connection = std::make_shared<NodeConnection>(start, end);
+    graphEditor->connections.add(connection);
 
-    // auto* startProcessorUI = (NodeUI*)start->getParentComponent();
-    // auto* endProcessorUI = (NodeUI*)end->getParentComponent();
+    auto* startNodeUI = (NodeUI*)start->getParentComponent();
+    auto* endNodeUI = (NodeUI*)end->getParentComponent();
 
-    // endProcessorUI->connectFeedbackInput(startProcessorUI);
-    // graphEditor->pluginGraph->updateProcessPath();
+    startNodeUI = handleMacroNode(startNodeUI, false);
+    endNodeUI = handleMacroNode(endNodeUI, true);
+
+    endNodeUI->connectFeedbackInput(startNodeUI);
+    graphEditor->pluginGraph->updateProcessPath();
 }
 
 void ConnectionHandler::deleteConnection(NodeConnectorUI* nodeConnector)
@@ -60,17 +68,18 @@ void ConnectionHandler::deleteConnection(NodeConnectorUI* nodeConnector)
 
     for (auto connection : nodeConnections)
     {
-        auto* startNode = connection->getStartConnector()->getAttachedNodeUI();
-        auto* endNode = connection->getEndConnector()->getAttachedNodeUI();
+        auto* startNodeUI = connection->getStartConnector()->getAttachedNodeUI();
+        auto* endNodeUI = connection->getEndConnector()->getAttachedNodeUI();
 
-        startNode->disconnectOutput(endNode);
-        endNode->disconnectInput(startNode);
+        startNodeUI = handleMacroNode(startNodeUI, false);
+        endNodeUI = handleMacroNode(endNodeUI, true);
 
+        startNodeUI->disconnectOutput(endNodeUI);
+        endNodeUI->disconnectInput(startNodeUI);
         graphEditor->removeFromArray(graphEditor->connections, connection);
     }
 
     graphEditor->pluginGraph->updateProcessPath();
-
     graphEditor->repaint();
 }
 
@@ -92,16 +101,22 @@ bool ConnectionHandler::connectionExists(NodeConnectorUI* start, NodeConnectorUI
 
 bool ConnectionHandler::isCreatingFeedback(NodeConnectorUI* start, NodeConnectorUI* end)
 {
-    // auto startProcessorNode = start->getAttachedNodeUI()->getProcessorNode();
-    // auto endProcessorNode = end->getAttachedNodeUI()->getProcessorNode();
+    auto startNodeUI = start->getAttachedNodeUI();
+    auto endNodeUI = end->getAttachedNodeUI();
 
-    // if (startProcessorNode == nullptr || endProcessorNode == nullptr) { return false; }
-    // if (startProcessorNode == endProcessorNode) { return true; }
+    startNodeUI = handleMacroNode(startNodeUI, false);
+    endNodeUI = handleMacroNode(endNodeUI, false);
 
-    // if (graphEditor->pluginGraph->isCreatingFeedback(endProcessorNode.get(), startProcessorNode.get()))
-    // {
-    //     return true;
-    // }
+    auto startProcessorNode = dynamic_cast<AudioProcessorNodeUI*>(startNodeUI)->getProcessorNode();
+    auto endProcessorNode = dynamic_cast<AudioProcessorNodeUI*>(endNodeUI)->getProcessorNode();
+
+    if (startProcessorNode == nullptr || endProcessorNode == nullptr) { return false; }
+    if (startProcessorNode == endProcessorNode) { return true; }
+
+    if (graphEditor->pluginGraph->isCreatingFeedback(endProcessorNode.get(), startProcessorNode.get()))
+    {
+        return true;
+    }
 
     return false;
 }
@@ -109,4 +124,19 @@ bool ConnectionHandler::isCreatingFeedback(NodeConnectorUI* start, NodeConnector
 bool ConnectionHandler::nodesAreCompatible(NodeConnectorUI* start, NodeConnectorUI* end)
 {
     return (start->getType() == NodeConnectorType::AudioOutput && end->getType() == NodeConnectorType::AudioInput);
+}
+
+NodeUI* ConnectionHandler::handleMacroNode(NodeUI* node, bool isInput)
+{
+    if(node->getNodeInstance() == NodeInstance::Macro)
+    {
+        auto macroNode = dynamic_cast<AudioProcessorMacroNode*>(node);
+        
+        if(isInput)
+            return macroNode->getInputNodeUI().get();
+        else
+            return macroNode->getOutputNodeUI().get(); 
+    }
+
+    return node;
 }

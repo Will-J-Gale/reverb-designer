@@ -83,3 +83,12 @@ std::string AudioProcessorMacroNode::getIdAsString()
 {
     return id.toString().toStdString();
 }
+
+NodeUIPtr AudioProcessorMacroNode::getInputNodeUI()
+{
+    return graphEditor->getInputs()[0];
+}
+NodeUIPtr AudioProcessorMacroNode::getOutputNodeUI()
+{
+    return graphEditor->getOutputs()[0];
+}

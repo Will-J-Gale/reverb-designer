@@ -12,6 +12,7 @@
 class GraphEditor;
 class PluginGraph;
 class NodeConnectorUI;
+class NodeUI;
 
 class ConnectionHandler
 {
@@ -26,6 +27,7 @@ public:
     bool nodesAreCompatible(NodeConnectorUI* start, NodeConnectorUI* end);
 
 private:
+    NodeUI* handleMacroNode(NodeUI* node, bool isInput);
     GraphEditor* graphEditor;
     PluginGraph* pluginGraph;
 };

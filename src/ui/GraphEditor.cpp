@@ -181,7 +181,6 @@ void GraphEditor::addOutputNode()
     nodeInteractionHandler.initializeNode(newOutput);
     newOutput->setTopLeftPosition(OUTPUT_START_X, IO_START_Y);
     outputs.add(newOutput);
-
 }
 
 void GraphEditor::handleRightClick(const MouseEvent& e)

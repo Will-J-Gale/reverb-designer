@@ -26,7 +26,9 @@ public:
     void disconnectInput(NodeUI* sourceNode) override;
     void disconnectOutput(NodeUI* destinationNode) override;
     std::string getIdAsString() override;
-    
+
+    NodeUIPtr getInputNodeUI();
+    NodeUIPtr getOutputNodeUI();
 
 private:
     void closeWindow();
