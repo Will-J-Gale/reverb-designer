@@ -258,6 +258,17 @@ Array<NodeUIPtr>& GraphEditor::getNodes()
     return nodes;
 }
 
+Array<NodeUIPtr>& GraphEditor::getInputs()
+{
+    return inputs;
+}
+
+
+Array<NodeUIPtr>& GraphEditor::getOutputs()
+{
+    return outputs;
+}
+
 void GraphEditor::clear()
 {
     inputs.clear();

@@ -29,8 +29,8 @@ void ConnectionHandler::createConnection(NodeConnectorUI* start, NodeConnectorUI
     auto* startNodeUI = (NodeUI*)start->getParentComponent();
     auto* endNodeUI = (NodeUI*)end->getParentComponent();
 
-    endNodeUI->connectInput(start);
-    startNodeUI->connectOutput(end);
+    endNodeUI->connectInput(startNodeUI);
+    startNodeUI->connectOutput(endNodeUI);
     graphEditor->pluginGraph->updateProcessPath();
 }
 
@@ -63,8 +63,8 @@ void ConnectionHandler::deleteConnection(NodeConnectorUI* nodeConnector)
         auto* startNode = connection->getStartConnector()->getAttachedNodeUI();
         auto* endNode = connection->getEndConnector()->getAttachedNodeUI();
 
-        startNode->disconnectOutput(connection->getEndConnector());
-        endNode->disconnectInput(connection->getStartConnector());
+        startNode->disconnectOutput(endNode);
+        endNode->disconnectInput(startNode);
 
         graphEditor->removeFromArray(graphEditor->connections, connection);
     }

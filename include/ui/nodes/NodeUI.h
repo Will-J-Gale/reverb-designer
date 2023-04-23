@@ -43,18 +43,19 @@ public:
 
     void addInputConnector();
     void addOutputConnector();
+    NodeConnectorUI* getInputConnector();
+    NodeConnectorUI* getOutputConnector();
     Array<NodeConnectorUI*> getAllNodeConnectors();
-    NodeConnectorUI* getInputNode();
-    NodeConnectorUI* getOutputNode();
 
-    void connectInput(NodeConnectorUI* connector);
-    void connectFeedbackInput(NodeConnectorUI* connector);
-    void connectOutput(NodeConnectorUI* connector);
-    void disconnectInput(NodeConnectorUI* connector);
-    void disconnectOutput(NodeConnectorUI* connector);
-    Array<NodeConnectorUI*> getOutputConnections();
-    Array<NodeConnectorUI*> getInputConnections();
-    Array<NodeConnectorUI*> getFeedbackConnections();
+    virtual void connectInput(NodeUI* connector) = 0;
+    virtual void connectFeedbackInput(NodeUI* connector) = 0;
+    virtual void connectOutput(NodeUI* connector) = 0;
+    virtual void disconnectInput(NodeUI* connector) = 0;
+    virtual void disconnectOutput(NodeUI* connector) = 0;
+
+    Array<NodeUI*> getOutputConnections();
+    Array<NodeUI*> getInputConnections();
+    Array<NodeUI*> getFeedbackConnections();
 
     NodeClass getNodeClass();
     NodeInstance getNodeInstance();
@@ -87,7 +88,7 @@ protected:
     NodeConnectorUIPtr input;
     NodeConnectorUIPtr output;
 
-    Array<NodeConnectorUI*> inputConnections;
-    Array<NodeConnectorUI*> outputConnections;
-    Array<NodeConnectorUI*> feedbackConnections; 
+    Array<NodeUI*> inputConnections;
+    Array<NodeUI*> outputConnections;
+    Array<NodeUI*> feedbackConnections; 
 };

@@ -41,12 +41,12 @@ void NodeUI::addOutputConnector()
     addAndMakeVisible(output.get());
 }
 
-NodeConnectorUI* NodeUI::getInputNode()
+NodeConnectorUI* NodeUI::getInputConnector()
 {
     return input.get();
 }
 
-NodeConnectorUI* NodeUI::getOutputNode()
+NodeConnectorUI* NodeUI::getOutputConnector()
 {
 	return output.get();
 }
@@ -64,61 +64,60 @@ Array<NodeConnectorUI*> NodeUI::getAllNodeConnectors()
     return nodes;
 }
 
-void NodeUI::connectInput(NodeConnectorUI* connection)
-{
-    if (!inputConnections.contains(connection))
-    {
-        inputConnections.add(connection);
-        // this->processorNode->connectInput(connection->getProcessorNode().get());
-    }
+// void NodeUI::connectInput(NodeUI* connection)
+// {
+//     if (!inputConnections.contains(connection))
+//     {
+//         inputConnections.add(connection);
+//         // this->processorNode->connectInput(connection->getProcessorNode().get());
+//     }
     
-}
+// }
 
-void NodeUI::connectFeedbackInput(NodeConnectorUI* connection)
-{
-    if (!feedbackConnections.contains(connection))
-    {
-        feedbackConnections.add(connection);
-        // this->processorNode->connectFeedbackInput(connection->getProcessorNode().get());
-    }
-}
+// void NodeUI::connectFeedbackInput(NodeUI* connection)
+// {
+//     if (!feedbackConnections.contains(connection))
+//     {
+//         feedbackConnections.add(connection);
+//         // this->processorNode->connectFeedbackInput(connection->getProcessorNode().get());
+//     }
+// }
 
-void NodeUI::connectOutput(NodeConnectorUI* connection)
-{
-    if (!outputConnections.contains(connection))
-    {
-        outputConnections.add(connection);
-        // this->processorNode->connectOutput(connection->getProcessorNode().get());
-    } 
-}
+// void NodeUI::connectOutput(NodeUI* connection)
+// {
+//     if (!outputConnections.contains(connection))
+//     {
+//         outputConnections.add(connection);
+//         // this->processorNode->connectOutput(connection->getProcessorNode().get());
+//     } 
+// }
 
-void NodeUI::disconnectInput(NodeConnectorUI* connection)
-{
-    removeFromArray(inputConnections, connection);
-    // this->processorNode->disconnectInput(connection->getProcessorNode().get());
-}
+// void NodeUI::disconnectInput(NodeUI* connection)
+// {
+//     removeFromArray(inputConnections, connection);
+//     // this->processorNode->disconnectInput(connection->getProcessorNode().get());
+// }
 
-void NodeUI::disconnectOutput(NodeConnectorUI* connection)
-{
-    removeFromArray(outputConnections, connection);
-    // this->processorNode->disconnectOutput(connection->getProcessorNode().get());
-}
+// void NodeUI::disconnectOutput(NodeUI* connection)
+// {
+//     removeFromArray(outputConnections, connection);
+//     // this->processorNode->disconnectOutput(connection->getProcessorNode().get());
+// }
 
-Array<NodeConnectorUI*> NodeUI::getOutputConnections()
+Array<NodeUI*> NodeUI::getOutputConnections()
 {
     return outputConnections;
 }
 
-Array<NodeConnectorUI*> NodeUI::getInputConnections()
+Array<NodeUI*> NodeUI::getInputConnections()
 {
     return inputConnections;
 }
 
-Array<NodeConnectorUI*> NodeUI::getFeedbackConnections()
+Array<NodeUI*> NodeUI::getFeedbackConnections()
 {
     return feedbackConnections;
 }
-
 
 Point<int> NodeUI::getCenterPosition()
 {

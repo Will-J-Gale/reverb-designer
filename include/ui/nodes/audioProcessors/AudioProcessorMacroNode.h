@@ -20,7 +20,13 @@ public:
     virtual XmlElement* getAudioParametersAsXml() {};
 
     void mouseDoubleClick(const MouseEvent& e) override;
+    void connectInput(NodeUI* sourceNode) override;
+    void connectFeedbackInput(NodeUI* sourceNode) override;
+    void connectOutput(NodeUI* destinationNode) override;
+    void disconnectInput(NodeUI* sourceNode) override;
+    void disconnectOutput(NodeUI* destinationNode) override;
     std::string getIdAsString() override;
+    
 
 private:
     void closeWindow();

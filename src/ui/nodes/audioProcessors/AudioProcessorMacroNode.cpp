@@ -1,6 +1,7 @@
 #include <dsp/PluginGraph.h>
 #include <ui/nodes/audioProcessors/AudioProcessorMacroNode.h>
 #include <ui/GraphEditor.h>
+#include <ui/nodes/audioProcessors/AudioProcessorNodeUI.h>
 
 AudioProcessorMacroNode::AudioProcessorMacroNode(PluginGraph* pluginGraph, String name) : AudioProcessorNodeUI(name, NodeInstance::Macro)
 {
@@ -19,6 +20,51 @@ AudioProcessorMacroNode::AudioProcessorMacroNode(PluginGraph* pluginGraph, Strin
 
 AudioProcessorMacroNode::~AudioProcessorMacroNode()
 {
+}
+
+void AudioProcessorMacroNode::connectInput(NodeUI* sourceNodeUI)
+{
+    if (!inputConnections.contains(sourceNodeUI))
+    {
+        inputConnections.add(sourceNodeUI);
+        auto audioNode = dynamic_cast<AudioProcessorNodeUI*>(sourceNodeUI);
+        this->processorNode->connectInput(audioNode->getProcessorNode().get());
+    }
+}
+
+void AudioProcessorMacroNode::connectFeedbackInput(NodeUI* sourceNodeUI)
+{
+    if (!feedbackConnections.contains(sourceNodeUI))
+    {
+        feedbackConnections.add(sourceNodeUI);
+        auto audioNode = dynamic_cast<AudioProcessorNodeUI*>(sourceNodeUI);
+        this->processorNode->connectFeedbackInput(audioNode->getProcessorNode().get());
+    }
+}
+
+void AudioProcessorMacroNode::connectOutput(NodeUI* destinationNodeUI)
+{
+    if (!outputConnections.contains(destinationNodeUI))
+    {
+        outputConnections.add(destinationNodeUI);
+        auto audioNodeUI = dynamic_cast<AudioProcessorNodeUI*>(destinationNodeUI);
+        
+        this->processorNode->connectOutput(audioNodeUI->getProcessorNode().get());
+    } 
+}
+
+void AudioProcessorMacroNode::disconnectInput(NodeUI* sourceNodeUI)
+{
+    removeFromArray(inputConnections, sourceNodeUI);
+    auto audioNode = dynamic_cast<AudioProcessorNodeUI*>(sourceNodeUI);
+    this->processorNode->disconnectInput(audioNode->getProcessorNode().get());
+}
+
+void AudioProcessorMacroNode::disconnectOutput(NodeUI* destinationNodeUI)
+{
+    removeFromArray(outputConnections, destinationNodeUI);
+    auto audioNodeUI = dynamic_cast<AudioProcessorNodeUI*>(destinationNodeUI);
+    this->processorNode->disconnectOutput(audioNodeUI->getProcessorNode().get());
 }
 
 void AudioProcessorMacroNode::mouseDoubleClick(const MouseEvent& e)

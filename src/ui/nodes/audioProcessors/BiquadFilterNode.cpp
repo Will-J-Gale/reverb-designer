@@ -68,7 +68,6 @@ void BiquadFilterNode::comboBoxChanged(ComboBox* comboBox)
     if (comboBox == filterType.getComponent())
     {
         int choice = filterType.getSelectedItemId();
-
         parameters.filterType = (FilterType)choice;
     }
 

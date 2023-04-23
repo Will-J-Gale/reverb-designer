@@ -45,6 +45,8 @@ public:
     
     Array<NodeConnectorUI*>& getNodeConnectors();
     Array<NodeUIPtr>& getNodes();
+    Array<NodeUIPtr>& getInputs();
+    Array<NodeUIPtr>& getOutputs();
 
     void clear();
 

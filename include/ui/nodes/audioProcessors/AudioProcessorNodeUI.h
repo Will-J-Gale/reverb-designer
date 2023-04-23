@@ -34,8 +34,13 @@ public:
     
     AudioProcessorNodePtr getProcessorNode();
     void setProcessorNode(AudioProcessorNodePtr processorNode);
-
     IAudioProcessor* getAudioProcessor();
+    
+    virtual void connectInput(NodeUI* sourceNode) override;
+    virtual void connectFeedbackInput(NodeUI* sourceNode) override;
+    virtual void connectOutput(NodeUI* destinationNode) override;
+    virtual void disconnectInput(NodeUI* sourceNode) override;
+    virtual void disconnectOutput(NodeUI* destinationNode) override;
     
     template<class T>
     T* getAudioProcessorAs();
