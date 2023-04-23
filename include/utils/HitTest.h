@@ -10,11 +10,12 @@
 
 #pragma once
 #include <JuceHeader.h>
+#include <ui/nodes/NodeUI.h>
+#include <ui/nodes/NodeConnectorUI.h>
 
-class HitTest
+namespace HitTest
 {
-public:
-    static bool PointSphereHit(Point<int> pointPosition, Point<int> circlePosition, int circleRadius)
+    inline bool PointSphereHit(Point<int> pointPosition, Point<int> circlePosition, int circleRadius)
     {
         float distanceSqrd = 
             pow((float)pointPosition.getX() - (float)circlePosition.getX(), 2.0) + 
@@ -25,7 +26,7 @@ public:
         return distance < circleRadius;
     }
 
-    static bool PointBoxHit(Point<int> point, Rectangle<int>& box)
+    inline bool PointBoxHit(Point<int> point, Rectangle<int>& box)
     {
         auto boxPos = box.getPosition();
 
@@ -40,7 +41,7 @@ public:
         return false;
     }
 
-    static bool BoxHit(Rectangle<int>& a, Rectangle<int>& b)
+    inline bool BoxHit(Rectangle<int>& a, Rectangle<int>& b)
     {
         auto aPos = a.getPosition();
         auto bPos = b.getPosition();
@@ -56,4 +57,31 @@ public:
         return false;
     }
 
+    inline NodeConnectorUI* getNodeConnectorAtPosition(Point<int> screenPos, Array<NodeConnectorUI*>& nodeConnectors)
+    {
+        for (auto* nodeConnector : nodeConnectors)
+        {
+            auto nodePos = nodeConnector->getScreenPosition();
+            auto nodeRadius = nodeConnector->getBounds().getWidth();
+            
+            if (PointSphereHit(screenPos, nodePos, nodeRadius))
+                return nodeConnector;
+        }
+
+        return nullptr;
+        }
+
+    inline Array<NodeUI*> getOverlappingNodes(Rectangle<int> bounds, Array<NodeUIPtr>& nodes)
+    {
+        Array<NodeUI*> overlappingNodes;
+
+        for (auto node : nodes)
+        {
+            auto otherBounds = node->getBounds();
+            if (BoxHit(bounds, otherBounds))
+                overlappingNodes.add(node.get());
+        }
+
+        return overlappingNodes;
+    }
 };

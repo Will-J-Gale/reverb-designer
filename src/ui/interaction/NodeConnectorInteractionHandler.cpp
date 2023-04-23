@@ -1,5 +1,6 @@
 #include <ui/interaction/NodeConnectorInteractionHandler.h>
 #include <ui/GraphEditor.h>
+#include <utils/HitTest.h>
 
 NodeConnectorInteractionHandler::NodeConnectorInteractionHandler(GraphEditor* graphEditor)
 {
@@ -27,7 +28,7 @@ void NodeConnectorInteractionHandler::onNodeConnectorDrag(NodeConnectorUI* nodeC
 
 void NodeConnectorInteractionHandler::onNodeConnectorLeftRelease(NodeConnectorUI* nodeConnecctor, const MouseEvent& e)
 {
-    auto* mouseUpNodeConnector = graphEditor->getNodeConnectorAtPosition(e.getScreenPosition());
+    auto* mouseUpNodeConnector = HitTest::getNodeConnectorAtPosition(e.getScreenPosition(), graphEditor->getNodeConnectors());
 
     if (mouseUpNodeConnector)
     {

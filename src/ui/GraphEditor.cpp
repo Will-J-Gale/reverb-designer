@@ -56,7 +56,7 @@ void GraphEditor::mouseDrag(const MouseEvent& e)
         auto topLeft = Point<int>(fmin(mousePosition.x, mouseDownPosition.x), fmin(mousePosition.y, mouseDownPosition.y));
         
         selectionArea.setBounds(topLeft.x, topLeft.y, width, height);
-        selectionHandler.setItems(getOverlappingProcessors(selectionArea));
+        selectionHandler.setItems(HitTest::getOverlappingNodes(selectionArea, nodes));
     }
     else if (e.mods.isMiddleButtonDown())
         globalSelection.moveItems(e.getOffsetFromDragStart());
@@ -241,32 +241,13 @@ void GraphEditor::deleteSelectedProcessors()
     selectionHandler.clear();
 }
 
-NodeConnectorUI* GraphEditor::getNodeConnectorAtPosition(Point<int> screenPos)
+Array<NodeConnectorUI*>& GraphEditor::getNodeConnectors()
 {
-    for (auto* nodeConnector : nodeConnectors)
-    {
-        auto nodePos = nodeConnector->getScreenPosition();
-        auto nodeRadius = nodeConnector->getBounds().getWidth();
-        
-        if (HitTest::PointSphereHit(screenPos, nodePos, nodeRadius))
-            return nodeConnector;
-    }
-
-    return nullptr;
+    return nodeConnectors;
 }
-
-Array<NodeUI*> GraphEditor::getOverlappingProcessors(Rectangle<int> bounds)
+Array<NodeUIPtr>& GraphEditor::getNodes()
 {
-    Array<NodeUI*> selectedProcessors;
-
-    for (auto node : nodes)
-    {
-        auto otherBounds = node->getBounds();
-        if (HitTest::BoxHit(bounds, otherBounds))
-            selectedProcessors.add(node.get());
-    }
-
-    return selectedProcessors;
+    return nodes;
 }
 
 std::shared_ptr<AudioProcessorState> GraphEditor::loadStateFromFile(std::string xmlString)

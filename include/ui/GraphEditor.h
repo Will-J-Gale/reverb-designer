@@ -38,17 +38,20 @@ public:
     GraphEditor();
     ~GraphEditor();
 
+    virtual void setPluginGraph(PluginGraph* pluginGraph);
+
     void mouseDown(const MouseEvent& e) override;
     void mouseDrag(const MouseEvent& e) override;
     void mouseUp(const MouseEvent& e) override;
     void mouseWheelMove(const MouseEvent& event, const MouseWheelDetails& wheel) override;
     void paint(Graphics& g) override;
 
-    virtual void setPluginGraph(PluginGraph* pluginGraph);
-
     void duplicateSelectedProcessors();
     void reverseSelectedProcessors();
     void deleteSelectedProcessors();
+
+    Array<NodeConnectorUI*>& getNodeConnectors();
+    Array<NodeUIPtr>& getNodes();
 
     // XmlElementPtr generatePluginState();
     void loadFromExistingState(XmlElement* state);
@@ -66,9 +69,6 @@ protected:
 
     void addInputNode();
     void addOutputNode();
-
-    NodeConnectorUI* getNodeConnectorAtPosition(Point<int> screenPos);
-    Array<NodeUI*> getOverlappingProcessors(Rectangle<int> bounds);
 
     Array<NodeUIPtr> inputs;
     Array<NodeUIPtr> outputs;
