@@ -1,3 +1,4 @@
+#pragma once
 #include <memory>
 #include <JuceHeader.h>
 #include <utils/Constants.h>

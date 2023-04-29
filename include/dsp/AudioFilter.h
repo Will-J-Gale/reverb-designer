@@ -9,7 +9,6 @@
 */
 #pragma once
 
-
 #include <dsp/IAudioProcessor.h>
 #include <dsp/BiquadFilter.h>
 #include <dsp/Parameters.h>

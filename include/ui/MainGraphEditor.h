@@ -1,3 +1,4 @@
+#pragma once
 #include <ui/GraphEditor.h>
 
 class PluginGraph;
