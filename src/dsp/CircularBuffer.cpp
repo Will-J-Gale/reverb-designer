@@ -1,13 +1,3 @@
-/*
-  ==============================================================================
-
-    CircularBuffer.cpp
-    Created: 29 Aug 2020 1:35:59pm
-    Author:  Will
-
-  ==============================================================================
-*/
-
 #include <dsp/CircularBuffer.h>
 #include <utils/Math.h>
 #include <cstring>

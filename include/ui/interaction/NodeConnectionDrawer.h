@@ -1,13 +1,3 @@
-/*
-  ==============================================================================
-
-    NodeConnectionDrawer.h
-    Created: 6 Oct 2020 10:27:16pm
-    Author:  Will
-
-  ==============================================================================
-*/
-
 #pragma once
 #include <JuceHeader.h>
 #include <utils/Constants.h>

@@ -1,13 +1,3 @@
-/*
-  ==============================================================================
-
-    ComboBoxParameter.cpp
-    Created: 10 Sep 2020 5:24:27pm
-    Author:  Will
-
-  ==============================================================================
-*/
-
 #include <ui/parameters/ComboBoxParameter.h>
 #include <utils/Constants.h>
 

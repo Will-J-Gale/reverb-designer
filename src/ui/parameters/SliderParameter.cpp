@@ -1,13 +1,3 @@
-/*
-  ==============================================================================
-
-    SliderParameter.cpp
-    Created: 25 Sep 2020 8:27:41pm
-    Author:  Will
-
-  ==============================================================================
-*/
-
 #include <ui/parameters/SliderParameter.h>
 #include <utils/Constants.h>
 

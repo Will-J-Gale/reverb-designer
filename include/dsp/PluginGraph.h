@@ -1,13 +1,3 @@
-/*
-  ==============================================================================
-
-    PluginGraph.h
-    Created: 19 Sep 2020 1:15:06pm
-    Author:  Will
-
-  ==============================================================================
-*/
-
 #pragma once
 #include <dsp/IAudioProcessor.h>
 #include <dsp/AudioProcessorNode.h>

@@ -1,13 +1,3 @@
-/*
-  ==============================================================================
-
-    ComboBoxParameter.h
-    Created: 10 Sep 2020 5:24:27pm
-    Author:  Will
-
-  ==============================================================================
-*/
-
 #pragma once
 #include <JuceHeader.h>
 #include <ui/parameters/BaseParameter.h>

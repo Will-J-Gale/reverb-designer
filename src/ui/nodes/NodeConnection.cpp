@@ -1,13 +1,3 @@
-/*
-  ==============================================================================
-
-    NodeConnection.cpp
-    Created: 13 Sep 2020 3:05:28pm
-    Author:  Will
-
-  ==============================================================================
-*/
-
 #include <ui/nodes/NodeConnection.h>
 #include <ui/nodes/NodeConnectorUI.h>
 #include <utils/Constants.h>

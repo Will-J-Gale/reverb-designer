@@ -1,13 +1,3 @@
-/*
-  ==============================================================================
-
-    NodeUIContextMenu.cpp
-    Created: 3 Oct 2020 12:02:08pm
-    Author:  Will
-
-  ==============================================================================
-*/
-
 #include <ui/menus/NodeUIContextMenu.h>
 #include <utils/Constants.h>
 

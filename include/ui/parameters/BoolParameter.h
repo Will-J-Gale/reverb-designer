@@ -1,13 +1,3 @@
-/*
-  ==============================================================================
-
-    BoolParameter.h
-    Created: 10 Sep 2020 4:56:04pm
-    Author:  Will
-
-  ==============================================================================
-*/
-
 #pragma once
 #include <JuceHeader.h>
 #include <ui/parameters/BaseParameter.h>

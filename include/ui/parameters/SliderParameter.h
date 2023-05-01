@@ -1,13 +1,3 @@
-/*
-  ==============================================================================
-
-    SliderParameter.h
-    Created: 25 Sep 2020 8:27:41pm
-    Author:  Will
-
-  ==============================================================================
-*/
-
 #pragma once
 #include <JuceHeader.h>
 #include <ui/parameters/BaseParameter.h>

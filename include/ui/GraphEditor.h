@@ -1,13 +1,3 @@
-/*
-  ==============================================================================
-
-    GraphEditor.h
-    Created: 13 Sep 2020 2:49:28pm
-    Author:  Will
-
-  ==============================================================================
-*/
-
 #pragma once
 #include <ui/nodes/NodeConnection.h>
 #include <utils/ManagedArray.h>

@@ -1,13 +1,3 @@
-/*
-  ==============================================================================
-
-    AudioProcessorNode.cpp
-    Created: 20 Sep 2020 4:16:08pm
-    Author:  Will
-
-  ==============================================================================
-*/
-
 #include <dsp/AudioProcessorNode.h>
 
 AudioProcessorNode::~AudioProcessorNode()

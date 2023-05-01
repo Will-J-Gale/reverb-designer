@@ -1,13 +1,3 @@
-/*
-  ==============================================================================
-
-    NodeUIInteractionHandler.cpp
-    Created: 26 Oct 2020 9:45:05pm
-    Author:  Will
-
-  ==============================================================================
-*/
-
 #include <dsp/AudioProcessorNode.h>
 #include <dsp/PluginGraph.h>
 #include <ui/interaction/NodeUIInteractionHandler.h>

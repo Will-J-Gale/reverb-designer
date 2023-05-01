@@ -1,13 +1,3 @@
-/*
-  ==============================================================================
-
-    BaseParameter.cpp
-    Created: 10 Sep 2020 5:04:29pm
-    Author:  Will
-
-  ==============================================================================
-*/
-
 #include <ui/parameters/BaseParameter.h>
 #include <utils/Constants.h>
 

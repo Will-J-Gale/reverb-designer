@@ -1,13 +1,3 @@
-/*
-  ==============================================================================
-
-    Toolbar.cpp
-    Created: 18 Oct 2020 6:03:51pm
-    Author:  Will
-
-  ==============================================================================
-*/
-
 #include <ui/menus/MainMenu.h>
 #include <utils/StorageManager.h>
 #include <utils/Constants.h>

@@ -1,13 +1,3 @@
-/*
-  ==============================================================================
-
-    NumberParameter.cpp
-    Created: 10 Sep 2020 4:24:16pm
-    Author:  Will
-
-  ==============================================================================
-*/
-
 #include <ui/parameters/NumberParameter.h>
 #include <utils/Constants.h>
 

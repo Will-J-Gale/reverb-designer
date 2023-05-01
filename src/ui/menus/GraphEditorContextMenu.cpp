@@ -1,13 +1,3 @@
-/*
-  ==============================================================================
-
-    GraphEditorContextMenu.cpp
-    Created: 3 Oct 2020 12:01:36pm
-    Author:  Will
-
-  ==============================================================================
-*/
-
 #include <ui/menus/GraphEditorContextMenu.h>
 #include <utils/Constants.h>
 

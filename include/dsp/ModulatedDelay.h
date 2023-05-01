@@ -1,13 +1,3 @@
-/*
-  ==============================================================================
-
-    ModulatedDelay.h
-    Created: 31 Aug 2020 12:54:44pm
-    Author:  Will
-
-  ==============================================================================
-*/
-
 #pragma once
 #include <dsp/IAudioProcessor.h>
 #include <dsp/Parameters.h>

@@ -1,13 +1,3 @@
-/*
-  ==============================================================================
-
-    Node.cpp
-    Created: 10 Sep 2020 6:53:28pm
-    Author:  Will
-
-  ==============================================================================
-*/
-
 #include <ui/nodes/NodeConnectorUI.h>
 #include <utils/Constants.h>
 #include <ui/GraphEditor.h>

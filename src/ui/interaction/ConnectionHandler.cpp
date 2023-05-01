@@ -1,13 +1,3 @@
-/*
-  ==============================================================================
-
-    ConnectionHandler.cpp
-    Created: 26 Oct 2020 9:31:34pm
-    Author:  Will
-
-  ==============================================================================
-*/
-
 #include <memory>
 #include <ui/interaction/ConnectionHandler.h>
 #include <ui/nodes/NodeConnectorUI.h>

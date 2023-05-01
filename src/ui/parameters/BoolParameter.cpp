@@ -1,13 +1,3 @@
-/*
-  ==============================================================================
-
-    BoolParameter.cpp
-    Created: 10 Sep 2020 4:56:04pm
-    Author:  Will
-
-  ==============================================================================
-*/
-
 #include <ui/parameters/BoolParameter.h>
 #include <utils/Constants.h>
 

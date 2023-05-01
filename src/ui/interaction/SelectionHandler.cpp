@@ -1,13 +1,3 @@
-/*
-  ==============================================================================
-
-    Selection.cpp
-    Created: 6 Oct 2020 10:55:14pm
-    Author:  Will
-
-  ==============================================================================
-*/
-
 #include <ui/interaction/SelectionHandler.h>
 
 void SelectionHandler::setItems(Array<NodeUI*> items)

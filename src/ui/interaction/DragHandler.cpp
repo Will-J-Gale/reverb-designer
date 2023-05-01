@@ -1,13 +1,3 @@
-/*
-  ==============================================================================
-
-    DragHandler.cpp
-    Created: 26 Oct 2020 7:33:09pm
-    Author:  Will
-
-  ==============================================================================
-*/
-
 #include <ui/interaction/DragHandler.h>
 
 DragHandler::DragHandler(Component* component)

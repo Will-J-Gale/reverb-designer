@@ -1,13 +1,3 @@
-/*
-  ==============================================================================
-
-    ZoomHandler.cpp
-    Created: 26 Oct 2020 6:56:45pm
-    Author:  Will
-
-  ==============================================================================
-*/
-
 #include <ui/interaction/ZoomHandler.h>
 
 ZoomHandler::ZoomHandler(Component* component)
