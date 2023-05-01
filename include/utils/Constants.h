@@ -10,6 +10,7 @@
 
 #pragma once
 #include <string>
+#include <memory>
 #include <JuceHeader.h>
 
 //Plugin size
@@ -35,9 +36,9 @@ constexpr int PARAMETER_SPACING = 30;
 constexpr int PARAMETER_TEXT_WIDTH = 100;
 
 //Slider parameter
-constexpr int SLIDER_WIDTH = 50;
-constexpr int SLIDER_HEIGHT = 15;
-constexpr int SLIDER_PARAMETER_WIDTH = 250;
+constexpr int SLIDER_WIDTH = 100;
+constexpr int SLIDER_HEIGHT = 30;
+constexpr int SLIDER_PARAMETER_WIDTH = 350;
 constexpr int MIN_TEXT_X = 0;
 constexpr int MAX_TEXT_X = MIN_TEXT_X + SLIDER_WIDTH + 10;
 constexpr int SLIDER_NAME_X = SLIDER_WIDTH + 5;
@@ -56,7 +57,7 @@ constexpr int COMBO_HEIGHT = 20;
 constexpr int COMBO_TEXT_OFFSET = COMBO_X + COMBO_WIDTH;
 constexpr int COMBO_TEXT_WIDTH = 80;
 
-//Node
+//Node connectors
 const std::string NODE_COLOUR = "ffff0000";
 const std::string NODE_OUTPUT_COLOUR = "ff990000";
 constexpr float NODE_SIZE = 12.0;
@@ -70,6 +71,7 @@ const std::string CONNECTION_COLOUR = "ff000000";
 constexpr int CONNECTION_GAP = 25;
 
 //Audio Processor
+constexpr int NODE_MIN_HEIGHT = 20;
 constexpr int PROCESSOR_WIDTH = 150;
 constexpr int PROCESSOR_HEIGHT = 60;
 constexpr size_t MAX_CHANNELS = 10;
@@ -154,7 +156,8 @@ constexpr float SELECTION_SCALE = 1.2;
 const String PLUGIN_STATE_TAG = "PluginState";
 const String PROCESSOR_STATE_TAG = "ProcessorState";
 const String PROCESSORS_TAG = "Processors";
-const String TYPE_TAG = "Type";
+const String CLASS_TAG = "NodeClass";
+const String INSTANCE_TAG = "NodeInstance";
 const String X_TAG = "X";
 const String Y_TAG = "Y";
 const String IS_REVERSED_TAG = "IsReversed";
@@ -247,8 +250,21 @@ enum class NodeInstance
     APF,
     Comb,
     ModDelay,
-    NestedApf
+    NestedAPF,
 };
+
+const std::map<NodeInstance, std::string> NodeInstanceToName = {
+    {NodeInstance::Input, "Input"},
+    {NodeInstance::Output, "Output"},
+    {NodeInstance::Macro, "Macro"},
+    {NodeInstance::Gain, "Gain"},
+    {NodeInstance::Delay, "Delay"},
+    {NodeInstance::Filter, "Filter"},
+    {NodeInstance::APF, "All Pass Filter"},
+    {NodeInstance::Comb, "Comb Filter"},
+    {NodeInstance::NestedAPF, "Nested APF"},
+};
+
 
 enum class NodeClass
 {
@@ -268,7 +284,7 @@ enum class GraphEditorContextMenuItems
     APF = (int)NodeInstance::APF,
     Comb = (int)NodeInstance::Comb,
     ModDelay = (int)NodeInstance::ModDelay,
-    NestedApf = (int)NodeInstance::NestedApf,
+    NestedApf = (int)NodeInstance::NestedAPF,
     Macro = (int)NodeInstance::Macro,
 
     //Actions

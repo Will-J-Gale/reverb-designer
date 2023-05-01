@@ -86,4 +86,7 @@ double BiquadFilter::processCanonicalFormTransposed(double xn)
     return 0.0;
 }
 
-
+AudioParametersPtr BiquadFilter::getParameters()
+{
+    return parameters;
+}

@@ -18,3 +18,7 @@ bool PassThrough::canProcessAudioFrame()
 {
     return true;
 }
+AudioParametersPtr PassThrough::getParameters()
+{
+    return parameters;
+}

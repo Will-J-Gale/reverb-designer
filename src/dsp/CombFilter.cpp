@@ -1,20 +1,18 @@
-/*
-  ==============================================================================
-
-    CombFilter.cpp
-    Created: 31 Aug 2020 7:16:27pm
-    Author:  Will
-
-  ==============================================================================
-*/
-
 #include <dsp/CombFilter.h>
 #include <cmath>
+
+CombFilter::CombFilter()
+{
+    parameters->addOnChangeCallback(std::bind(&CombFilter::onParametersChanged, this));
+    delayParameters = delay.getParameters();
+    onParametersChanged();
+}
 
 void CombFilter::reset(double sampleRate, double delayTimeInSeconds)
 {
     this->sampleRate = sampleRate;
     delay.reset(sampleRate, delayTimeInSeconds);
+    onParametersChanged();
     lpfState = 0.0;
 }
 
@@ -22,9 +20,11 @@ double CombFilter::process(double xn)
 {
     double yn = delay.readDelay();
     double input = 0.0;
+    bool enableLPF = parameters->getParameterValueByName<bool>("Enable LPF");
 
-    if (params.enableLpf)
+    if (enableLPF)
     {
+        double lpfG = parameters->getParameterValueByName<double>("LPF G");
         double g2 = lpfG * (1.0 - combG);
         double filteredSignal = yn + (lpfState * g2);
         input = xn + (filteredSignal * combG);
@@ -45,23 +45,18 @@ bool CombFilter::canProcessAudioFrame()
     return false;
 }
 
-CombFilterParameters CombFilter::getParameters()
+AudioParametersPtr CombFilter::getParameters()
 {
-    return params;
+    return parameters;
 }
 
-void CombFilter::setParameters(CombFilterParameters newParams)
+void CombFilter::onParametersChanged()
 {
-    params = newParams;
+    double delayTimeMs = parameters->getParameterValueByName<double>("DelayTimeMs");
+    double RT60TimeInMs = parameters->getParameterValueByName<double>("RT60 Ms");
+    delayParameters->setParameterValueByName<DoubleParameter, double>("DelayTimeMs", delayTimeMs);
 
-    SimpleDelayParameters delayParams = delay.getParameters();
-    delayParams.delayTimeInMs = params.delayTimeInMs;
-    delayParams.interpolate = params.interpolate;
-    delay.setParameters(delayParams);
-
-    double exponent = -3.0 * params.delayTimeInMs * (1.0 / sampleRate);
-    double rt60InSeconds = params.RT60TimeInMs / 1000.0;
+    double exponent = -3.0 * delayTimeMs * (1.0 / sampleRate);
+    double rt60InSeconds = RT60TimeInMs / 1000.0;
     combG = std::pow(10, exponent / rt60InSeconds);
-
-    lpfG = params.lpfG;
 }

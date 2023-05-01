@@ -1,23 +1,19 @@
-/*
-  ==============================================================================
-
-    AudioFilter.cpp
-    Created: 22 Aug 2020 2:02:10pm
-    Author:  Will
-
-  ==============================================================================
-*/
-#pragma once
 #include <cmath>
 #include <dsp/AudioFilter.h>
 #include <dsp/AudioFilterCalculations.h>
 #include <utils/Math.h>
 
+AudioFilter::AudioFilter()
+{
+    parameters->addOnChangeCallback(std::bind(&AudioFilter::onParametersChanged, this));
+    onParametersChanged();
+}
+
 bool AudioFilter::reset(double sampleRate)
 {
     this->sampleRate = sampleRate;
     biquad.reset(sampleRate);
-    setParameters(parameters);
+    calculateCoefficients();
 
 	return true;
 }
@@ -37,31 +33,25 @@ void AudioFilter::setSampleRate(double newSampleRate)
     sampleRate = newSampleRate;
 }
 
-void AudioFilter::setParameters(AudioFilterParameters newParameters)
-{
-    parameters = newParameters;
-
-    if (parameters.Q <= 0)
-    {
-        parameters.Q = DEFAULT_Q;
-    }
-
-    calculateCoefficients();
-}
-
-AudioFilterParameters AudioFilter::getParameters()
+AudioParametersPtr AudioFilter::getParameters()
 {
     return parameters;
 }
 
+void AudioFilter::onParametersChanged()
+{
+    calculateCoefficients();
+}
+
 void AudioFilter::calculateCoefficients()
 {
-    double fc = parameters.fc;
     double fs = sampleRate;
-    double Q = parameters.Q;
-    double gain_dB = parameters.gain_dB;
+    double fc = parameters->getParameterValueByName<double>("Freq");
+    double Q = parameters->getParameterValueByName<double>("Q");
+    double gain_dB = parameters->getParameterValueByName<double>("Gain");
+    FilterType filterType = parameters->getParameterValueByName<FilterType>("FilterType");
 
-    switch (parameters.filterType)
+    switch (filterType)
     {
         case FilterType::LPF1:
             AudioFilterCalculations::calculateLPF1(coeffs, fc, fs, Q);

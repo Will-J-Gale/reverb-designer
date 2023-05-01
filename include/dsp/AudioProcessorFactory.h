@@ -14,7 +14,7 @@
 #include <dsp/PassThrough.h>
 #include <utils/Constants.h>
 #include <dsp/Gain.h>
-#include <dsp/SimpleDelay.h>
+#include <dsp/Delay.h>
 #include <dsp/AudioFilter.h>
 #include <dsp/DelayAPF.h>
 #include <dsp/CombFilter.h>
@@ -38,7 +38,7 @@ public:
                 return std::make_shared<Gain>();
 
             case NodeInstance::Delay:
-                return std::make_shared<SimpleDelay>();
+                return std::make_shared<Delay>();
 
             case NodeInstance::Filter:
                 return std::make_shared<AudioFilter>();
@@ -52,11 +52,11 @@ public:
             case NodeInstance::ModDelay:
                 return std::make_shared<ModulatedDelay>();
 
-            case NodeInstance::NestedApf:
+            case NodeInstance::NestedAPF:
                 return std::make_shared<NestedDelayAPF>();
             
             default:
-                throw std::invalid_argument("Missing object type");
+                return std::make_shared<PassThrough>();
         }
     }
 };

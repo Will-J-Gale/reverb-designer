@@ -10,26 +10,41 @@
 
 #include <dsp/DelayAPF.h>
 
+DelayAPF::DelayAPF()
+{
+    parameters->addOnChangeCallback(std::bind(&DelayAPF::onParametersChanged, this));
+    delayParameters = delay.getParameters();
+
+    onParametersChanged();
+}
+
 void DelayAPF::reset(double sampleRate, double maxDelayTimeInSeconds)
 {
     this->sampleRate = sampleRate;
     delay.reset(sampleRate, maxDelayTimeInSeconds);
     lfo.reset(sampleRate);
+
+    delayParameters = delay.getParameters();
 }
 
 double DelayAPF::process(double xn)
 {
-    double g = parameters.apfG;
-    double g2 = parameters.lpfG;
+    double g = parameters->getParameterValueByName<double>("APF G");
+    double g2 = parameters->getParameterValueByName<double>("LPF G");
+    double lfoDepth = parameters->getParameterValueByName<double>("LFO Depth");
+    double delayTimeMs = parameters->getParameterValueByName<double>("DelayTimeMs");
+    double lfoMaxModulationInMs = parameters->getParameterValueByName<double>("LFO Max Modulation ms");
+    double enableLPF = parameters->getParameterValueByName<bool>("Enable LPF");
+    double enableLFO = parameters->getParameterValueByName<bool>("Enable LFO");
     double delayedSample = 0.0;
 
-    if (parameters.enableLFO)
+    if (enableLFO)
     {
         SignalGenData lfoOutput = lfo.renderAudioOutput();
-        double lfoDepth = parameters.lfoDepth;
+        double lfoDepth = lfoDepth;
 
-        double maxDelay = parameters.delayTimeInMs;
-        double minDelay = maxDelay - parameters.lfoMaxModulationInMs;
+        double maxDelay = delayTimeMs;
+        double minDelay = maxDelay - lfoMaxModulationInMs;
         
         minDelay = fmax(minDelay, 0.0);
 
@@ -55,7 +70,7 @@ double DelayAPF::process(double xn)
         resulting in xn always being added to a filtered version
     */
 
-    if (parameters.enableLPF)
+    if (enableLPF)
     {
         wn = (wn * (1 - g2)) + (lpfState * g2);
         lpfState = wn;
@@ -71,20 +86,20 @@ bool DelayAPF::canProcessAudioFrame()
     return false;
 }
 
-DelayAPFParameters DelayAPF::getParameters()
+AudioParametersPtr DelayAPF::getParameters()
 {
     return parameters;
 }
 
-void DelayAPF::setParameters(DelayAPFParameters newParameters)
+void DelayAPF::onParametersChanged()
 {
-    parameters = newParameters;
-
-    SimpleDelayParameters delayParams = delay.getParameters();
-    delayParams.delayTimeInMs = parameters.delayTimeInMs;
-    delay.setParameters(delayParams);
+    double delayTimeInMs = parameters->getParameterValueByName<double>("DelayTimeMs");
+    double lfoRate = parameters->getParameterValueByName<double>("LFO Rate");
+    
+    AudioParametersPtr delayParameters = delay.getParameters();
+    delayParameters->setParameterValueByName<DoubleParameter, double>("DelayTimeMs", delayTimeInMs);
 
     OscillatorParameters lfoPrams = lfo.getParameters();
-    lfoPrams.frequency = parameters.lfoRate;
+    lfoPrams.frequency = lfoRate;
     lfo.setParameters(lfoPrams);
 }

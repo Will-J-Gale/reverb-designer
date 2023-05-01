@@ -1,8 +1,8 @@
 /*
   ==============================================================================
 
-    Delay.cpp
-    Created: 29 Aug 2020 2:42:35pm
+    SimpleDelay.cpp
+    Created: 31 Aug 2020 6:16:15pm
     Author:  Will
 
   ==============================================================================
@@ -10,51 +10,72 @@
 
 #include <dsp/Delay.h>
 
-bool Delay::reset(double sampleRate)
+Delay::Delay()
 {
-    if (this->sampleRate == sampleRate)
-    {
-        buffer.flushBuffer();
-        return true;
-    }
+    parameters->addOnChangeCallback(std::bind(&Delay::onParametersChanged, this));
+    onParametersChanged();
+}
 
-    createDelayBuffers(sampleRate, bufferLengthInSeconds);
-    return true;
+void Delay::reset(double sampleRate, double maxDelayTimeInSeconds)
+{
+    this->sampleRate = sampleRate;
+
+    buffer.flushBuffer();
+    double _maxDelayTimeSeconds = parameters->getParameterByNameAsType<DoubleParameter>("DelayTimeMs")->getMax() / 1000.0;
+    bufferLength = (sampleRate * _maxDelayTimeSeconds) + 1;
+
+    buffer.createCircularBuffer(bufferLength);
 }
 
 double Delay::process(double xn)
 {
-    double delay = buffer.read(delayInSamples);
-    double yn = (delay * parameters.mix) + (xn * (1.0 - parameters.mix));
+    if (delayTimeInSamples == 0)
+    {
+        return xn;
+    }
 
-    double feedback = delay * parameters.feedback;
-    buffer.write(xn + feedback);
+    double yn = buffer.read(delayTimeInSamples);
+
+    buffer.write(xn);
 
     return yn;
 }
-
-bool Delay::canProcessAudioFrame()
-{
-	return false;
-}
-
-void Delay::setParameters(AudioDelayParameters parameters)
-{
-    this->parameters = parameters;
-
-    delayInSamples = sampleRate * parameters.delayInSeconds;
-}
-
-AudioDelayParameters Delay::getParameters()
+AudioParametersPtr Delay::getParameters()
 {
     return parameters;
 }
 
-void Delay::createDelayBuffers(double sampleRate, float bufferLengthInSeconds)
+bool Delay::canProcessAudioFrame()
 {
-    this->bufferLengthInSeconds = bufferLengthInSeconds;
-    this->sampleRate = sampleRate;
+    return false;
+}
 
-    this->bufferLength = sampleRate * bufferLengthInSeconds;
-    buffer.createCircularBuffer(bufferLength);
+double Delay::readDelay()
+{
+    return buffer.read(delayTimeInSamples);
+}
+
+double Delay::readDelayAtTimeInMs(double delayInMs)
+{
+    double delayInSamples = sampleRate * (delayInMs / 1000.0);
+
+    return buffer.read(delayInSamples);
+}
+
+double Delay::readDelayAtPercentage(double delayPercentage)
+{
+    double delayInSamples = delayTimeInSamples * delayPercentage;
+
+    return buffer.read(delayInSamples);
+}
+
+void Delay::write(double xn)
+{
+    buffer.write(xn);
+}
+
+void Delay::onParametersChanged()
+{
+    auto delayTimeInMs = parameters->getParameterValueByName<double>("DelayTimeMs");
+    delayTimeInSamples = sampleRate * (delayTimeInMs / 1000.0);
 }

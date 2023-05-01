@@ -12,12 +12,8 @@ class PluginGraph;
 class AudioProcessorMacroNode : public AudioProcessorNodeUI
 {
 public:
-    AudioProcessorMacroNode(PluginGraph* pluginGraph, String name=MACRO_DEFAULT_NAME);
+    AudioProcessorMacroNode(PluginGraph* pluginGraph, String name, AudioProcessorNodePtr node);
     ~AudioProcessorMacroNode();
-
-    void setUIParameters() override {};
-    virtual void setAudioParametersFromXml(XmlElement* parametersXml) {};
-    virtual XmlElement* getAudioParametersAsXml() {};
 
     void mouseDoubleClick(const MouseEvent& e) override;
     void connectInput(NodeUI* sourceNode) override;

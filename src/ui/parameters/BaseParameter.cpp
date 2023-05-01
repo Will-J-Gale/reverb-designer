@@ -28,3 +28,8 @@ void BaseParameter::setParameterName(String newName)
     name.setText(newName, NotificationType::dontSendNotification);
 }
 
+std::string BaseParameter::getId()
+{
+    return id.toString().toStdString();
+}
+

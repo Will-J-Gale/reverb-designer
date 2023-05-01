@@ -20,16 +20,20 @@
 #include <utils/XmlUtils.h>
 #include <utils/Constants.h>
 #include <utils/ManagedArray.h>
+#include <ui/parameters/BaseParameter.h>
 
 //Forward declarations
 class GraphEditor;
 
 #define AudioProcessorNodeUIPtr std::shared_ptr<AudioProcessorNodeUI>
 
-class AudioProcessorNodeUI : public NodeUI
+class AudioProcessorNodeUI :    public NodeUI,
+                                public ToggleButton::Listener,
+                                public Slider::Listener,
+                                public ComboBox::Listener
 {
 public:
-    AudioProcessorNodeUI(String name, NodeInstance nodeInstance);
+    AudioProcessorNodeUI(String name, NodeInstance nodeInstance, AudioProcessorNodePtr node);
     ~AudioProcessorNodeUI();
     
     AudioProcessorNodePtr getProcessorNode();
@@ -41,17 +45,19 @@ public:
     virtual void connectOutput(NodeUI* destinationNode) override;
     virtual void disconnectInput(NodeUI* sourceNode) override;
     virtual void disconnectOutput(NodeUI* destinationNode) override;
+    void buttonClicked (Button* button) override;
+    void sliderValueChanged (Slider* slider) override;
+    void comboBoxChanged (ComboBox* comboBoxThatHasChanged) override;
     
     template<class T>
     T* getAudioProcessorAs();
 
     virtual std::string getIdAsString();
-    virtual void setUIParameters() {};
-    virtual void setAudioParametersFromXml(XmlElement* parametersXml) = 0;
-    virtual XmlElement* getAudioParametersAsXml() = 0;
 
 protected:
     AudioProcessorNodePtr processorNode = nullptr;
+    Array<std::shared_ptr<BaseParameter>> parametersUI;
+    std::map<std::string, ParameterPtr> componentIdToParameterMap;
 };
 
 template<class T>

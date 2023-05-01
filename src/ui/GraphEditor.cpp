@@ -11,8 +11,6 @@
 #include <map>
 #include <ui/GraphEditor.h>
 #include <dsp/PluginGraph.h>
-#include <ui/nodes/audioProcessors/GainNode.h>
-#include <ui/nodes/audioProcessors/AudioProcessorNodeUIFactory.h>
 #include <ui/interaction/NodeConnectionDrawer.h>
 #include <utils/HitTest.h>
 #include <utils/XmlGenerator.h>

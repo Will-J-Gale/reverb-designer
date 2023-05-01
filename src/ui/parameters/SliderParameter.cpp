@@ -58,7 +58,6 @@ double SliderParameter::getValue()
 void SliderParameter::setMin(double min)
 {
     setMinAndMax(min, max);
-
 }
 
 void SliderParameter::setMax(double max)

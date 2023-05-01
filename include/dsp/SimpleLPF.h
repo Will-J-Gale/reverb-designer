@@ -15,12 +15,13 @@
 class SimpleLPF : IAudioProcessor
 {
 public:
-    // Inherited via IAudioProcessor
+    SimpleLPF();
     virtual bool reset(double sampleRate) override;
     virtual double process(double xn) override;
     virtual bool canProcessAudioFrame() override;
+    AudioParametersPtr getParameters() override;
 
-    SimpleLPFParameters getParameters();
+    SimpleLPFParameters getLPFParameters();
     void setParameters(SimpleLPFParameters newParameters);
 
 private:

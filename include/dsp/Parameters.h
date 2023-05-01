@@ -1,12 +1,3 @@
-/*
-  ==============================================================================
-
-    Parameters.h
-    Created: 22 Aug 2020 2:02:00pm
-    Author:  Will
-
-  ==============================================================================
-*/
 #pragma once
 #include <cstddef>
 
@@ -151,7 +142,7 @@ struct AudioFilterParameters : IAudioParameter
     double gain_dB = DEFAULT_GAIN;
 };
 
-struct AudioDelayParameters : IAudioParameter
+struct FeedbackDelayParameters : IAudioParameter
 {
     float mix = DEFAULT_MIX;
     float delayInSeconds = DEFAULT_DELAY_TIME;

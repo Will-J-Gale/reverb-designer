@@ -1,35 +1,31 @@
-/*
-  ==============================================================================
-
-    Delay.h
-    Created: 29 Aug 2020 2:42:35pm
-    Author:  Will
-
-  ==============================================================================
-*/
 #pragma once
-#include <dsp/IAudioProcessor.h>
-#include <dsp/CircularBuffer.h>
 #include <dsp/Parameters.h>
+#include <dsp/CircularBuffer.h>
+#include <dsp/IDelayProcessor.h>
 
-class Delay : public IAudioProcessor
+class Delay : public IDelayProcessor
 {
 public:
-    bool reset(double sampleRate);
-    double process(double xn);
-    bool canProcessAudioFrame();
+    Delay();
+    virtual void reset(double sampleRate, double maxDelayTimeInSeconds) override;
+    virtual double process(double xn) override;
+    virtual bool canProcessAudioFrame() override;
+    virtual AudioParametersPtr getParameters() override;
+    void onParametersChanged() override;
 
-    void setParameters(AudioDelayParameters parameters);
-    AudioDelayParameters getParameters();
-
-    void createDelayBuffers(double sampleRate, float bufferLengthInSeconds);
+    double readDelay();
+    double readDelayAtTimeInMs(double delayInMs);
+    double readDelayAtPercentage(double delayPercentage);
+    void write(double xn);
 
 private:
-    CircularBuffer buffer;
-    AudioDelayParameters parameters;
+    AudioParametersPtr parameters = MAKE_PARAMETERS({
+        std::make_shared<DoubleParameter>("DelayTimeMs", 0.0, 0.0, 5000.0)
+    });
 
-    double sampleRate = 0.0;
-    double delayInSamples = 0.0;
-    double bufferLengthInSeconds = 5.0;
+    CircularBuffer buffer;
     size_t bufferLength = 0;
+    double sampleRate;
+    double delayTimeInSamples;
+    
 };

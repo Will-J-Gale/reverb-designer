@@ -12,40 +12,40 @@
 #include <dsp/IAudioProcessor.h>
 #include <dsp/BiquadFilter.h>
 #include <dsp/Parameters.h>
+#include <parameters/Parameter.h>
 
 class AudioFilter : public IAudioProcessor
 {
 public:
+    AudioFilter();
     virtual bool reset(double sampleRate);
     virtual double process(double xn);
     virtual bool canProcessAudioFrame();
     virtual void setSampleRate(double sampleRate);
-    void setParameters(AudioFilterParameters newParameters);
-    AudioFilterParameters getParameters();
-    void calculateCoefficients();
+    virtual AudioParametersPtr getParameters() override;
+    void onParametersChanged() override;
+
 private:
+    void calculateCoefficients();
+
+private:
+    AudioParametersPtr parameters = MAKE_PARAMETERS({
+        std::make_shared<DoubleParameter>("Freq", DEFAULT_FC, 20.0, 20000.0),
+        std::make_shared<DoubleParameter>("Q", DEFAULT_Q, 0.01, 1.0),
+        std::make_shared<DoubleParameter>("Gain", DEFAULT_GAIN, -10.0, 10.0),
+        std::make_shared<OptionParameter>(
+            "FilterType", 
+            Array<OptionItem> {
+                OptionItem("LPF", (int)FilterType::LPF1),
+                OptionItem("HPF", (int)FilterType::HPF1),
+                OptionItem("HSF", (int)FilterType::HSF),
+                OptionItem("LSF", (int)FilterType::LSF),
+            }, 
+            0
+        )
+    });
     BiquadFilter biquad;
-    AudioFilterParameters parameters;
 
     double sampleRate;
-
     double coeffs[numCoeffs] = { 0.0, 0.0, 0.0, 0.0, 0.0};
-
-    //Filter coefficient calculations
-    void calculateLPF1();
-    void calculateLPF2();
-    void calculateLPFButterworth();
-    void calculateHPF1();
-    void calculateHPF2();
-    void calculateHPFButterworth();
-    void calculateBPF();
-    void calculateBSF();
-    void calculateAPF();
-    void calculateHSF();
-    void calculateLSF();
-    void calculatePEQ();
-    void calculatePEQConstant();
-    void calculateGEQ();
-    void calcualteLWRLPF2();
-    void calcualteLWRHPF2();
 };

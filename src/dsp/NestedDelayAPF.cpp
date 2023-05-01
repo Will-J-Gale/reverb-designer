@@ -1,14 +1,10 @@
-/*
-  ==============================================================================
-
-    NestedDelayAPF.cpp
-    Created: 3 Sep 2020 7:40:59pm
-    Author:  Will
-
-  ==============================================================================
-*/
-
 #include <dsp/NestedDelayAPF.h>
+
+NestedDelayAPF::NestedDelayAPF()
+{
+    parameters->addOnChangeCallback(std::bind(&NestedDelayAPF::onParametersChanged, this));
+    onParametersChanged();
+}
 
 void NestedDelayAPF::reset(double sampleRate, double maxDelayTimeInSeconds)
 {
@@ -19,16 +15,20 @@ void NestedDelayAPF::reset(double sampleRate, double maxDelayTimeInSeconds)
 double NestedDelayAPF::process(double xn)
 {
     double delayedSample = 0.0;
-    double g = parameters.outerApfG;
-    double lpfG = DelayAPF::parameters.lpfG;
+    double g = parameters->getParameterValueByName<double>("Outer APF G");
+    double lpfG = parameters->getParameterValueByName<double>("LPF G");
+    bool enableLFO = parameters->getParameterValueByName<bool>("Enable LFO");
+    bool enableLPF = parameters->getParameterValueByName< bool>("Enable LPF");
 
-    if (parameters.enableLFO)
+    if (enableLFO)
     {
+        double lfoDepth = parameters->getParameterValueByName<double>("LFO_DEPTH");
+        double outerDelayTimeInMs = parameters->getParameterValueByName<double>("Outer Delay Time");
+        double lfoMaxModulationInMs = parameters->getParameterValueByName<double>("LFO Max Modulation");
         SignalGenData lfoOutput = lfo.renderAudioOutput();
-        double lfoDepth = parameters.lfoDepth;
 
-        double maxDelay = parameters.outerDelayTimeInMs;
-        double minDelay = maxDelay - parameters.lfoMaxModulationInMs;
+        double maxDelay = outerDelayTimeInMs;
+        double minDelay = maxDelay - lfoMaxModulationInMs;
 
         minDelay = fmax(minDelay, 0.0);
 
@@ -44,7 +44,7 @@ double NestedDelayAPF::process(double xn)
 
     double wn = xn + (delayedSample * g);
 
-    if (DelayAPF::parameters.enableLPF)
+    if (enableLPF)
     {
         wn = (wn * (1 - lpfG)) + (lpfState * lpfG);
         lpfState = wn;
@@ -57,32 +57,17 @@ double NestedDelayAPF::process(double xn)
     return yn;
 }
 
-NestedDelayAPFParameters NestedDelayAPF::getParameters()
+AudioParametersPtr NestedDelayAPF::getParameters()
 {
     return parameters;
 }
 
-void NestedDelayAPF::setParameters(NestedDelayAPFParameters newParameters)
+void NestedDelayAPF::onParametersChanged()
 {
-    parameters = newParameters;
+    double innerDelayTimeInMs = parameters->getParameterValueByName<double>("Inner Delay Time");
+    double innerAPFG = parameters->getParameterValueByName<double>("Inner APF G");
 
-    DelayAPFParameters outerApfParams = DelayAPF::getParameters();
-    DelayAPFParameters innerApfParams = nestedApf.getParameters();
-
-    outerApfParams.apfG = parameters.outerApfG;
-    innerApfParams.apfG = parameters.innerApfG;
-
-    outerApfParams.delayTimeInMs = parameters.outerDelayTimeInMs;
-    innerApfParams.delayTimeInMs = parameters.innerDelayTimeMs;
-
-    outerApfParams.enableLPF = parameters.enableLPF;
-    outerApfParams.lpfG = parameters.lpfG;
-
-    outerApfParams.enableLFO = parameters.enableLFO;
-    outerApfParams.lfoRate = parameters.lfoRateHz;
-    outerApfParams.lfoDepth = parameters.lfoDepth;
-    outerApfParams.lfoMaxModulationInMs = parameters.lfoMaxModulationInMs;
-
-    DelayAPF::setParameters(outerApfParams);
-    nestedApf.setParameters(innerApfParams);
+    AudioParametersPtr nestedAPFParameters = nestedApf.getParameters();
+    nestedAPFParameters->setParameterValueByName<DoubleParameter, double>("Inner Delay Time", innerDelayTimeInMs);
+    nestedAPFParameters->setParameterValueByName<DoubleParameter, double>("Inner APF G", innerAPFG);
 }

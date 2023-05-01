@@ -3,7 +3,7 @@
 #include <ui/GraphEditor.h>
 #include <ui/nodes/audioProcessors/AudioProcessorNodeUI.h>
 
-AudioProcessorMacroNode::AudioProcessorMacroNode(PluginGraph* pluginGraph, String name) : AudioProcessorNodeUI(name, NodeInstance::Macro)
+AudioProcessorMacroNode::AudioProcessorMacroNode(PluginGraph* pluginGraph, String name, AudioProcessorNodePtr node) : AudioProcessorNodeUI(name, NodeInstance::Macro, node)
 {
     setBounds(0, 0, GAIN_WIDTH, GAIN_HEIGHT);
 

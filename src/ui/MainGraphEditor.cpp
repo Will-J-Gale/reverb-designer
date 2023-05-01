@@ -45,7 +45,6 @@ void MainGraphEditor::createIOProcessors()
         auto newInput = nodeInteractionHandler.createNode(NodeInstance::Input, Point<int>(), audioInput);
         nodeInteractionHandler.initializeNode(newInput);
         inputs.add(newInput);
-        ((Input*)newInput.get())->setChannel(i);
         newInput->setTopLeftPosition(INPUT_START_X, y);
         y += IO_SPACING;
     }
@@ -58,7 +57,6 @@ void MainGraphEditor::createIOProcessors()
         nodeInteractionHandler.initializeNode(newOutput);
 
         outputs.add(newOutput);
-        ((Output*)newOutput.get())->setChannel(i);
         newOutput->setTopLeftPosition(OUTPUT_START_X, y);
         y += IO_SPACING;
     }

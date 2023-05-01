@@ -11,12 +11,7 @@
 #pragma once
 #include <ui/nodes/NodeConnection.h>
 #include <utils/ManagedArray.h>
-#include <ui/nodes/audioProcessors/Input.h>
-#include <ui/nodes/audioProcessors/Output.h>
-#include <ui/nodes/audioProcessors/BiquadFilterNode.h>
-#include <ui/nodes/audioProcessors/SimpleDelayNode.h>
 #include <utils/Constants.h>
-#include <ui/nodes/audioProcessors/AllPassFilterNode.h>
 #include <ui/menus/GraphEditorContextMenu.h>
 #include <ui/interaction/SelectionHandler.h>
 #include <ui/menus/MainMenu.h>

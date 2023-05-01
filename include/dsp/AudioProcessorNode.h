@@ -14,6 +14,8 @@
 #include <JuceHeader.h>
 #include <memory>
 #include <utils/Constants.h>
+#include <dsp/PassThrough.h>
+#include <parameters/AudioParameters.h>
 
 #define AudioProcessorNodePtr std::shared_ptr<AudioProcessorNode>
 
@@ -47,10 +49,11 @@ public:
     void setFinishedProcessing(bool hasFinished);
     std::string getIdAsString();
     NodeInstance getNodeInstance() { return nodeInstance; }
+    AudioParametersPtr getParameters() { return processor->getParameters(); };
 
 private:
     Uuid id;
-    IAudioProcessorPtr processor = nullptr;
+    IAudioProcessorPtr processor = std::make_shared<PassThrough>();
     Array<AudioProcessorNode*> inputs;
     Array<AudioProcessorNode*> outputs;
     Array<AudioProcessorNode*> feedbackConnections;

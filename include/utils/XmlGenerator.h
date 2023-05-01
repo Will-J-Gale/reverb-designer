@@ -24,17 +24,19 @@ namespace XmlGenerator
     inline XmlElement* generateNodeXml(NodeUIPtr node)
     {
         XmlElement* xml = new XmlElement(PROCESSOR_STATE_TAG);
-        // XmlElement* xmlType = xml->createNewChildElement(TYPE_TAG);
-        // XmlElement* xmlX = xml->createNewChildElement(X_TAG);
-        // XmlElement* xmlY = xml->createNewChildElement(Y_TAG);
-        // XmlElement* xmlIsReversed = xml->createNewChildElement(IS_REVERSED_TAG);
-        // XmlElement* xmlId = xml->createNewChildElement(ID_TAG);
+        XmlElement* nodeClass = xml->createNewChildElement(CLASS_TAG);
+        XmlElement* nodeInstance = xml->createNewChildElement(INSTANCE_TAG);
+        XmlElement* xmlX = xml->createNewChildElement(X_TAG);
+        XmlElement* xmlY = xml->createNewChildElement(Y_TAG);
+        XmlElement* xmlIsReversed = xml->createNewChildElement(IS_REVERSED_TAG);
+        XmlElement* xmlId = xml->createNewChildElement(ID_TAG);
         
-        // xmlType->addTextElement(std::to_string((int)node->getType()));
-        // xmlX->addTextElement(std::to_string(node->getX()));
-        // xmlY->addTextElement(std::to_string(node->getY()));
-        // xmlIsReversed->addTextElement(std::to_string(node->isReversed()));
-        // xmlId->addTextElement(node->getIdAsString());
+        nodeClass->addTextElement(std::to_string((int)node->getNodeInstance()));
+        nodeInstance->addTextElement(std::to_string((int)node->getNodeClass()));
+        xmlX->addTextElement(std::to_string(node->getX()));
+        xmlY->addTextElement(std::to_string(node->getY()));
+        xmlIsReversed->addTextElement(std::to_string(node->isReversed()));
+        xmlId->addTextElement(node->getIdAsString());
         // xml->addChildElement(node->getAudioParametersAsXml());
 
         return xml;

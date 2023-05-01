@@ -12,7 +12,7 @@
 #include <dsp/PluginGraph.h>
 #include <ui/interaction/NodeUIInteractionHandler.h>
 #include <ui/nodes/audioProcessors/AudioProcessorNodeUI.h>
-#include <ui/nodes/audioProcessors/AudioProcessorNodeUIFactory.h>
+#include <ui/nodes/audioProcessors/AudioProcessorMacroNode.h>
 #include <ui/GraphEditor.h>
 #include <ui/interaction/ConnectionHandler.h>
 #include <ui/menus/InputModals.h>
@@ -76,9 +76,13 @@ void NodeUIInteractionHandler::onNodeContextSelection(NodeUI* node, NodeUIConext
 }
 NodeUIPtr NodeUIInteractionHandler::createMacroNode(Point<int> position)
 {
+    //Refactor this to remove passthroughNode as macro really shouldn't need an explicit AudioProcessorNodePtr
+    auto passthroughNode = graphEditor->pluginGraph->generateProcessorNode(NodeInstance::Macro);
     auto macroName = InputModals::runTextInputModal(MACRO_MODAL_TITLE, MACRO_MODAL_MESSAGE, MACRO_DEFAULT_NAME);
-    auto macroNode = std::make_shared<AudioProcessorMacroNode>(graphEditor->pluginGraph, macroName);
+    auto macroNode = std::make_shared<AudioProcessorMacroNode>(graphEditor->pluginGraph, macroName, passthroughNode);
     macroNode->setTopLeftPosition(position);
+    macroNode->addInputConnector();
+    macroNode->addOutputConnector();
 
     return macroNode;
 }
@@ -90,10 +94,16 @@ NodeUIPtr NodeUIInteractionHandler::createNode(NodeInstance type, Point<int> pos
 
 NodeUIPtr NodeUIInteractionHandler::createNode(NodeInstance type, Point<int> position, AudioProcessorNodePtr processorNode)
 {
-    NodeUIPtr nodeUI = AudioProcessorNodeUIFactory::Generate(type);
+    NodeUIPtr nodeUI = std::make_shared<AudioProcessorNodeUI>(NodeInstanceToName.at(type), type, processorNode);
 
     dynamic_cast<AudioProcessorNodeUI *>(nodeUI.get())->setProcessorNode(processorNode);
     nodeUI->setTopLeftPosition(position);
+
+    if(type != NodeInstance::Input)
+        nodeUI->addInputConnector();
+
+    if(type != NodeInstance::Output)
+        nodeUI->addOutputConnector();
 
     return nodeUI;
 }

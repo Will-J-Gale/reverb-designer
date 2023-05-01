@@ -1,20 +1,16 @@
-/*
-  ==============================================================================
-
-    ModulatedDelay.cpp
-    Created: 31 Aug 2020 12:54:44pm
-    Author:  Will
-
-  ==============================================================================
-*/
-
 #include <dsp/ModulatedDelay.h>
 #include <utils/Math.h>
 
+ModulatedDelay::ModulatedDelay()
+{
+    parameters->addOnChangeCallback(std::bind(&ModulatedDelay::onParametersChanged, this));
+    onParametersChanged();
+}
 bool ModulatedDelay::reset(double sampleRate)
 {
     delay.reset(sampleRate);
     delay.createDelayBuffers(sampleRate, 1);
+    delayParameters = delay.getParameters();
     lfo.reset(sampleRate);
 
     return true;
@@ -23,50 +19,54 @@ bool ModulatedDelay::reset(double sampleRate)
 double ModulatedDelay::process(double xn)
 {
     SignalGenData lfoOutput = lfo.renderAudioOutput();
-
-    AudioDelayParameters delayParams = delay.getParameters();
     double minDelayMs = 0.0;
     double maxDelayMs = 0.0;
+    ModulatedDelayAlgorithm algorithm = parameters->getParameterValueByName<ModulatedDelayAlgorithm>("Algorithm");
+    double lfoDepth = parameters->getParameterValueByName<double>("LFO Depth");
+    double lfoRate = parameters->getParameterValueByName<double>("LFO Rate");
+    double mix = 0.0;
+    double feedback = 0.0;
 
-    if (parameters.algorithm == ModulatedDelayAlgorithm::kFlanger)
+    if (algorithm == ModulatedDelayAlgorithm::kFlanger)
     {
         minDelayMs = 0.1;
         maxDelayMs = 7.0;
-        delayParams.mix = 0.5;
+        mix = 0.5;
     }
-
-    if (parameters.algorithm == ModulatedDelayAlgorithm::kChorus)
+    else if (algorithm == ModulatedDelayAlgorithm::kChorus)
     {
         minDelayMs = 10.0;
         maxDelayMs = 30.0;
-        delayParams.mix = 0.4;
-        delayParams.feedback = 0.0;
+        mix = 0.4;
+        feedback = 0.0;
     }
-    
-    if (parameters.algorithm == ModulatedDelayAlgorithm::kVibrato)
+    else if (algorithm == ModulatedDelayAlgorithm::kVibrato)
     {
         minDelayMs = 0.01;
         maxDelayMs = 7.0;
-        delayParams.mix = 1.0;
-        delayParams.feedback = 0.0;
+        mix = 1.0;
+        feedback = 0.0;
     }
+    
+    delayParameters->setParameterValueByName<DoubleParameter, double>("Feedback", feedback);
 
-    double depth = parameters.lfoDepth;
+    double depth = lfoDepth;
     double modulationMin = minDelayMs;
     double modulationMax = minDelayMs + maxDelayMs;
     double modulationValue = lfoOutput.normalOutput * depth;
+    double delayInSeconds = 0.0;
 
-    if (parameters.algorithm == ModulatedDelayAlgorithm::kFlanger)
+    if (algorithm == ModulatedDelayAlgorithm::kFlanger)
     {
         modulationValue = Math::bipolarToUnipolar(modulationValue);
-        delayParams.delayInSeconds = Math::uniPolarScale(modulationValue, modulationMin, modulationMax) / 1000;
+        delayInSeconds = Math::uniPolarScale(modulationValue, modulationMin, modulationMax) / 1000;
     }
     else
     {
-        delayParams.delayInSeconds = Math::bipolarScale(modulationValue, modulationMin, modulationMax) / 1000;
+        delayInSeconds = Math::bipolarScale(modulationValue, modulationMin, modulationMax) / 1000;
     }
 
-    delay.setParameters(delayParams);
+    delayParameters->setParameterValueByName<DoubleParameter, double>("DelayInSeconds", delayInSeconds);
 
     return delay.process(xn);
 }
@@ -76,30 +76,25 @@ bool ModulatedDelay::canProcessAudioFrame()
     return false;
 }
 
-void ModulatedDelay::setParamters(ModulatedDelayParameters newParameters)
-{
-    parameters = newParameters;
-
-    OscillatorParameters lfoParams = lfo.getParameters();
-    lfoParams.frequency = parameters.lfoRate;
-
-    if (parameters.algorithm == ModulatedDelayAlgorithm::kVibrato)
-    {
-        lfoParams.waveForm = GeneratorWaveform::kSin;
-    }
-    else
-    {
-        lfoParams.waveForm = GeneratorWaveform::kTriangle;
-    }
-
-    AudioDelayParameters delayParams = delay.getParameters();
-    delayParams.feedback = parameters.feedback;
-
-    lfo.setParameters(lfoParams);
-    delay.setParameters(delayParams);
-}
-
-ModulatedDelayParameters ModulatedDelay::getParameters()
+AudioParametersPtr ModulatedDelay::getParameters()
 {
     return parameters;
 }
+
+void ModulatedDelay::onParametersChanged()
+{
+    OscillatorParameters lfoParams = lfo.getParameters();
+    lfoParams.frequency = parameters->getParameterValueByName<double>("LFO Rate");
+    
+    ModulatedDelayAlgorithm algorithm = parameters->getParameterValueByName<ModulatedDelayAlgorithm>("Algorithm");
+
+    if(algorithm == ModulatedDelayAlgorithm::kVibrato)
+        lfoParams.waveForm = GeneratorWaveform::kSin;
+    else
+        lfoParams.waveForm = GeneratorWaveform::kTriangle;
+
+    double feedback = parameters->getParameterValueByName<double>("Feedback");
+    delayParameters->setParameterValueByName<DoubleParameter, double>("Feedback", feedback);
+    lfo.setParameters(lfoParams);
+}
+

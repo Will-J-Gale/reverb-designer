@@ -1,31 +1,19 @@
-/*
-  ==============================================================================
-
-    Gain.h
-    Created: 19 Sep 2020 1:26:50pm
-    Author:  Will
-
-  ==============================================================================
-*/
-
 #pragma once
 #include <dsp/IAudioProcessor.h>
 #include <dsp/Parameters.h>
+#include <parameters/AudioParameters.h>
 
 class Gain : public IAudioProcessor
 {
 public:
-    // Inherited via IAudioProcessor
+    Gain();
     virtual bool reset(double sampleRate) override;
-
     virtual double process(double xn) override;
-
     virtual bool canProcessAudioFrame() override;
-
-    void setGain(double gain);
-    double getGain();
+    virtual AudioParametersPtr getParameters() override;
 
 private:
-
-    double gain = 1.0;
+    AudioParametersPtr parameters = MAKE_PARAMETERS({
+        std::make_shared<DoubleParameter>("Gain", 1.0, 0.0, 1.0),
+    });
 };

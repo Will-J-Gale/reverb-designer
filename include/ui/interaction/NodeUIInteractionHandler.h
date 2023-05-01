@@ -36,7 +36,6 @@ public:
     NodeUIPtr createNode(NodeInstance type, Point<int> position);
     NodeUIPtr createNode(NodeInstance type, Point<int> position, AudioProcessorNodePtr processorNode);
     void initializeNode(NodeUIPtr processor);
-    /// Removed UI from screen and removes AudioProcessorNode from plugin graph
     void deleteProcessor(NodeUI* processor);
     void duplicateProcessor(NodeUI* processor);
 
