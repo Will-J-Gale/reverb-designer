@@ -8,10 +8,10 @@ CombFilter::CombFilter()
     onParametersChanged();
 }
 
-void CombFilter::reset(double sampleRate, double delayTimeInSeconds)
+bool CombFilter::reset(double sampleRate)
 {
     this->sampleRate = sampleRate;
-    delay.reset(sampleRate, delayTimeInSeconds);
+    delay.reset(sampleRate);
     onParametersChanged();
     lpfState = 0.0;
 }

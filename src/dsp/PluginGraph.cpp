@@ -93,16 +93,9 @@ void PluginGraph::createDSPObject(NodeInstance dspObjectType)
 {
 }
 
-
 void PluginGraph::initialiseDspObject(IAudioProcessor *dspObject)
 {
-    // if (dspObject == nullptr)
-    //     return;
-
-    if (auto* delayProcessor = dynamic_cast<IDelayProcessor*>(dspObject))
-        delayProcessor->reset(sampleRate, 1.0);
-    else
-        dspObject->reset(sampleRate);
+    dspObject->reset(sampleRate);
 }
 
 void PluginGraph::addProcessorNode(AudioProcessorNodePtr processorNode)

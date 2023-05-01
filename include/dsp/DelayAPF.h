@@ -1,27 +1,17 @@
-/*
-  ==============================================================================
-
-    DelayAPF.h
-    Created: 2 Sep 2020 8:09:36pm
-    Author:  Will
-
-  ==============================================================================
-*/
-
 #pragma once
 #include <dsp/Parameters.h>
-#include <dsp/IDelayProcessor.h>
+#include <dsp/IAudioProcessor.h>
 #include <dsp/Delay.h>
 #include <dsp/LFO.h>
 #include <parameters/AudioParameters.h>
 #include <parameters/Parameter.h>
 #include <utils/Constants.h>
 
-class DelayAPF : public IDelayProcessor
+class DelayAPF : public IAudioProcessor
 {
 public:
     DelayAPF();
-    virtual void reset(double sampleRate, double maxDelayTimeInSeconds) override;
+    virtual bool reset(double sampleRate) override;
     virtual double process(double xn) override;
     virtual bool canProcessAudioFrame() override;
     virtual AudioParametersPtr getParameters() override;

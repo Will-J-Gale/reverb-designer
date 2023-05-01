@@ -1,26 +1,15 @@
-/*
-  ==============================================================================
-
-    CombFilter.h
-    Created: 31 Aug 2020 7:16:27pm
-    Author:  Will
-
-  ==============================================================================
-*/
-
 #pragma once
 #include <dsp/Parameters.h>
-#include <dsp/IDelayProcessor.h>
+#include <dsp/IAudioProcessor.h>
 #include <dsp/Delay.h>
 #include <parameters/AudioParameters.h>
 #include <parameters/Parameter.h>
 
-class CombFilter : public IDelayProcessor
+class CombFilter : public IAudioProcessor
 {
 public:
     CombFilter();
-    // Inherited via IAudioProcessor
-    virtual void reset(double sampleRate, double delayTimeInSeconds) override;
+    virtual bool reset(double sampleRate) override;
     virtual double process(double xn) override;
     virtual bool canProcessAudioFrame() override;
     virtual AudioParametersPtr getParameters() override;

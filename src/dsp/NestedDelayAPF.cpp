@@ -8,8 +8,7 @@ NestedDelayAPF::NestedDelayAPF()
 
 void NestedDelayAPF::reset(double sampleRate, double maxDelayTimeInSeconds)
 {
-    nestedApf.reset(sampleRate, maxDelayTimeInSeconds);
-    DelayAPF::reset(sampleRate, maxDelayTimeInSeconds);
+    nestedApf.reset(sampleRate);
 }
 
 double NestedDelayAPF::process(double xn)

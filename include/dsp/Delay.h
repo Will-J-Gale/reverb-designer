@@ -1,13 +1,13 @@
 #pragma once
 #include <dsp/Parameters.h>
 #include <dsp/CircularBuffer.h>
-#include <dsp/IDelayProcessor.h>
+#include <dsp/IAudioProcessor.h>
 
-class Delay : public IDelayProcessor
+class Delay : public IAudioProcessor
 {
 public:
     Delay();
-    virtual void reset(double sampleRate, double maxDelayTimeInSeconds) override;
+    virtual bool reset(double sampleRate) override;
     virtual double process(double xn) override;
     virtual bool canProcessAudioFrame() override;
     virtual AudioParametersPtr getParameters() override;

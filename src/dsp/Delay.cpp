@@ -16,13 +16,13 @@ Delay::Delay()
     onParametersChanged();
 }
 
-void Delay::reset(double sampleRate, double maxDelayTimeInSeconds)
+bool Delay::reset(double sampleRate)
 {
     this->sampleRate = sampleRate;
 
     buffer.flushBuffer();
-    double _maxDelayTimeSeconds = parameters->getParameterByNameAsType<DoubleParameter>("DelayTimeMs")->getMax() / 1000.0;
-    bufferLength = (sampleRate * _maxDelayTimeSeconds) + 1;
+    double maxDelayTimeInSeconds = parameters->getParameterByNameAsType<DoubleParameter>("DelayTimeMs")->getMax() / 1000.0;
+    bufferLength = (sampleRate * maxDelayTimeInSeconds) + 1;
 
     buffer.createCircularBuffer(bufferLength);
 }

@@ -1,13 +1,3 @@
-/*
-  ==============================================================================
-
-    DelayAPF.cpp
-    Created: 2 Sep 2020 8:09:36pm
-    Author:  Will
-
-  ==============================================================================
-*/
-
 #include <dsp/DelayAPF.h>
 
 DelayAPF::DelayAPF()
@@ -18,10 +8,10 @@ DelayAPF::DelayAPF()
     onParametersChanged();
 }
 
-void DelayAPF::reset(double sampleRate, double maxDelayTimeInSeconds)
+bool DelayAPF::reset(double sampleRate)
 {
     this->sampleRate = sampleRate;
-    delay.reset(sampleRate, maxDelayTimeInSeconds);
+    delay.reset(sampleRate);
     lfo.reset(sampleRate);
 
     delayParameters = delay.getParameters();
