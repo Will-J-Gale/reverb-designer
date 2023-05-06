@@ -9,14 +9,14 @@ struct AudioProcessorState
     AudioProcessorState(
         Array<AudioProcessorNodePtr> inputs,
         Array<AudioProcessorNodePtr> outputs,
-        Array<AudioProcessorNodePtr> allBlocks)
+        Array<AudioProcessorNodePtr> nodes)
     {
         this->inputs = inputs;
         this->outputs = outputs;
-        this->allBlocks = allBlocks;
+        this->nodes = nodes;
     }
 
     Array<AudioProcessorNodePtr> inputs;
     Array<AudioProcessorNodePtr> outputs;
-    Array<AudioProcessorNodePtr> allBlocks;
+    Array<AudioProcessorNodePtr> nodes;
 };

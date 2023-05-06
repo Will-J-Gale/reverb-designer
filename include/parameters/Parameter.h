@@ -40,6 +40,12 @@ public:
     std::string getName(){ return name; }
     void setOnChangeCallback(OnParameterChangeCallback callback){ onChangeCallback = callback; }
 
+    template<class T>
+    T* asType()
+    {
+        return static_cast<T*>(this);
+    }
+
 protected:
     ParameterType type;
     std::string name;
@@ -90,7 +96,7 @@ private:
 struct OptionParameter : public Parameter
 {
 public:
-    OptionParameter(std::string name, Array<OptionItem> options, int initialValueIndex) : Parameter(ParameterType::Option, name)
+    OptionParameter(std::string name, std::vector<OptionItem> options, int initialValueIndex) : Parameter(ParameterType::Option, name)
     {
         this->options = options;
         this->value = options[initialValueIndex].value;
@@ -105,12 +111,12 @@ public:
             onChangeCallback();
     }
 
-    Array<OptionItem> getItems(){ return options; }
+    std::vector<OptionItem> getItems(){ return options; }
     OptionItem getInitialItem(){ return initialItem; }
 
 private:
     int value;
-    Array<OptionItem> options;
+    std::vector<OptionItem> options;
     OptionItem initialItem;
 };
 

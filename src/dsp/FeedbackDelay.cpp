@@ -2,6 +2,12 @@
 
 FeedbackDelay::FeedbackDelay()
 {
+    parameters = MAKE_PARAMETERS({
+        std::make_shared<DoubleParameter>("Mix", DEFAULT_MIX, 0.0, 1.0),
+        std::make_shared<DoubleParameter>("DelayInSeconds", DEFAULT_DELAY_TIME, 0.0, 5.0),
+        std::make_shared<DoubleParameter>("Feedback", DEFAULT_FEEDBACK, 0.0, 1.0),
+    });
+
     parameters->addOnChangeCallback(std::bind(&FeedbackDelay::onParametersChanged, this));
     onParametersChanged();
 }
@@ -43,11 +49,6 @@ void FeedbackDelay::createDelayBuffers(double sampleRate, float bufferLengthInSe
 
     this->bufferLength = sampleRate * bufferLengthInSeconds;
     buffer.createCircularBuffer(bufferLength);
-}
-
-AudioParametersPtr FeedbackDelay::getParameters()
-{
-    return parameters;
 }
 
 void FeedbackDelay::onParametersChanged()

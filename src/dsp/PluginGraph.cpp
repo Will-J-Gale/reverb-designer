@@ -15,7 +15,7 @@ bool PluginGraph::reset(double sampleRate)
 
     inputs.clear();
     outputs.clear();
-    allProcessorNodes.clear();
+    allNodes.clear();
 
     return true;
 }
@@ -90,12 +90,12 @@ void PluginGraph::initialiseDspObject(IAudioProcessor *dspObject)
 
 void PluginGraph::addProcessorNode(AudioProcessorNodePtr processorNode)
 {
-    allProcessorNodes.add(processorNode);
+    allNodes.add(processorNode);
 }
 
 void PluginGraph::deleteProcessorNode(AudioProcessorNodePtr processorNode)
 {
-    removeFromArray(allProcessorNodes, processorNode);
+    removeFromArray(allNodes, processorNode);
 }
 
 AudioProcessorNodePtr PluginGraph::generateProcessorNode(NodeInstance type)
@@ -106,7 +106,7 @@ AudioProcessorNodePtr PluginGraph::generateProcessorNode(NodeInstance type)
     initialiseDspObject(audioProcessor.get());
     processorNode->setProcessor(audioProcessor);
 
-    allProcessorNodes.add(processorNode);
+    allNodes.add(processorNode);
 
     return processorNode;
 }
@@ -216,22 +216,22 @@ std::map<std::string, AudioProcessorNodePtr> PluginGraph::getAudioProcessorNodeM
 {
     auto map = std::map<std::string, AudioProcessorNodePtr>();
     
-    for (auto block : inputs)
+    for (auto node : inputs)
     {
-        auto id = block->getIdAsString();
-        map[id] = block;
+        auto id = node->getIdAsString();
+        map[id] = node;
     }
 
-    for (auto block : outputs)
+    for (auto node : outputs)
     {
-        auto id = block->getIdAsString();
-        map[id] = block;
+        auto id = node->getIdAsString();
+        map[id] = node;
     }
 
-    for (auto block : allProcessorNodes)
+    for (auto node : allNodes)
     {
-        auto id = block->getIdAsString();
-        map[id] = block;
+        auto id = node->getIdAsString();
+        map[id] = node;
     }
 
     return map;
@@ -239,7 +239,7 @@ std::map<std::string, AudioProcessorNodePtr> PluginGraph::getAudioProcessorNodeM
 
 Array<AudioProcessorNodePtr> PluginGraph::getAllBlocks()
 {
-    return allProcessorNodes;
+    return allNodes;
 }
 
 void PluginGraph::clear()
@@ -248,7 +248,7 @@ void PluginGraph::clear()
 
     inputs.clear();
     outputs.clear();
-    allProcessorNodes.clear();
+    allNodes.clear();
 }
 
 void PluginGraph::deleteAndReplaceAudioBlocks(std::function<std::shared_ptr<AudioProcessorState>()> callback)
@@ -312,22 +312,22 @@ void PluginGraph::updateProcessPath()
 
 void PluginGraph::updateProcessors()
 {
-    allProcessorNodes.clear();
+    allNodes.clear();
     inputs.clear();
     outputs.clear();
 
-    //auto newProcessors = generateCallback();
+    // auto newProcessors = generateCallback();
 
     inputs = tempProcessorState->inputs;
     outputs = tempProcessorState->outputs;
-    allProcessorNodes = tempProcessorState->allBlocks;
+    allNodes = tempProcessorState->nodes;
 
     calculateProcessPath();
 }
 
 void PluginGraph::resetProcessors()
 {
-    for (auto block : allProcessorNodes)
+    for (auto block : allNodes)
     {
         block->setFinishedProcessing(false);
     }

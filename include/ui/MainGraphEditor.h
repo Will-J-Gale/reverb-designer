@@ -1,5 +1,6 @@
 #pragma once
 #include <ui/GraphEditor.h>
+#include <ui/interaction/MainMenuInteractionHandler.h>
 
 class PluginGraph;
 
@@ -15,9 +16,12 @@ public:
     std::shared_ptr<AudioProcessorState> loadStateFromFile(std::string xmlString);
 
 private:
+    friend class MainMenuInteractionHandler;
+
     void createIOProcessors();
     void createAllConnections(std::map<std::string, NodeUIPtr> processorUIMap, std::map<std::string, XmlElement*> xmlMap);
     void resized() override;
 
     MainMenu mainMenu;
+    MainMenuInteractionHandler mainMenuInteractionHandler{this};
 };

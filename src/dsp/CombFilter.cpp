@@ -3,6 +3,13 @@
 
 CombFilter::CombFilter()
 {
+    parameters = MAKE_PARAMETERS({
+        std::make_shared<DoubleParameter>("DelayTimeMs", 0.0, 0.0, 1000.0),
+        std::make_shared<DoubleParameter>("RT60 Ms", 0.0, 0.0, 1000.0),
+        std::make_shared<BooleanParameter>("Enable LPF", false),
+        std::make_shared<DoubleParameter>("LPF G", 0.0, 0.0, 1.0)
+    });
+
     parameters->addOnChangeCallback(std::bind(&CombFilter::onParametersChanged, this));
     delayParameters = delay.getParameters();
     onParametersChanged();
@@ -45,16 +52,11 @@ bool CombFilter::canProcessAudioFrame()
     return false;
 }
 
-AudioParametersPtr CombFilter::getParameters()
-{
-    return parameters;
-}
-
 void CombFilter::onParametersChanged()
 {
     double delayTimeMs = parameters->getParameterValueByName<double>("DelayTimeMs");
     double RT60TimeInMs = parameters->getParameterValueByName<double>("RT60 Ms");
-    delayParameters->setParameterValueByName<DoubleParameter, double>("DelayTimeMs", delayTimeMs);
+    delayParameters->setParameterValueByName<double>("DelayTimeMs", delayTimeMs);
 
     double exponent = -3.0 * delayTimeMs * (1.0 / sampleRate);
     double rt60InSeconds = RT60TimeInMs / 1000.0;

@@ -7,7 +7,6 @@
 #include <ui/menus/NodeUIContextMenu.h>
 #include <ui/interaction/DragHandler.h>
 #include <ui/nodes/NodeUI.h>
-#include <utils/XmlUtils.h>
 #include <utils/Constants.h>
 #include <utils/ManagedArray.h>
 #include <ui/parameters/BaseParameter.h>
@@ -29,6 +28,9 @@ public:
     AudioProcessorNodePtr getProcessorNode();
     void setProcessorNode(AudioProcessorNodePtr processorNode);
     IAudioProcessor* getAudioProcessor();
+    AudioParametersPtr getAudioParameters();
+    void setAudioParameters(AudioParametersPtr parameters);
+    void updateParametersUI();
     
     virtual void connectInput(NodeUI* sourceNode) override;
     virtual void connectFeedbackInput(NodeUI* sourceNode) override;
@@ -48,6 +50,7 @@ protected:
     AudioProcessorNodePtr processorNode = nullptr;
     Array<std::shared_ptr<BaseParameter>> parametersUI;
     std::map<std::string, ParameterPtr> componentIdToParameterMap;
+    std::map<std::string, Component*> parameterNameToUI;
 };
 
 template<class T>

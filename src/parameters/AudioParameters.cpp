@@ -1,6 +1,6 @@
 #include <parameters/AudioParameters.h>
 
-AudioParameters::AudioParameters(std::initializer_list<ParameterPtr> parameters)
+AudioParameters::AudioParameters(std::vector<ParameterPtr> parameters)
 {
     setParameters(parameters);
 }
@@ -17,16 +17,17 @@ ParameterPtr AudioParameters::getParameterByName(std::string name)
     }
 }
 
-void AudioParameters::setParameters(std::initializer_list<ParameterPtr> parameters)
+void AudioParameters::setParameters(std::vector<ParameterPtr> parameters)
 {
     this->parameters = parameters;
+    nameToParameterMap.clear();
 
     for(ParameterPtr parameter : parameters)
     {
         nameToParameterMap.insert({parameter->getName(), parameter});
     }
 }
-Array<ParameterPtr> AudioParameters::getAllParameters()
+std::vector<ParameterPtr>& AudioParameters::getAllParameters()
 {
     return parameters;
 }

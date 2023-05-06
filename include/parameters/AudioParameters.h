@@ -1,27 +1,29 @@
 #pragma once
+#include <vector>
 #include <JuceHeader.h>
 #include <parameters/Parameter.h>
 
 #define AudioParametersPtr std::shared_ptr<AudioParameters>
-#define MAKE_PARAMETERS(...) std::make_shared<AudioParameters>(std::initializer_list<ParameterPtr>__VA_ARGS__)
+#define MAKE_PARAMETERS(...) std::make_shared<AudioParameters>(std::vector<ParameterPtr>__VA_ARGS__)
 
 class AudioParameters
 {
 public:
     AudioParameters(){};
-    AudioParameters(std::initializer_list<ParameterPtr> parameters);
+    AudioParameters(std::vector<ParameterPtr> parameters);
     ParameterPtr getParameterByName(std::string name);
 
     template<class T>
     T* getParameterByNameAsType(std::string name)
     {
-        return static_cast<T*>(getParameterByName(name).get());
+        return getParameterByName(name)->asType<T>();
     }
 
     template<typename ValueType>
     ValueType getParameterValueByName(std::string name)
     {
         Parameter* parameter = getParameterByName(name).get();
+
         switch(parameter->getType())
         {
             case ParameterType::Boolean:
@@ -35,19 +37,29 @@ public:
         }
     }
 
-    template<class ParameterType, typename ValueType>
+    template<typename ValueType>
     void setParameterValueByName(std::string name, ValueType value)
     {
-        ParameterPtr parameter = getParameterByName(name);
-        ParameterType* parameterCast = static_cast<ParameterType*>(parameter.get());
-        parameterCast->setValue(value);
+        Parameter* parameter = getParameterByName(name).get();
+
+        switch(parameter->getType())
+        {
+            case ParameterType::Boolean:
+                static_cast<BooleanParameter*>(parameter)->setValue(value);
+            
+            case ParameterType::Double:
+                static_cast<DoubleParameter*>(parameter)->setValue(value);
+            
+            case ParameterType::Option:
+                static_cast<OptionParameter*>(parameter)->setValue(value);
+        }
     }
 
     void addOnChangeCallback(OnParameterChangeCallback callback);
-    void setParameters(std::initializer_list<ParameterPtr> parameters);
-    Array<ParameterPtr> getAllParameters();
+    void setParameters(std::vector<ParameterPtr> parameters);
+    std::vector<ParameterPtr>& getAllParameters();
 
 private:
     std::map<std::string, ParameterPtr> nameToParameterMap;
-    Array<ParameterPtr> parameters;
+    std::vector<ParameterPtr> parameters;
 };

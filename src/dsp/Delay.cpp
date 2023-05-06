@@ -2,6 +2,10 @@
 
 Delay::Delay()
 {
+    parameters = MAKE_PARAMETERS({
+        std::make_shared<DoubleParameter>("DelayTimeMs", 0.0, 0.0, 5000.0)
+    });
+
     parameters->addOnChangeCallback(std::bind(&Delay::onParametersChanged, this));
     onParametersChanged();
 }
@@ -29,10 +33,6 @@ double Delay::process(double xn)
     buffer.write(xn);
 
     return yn;
-}
-AudioParametersPtr Delay::getParameters()
-{
-    return parameters;
 }
 
 bool Delay::canProcessAudioFrame()

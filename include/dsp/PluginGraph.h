@@ -58,15 +58,15 @@ private:
     Array<AudioProcessorNode*> processBlocks(Array<AudioProcessorNode*> blockToProcess);
 
     double sampleRate = 0;
-    Array<AudioProcessorNodePtr> allProcessorNodes;
+    Array<AudioProcessorNodePtr> allNodes;
     Array<AudioProcessorNodePtr> inputs;
     Array<AudioProcessorNodePtr> outputs;
 
     XmlElementPtr pluginState = nullptr;
     
     bool updateProcessorsFlag = false;
-    std::function<std::shared_ptr<AudioProcessorState>()> generateCallback;
     bool processPathNeedsUpdating = false;
+    std::function<std::shared_ptr<AudioProcessorState>()> generateCallback;
     Array<Array<AudioProcessorNode*>> processPath;
 
     std::shared_ptr<AudioProcessorState> tempProcessorState;

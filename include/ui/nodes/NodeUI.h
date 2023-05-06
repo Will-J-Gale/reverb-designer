@@ -6,7 +6,6 @@
 #include <ui/interaction/DragHandler.h>
 #include <utils/Constants.h>
 #include <utils/ManagedArray.h>
-#include <utils/XmlUtils.h>
 
 //Forward declarations
 class GraphEditor;

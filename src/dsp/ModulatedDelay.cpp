@@ -3,6 +3,21 @@
 
 ModulatedDelay::ModulatedDelay()
 {
+    MAKE_PARAMETERS({
+        std::make_shared<OptionParameter>(
+            "Algorithm", 
+            std::vector<OptionItem> {
+                OptionItem("Flanger", (int)ModulatedDelayAlgorithm::kFlanger),
+                OptionItem("Vibrato", (int)ModulatedDelayAlgorithm::kVibrato),
+                OptionItem("Chorus", (int)ModulatedDelayAlgorithm::kChorus),
+            }, 
+            2
+        ),
+        std::make_shared<DoubleParameter>("LFO Rate", DEFAULT_MOD_DELAY_RATE, 0.0, 20.0),
+        std::make_shared<DoubleParameter>("LFO Depth", DEFAULT_MOD_DELAY_DEPTH, 0.0, 1.0),
+        std::make_shared<DoubleParameter>("Feedback", DEFAULT_MOD_DELAY_FEEDBACK, 0.0, 1.0),
+    });
+
     parameters->addOnChangeCallback(std::bind(&ModulatedDelay::onParametersChanged, this));
     onParametersChanged();
 }
@@ -48,7 +63,7 @@ double ModulatedDelay::process(double xn)
         feedback = 0.0;
     }
     
-    delayParameters->setParameterValueByName<DoubleParameter, double>("Feedback", feedback);
+    delayParameters->setParameterValueByName<double>("Feedback", feedback);
 
     double depth = lfoDepth;
     double modulationMin = minDelayMs;
@@ -66,7 +81,7 @@ double ModulatedDelay::process(double xn)
         delayInSeconds = Math::bipolarScale(modulationValue, modulationMin, modulationMax) / 1000;
     }
 
-    delayParameters->setParameterValueByName<DoubleParameter, double>("DelayInSeconds", delayInSeconds);
+    delayParameters->setParameterValueByName<double>("DelayInSeconds", delayInSeconds);
 
     return delay.process(xn);
 }
@@ -74,11 +89,6 @@ double ModulatedDelay::process(double xn)
 bool ModulatedDelay::canProcessAudioFrame()
 {
     return false;
-}
-
-AudioParametersPtr ModulatedDelay::getParameters()
-{
-    return parameters;
 }
 
 void ModulatedDelay::onParametersChanged()
@@ -94,7 +104,7 @@ void ModulatedDelay::onParametersChanged()
         lfoParams.waveForm = GeneratorWaveform::kTriangle;
 
     double feedback = parameters->getParameterValueByName<double>("Feedback");
-    delayParameters->setParameterValueByName<DoubleParameter, double>("Feedback", feedback);
+    delayParameters->setParameterValueByName<double>("Feedback", feedback);
     lfo.setParameters(lfoParams);
 }
 

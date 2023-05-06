@@ -40,6 +40,7 @@ public:
     std::string getIdAsString();
     NodeInstance getNodeInstance() { return nodeInstance; }
     AudioParametersPtr getParameters() { return processor->getParameters(); };
+    // void setParameters(AudioParametersPtr parameters) { processor->setParameters(parameters); };
 
 private:
     Uuid id;

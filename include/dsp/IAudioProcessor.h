@@ -14,11 +14,19 @@ public:
     virtual bool reset(double sampleRate) = 0;
     virtual double process(double xn) = 0;
     virtual bool canProcessAudioFrame() = 0;
-    virtual AudioParametersPtr getParameters() = 0;
 
 	virtual void setSampleRate(double sampleRate) {};
 	virtual void enableAuxInput(bool enableAuxInput) {};
     virtual void onParametersChanged() {};
+    virtual AudioParametersPtr getParameters()
+    {
+        jassert(parameters != nullptr);
+        return parameters;
+    };
+    virtual void setParameters(AudioParametersPtr newParameters)
+    {
+        parameters = newParameters;
+    };
 	virtual double processAuxInputAudioSample(double xn)
 	{
 		return xn;
@@ -30,4 +38,7 @@ public:
 	{
 		return false;
 	}
+
+protected:
+    AudioParametersPtr parameters = nullptr;
 };

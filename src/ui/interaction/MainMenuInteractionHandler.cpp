@@ -1,30 +1,33 @@
 #include <ui/interaction/MainMenuInteractionHandler.h>
-#include <ui/GraphEditor.h>
+#include <ui/MainGraphEditor.h>
+#include <utils/XmlUtils.h>
+#include <utils/StorageManager.h>
+#include <dsp/PluginGraph.h>
 
-MainMenuInteractionHandler::MainMenuInteractionHandler(GraphEditor* graphEditor)
+MainMenuInteractionHandler::MainMenuInteractionHandler(MainGraphEditor* mainGraphEditor)
 {
-    this->graphEditor = graphEditor;
+    this->mainGraphEditor = mainGraphEditor;
 }
 
 void MainMenuInteractionHandler::onNewProject()
 {
     auto io = Array<NodeUIPtr>();
-    io.addArray(graphEditor->inputs);
-    io.addArray(graphEditor->outputs);
+    io.addArray(mainGraphEditor->inputs);
+    io.addArray(mainGraphEditor->outputs);
 
-    auto nodesToDelete = graphEditor->nodes;
+    auto nodesToDelete = mainGraphEditor->nodes;
     nodesToDelete.removeValuesIn(io);
-    graphEditor->nodes.removeValuesNotIn(io);
+    mainGraphEditor->nodes.removeValuesNotIn(io);
 
     for (auto node : nodesToDelete)
     {
         if (!io.contains(node))
         {
-            graphEditor->nodeInteractionHandler.deleteProcessor(node.get());
+            mainGraphEditor->nodeInteractionHandler.deleteProcessor(node.get());
         }
     }
 
-    graphEditor->repaint();
+    mainGraphEditor->repaint();
 }
 
 void MainMenuInteractionHandler::onPresetSelected(PresetType presetId)
@@ -40,17 +43,16 @@ void MainMenuInteractionHandler::onPresetSelected(PresetType presetId)
 
 void MainMenuInteractionHandler::onSave(std::string savePath)
 {
-    // auto state = generatePluginState();
-    // StorageManager::saveXML(savePath, state->toString().toStdString());
+    auto pluginState = XmlUtils::generatePluginState(mainGraphEditor->nodes);
+    StorageManager::saveXML(savePath, pluginState->toString().toStdString());
 }
 
 void MainMenuInteractionHandler::onLoad(std::string filepath)
 {
-    graphEditor->clear();
+    mainGraphEditor->clear();
 
-    // auto file = File(filepath);
-    // auto xmlString = file.loadFileAsString().toStdString();
-    // auto callback = std::bind(&GraphEditor::loadStateFromFile, this, xmlString);
-    
-    // pluginGraph->deleteAndReplaceAudioBlocks(callback);
+    auto file = File(filepath);
+    auto xmlString = file.loadFileAsString().toStdString();
+    auto state = mainGraphEditor->loadStateFromFile(xmlString);
+    mainGraphEditor->pluginGraph->deleteAndReplaceAudioBlocks(state);
 }

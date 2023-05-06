@@ -10,7 +10,6 @@ public:
     virtual bool reset(double sampleRate) override;
     virtual double process(double xn) override;
     virtual bool canProcessAudioFrame() override;
-    virtual AudioParametersPtr getParameters() override;
     void onParametersChanged() override;
 
     double readDelay();
@@ -19,10 +18,6 @@ public:
     void write(double xn);
 
 private:
-    AudioParametersPtr parameters = MAKE_PARAMETERS({
-        std::make_shared<DoubleParameter>("DelayTimeMs", 0.0, 0.0, 5000.0)
-    });
-
     CircularBuffer buffer;
     size_t bufferLength = 0;
     double sampleRate;

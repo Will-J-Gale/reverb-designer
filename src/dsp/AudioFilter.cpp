@@ -5,6 +5,22 @@
 
 AudioFilter::AudioFilter()
 {
+    parameters = MAKE_PARAMETERS({
+        std::make_shared<DoubleParameter>("Freq", DEFAULT_FC, 20.0, 20000.0),
+        std::make_shared<DoubleParameter>("Q", DEFAULT_Q, 0.01, 1.0),
+        std::make_shared<DoubleParameter>("Gain", DEFAULT_GAIN, -10.0, 10.0),
+        std::make_shared<OptionParameter>(
+            "FilterType", 
+            std::vector<OptionItem> {
+                OptionItem("LPF", (int)FilterType::LPF1),
+                OptionItem("HPF", (int)FilterType::HPF1),
+                OptionItem("HSF", (int)FilterType::HSF),
+                OptionItem("LSF", (int)FilterType::LSF),
+            }, 
+            0
+        )
+    });
+
     parameters->addOnChangeCallback(std::bind(&AudioFilter::onParametersChanged, this));
     onParametersChanged();
 }
@@ -31,11 +47,6 @@ bool AudioFilter::canProcessAudioFrame()
 void AudioFilter::setSampleRate(double newSampleRate)
 {
     sampleRate = newSampleRate;
-}
-
-AudioParametersPtr AudioFilter::getParameters()
-{
-    return parameters;
 }
 
 void AudioFilter::onParametersChanged()

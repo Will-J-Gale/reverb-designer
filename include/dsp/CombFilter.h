@@ -12,16 +12,9 @@ public:
     virtual bool reset(double sampleRate) override;
     virtual double process(double xn) override;
     virtual bool canProcessAudioFrame() override;
-    virtual AudioParametersPtr getParameters() override;
     void onParametersChanged() override;
 
 private:
-    AudioParametersPtr parameters = MAKE_PARAMETERS({
-        std::make_shared<DoubleParameter>("DelayTimeMs", 0.0, 0.0, 1000.0),
-        std::make_shared<DoubleParameter>("RT60 Ms", 0.0, 0.0, 1000.0),
-        std::make_shared<BooleanParameter>("Enable LPF", false),
-        std::make_shared<DoubleParameter>("LPF G", 0.0, 0.0, 1.0)
-    });
     Delay delay;
     AudioParametersPtr delayParameters = nullptr;
     double combG = 0.0;

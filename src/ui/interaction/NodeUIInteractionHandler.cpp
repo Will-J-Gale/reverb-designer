@@ -86,7 +86,7 @@ NodeUIPtr NodeUIInteractionHandler::createNode(NodeInstance type, Point<int> pos
 {
     NodeUIPtr nodeUI = std::make_shared<AudioProcessorNodeUI>(NodeInstanceToName.at(type), type, processorNode);
 
-    dynamic_cast<AudioProcessorNodeUI *>(nodeUI.get())->setProcessorNode(processorNode);
+    dynamic_cast<AudioProcessorNodeUI*>(nodeUI.get())->setProcessorNode(processorNode);
     nodeUI->setTopLeftPosition(position);
 
     if(type != NodeInstance::Input)

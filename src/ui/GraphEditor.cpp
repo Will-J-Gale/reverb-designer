@@ -3,7 +3,7 @@
 #include <dsp/PluginGraph.h>
 #include <ui/interaction/NodeConnectionDrawer.h>
 #include <utils/HitTest.h>
-#include <utils/XmlGenerator.h>
+#include <utils/XmlUtils.h>
 #include <utils/StorageManager.h>
 #include <utils/PresetFactory.h>
 #include <utils/HitTest.h>

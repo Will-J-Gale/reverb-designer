@@ -145,8 +145,17 @@ constexpr float SELECTION_SCALE = 1.2;
 //XML
 const String PLUGIN_STATE_TAG = "PluginState";
 const String PROCESSOR_STATE_TAG = "ProcessorState";
+const String NODE_TAG = "Node";
+const String NAME_TAG = "Name";
+const String TYPE_TAG = "Type";
+const String VALUE_TAG = "Value";
 const String PROCESSORS_TAG = "Processors";
-const String CLASS_TAG = "NodeClass";
+const String AUDIO_PARAMETERS_TAG = "AudioParameters";
+const String PARAMETER_TAG = "Parameter";
+const String MIN_TAG = "MinValue";
+const String MAX_TAG = "MaxValue";
+const String OPTIONS_TAG = "Options";
+const String NODE_CLASS_TAG = "NodeClass";
 const String INSTANCE_TAG = "NodeInstance";
 const String X_TAG = "X";
 const String Y_TAG = "Y";
@@ -158,7 +167,7 @@ const String INPUT_CONNECTIONS_TAG = "InputConnections";
 const String OUTPUT_CONNECTIONS_TAG = "OutputConnections";
 const String FEEDBACK_CONNECTIONS_TAG = "FeedbackConnections";
 
-const String PARAMETERTS_TAG = "AudioParameters";
+const String AUDIO_PARAMETERTS_TAG = "AudioParameters";
 const String GAIN_TAG = "Gain";
 const String DELAY_TIME_TAG = "DelayTime";
 const String CUTOFF_TAG = "Cutoff";

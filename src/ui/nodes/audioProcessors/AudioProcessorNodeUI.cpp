@@ -6,13 +6,13 @@
 #include <ui/parameters/SliderParameter.h>
 #include <ui/parameters/ComboBoxParameter.h>
 
-
 AudioProcessorNodeUI::AudioProcessorNodeUI(String name, NodeInstance nodeInstance, AudioProcessorNodePtr node) 
     : NodeUI(name, NodeClass::AudioProcessor, nodeInstance)
 {
     initialize();
     this->processorNode = processorNode;
 
+    //@TODO Refactor this 
     auto parameters = node->getParameters();
     auto yPosition = PARAMETER_Y_OFFSET;
     for(ParameterPtr parameter : parameters->getAllParameters())
@@ -29,6 +29,7 @@ AudioProcessorNodeUI::AudioProcessorNodeUI(String name, NodeInstance nodeInstanc
 
             this->parametersUI.add(parameterUI);
             componentIdToParameterMap.insert({parameterUI->getId(), parameter});
+            parameterNameToUI.insert({parameter->getName(), parameterUI.get()});
         }
         else if(parameter->getType() == ParameterType::Double)
         {
@@ -43,6 +44,7 @@ AudioProcessorNodeUI::AudioProcessorNodeUI(String name, NodeInstance nodeInstanc
 
             this->parametersUI.add(parameterUI);
             componentIdToParameterMap.insert({parameterUI->getId(), parameter});
+            parameterNameToUI.insert({parameter->getName(), parameterUI.get()});
         }
         else if(parameter->getType() == ParameterType::Option)
         {
@@ -61,11 +63,13 @@ AudioProcessorNodeUI::AudioProcessorNodeUI(String name, NodeInstance nodeInstanc
 
             this->parametersUI.add(parameterUI);
             componentIdToParameterMap.insert({parameterUI->getId(), parameter});
+            parameterNameToUI.insert({parameter->getName(), parameterUI.get()});
         }
 
         yPosition += PARAMETER_SPACING;
     }
 
+    //@TODO Remove magic numbers
     int width = 200;
     auto height = NODE_MIN_HEIGHT + (this->parametersUI.size() * 50);
     setBounds(0, 0, width, height);
@@ -81,6 +85,41 @@ AudioProcessorNodeUI::~AudioProcessorNodeUI()
 AudioProcessorNodePtr AudioProcessorNodeUI::getProcessorNode()
 {
 	return processorNode;
+}
+
+AudioParametersPtr AudioProcessorNodeUI::getAudioParameters()
+{
+	return processorNode->getParameters();
+}
+void AudioProcessorNodeUI::setAudioParameters(AudioParametersPtr parameters)
+{
+    processorNode->getProcessor()->setParameters(parameters);
+}
+
+void AudioProcessorNodeUI::updateParametersUI()
+{
+    auto parameters = getAudioParameters();
+    for(ParameterPtr& parameter : parameters->getAllParameters())
+    {
+        std::string parameterName = parameter->getName();
+        ParameterType parameterType = parameter->getType();
+
+        if(parameterType == ParameterType::Boolean)
+        {
+            BoolParameter* toggle = static_cast<BoolParameter*>(parameterNameToUI.at(parameterName));
+            toggle->setToggleState(parameters->getParameterValueByName<bool>(parameterName));
+        }
+        else if(parameterType == ParameterType::Double)
+        {
+            SliderParameter* slider = static_cast<SliderParameter*>(parameterNameToUI.at(parameterName));
+            slider->setValue(parameters->getParameterValueByName<double>(parameterName));
+        }
+        else if(parameterType == ParameterType::Option)
+        {
+            ComboBoxParameter* combo = static_cast<ComboBoxParameter*>(parameterNameToUI.at(parameterName));
+            combo->setSelectedItem(parameters->getParameterValueByName<int>(parameterName));
+        }
+    }
 }
 
 void AudioProcessorNodeUI::setProcessorNode(AudioProcessorNodePtr processorNode)

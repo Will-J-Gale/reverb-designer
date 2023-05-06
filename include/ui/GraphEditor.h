@@ -10,7 +10,6 @@
 #include <ui/interaction/ConnectionHandler.h>
 #include <ui/interaction/NodeUIInteractionHandler.h>
 #include <ui/interaction/NodeConnectorInteractionHandler.h>
-#include <ui/interaction/MainMenuInteractionHandler.h>
 #include <ui/nodes/NodeUI.h>
 
 //Forward declarations
@@ -72,7 +71,6 @@ protected:
     friend class ConnectionHandler;
     friend class NodeUIInteractionHandler;
     friend class NodeConnectorInteractionHandler;
-    friend class MainMenuInteractionHandler;
     
     //Used for moving all elements around with middle mouse button (emulating panning)
     SelectionHandler globalSelection;
@@ -82,5 +80,4 @@ protected:
     ConnectionHandler connectionHandler; 
     NodeUIInteractionHandler nodeInteractionHandler; 
     NodeConnectorInteractionHandler nodeConnectorInteractionHandler{this};
-    MainMenuInteractionHandler mainMenuInteractionHandler{this};
 };

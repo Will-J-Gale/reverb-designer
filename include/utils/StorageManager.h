@@ -14,7 +14,7 @@ namespace StorageManager
     {
         auto appDataFolder = File::getSpecialLocation(File::SpecialLocationType::userApplicationDataDirectory);
         auto appDataPath = appDataFolder.getFullPathName();
-        auto suffix = std::string("\\") + JucePlugin_Name;
+        auto suffix = std::string("/") + JucePlugin_Name;
         appDataPath.append(suffix, sizeof(suffix));
         
         auto storageDirectory = File(appDataPath);
