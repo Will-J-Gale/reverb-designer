@@ -203,70 +203,47 @@ std::shared_ptr<AudioProcessorState> MainGraphEditor::loadStateFromFile(std::str
 
 void MainGraphEditor::loadFromExistingState(XmlElement* state)
 {
-    // //Load xml 
-    // if (state == nullptr || state->getTagName() != PLUGIN_STATE_TAG)
-    // {
-    //     return;
-    // }
+    //Load xml 
+    if (state == nullptr || state->getTagName() != PLUGIN_STATE_TAG)
+    {
+        return;
+    }
     
-    // auto xmlMap = XmlGenerator::generateXmlMap(state);
-    // auto processorNodeMap = pluginGraph->getAudioProcessorNodeMap();
+    auto idToXmlMap = XmlUtils::generateIdToNodeXmlElementMap(state);
+    auto idToNodeMap = pluginGraph->getAudioProcessorNodeMap();
 
-    // std::map<std::string, NodeUIPtr> processorUIMap;
+    std::map<std::string, NodeUIPtr> processorUIMap;
     
-    // //Generate all processing UI
-    // for (auto pair : xmlMap)
-    // {
-    //     auto id = pair.first;
-    //     auto xml = pair.second;
-    //     auto type = (NodeType)(xml->getChildByName(TYPE_TAG)->getAllSubText().getIntValue());
-    //     auto x = xml->getChildByName(X_TAG)->getAllSubText().getIntValue();
-    //     auto y = xml->getChildByName(Y_TAG)->getAllSubText().getIntValue();
-    //     auto isReversed = xml->getChildByName(IS_REVERSED_TAG)->getAllSubText().getIntValue();
-    //     auto parametersXML = xml->getChildByName(PARAMETERTS_TAG);
+    //Generate all processing UI
+    for (auto pair : idToXmlMap)
+    {
+        auto id = pair.first;
+        auto xml = pair.second;
+        auto nodeClass = (NodeClass)(xml->getChildByName(NODE_CLASS_TAG)->getAllSubText().getIntValue());
+        auto nodeInstance = (NodeInstance)(xml->getChildByName(INSTANCE_TAG)->getAllSubText().getIntValue());
+        auto x = xml->getChildByName(X_TAG)->getAllSubText().getIntValue();
+        auto y = xml->getChildByName(Y_TAG)->getAllSubText().getIntValue();
+        auto isReversed = xml->getChildByName(IS_REVERSED_TAG)->getAllSubText().getIntValue();
+        auto parametersXML = xml->getChildByName(AUDIO_PARAMETERTS_TAG);
 
-    //     NodeUIPtr processorUI = nullptr;
+        NodeUIPtr nodeUI = nullptr;
 
-    //     if (type == NodeType::Input)
-    //     {
-    //         auto channel = parametersXML->getChildByName(IO_CHANNEL_TAG)->getAllSubText().getIntValue();
-    //         auto processorNode = pluginGraph->getInputs()[channel];
+        if (idToNodeMap.count(id) > 0)//Processor Exists
+        {
+            auto processorNode = idToNodeMap[id];
+            nodeUI = nodeInteractionHandler.createNode(nodeInstance, Point<int>(x, y), processorNode);
+        }
+        else //Processor does not exist
+            nodeUI = nodeInteractionHandler.createNode(nodeInstance, Point<int>(x, y));
 
-    //         processorUI = processorNodeUIInteractionHandler.createNode(NodeType::Input, Point<int>(x, y), processorNode);
-    //         processorUI->setAudioParametersFromXml(parametersXML);
+        if (isReversed)
+            nodeUI->reverse();
 
-    //         inputs.add(processorUI);
-    //     }
-    //     else if (type == NodeType::Output)
-    //     {
-    //         auto channel = parametersXML->getChildByName(IO_CHANNEL_TAG)->getAllSubText().getIntValue();
-    //         auto processorNode = pluginGraph->getOutputs()[channel];
+        nodeInteractionHandler.initializeNode(nodeUI);
+        processorUIMap[id] = nodeUI;
+    }
 
-    //         processorUI = processorNodeUIInteractionHandler.createNode(NodeType::Output, Point<int>(), processorNode);
-    //         processorUI->setTopLeftPosition(Point<int>(x, y));
-    //         processorUI->setAudioParametersFromXml(parametersXML);
+    createAllConnections(processorUIMap, idToXmlMap);
 
-    //         outputs.add(processorUI);
-    //     }
-    //     else if (processorNodeMap.count(id) > 0)//Processor Exists
-    //     {
-    //         auto processorNode = processorNodeMap[id];
-    //         processorUI = processorNodeUIInteractionHandler.createNode(type, Point<int>(x, y), processorNode);
-    //     }
-    //     else //Processor does not exist
-    //     {
-    //         processorUI = processorNodeUIInteractionHandler.createNode(type, Point<int>(x, y));
-    //         processorUI->setAudioParametersFromXml(parametersXML);
-    //     }
-
-    //     if (isReversed)
-    //         processorUI->reverse();
-
-    //     processorNodeUIInteractionHandler.initializeProcessor(processorUI);
-    //     processorUIMap[id] = processorUI;
-    // }
-
-    // createAllConnections(processorUIMap, xmlMap);
-
-    // state->deleteAllChildElements();
+    state->deleteAllChildElements();
 }
