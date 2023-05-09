@@ -26,6 +26,7 @@ public:
     void connectOutput(AudioProcessorNode* connection);
     void disconnectInput(AudioProcessorNode* connection);
     void disconnectOutput(AudioProcessorNode* connection);
+    void disconnectAll();
     bool isReady();
     void setProcessor(IAudioProcessorPtr processor);
     IAudioProcessor* getProcessor();

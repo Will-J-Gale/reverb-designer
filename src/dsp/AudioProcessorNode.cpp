@@ -87,6 +87,24 @@ void AudioProcessorNode::disconnectOutput(AudioProcessorNode* connection)
         outputs.remove(index);
 }
 
+void AudioProcessorNode::disconnectAll()
+{
+    for(AudioProcessorNode* input : inputs)
+    {
+        disconnectInput(input);
+    }
+
+    for(AudioProcessorNode* output : outputs)
+    {
+        disconnectInput(output);
+    }
+
+     for(AudioProcessorNode* feedback : feedbackConnections)
+    {
+        disconnectInput(feedback);
+    }
+}
+
 bool AudioProcessorNode::isReady()
 {
     bool ready = true;

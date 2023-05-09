@@ -107,6 +107,18 @@ void MainGraphEditor::loadFromExistingState(XmlElement* state)
     }
 
     createAllConnections(processorUIMap, idToXmlMap);
-
     state->deleteAllChildElements();
+}
+
+void MainGraphEditor::fromXml(XmlElement* xml)
+{
+    const MessageManagerLock mmlock;
+    clear();
+    pluginGraph->clear();
+
+    createIOProcessors();
+    GraphEditor::fromXml(xml);
+
+    pluginGraph->updateProcessPath();
+    repaint();
 }

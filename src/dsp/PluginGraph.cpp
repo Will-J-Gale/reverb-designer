@@ -245,9 +245,24 @@ Array<AudioProcessorNodePtr> PluginGraph::getAllBlocks()
 void PluginGraph::clear()
 {
     pluginState = nullptr;
+    
+    for(AudioProcessorNodePtr& input : inputs)
+    {
+        input->disconnectAll();
+    }
 
-    inputs.clear();
-    outputs.clear();
+    for(AudioProcessorNodePtr& output : outputs)
+    {
+        output->disconnectAll();
+    }
+
+    for(AudioProcessorNodePtr& node : allNodes)
+    {
+        node->disconnectAll();
+    }
+
+    // inputs.clear();
+    // outputs.clear();
     allNodes.clear();
 }
 

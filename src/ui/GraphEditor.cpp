@@ -356,22 +356,24 @@ void GraphEditor::fromXml(XmlElement* xml)
         NodeUIPtr nodeUI;
         if(nodeInstance == NodeInstance::Macro)
         {
-            std::string name = nodeXml->getChildByName(NAME_TAG)->getAllSubText().toStdString();
-            nodeUI = nodeInteractionHandler.createMacroNode(Point<int>(x, y), name);
-            //// CHECK THIS WORKS!
-            // nodeUI->fromXml(nodeXml);
-            auto macroNode = dynamic_cast<AudioProcessorMacroNode*>(nodeUI.get());
-            macroNode->fromXml(nodeXml);
-
-            // for(NodeUIPtr nodeUI : macroNode->getInternalNodes())
-            // {
-            //     new_nodes.add(dynamic_cast<AudioProcessorNodeUI*>(nodeUI.get())->getProcessorNode());
-            // }
+            nodeUI = nodeInteractionHandler.createMacroNode(Point<int>(x, y), std::string());
+            nodeUI->fromXml(nodeXml);
         }
         else if (nodeInstance == NodeInstance::Input || nodeInstance == NodeInstance::Output)
         {
-            nodeUI = nodeInteractionHandler.createIONode(nodeInstance, Point<int>(x, y), 0);
-            nodeUI->fromXml(nodeXml);
+            int channel = nodeXml->getChildByName(IO_CHANNEL_TAG)->getAllSubText().getIntValue();
+            if(nodeInstance == NodeInstance::Input)
+                nodeUI = inputs[channel];
+            else
+                nodeUI = outputs[channel];
+            jassert(nodeUI != nullptr);
+            // nodeUI = nodeInteractionHandler.createIONode(nodeInstance, Point<int>(x, y), 0);
+            // nodeUI->fromXml(nodeXml);
+
+            // if(nodeInstance == NodeInstance::Input)
+            //     inputs.add(nodeUI);
+            // else
+            //     outputs.add(nodeUI);
         }
         else
         {
@@ -393,7 +395,9 @@ void GraphEditor::fromXml(XmlElement* xml)
         if(isReversed)
             nodeUI->reverse();
         
-        nodeInteractionHandler.initializeNode(nodeUI);
+        if(nodeInstance != NodeInstance::Input && nodeInstance != NodeInstance::Output)
+            nodeInteractionHandler.initializeNode(nodeUI);
+
         idToNodeUIMap[id] = nodeUI;
     }
 

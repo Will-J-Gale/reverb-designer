@@ -49,12 +49,9 @@ void MainMenuInteractionHandler::onSave(std::string savePath)
 
 void MainMenuInteractionHandler::onLoad(std::string filepath)
 {
-    mainGraphEditor->clear();
-
     auto file = File(filepath);
     auto xmlString = file.loadFileAsString().toStdString();
     auto xml = parseXML(xmlString);
     mainGraphEditor->fromXml(xml.get());
     xml->deleteAllChildElements();
-    // mainGraphEditor->pluginGraph->deleteAndReplaceAudioBlocks(state);
 }

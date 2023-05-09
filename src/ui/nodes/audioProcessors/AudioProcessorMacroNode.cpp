@@ -113,5 +113,8 @@ void AudioProcessorMacroNode::fromXml(XmlElement* xml)
     auto x = xml->getChildByName(X_TAG)->getAllSubText().getIntValue();
 
     updateNameAndReCenter(name);
+    graphEditor->clear();
+    graphEditor->addInputNode();
+    graphEditor->addOutputNode();
     graphEditor->fromXml(xml->getChildByName(PLUGIN_STATE_TAG));
 }

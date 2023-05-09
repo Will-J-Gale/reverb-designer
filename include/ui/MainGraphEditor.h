@@ -13,6 +13,7 @@ public:
     
     // XmlElementPtr generatePluginState();
     void loadFromExistingState(XmlElement* state);
+    void fromXml(XmlElement* xml) override;
 
 private:
     friend class MainMenuInteractionHandler;
