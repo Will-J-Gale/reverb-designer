@@ -15,9 +15,9 @@ public:
     bool connectionExists(NodeConnectorUI* start, NodeConnectorUI* end);
     bool isCreatingFeedback(NodeConnectorUI* start, NodeConnectorUI* end);
     bool nodesAreCompatible(NodeConnectorUI* start, NodeConnectorUI* end);
+    NodeUI* handleMacroNode(NodeUI* node, bool isInput);
 
 private:
-    NodeUI* handleMacroNode(NodeUI* node, bool isInput);
     GraphEditor* graphEditor;
     PluginGraph* pluginGraph;
 };

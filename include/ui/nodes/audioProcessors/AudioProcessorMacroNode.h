@@ -9,6 +9,8 @@
 class GraphEditor;
 class PluginGraph;
 
+#define AudioProcessorMacroNodePtr std::shared_ptr<AudioProcessorMacroNode>
+
 class AudioProcessorMacroNode : public AudioProcessorNodeUI
 {
 public:
@@ -22,9 +24,12 @@ public:
     void disconnectInput(NodeUI* sourceNode) override;
     void disconnectOutput(NodeUI* destinationNode) override;
     std::string getIdAsString() override;
-
     NodeUIPtr getInputNodeUI();
     NodeUIPtr getOutputNodeUI();
+    Array<NodeUIPtr> getInternalNodes();
+
+    virtual XmlElement* toXml() override;
+    virtual void fromXml(XmlElement* xml) override;
 
 private:
     void closeWindow();

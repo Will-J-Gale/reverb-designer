@@ -7,6 +7,7 @@
 #include <ui/interaction/ConnectionHandler.h>
 #include <ui/menus/InputModals.h>
 #include <ui/nodes/NodeUI.h>
+#include <ui/nodes/NodeFactory.h>
 #include <utils/Constants.h>
 
 void NodeUIInteractionHandler::initialize(GraphEditor* graphEditor, PluginGraph* pluginGraph)
@@ -64,11 +65,10 @@ void NodeUIInteractionHandler::onNodeContextSelection(NodeUI* node, NodeUIConext
 
     graphEditor->repaint();
 }
-NodeUIPtr NodeUIInteractionHandler::createMacroNode(Point<int> position)
+NodeUIPtr NodeUIInteractionHandler::createMacroNode(Point<int> position, String macroName)
 {
     //Refactor this to remove passthroughNode as macro really shouldn't need an explicit AudioProcessorNodePtr
     auto passthroughNode = graphEditor->pluginGraph->generateProcessorNode(NodeInstance::Macro);
-    auto macroName = InputModals::runTextInputModal(MACRO_MODAL_TITLE, MACRO_MODAL_MESSAGE, MACRO_DEFAULT_NAME);
     auto macroNode = std::make_shared<AudioProcessorMacroNode>(graphEditor->pluginGraph, macroName, passthroughNode);
     macroNode->setTopLeftPosition(position);
     macroNode->addInputConnector();
@@ -84,7 +84,8 @@ NodeUIPtr NodeUIInteractionHandler::createNode(NodeInstance type, Point<int> pos
 
 NodeUIPtr NodeUIInteractionHandler::createNode(NodeInstance type, Point<int> position, AudioProcessorNodePtr processorNode)
 {
-    NodeUIPtr nodeUI = std::make_shared<AudioProcessorNodeUI>(NodeInstanceToName.at(type), type, processorNode);
+    // NodeUIPtr nodeUI = std::make_shared<AudioProcessorNodeUI>(NodeInstanceToName.at(type), type, processorNode);
+    NodeUIPtr nodeUI = NodeFactory::Generate(type, processorNode, graphEditor->parent);
 
     dynamic_cast<AudioProcessorNodeUI*>(nodeUI.get())->setProcessorNode(processorNode);
     nodeUI->setTopLeftPosition(position);
@@ -96,6 +97,23 @@ NodeUIPtr NodeUIInteractionHandler::createNode(NodeInstance type, Point<int> pos
         nodeUI->addOutputConnector();
 
     return nodeUI;
+}
+
+NodeUIPtr NodeUIInteractionHandler::createNodeFromXml(NodeInstance nodeInstance, XmlElement* xml)
+{
+    NodeUIPtr nodeUI;
+    if(nodeInstance == NodeInstance::Macro)
+    {
+        auto passthroughNode = graphEditor->pluginGraph->generateProcessorNode(NodeInstance::Macro);
+        nodeUI = std::make_shared<AudioProcessorMacroNode>(graphEditor->pluginGraph, std::string(), passthroughNode);
+    }
+    else
+    {
+        auto node = graphEditor->pluginGraph->generateProcessorNode(nodeInstance);
+        nodeUI = NodeFactory::Generate(nodeInstance, node, graphEditor->parent);
+    }
+
+    nodeUI->fromXml(xml);
 }
 
 void NodeUIInteractionHandler::initializeNode(NodeUIPtr node)

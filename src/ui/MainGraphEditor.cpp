@@ -13,7 +13,8 @@ MainGraphEditor::MainGraphEditor() : GraphEditor()
 
 MainGraphEditor::~MainGraphEditor()
 {
-    pluginGraph->setPluginState(XmlUtils::generatePluginState(nodes));
+    //@TODO Fix this
+    // pluginGraph->setPluginState(XmlUtils::generatePluginState(nodes));
 }
 
 void MainGraphEditor::resized()
@@ -61,144 +62,6 @@ void MainGraphEditor::createIOProcessors()
         newOutput->setTopLeftPosition(OUTPUT_START_X, y);
         y += IO_SPACING;
     }
-}
-
-void MainGraphEditor::createAllConnections(std::map<std::string, NodeUIPtr> idToNodeUIMap, std::map<std::string, XmlElement*> idToXmlElement)
-{
-    for (auto pair : idToNodeUIMap)
-    {
-        auto id = pair.first;
-        auto nodeUI = pair.second;
-        auto xml = idToXmlElement[id];
-
-        auto inputsXml = xml->getChildByName(INPUT_CONNECTIONS_TAG);
-        if (inputsXml != nullptr)
-        {
-            auto inputXml = inputsXml->getFirstChildElement();
-            while (inputXml != nullptr)
-            {
-                auto inputId = inputXml->getAllSubText().toStdString();
-                auto inputNodeUI = idToNodeUIMap[inputId];
-                auto startConnector = inputNodeUI->getOutputConnector();
-                auto endConnector = nodeUI->getInputConnector();
-
-                if (!connectionHandler.connectionExists(startConnector, endConnector))
-                {
-                    connections.add(std::make_shared<NodeConnection>(startConnector, endConnector));
-
-                    nodeUI->connectInput(inputNodeUI.get());
-                    inputNodeUI->connectOutput(nodeUI.get());
-                }
-
-                inputXml = inputXml->getNextElement();
-            }
-        }
-
-        auto outputsXml = xml->getChildByName(OUTPUT_CONNECTIONS_TAG);
-        if (outputsXml != nullptr)
-        {
-            auto outputXml = outputsXml->getFirstChildElement();
-            while (outputXml != nullptr)
-            {
-                auto outputId = outputXml->getAllSubText().toStdString();
-                auto outputNodeUI = idToNodeUIMap[outputId];
-                auto startConnector = nodeUI->getOutputConnector();
-                auto endConnector = outputNodeUI->getInputConnector();
-
-                if (!connectionHandler.connectionExists(startConnector, endConnector))
-                {
-                    connections.add(std::make_shared<NodeConnection>(startConnector, endConnector));
-
-                    nodeUI->connectOutput(outputNodeUI.get());
-                    outputNodeUI->connectInput(nodeUI.get());
-                }
-
-                outputXml = outputXml->getNextElement();
-            }
-        }
-
-        auto feedbackInputsXml = xml->getChildByName(FEEDBACK_CONNECTIONS_TAG);
-        if (feedbackInputsXml != nullptr)
-        {
-            auto feedbackXml = feedbackInputsXml->getFirstChildElement();
-            while (feedbackXml != nullptr)
-            {
-                auto feedbackId = feedbackXml->getAllSubText().toStdString();
-                auto feedbackProcessorUI = idToNodeUIMap[feedbackId];
-                auto startConnector = feedbackProcessorUI->getOutputConnector();
-                auto endConnector = nodeUI->getInputConnector();
-
-                if (!connectionHandler.connectionExists(startConnector, endConnector))
-                {
-                    connections.add(std::make_shared<NodeConnection>(startConnector, endConnector));
-                    nodeUI->connectFeedbackInput(feedbackProcessorUI.get());
-                }
-
-                feedbackXml = feedbackXml->getNextElement();
-            }
-        }
-    }
-}
-
-std::shared_ptr<AudioProcessorState> MainGraphEditor::loadStateFromFile(std::string xmlString)
-{
-    //This function is called from the audio processing thread so mmLock locks the UI thread so we can update the UI 
-    const MessageManagerLock mmlock;
-
-    auto state = parseXML(xmlString);
-
-    if (state == nullptr || state->getTagName() != PLUGIN_STATE_TAG)
-    {
-        return nullptr;
-    }
-    
-    auto new_input_nodes = Array<AudioProcessorNodePtr>();
-    auto new_output_nodes = Array<AudioProcessorNodePtr>();
-    auto new_nodes = Array<AudioProcessorNodePtr>();
-    auto idToNodeXmlElementMap = XmlUtils::generateIdToNodeXmlElementMap(state.get());
-    std::map<std::string, NodeUIPtr> idToNodeUIMap;
-
-    //Generate all processing UI
-    for (auto pair : idToNodeXmlElementMap)
-    {
-        auto id = pair.first;
-        auto nodeXml = pair.second;
-        auto nodeClass = (NodeClass)(nodeXml->getChildByName(NODE_CLASS_TAG)->getAllSubText().getIntValue());
-        auto nodeInstance = (NodeInstance)(nodeXml->getChildByName(INSTANCE_TAG)->getAllSubText().getIntValue());
-        auto x = nodeXml->getChildByName(X_TAG)->getAllSubText().getIntValue();
-        auto y = nodeXml->getChildByName(Y_TAG)->getAllSubText().getIntValue();
-        auto isReversed = nodeXml->getChildByName(IS_REVERSED_TAG)->getAllSubText().getIntValue();
-        auto parametersXML = nodeXml->getChildByName(AUDIO_PARAMETERTS_TAG);
-
-        NodeUIPtr nodeUI = nodeInteractionHandler.createNode(nodeInstance, Point<int>(x, y));
-        nodeInteractionHandler.initializeNode(nodeUI);
-        idToNodeUIMap[id] = nodeUI;
-
-        if(nodeClass == NodeClass::AudioProcessor)
-        {
-            auto audioNodeUI = static_cast<AudioProcessorNodeUI*>(nodeUI.get());
-            auto audioProcessorNode = audioNodeUI->getProcessorNode();
-            auto audioParametesXml = nodeXml->getChildByName(AUDIO_PARAMETERTS_TAG);
-            XmlUtils::setAudioParametersFromXml(audioNodeUI->getAudioParameters(), audioParametesXml);
-            audioNodeUI->updateParametersUI();
-
-            if(nodeInstance == NodeInstance::Input)
-                new_input_nodes.add(audioProcessorNode);
-            else if(nodeInstance == NodeInstance::Output)
-                new_output_nodes.add(audioProcessorNode);
-            else
-                new_nodes.add(audioProcessorNode);
-        }
-
-        if(isReversed)
-            nodeUI->reverse();
-    }
-
-    createAllConnections(idToNodeUIMap, idToNodeXmlElementMap);
-    state->deleteAllChildElements();
-
-    repaint();
-    return std::make_unique<AudioProcessorState>(new_input_nodes, new_output_nodes, new_nodes);
 }
 
 void MainGraphEditor::loadFromExistingState(XmlElement* state)

@@ -42,10 +42,10 @@ namespace NodeConnectionDrawer
         auto from = graphEditor->getLocalPoint(nullptr, fromPos);
         auto to = graphEditor->getLocalPoint(nullptr, toPos);
 
-        int x1 = from.getX() + NODE_RADIUS;
-        int y1 = from.getY() + NODE_RADIUS;
-        int x2 = to.getX() + NODE_RADIUS;
-        int y2 = to.getY() + NODE_RADIUS;
+        int x1 = from.getX() + CONNECTOR_RADIUS;
+        int y1 = from.getY() + CONNECTOR_RADIUS;
+        int x2 = to.getX() + CONNECTOR_RADIUS;
+        int y2 = to.getY() + CONNECTOR_RADIUS;
 
         auto startNode = (NodeUI*)(startNodeConnector->getParentComponent());
         auto endNode = (NodeUI*)(endNodeConnector->getParentComponent());

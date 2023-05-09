@@ -1,10 +1,11 @@
+#include <dsp/FeedbackDelay.h>
 #include <ui/nodes/audioProcessors/AudioProcessorNodeUI.h>
 #include <ui/GraphEditor.h>
-#include <dsp/FeedbackDelay.h>
 #include <ui/parameters/NumberParameter.h>
 #include <ui/parameters/BoolParameter.h>
 #include <ui/parameters/SliderParameter.h>
 #include <ui/parameters/ComboBoxParameter.h>
+#include <utils/XmlUtils.h>
 
 AudioProcessorNodeUI::AudioProcessorNodeUI(String name, NodeInstance nodeInstance, AudioProcessorNodePtr node) 
     : NodeUI(name, NodeClass::AudioProcessor, nodeInstance)
@@ -69,12 +70,10 @@ AudioProcessorNodeUI::AudioProcessorNodeUI(String name, NodeInstance nodeInstanc
         yPosition += PARAMETER_SPACING;
     }
 
-    //@TODO Remove magic numbers
-    int width = 200;
-    auto height = NODE_MIN_HEIGHT + (this->parametersUI.size() * 50);
-    setBounds(0, 0, width, height);
+    auto height = NODE_MIN_HEIGHT + (this->parametersUI.size() * NODE_SCALE_PER_PARAMETER);
+    setBounds(0, 0, NODE_DEFAULT_WIDTH, height);
 
-    nameLabel.setBounds(0, 0, width, TEXT_HEIGHT);
+    nameLabel.setBounds(0, 0, NODE_DEFAULT_WIDTH, TEXT_HEIGHT);
     updateNameAndReCenter(this->name);
 }
 
@@ -203,4 +202,57 @@ void AudioProcessorNodeUI::comboBoxChanged (ComboBox* comboBox)
     BaseParameter* parameterUI  = static_cast<BaseParameter*>(comboBox->getParentComponent());
     OptionParameter* parameter = static_cast<OptionParameter*>(componentIdToParameterMap.at(parameterUI->getId()).get());
     parameter->setValue(comboBox->getSelectedId());
+}
+
+XmlElement* AudioProcessorNodeUI::toXml()
+{
+    XmlElement* xml = XmlUtils::generateNodeXml(this);
+    XmlElement* audioParameters = XmlUtils::audioParametersToXML(getAudioParameters());
+    xml->addChildElement(audioParameters);
+
+    return xml;
+}
+
+void AudioProcessorNodeUI::fromXml(XmlElement* nodeXml)
+{
+    std::string name = nodeXml->getChildByName(NAME_TAG)->getAllSubText().toStdString();
+    updateNameAndReCenter(name);
+
+    auto x = nodeXml->getChildByName(X_TAG)->getAllSubText().getIntValue();
+    auto y = nodeXml->getChildByName(Y_TAG)->getAllSubText().getIntValue();
+    auto isReversed = nodeXml->getChildByName(IS_REVERSED_TAG)->getAllSubText().getIntValue();
+    auto id = nodeXml->getChildByName(ID_TAG)->getAllSubText().toStdString();
+
+    setTopLeftPosition(x, y);
+
+    if(isReversed)
+        reverse();
+
+    XmlElement* audioParametesXml = nodeXml->getChildByName(AUDIO_PARAMETERTS_TAG);
+    XmlElement* parameter = audioParametesXml->getChildByName(PARAMETER_TAG);
+    auto parameters = getAudioParameters();
+
+    while(parameter != nullptr)
+    {
+        std::string parameterName = parameter->getChildByName(NAME_TAG)->getAllSubText().toStdString();
+        ParameterType parameterType = (ParameterType)parameter->getChildByName(TYPE_TAG)->getAllSubText().getIntValue();
+
+        if(parameterType == ParameterType::Boolean)
+        {
+            bool value = (bool)parameter->getChildByName(VALUE_TAG)->getAllSubText().getIntValue();
+            parameters->setParameterValueByName<bool>(parameterName, value);
+        }
+        else if(parameterType == ParameterType::Double)
+        {
+            double value = parameter->getChildByName(VALUE_TAG)->getAllSubText().getFloatValue();
+            parameters->setParameterValueByName<double>(parameterName, value);
+        }
+        else if(parameterType == ParameterType::Option)
+        {
+            int value = parameter->getChildByName(VALUE_TAG)->getAllSubText().getIntValue();
+            parameters->setParameterValueByName<int>(parameterName, value);
+        }
+
+        parameter = parameter->getNextElement();
+    }
 }

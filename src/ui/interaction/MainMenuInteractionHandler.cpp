@@ -43,7 +43,7 @@ void MainMenuInteractionHandler::onPresetSelected(PresetType presetId)
 
 void MainMenuInteractionHandler::onSave(std::string savePath)
 {
-    auto pluginState = XmlUtils::generatePluginState(mainGraphEditor->nodes);
+    auto pluginState = mainGraphEditor->toXml();
     StorageManager::saveXML(savePath, pluginState->toString().toStdString());
 }
 
@@ -53,6 +53,8 @@ void MainMenuInteractionHandler::onLoad(std::string filepath)
 
     auto file = File(filepath);
     auto xmlString = file.loadFileAsString().toStdString();
-    auto state = mainGraphEditor->loadStateFromFile(xmlString);
-    mainGraphEditor->pluginGraph->deleteAndReplaceAudioBlocks(state);
+    auto xml = parseXML(xmlString);
+    mainGraphEditor->fromXml(xml.get());
+    xml->deleteAllChildElements();
+    // mainGraphEditor->pluginGraph->deleteAndReplaceAudioBlocks(state);
 }

@@ -48,13 +48,13 @@ constexpr int COMBO_TEXT_OFFSET = COMBO_X + COMBO_WIDTH;
 constexpr int COMBO_TEXT_WIDTH = 80;
 
 //Node connectors
-const std::string NODE_COLOUR = "ffff0000";
-const std::string NODE_OUTPUT_COLOUR = "ff990000";
-constexpr float NODE_SIZE = 12.0;
-constexpr float NODE_INPUT_SIZE = NODE_SIZE * 0.85;
-constexpr float NODE_BOUND_SIZE = NODE_SIZE * 1.5;
-constexpr float NODE_RADIUS = NODE_SIZE / 2;
-constexpr int NODE_LINE_THICKNESS = 2;
+const std::string CONNECTOR_COLOUR = "ffff0000";
+const std::string CONNECTOR_OUTPUT_COLOUR = "ff990000";
+constexpr float CONNECTOR_SIZE = 12.0;
+constexpr float INPUT_CONNECTOR_SIZE = CONNECTOR_SIZE * 0.85;
+constexpr float CONNECTOR_BOUND_SIZE = CONNECTOR_SIZE * 1.5;
+constexpr float CONNECTOR_RADIUS = CONNECTOR_SIZE / 2;
+constexpr int CONNECTOR_LINE_THICKNESS = 2;
 
 //Connections
 const std::string CONNECTION_COLOUR = "ff000000";
@@ -62,16 +62,20 @@ constexpr int CONNECTION_GAP = 25;
 
 //Audio Processor
 constexpr int NODE_MIN_HEIGHT = 20;
-constexpr int PROCESSOR_WIDTH = 150;
-constexpr int PROCESSOR_HEIGHT = 60;
+constexpr int NODE_WIDTH = 150;
+constexpr int NODE_HEIGHT = 60;
 constexpr size_t MAX_CHANNELS = 10;
-const std::string AUDIO_PROCESSOR_COLOUR = "ff02FF3E0";
+const std::string NODE_COLOUR = "ff02FF3E0";
 constexpr float AUDIO_PROCESSOR_CORNER_SIZE = 5.0;
-constexpr float AUDIO_PROCESSOR_THICKNESS = 2.0;
+constexpr float NODE_THICKNESS = 2.0;
 
 //Connections
 constexpr int CONNECTION_THICKNESS = 3;
 constexpr int ARROW_SIZE = 15;
+
+//NodeUI
+constexpr int NODE_DEFAULT_WIDTH = 200;
+constexpr int NODE_SCALE_PER_PARAMETER = 50;
 
 //Input/Output
 const std::string INPUT_TEXT = "Input";
@@ -81,7 +85,6 @@ constexpr int IO_HEIGHT = 20;
 constexpr int INPUT_START_X = 0;
 constexpr int OUTPUT_START_X = 500;
 constexpr int IO_START_Y = 200;
-
 constexpr int IO_SPACING = 100;
 
 //Gain

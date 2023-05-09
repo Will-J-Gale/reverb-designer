@@ -22,9 +22,11 @@ public:
     void onNodeReleased(NodeUI* processor, const MouseEvent& e) override;
     void onNodeContextSelection(NodeUI* processor, NodeUIConextMenuItems selection) override;
     
-    NodeUIPtr createMacroNode(Point<int> position);
+    NodeUIPtr createMacroNode(Point<int> position, String name);
     NodeUIPtr createNode(NodeInstance type, Point<int> position);
     NodeUIPtr createNode(NodeInstance type, Point<int> position, AudioProcessorNodePtr processorNode);
+    NodeUIPtr createNodeFromXml(NodeInstance type, XmlElement* xml);
+
     void initializeNode(NodeUIPtr processor);
     void deleteProcessor(NodeUI* processor);
     void duplicateProcessor(NodeUI* processor);

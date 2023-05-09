@@ -11,6 +11,8 @@
 #include <ui/interaction/NodeUIInteractionHandler.h>
 #include <ui/interaction/NodeConnectorInteractionHandler.h>
 #include <ui/nodes/NodeUI.h>
+#include <ui/nodes/audioProcessors/AudioProcessorMacroNode.h>
+#include <utils/XmlUtils.h>
 
 //Forward declarations
 class PluginGraph;
@@ -20,7 +22,7 @@ class GraphEditor : public Component,
 {
 public:
     GraphEditor();
-    GraphEditor(PluginGraph* pluginGraph);
+    GraphEditor(PluginGraph* pluginGraph, AudioProcessorMacroNode* parent=nullptr);
     ~GraphEditor();
 
     virtual void setPluginGraph(PluginGraph* pluginGraph);
@@ -33,6 +35,11 @@ public:
     Array<NodeUIPtr>& getOutputs();
 
     void clear();
+
+    XmlElement* toXml();
+    void fromXml(XmlElement* xml);
+
+    void createAllConnections(std::map<std::string, NodeUIPtr> idToNodeUIMap, std::map<std::string, XmlElement*> idToXmlElement);
 
 protected:
     void mouseDown(const MouseEvent& e) override;
@@ -58,6 +65,7 @@ protected:
     NodeConnectorUI* clickedNodeConnector = nullptr;
 
     PluginGraph* pluginGraph = nullptr;
+    AudioProcessorMacroNode* parent = nullptr;
 
     Point<int> mousePosition;
     Point<int> mouseDownPosition;

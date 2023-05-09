@@ -48,6 +48,7 @@ public:
 
     NodeClass getNodeClass();
     NodeInstance getNodeInstance();
+    String getNodeName();
 
     virtual void paint(Graphics& g) override;
     virtual void mouseDown(const MouseEvent& e) override;
@@ -59,6 +60,9 @@ public:
     virtual std::string getIdAsString();
     virtual void reverse();
     virtual bool isReversed();
+
+    virtual XmlElement* toXml() = 0;
+    virtual void fromXml(XmlElement* xml) = 0;
 
 protected:
     void initialize();

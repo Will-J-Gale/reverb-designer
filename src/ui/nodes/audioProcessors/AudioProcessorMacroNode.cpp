@@ -1,7 +1,8 @@
 #include <dsp/PluginGraph.h>
-#include <ui/nodes/audioProcessors/AudioProcessorMacroNode.h>
 #include <ui/GraphEditor.h>
+#include <ui/nodes/audioProcessors/AudioProcessorMacroNode.h>
 #include <ui/nodes/audioProcessors/AudioProcessorNodeUI.h>
+#include <utils/XmlUtils.h>
 
 AudioProcessorMacroNode::AudioProcessorMacroNode(PluginGraph* pluginGraph, String name, AudioProcessorNodePtr node) : AudioProcessorNodeUI(name, NodeInstance::Macro, node)
 {
@@ -13,7 +14,7 @@ AudioProcessorMacroNode::AudioProcessorMacroNode(PluginGraph* pluginGraph, Strin
     nameLabel.setBounds(0, 0, GAIN_WIDTH, TEXT_HEIGHT);
     updateNameAndReCenter(name);
 
-    graphEditor = std::make_shared<GraphEditor>(pluginGraph);
+    graphEditor = std::make_shared<GraphEditor>(pluginGraph, this);
     graphEditor->addInputNode();
     graphEditor->addOutputNode();
 }
@@ -91,4 +92,26 @@ NodeUIPtr AudioProcessorMacroNode::getInputNodeUI()
 NodeUIPtr AudioProcessorMacroNode::getOutputNodeUI()
 {
     return graphEditor->getOutputs()[0];
+}
+
+Array<NodeUIPtr> AudioProcessorMacroNode::getInternalNodes()
+{
+    return graphEditor->getNodes();
+}
+
+XmlElement* AudioProcessorMacroNode::toXml()
+{
+    XmlElement* macroXml = XmlUtils::generateNodeXml(this);
+    XmlElement* macroNodesXml = graphEditor->toXml();
+    macroXml->addChildElement(macroNodesXml);
+    return macroXml;
+}
+
+void AudioProcessorMacroNode::fromXml(XmlElement* xml)
+{
+    name = xml->getChildByName(NAME_TAG)->getAllSubText().toStdString();
+    auto x = xml->getChildByName(X_TAG)->getAllSubText().getIntValue();
+
+    updateNameAndReCenter(name);
+    graphEditor->fromXml(xml->getChildByName(PLUGIN_STATE_TAG));
 }

@@ -13,13 +13,12 @@ public:
     
     // XmlElementPtr generatePluginState();
     void loadFromExistingState(XmlElement* state);
-    std::shared_ptr<AudioProcessorState> loadStateFromFile(std::string xmlString);
 
 private:
     friend class MainMenuInteractionHandler;
 
     void createIOProcessors();
-    void createAllConnections(std::map<std::string, NodeUIPtr> processorUIMap, std::map<std::string, XmlElement*> xmlMap);
+    // void createAllConnections(std::map<std::string, NodeUIPtr> processorUIMap, std::map<std::string, XmlElement*> xmlMap);
     void resized() override;
 
     MainMenu mainMenu;

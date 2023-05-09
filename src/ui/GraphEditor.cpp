@@ -7,6 +7,7 @@
 #include <utils/StorageManager.h>
 #include <utils/PresetFactory.h>
 #include <utils/HitTest.h>
+#include <ui/menus/InputModals.h>
 
 GraphEditor::GraphEditor()
 {
@@ -14,11 +15,12 @@ GraphEditor::GraphEditor()
     zoomHandler.setOriginalBounds(getBounds());
 }
 
-GraphEditor::GraphEditor(PluginGraph* pluginGraph)
+GraphEditor::GraphEditor(PluginGraph* pluginGraph, AudioProcessorMacroNode* parent)
 {
     setBounds(0, 0, PLUGIN_WIDTH, PLUGIN_HEIGHT);
     zoomHandler.setOriginalBounds(getBounds());
     setPluginGraph(pluginGraph);
+    this->parent = parent;
 }
 
 GraphEditor::~GraphEditor()
@@ -132,8 +134,8 @@ void GraphEditor::drawPotentialConnection(Graphics& g)
         auto processor = (NodeUI*)(clickedNodeConnector->getParentComponent());
         auto isReversed = processor->isReversed();
 
-        int x1 = pos.getX() + NODE_RADIUS;
-        int y1 = pos.getY() + NODE_RADIUS;
+        int x1 = pos.getX() + CONNECTOR_RADIUS;
+        int y1 = pos.getY() + CONNECTOR_RADIUS;
         int x2 = mousePosition.getX();
         int y2 = mousePosition.getY();
 
@@ -181,8 +183,8 @@ void GraphEditor::handleRightClick(const MouseEvent& e)
     }
     else if (contextSelection == (int)GraphEditorContextMenuItems::Macro)
     {
-        //Duplicate code - Same as below
-        auto node = nodeInteractionHandler.createMacroNode(e.getPosition());
+        auto macroName = InputModals::runTextInputModal(MACRO_MODAL_TITLE, MACRO_MODAL_MESSAGE, MACRO_DEFAULT_NAME);
+        auto node = nodeInteractionHandler.createMacroNode(e.getPosition(), macroName);
         nodeInteractionHandler.initializeNode(node);
     }
     else if (contextSelection > 0)
@@ -265,4 +267,216 @@ void GraphEditor::clear()
     connections.clear();
     globalSelection.clear();
     selectionHandler.clear();
+}
+
+XmlElement* GraphEditor::toXml()
+{
+    XmlElement* graphEditorState = new XmlElement(PLUGIN_STATE_TAG);
+    std::map<NodeUIPtr, XmlElement*> xmlMap;
+
+    for (auto node : nodes)
+    {
+        XmlElement* nodeXml = node->toXml();
+        graphEditorState->addChildElement(nodeXml);
+        xmlMap[node] = nodeXml;
+    }
+
+    for (auto pair : xmlMap)
+    {
+        auto node = pair.first;
+        auto nodeXml = pair.second;
+        auto nodeInstance = node->getNodeInstance();
+
+        //If graph editor is for Macro, ignore input/output connections as they are handled by parent
+        if((nodeInstance == NodeInstance::Input || nodeInstance == NodeInstance::Output) && parent != nullptr)
+            continue;
+
+        auto inputConnections = node->getInputConnections();
+        auto outputConnections = node->getOutputConnections();
+        auto feedbackConnections = node->getFeedbackConnections();
+
+        if (!inputConnections.isEmpty())
+        {
+            auto inputConnectionsXml = nodeXml->createNewChildElement(INPUT_CONNECTIONS_TAG);
+            for (auto inputNodeUI : inputConnections)
+            {
+                if(inputNodeUI->getNodeInstance() == NodeInstance::Output)
+                    XmlUtils::createAndAddElement(ID_TAG, dynamic_cast<IO*>(inputNodeUI)->getParentId(), inputConnectionsXml);
+                else
+                    XmlUtils::createAndAddElement(ID_TAG, inputNodeUI->getIdAsString(), inputConnectionsXml);
+            }
+        }
+        
+        if (!outputConnections.isEmpty())
+        {
+            auto outputConnectionsXml = nodeXml->createNewChildElement(OUTPUT_CONNECTIONS_TAG);
+            for (auto outputNodeUI : outputConnections)
+            {
+                if(outputNodeUI->getNodeInstance() == NodeInstance::Input)
+                    XmlUtils::createAndAddElement(ID_TAG, dynamic_cast<IO*>(outputNodeUI)->getParentId(), outputConnectionsXml);
+                else
+                    XmlUtils::createAndAddElement(ID_TAG, outputNodeUI->getIdAsString(), outputConnectionsXml);
+            }
+        }
+
+        if (!feedbackConnections.isEmpty())
+        {
+            auto feedbackConnectionsXml = nodeXml->createNewChildElement(FEEDBACK_CONNECTIONS_TAG);
+            for (auto feedbackNodeUI : feedbackConnections)
+            {
+                if(feedbackNodeUI->getNodeInstance() == NodeInstance::Input)
+                    XmlUtils::createAndAddElement(ID_TAG, dynamic_cast<IO*>(feedbackNodeUI)->getParentId(), feedbackConnectionsXml);
+                else
+                    XmlUtils::createAndAddElement(ID_TAG, feedbackNodeUI->getIdAsString(), feedbackConnectionsXml);
+            }
+        }
+    }
+
+    return graphEditorState;
+}
+
+void GraphEditor::fromXml(XmlElement* xml)
+{
+    const MessageManagerLock mmlock;
+    auto idToNodeXmlElementMap = XmlUtils::generateIdToNodeXmlElementMap(xml);
+    std::map<std::string, NodeUIPtr> idToNodeUIMap;
+
+    for (auto pair : idToNodeXmlElementMap)
+    {
+        auto id = pair.first;
+        auto nodeXml = pair.second;
+        std::string testName = nodeXml->getChildByName(NAME_TAG)->getAllSubText().toStdString();
+        auto nodeClass = (NodeClass)(nodeXml->getChildByName(NODE_CLASS_TAG)->getAllSubText().getIntValue());
+        auto nodeInstance = (NodeInstance)(nodeXml->getChildByName(INSTANCE_TAG)->getAllSubText().getIntValue());
+        auto x = nodeXml->getChildByName(X_TAG)->getAllSubText().getIntValue();
+        auto y = nodeXml->getChildByName(Y_TAG)->getAllSubText().getIntValue();
+        auto isReversed = nodeXml->getChildByName(IS_REVERSED_TAG)->getAllSubText().getIntValue();
+        auto parametersXML = nodeXml->getChildByName(AUDIO_PARAMETERTS_TAG);
+
+        NodeUIPtr nodeUI;
+        if(nodeInstance == NodeInstance::Macro)
+        {
+            std::string name = nodeXml->getChildByName(NAME_TAG)->getAllSubText().toStdString();
+            nodeUI = nodeInteractionHandler.createMacroNode(Point<int>(x, y), name);
+            auto macroNode = dynamic_cast<AudioProcessorMacroNode*>(nodeUI.get());
+            macroNode->fromXml(nodeXml);
+
+            // for(NodeUIPtr nodeUI : macroNode->getInternalNodes())
+            // {
+            //     new_nodes.add(dynamic_cast<AudioProcessorNodeUI*>(nodeUI.get())->getProcessorNode());
+            // }
+        }
+        else
+        {
+            nodeUI = nodeInteractionHandler.createNode(nodeInstance, Point<int>(x, y));
+            auto audioNodeUI = dynamic_cast<AudioProcessorNodeUI*>(nodeUI.get());
+            auto audioProcessorNode = audioNodeUI->getProcessorNode();
+            auto audioParametesXml = nodeXml->getChildByName(AUDIO_PARAMETERTS_TAG);
+            XmlUtils::setAudioParametersFromXml(audioNodeUI->getAudioParameters(), audioParametesXml);
+            audioNodeUI->updateParametersUI();
+
+            // if(nodeInstance == NodeInstance::Input)
+            //     new_input_nodes.add(audioProcessorNode);
+            // else if(nodeInstance == NodeInstance::Output)
+            //     new_output_nodes.add(audioProcessorNode);
+            // else
+            //     new_nodes.add(audioProcessorNode);
+        }
+
+        if(isReversed)
+            nodeUI->reverse();
+        
+        nodeInteractionHandler.initializeNode(nodeUI);
+        idToNodeUIMap[id] = nodeUI;
+    }
+
+    createAllConnections(idToNodeUIMap, idToNodeXmlElementMap);
+    repaint();
+}
+
+void GraphEditor::createAllConnections(std::map<std::string, NodeUIPtr> idToNodeUIMap, std::map<std::string, XmlElement*> idToXmlElement)
+{
+    for (auto pair : idToNodeUIMap)
+    {
+        auto id = pair.first;
+        auto nodeUI = pair.second.get();
+        auto xml = idToXmlElement[id];
+
+        auto inputsXml = xml->getChildByName(INPUT_CONNECTIONS_TAG);
+        if (inputsXml != nullptr)
+        {
+            auto inputXml = inputsXml->getFirstChildElement();
+            while (inputXml != nullptr)
+            {
+                auto inputId = inputXml->getAllSubText().toStdString();
+                auto inputNodeUI = idToNodeUIMap[inputId].get();
+                auto startConnector = inputNodeUI->getOutputConnector();
+                auto endConnector = nodeUI->getInputConnector();
+
+                if (!connectionHandler.connectionExists(startConnector, endConnector))
+                {
+                    connections.add(std::make_shared<NodeConnection>(startConnector, endConnector));
+
+                    //Get macro node input node if it's a macro
+                    nodeUI = connectionHandler.handleMacroNode(nodeUI, true);
+                    inputNodeUI = connectionHandler.handleMacroNode(inputNodeUI, false);
+
+                    nodeUI->connectInput(inputNodeUI);
+                    inputNodeUI->connectOutput(nodeUI);
+                }
+
+                inputXml = inputXml->getNextElement();
+            }
+        }
+
+        auto outputsXml = xml->getChildByName(OUTPUT_CONNECTIONS_TAG);
+        if (outputsXml != nullptr)
+        {
+            auto outputXml = outputsXml->getFirstChildElement();
+            while (outputXml != nullptr)
+            {
+                auto outputId = outputXml->getAllSubText().toStdString();
+                auto outputNodeUI = idToNodeUIMap[outputId].get();
+                auto startConnector = nodeUI->getOutputConnector();
+                auto endConnector = outputNodeUI->getInputConnector();
+
+                if (!connectionHandler.connectionExists(startConnector, endConnector))
+                {
+                    connections.add(std::make_shared<NodeConnection>(startConnector, endConnector));
+
+                    nodeUI = connectionHandler.handleMacroNode(nodeUI, false);
+                    outputNodeUI = connectionHandler.handleMacroNode(outputNodeUI, true);
+
+                    nodeUI->connectOutput(outputNodeUI);
+                    outputNodeUI->connectInput(nodeUI);
+                }
+
+                outputXml = outputXml->getNextElement();
+            }
+        }
+
+        auto feedbackInputsXml = xml->getChildByName(FEEDBACK_CONNECTIONS_TAG);
+        if (feedbackInputsXml != nullptr)
+        {
+            auto feedbackXml = feedbackInputsXml->getFirstChildElement();
+            while (feedbackXml != nullptr)
+            {
+                auto feedbackId = feedbackXml->getAllSubText().toStdString();
+                auto feedbackNodeUI = idToNodeUIMap[feedbackId].get();
+                auto startConnector = feedbackNodeUI->getOutputConnector();
+                auto endConnector = nodeUI->getInputConnector();
+
+                nodeUI = connectionHandler.handleMacroNode(nodeUI, true);
+                feedbackNodeUI = connectionHandler.handleMacroNode(feedbackNodeUI, false);
+
+                if (!connectionHandler.connectionExists(startConnector, endConnector))
+                {
+                    connections.add(std::make_shared<NodeConnection>(startConnector, endConnector));
+                    nodeUI->connectFeedbackInput(feedbackNodeUI);
+                }
+
+                feedbackXml = feedbackXml->getNextElement();
+            }
+        }
+    }
 }

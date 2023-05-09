@@ -2,6 +2,7 @@
 
 PassThrough::PassThrough()
 {   
+    parameters = MAKE_PARAMETERS({});
 }
 
 bool PassThrough::reset(double sampleRate)

@@ -3,6 +3,8 @@
 #include <memory>
 #include <parameters/AudioParameters.h>
 #include <ui/nodes/audioProcessors/AudioProcessorNodeUI.h>
+#include <ui/nodes/audioProcessors/AudioProcessorMacroNode.h>
+#include <ui/nodes/audioProcessors/IO.h>
 
 class NodeUI;
 class IAudioProcessor;
@@ -64,51 +66,6 @@ namespace XmlUtils
         return xml;
     }
 
-    // inline AudioParametersPtr xmlToAudioParameters(XmlElement* parametersXml)
-    // {
-    //     XmlElement* parameter = parametersXml->getChildByName(PARAMETER_TAG);
-    //     std::vector<ParameterPtr> parameters; 
-
-    //     while(parameter != nullptr)
-    //     {
-    //         std::string parameterName = parameter->getChildByName(NAME_TAG)->getAllSubText().toStdString();
-    //         ParameterType parameterType = (ParameterType)parameter->getChildByName(TYPE_TAG)->getAllSubText().getIntValue();
-    //         if(parameterType == ParameterType::Boolean)
-    //         {
-    //             parameters.push_back(
-    //                 std::make_shared<BooleanParameter>(
-    //                     parameterName,
-    //                     (bool)parameter->getChildByName(VALUE_TAG)->getAllSubText().getIntValue()
-    //                 )
-    //             );
-    //         }
-    //         else if(parameterType == ParameterType::Double)
-    //         {
-    //             parameters.push_back(
-    //                 std::make_shared<DoubleParameter>(
-    //                     parameterName,
-    //                     parameter->getChildByName(VALUE_TAG)->getAllSubText().getFloatValue(),
-    //                     parameter->getChildByName(MIN_TAG)->getAllSubText().getFloatValue(),
-    //                     parameter->getChildByName(MAX_TAG)->getAllSubText().getFloatValue()
-    //                 )
-    //             );
-    //         }
-    //         else if(parameterType == ParameterType::Option)
-    //         {
-                
-
-    //             // auto options = std::vector<OptionItem>();
-    //             // parameters.push_back(
-    //             //     make_shared<OptionParameter>(parameterName, )
-    //             // )
-    //         }
-
-    //         parameter = parameter->getNextElement();
-    //     }
-
-    //     return std::make_shared<AudioParameters>(parameters);
-    // }
-
     inline void setAudioParametersFromXml(AudioParametersPtr parameters, XmlElement* parametersXml)
     {
         XmlElement* parameter = parametersXml->getChildByName(PARAMETER_TAG);
@@ -138,10 +95,10 @@ namespace XmlUtils
         }
     }
 
-    /// Generates XmlElement for single AudioProcessorUI
     inline XmlElement* generateNodeXml(NodeUI* node)
     {
         XmlElement* xml = new XmlElement(NODE_TAG);
+        createAndAddElement(NAME_TAG, node->getNodeName(), xml);
         createAndAddElement(NODE_CLASS_TAG, std::to_string((int)node->getNodeClass()), xml);
         createAndAddElement(INSTANCE_TAG, std::to_string((int)node->getNodeInstance()), xml);
         createAndAddElement(X_TAG, std::to_string(node->getX()), xml);
@@ -152,7 +109,6 @@ namespace XmlUtils
         return xml;
     }
 
-    /// Generates XmlElement for single AudioProcessorUI
     inline XmlElement* generateAudioNodeXml(AudioProcessorNodeUI* node)
     {
         XmlElement* nodeXml = generateNodeXml(node);
@@ -161,6 +117,25 @@ namespace XmlUtils
         nodeXml->addChildElement(parametersXml);
 
         return nodeXml;
+    }
+
+    inline XmlElement* generateMacroNodeXml(AudioProcessorMacroNode* macroNode)
+    {
+        XmlElement* macroXml = generateNodeXml(macroNode);
+        XmlElement* internalNodesXml = macroXml->createNewChildElement("InternalNodes");
+        Array<NodeUIPtr> internalNodes = macroNode->getInternalNodes();
+
+        for(NodeUIPtr& nodeUI : internalNodes)
+        {
+            XmlElement* nodeXml = nullptr;
+
+            if(nodeUI->getNodeClass() == NodeClass::AudioProcessor)
+                nodeXml = generateAudioNodeXml(static_cast<AudioProcessorNodeUI*>(nodeUI.get()));
+
+            internalNodesXml->addChildElement(nodeXml);
+        }
+
+        return macroXml;
     }
     
     /// Creates map between Uuid and XmlEmelent to help build processor from XML
@@ -177,71 +152,5 @@ namespace XmlUtils
         }
 
         return xmlMap;
-    }
-
-    /// Generates XmlElement that holds state of whole plugin
-    inline XmlElementPtr generatePluginState(Array<NodeUIPtr>& nodes)
-    {
-        XmlElementPtr pluginStateXml = std::make_shared<XmlElement>(PLUGIN_STATE_TAG);
-        std::map<NodeUIPtr, XmlElement*> xmlMap;
-
-        for (auto node : nodes)
-        {
-            XmlElement* nodeXml = nullptr;
-
-            if(node->getNodeClass() == NodeClass::AudioProcessor)
-                nodeXml = generateAudioNodeXml(dynamic_cast<AudioProcessorNodeUI*>(node.get()));
-            else
-                nodeXml = generateNodeXml(node.get());
-
-            pluginStateXml->addChildElement(nodeXml);
-            xmlMap[node] = nodeXml;
-        }
-
-        //Create connections from state map
-        for (auto pair : xmlMap)
-        {
-            auto node = pair.first;
-            auto nodeXml = pair.second;
-
-            auto inputConnections = node->getInputConnections();
-            auto outputConnections = node->getOutputConnections();
-            auto feedbackConnections = node->getFeedbackConnections();
-
-            if (!inputConnections.isEmpty())
-            {
-                auto inputConnectionsXml = nodeXml->createNewChildElement(INPUT_CONNECTIONS_TAG);
-                for (auto inputProcessor : inputConnections)
-                {
-                    auto idXml = new XmlElement(ID_TAG);
-                    idXml->addTextElement(inputProcessor->getIdAsString());
-                    inputConnectionsXml->addChildElement(idXml);
-                }
-            }
-            
-            if (!outputConnections.isEmpty())
-            {
-                auto outputConnectionsXml = nodeXml->createNewChildElement(OUTPUT_CONNECTIONS_TAG);
-                for (auto outputProcessor : outputConnections)
-                {
-                    auto idXml = new XmlElement(ID_TAG);
-                    idXml->addTextElement(outputProcessor->getIdAsString());
-                    outputConnectionsXml->addChildElement(idXml);
-                }
-            }
-
-            if (!feedbackConnections.isEmpty())
-            {
-                auto feedbackConnectionsXml = nodeXml->createNewChildElement(FEEDBACK_CONNECTIONS_TAG);
-                for (auto feedbackProcessor : feedbackConnections)
-                {
-                    auto idXml = new XmlElement(ID_TAG);
-                    idXml->addTextElement(feedbackProcessor->getIdAsString());
-                    feedbackConnectionsXml->addChildElement(idXml);
-                }
-            }
-        }
-
-        return pluginStateXml;
     }
 };

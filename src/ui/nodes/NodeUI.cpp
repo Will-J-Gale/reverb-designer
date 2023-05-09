@@ -27,7 +27,7 @@ void NodeUI::addInputConnector()
 {
     input = std::make_shared<NodeConnectorUI>(this);
     input->setType(NodeConnectorType::AudioInput);
-    input->setCentrePosition(NODE_SIZE / 2, getHeight() / 2);
+    input->setCentrePosition(CONNECTOR_SIZE / 2, getHeight() / 2);
     
     addAndMakeVisible(input.get());  
 }
@@ -36,7 +36,7 @@ void NodeUI::addOutputConnector()
 {
     output = std::make_shared<NodeConnectorUI>(this);
     output->setType(NodeConnectorType::AudioOutput);
-    output->setCentrePosition(getWidth() - (NODE_SIZE / 2), getHeight() / 2);
+    output->setCentrePosition(getWidth() - (CONNECTOR_SIZE / 2), getHeight() / 2);
     
     addAndMakeVisible(output.get());
 }
@@ -133,11 +133,11 @@ Point<int> NodeUI::getCenterPosition()
 void NodeUI::paint(Graphics& g)
 {
     Rectangle<int> bounds = getLocalBounds();
-    bounds.setX(bounds.getX() + NODE_SIZE);
-    bounds.setWidth(bounds.getWidth() - (2 * NODE_SIZE));
+    bounds.setX(bounds.getX() + CONNECTOR_SIZE);
+    bounds.setWidth(bounds.getWidth() - (2 * CONNECTOR_SIZE));
 
-    g.setColour(Colour::fromString(AUDIO_PROCESSOR_COLOUR));
-    g.drawRoundedRectangle(bounds.toFloat(), AUDIO_PROCESSOR_CORNER_SIZE, AUDIO_PROCESSOR_THICKNESS);
+    g.setColour(Colour::fromString(NODE_COLOUR));
+    g.drawRoundedRectangle(bounds.toFloat(), AUDIO_PROCESSOR_CORNER_SIZE, NODE_THICKNESS);
     g.fillRoundedRectangle(bounds.toFloat(), AUDIO_PROCESSOR_CORNER_SIZE);
 }
 
@@ -229,4 +229,9 @@ NodeClass NodeUI::getNodeClass()
 NodeInstance NodeUI::getNodeInstance()
 {
     return nodeInstance;
+}
+
+String NodeUI::getNodeName()
+{
+    return name;
 }

@@ -45,6 +45,9 @@ public:
     T* getAudioProcessorAs();
 
     virtual std::string getIdAsString();
+    
+    virtual XmlElement* toXml() override;
+    virtual void fromXml(XmlElement* xml) override;
 
 protected:
     AudioProcessorNodePtr processorNode = nullptr;
