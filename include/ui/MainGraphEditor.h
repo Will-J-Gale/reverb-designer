@@ -18,7 +18,6 @@ private:
     friend class MainMenuInteractionHandler;
 
     void createIOProcessors();
-    // void createAllConnections(std::map<std::string, NodeUIPtr> processorUIMap, std::map<std::string, XmlElement*> xmlMap);
     void resized() override;
 
     MainMenu mainMenu;
