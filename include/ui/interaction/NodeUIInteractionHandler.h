@@ -7,6 +7,7 @@
 class GraphEditor;
 class PluginGraph;
 class AudioProcessorNode;
+class AudioProcessorMacroNode;
 
 #define NodeUIPtr std::shared_ptr<NodeUI>
 #define AudioProcessorNodePtr std::shared_ptr<AudioProcessorNode>
@@ -23,9 +24,10 @@ public:
     void onNodeContextSelection(NodeUI* processor, NodeUIConextMenuItems selection) override;
     
     NodeUIPtr createMacroNode(Point<int> position, String name);
-    NodeUIPtr createNode(NodeInstance type, Point<int> position);
-    NodeUIPtr createNode(NodeInstance type, Point<int> position, AudioProcessorNodePtr processorNode);
-    NodeUIPtr createNodeFromXml(NodeInstance type, XmlElement* xml);
+    NodeUIPtr createIONode(NodeInstance instance, Point<int> position, AudioProcessorNodePtr ioProcessorNode, int channel=0);
+    NodeUIPtr createIONode(NodeInstance instance, Point<int> position, int channel=0);
+    NodeUIPtr createNode(NodeInstance instance, Point<int> position);
+    NodeUIPtr createNode(NodeInstance instance, Point<int> position, AudioProcessorNodePtr processorNode);
 
     void initializeNode(NodeUIPtr processor);
     void deleteProcessor(NodeUI* processor);

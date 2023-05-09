@@ -11,7 +11,7 @@ AudioProcessorNodeUI::AudioProcessorNodeUI(String name, NodeInstance nodeInstanc
     : NodeUI(name, NodeClass::AudioProcessor, nodeInstance)
 {
     initialize();
-    this->processorNode = processorNode;
+    this->processorNode = node;
 
     //@TODO Refactor this 
     auto parameters = node->getParameters();

@@ -7,7 +7,6 @@
 #include <ui/interaction/ConnectionHandler.h>
 #include <ui/menus/InputModals.h>
 #include <ui/nodes/NodeUI.h>
-#include <ui/nodes/NodeFactory.h>
 #include <utils/Constants.h>
 
 void NodeUIInteractionHandler::initialize(GraphEditor* graphEditor, PluginGraph* pluginGraph)
@@ -76,44 +75,64 @@ NodeUIPtr NodeUIInteractionHandler::createMacroNode(Point<int> position, String 
 
     return macroNode;
 }
-NodeUIPtr NodeUIInteractionHandler::createNode(NodeInstance type, Point<int> position)
-{
-    auto node = graphEditor->pluginGraph->generateProcessorNode(type);
-    return createNode(type, position, node);
-}
 
-NodeUIPtr NodeUIInteractionHandler::createNode(NodeInstance type, Point<int> position, AudioProcessorNodePtr processorNode)
-{
-    // NodeUIPtr nodeUI = std::make_shared<AudioProcessorNodeUI>(NodeInstanceToName.at(type), type, processorNode);
-    NodeUIPtr nodeUI = NodeFactory::Generate(type, processorNode, graphEditor->parent);
 
-    dynamic_cast<AudioProcessorNodeUI*>(nodeUI.get())->setProcessorNode(processorNode);
+NodeUIPtr NodeUIInteractionHandler::createIONode(NodeInstance instance, Point<int> position, AudioProcessorNodePtr ioProcessorNode, int channel)
+{
+    jassert(instance == NodeInstance::Input || instance == NodeInstance::Output);
+
+    NodeUIPtr nodeUI = std::make_shared<IO>(NodeInstanceToName.at(instance), channel, ioProcessorNode, instance, graphEditor->parent);
     nodeUI->setTopLeftPosition(position);
-
-    if(type != NodeInstance::Input)
+    
+    if(instance != NodeInstance::Input)
         nodeUI->addInputConnector();
 
-    if(type != NodeInstance::Output)
+    if(instance != NodeInstance::Output)
         nodeUI->addOutputConnector();
 
     return nodeUI;
 }
 
-NodeUIPtr NodeUIInteractionHandler::createNodeFromXml(NodeInstance nodeInstance, XmlElement* xml)
+NodeUIPtr NodeUIInteractionHandler::createIONode(NodeInstance instance, Point<int> position, int channel)
 {
-    NodeUIPtr nodeUI;
-    if(nodeInstance == NodeInstance::Macro)
-    {
-        auto passthroughNode = graphEditor->pluginGraph->generateProcessorNode(NodeInstance::Macro);
-        nodeUI = std::make_shared<AudioProcessorMacroNode>(graphEditor->pluginGraph, std::string(), passthroughNode);
-    }
-    else
-    {
-        auto node = graphEditor->pluginGraph->generateProcessorNode(nodeInstance);
-        nodeUI = NodeFactory::Generate(nodeInstance, node, graphEditor->parent);
-    }
+    jassert(instance == NodeInstance::Input || instance == NodeInstance::Output);
 
-    nodeUI->fromXml(xml);
+    auto passthroughNode = graphEditor->pluginGraph->generateProcessorNode(NodeInstance::Macro);
+    NodeUIPtr nodeUI = std::make_shared<IO>(NodeInstanceToName.at(instance), channel, passthroughNode, instance, graphEditor->parent);
+    nodeUI->setTopLeftPosition(position);
+    
+    if(instance != NodeInstance::Input)
+        nodeUI->addInputConnector();
+
+    if(instance != NodeInstance::Output)
+        nodeUI->addOutputConnector();
+
+    return nodeUI;
+}
+
+
+NodeUIPtr NodeUIInteractionHandler::createNode(NodeInstance instance, Point<int> position)
+{
+    auto node = graphEditor->pluginGraph->generateProcessorNode(instance);
+    return createNode(instance, position, node);
+}
+
+NodeUIPtr NodeUIInteractionHandler::createNode(NodeInstance instance, Point<int> position, AudioProcessorNodePtr processorNode)
+{
+    jassert(instance != NodeInstance::Input && instance != NodeInstance::Output);
+
+    NodeUIPtr nodeUI = std::make_shared<AudioProcessorNodeUI>(NodeInstanceToName.at(instance), instance, processorNode);
+
+    dynamic_cast<AudioProcessorNodeUI*>(nodeUI.get())->setProcessorNode(processorNode);
+    nodeUI->setTopLeftPosition(position);
+
+    if(instance != NodeInstance::Input)
+        nodeUI->addInputConnector();
+
+    if(instance != NodeInstance::Output)
+        nodeUI->addOutputConnector();
+
+    return nodeUI;
 }
 
 void NodeUIInteractionHandler::initializeNode(NodeUIPtr node)

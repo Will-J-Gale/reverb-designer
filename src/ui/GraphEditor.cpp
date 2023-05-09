@@ -159,7 +159,7 @@ void GraphEditor::addNodeConnectorListeners(Array<NodeConnectorUI*> nodeConnecto
 
 void GraphEditor::addInputNode()
 {
-    auto newInput = nodeInteractionHandler.createNode(NodeInstance::Input, Point<int>());
+    auto newInput = nodeInteractionHandler.createIONode(NodeInstance::Input, Point<int>(), 0);
     nodeInteractionHandler.initializeNode(newInput);
     inputs.add(newInput);
     newInput->setTopLeftPosition(INPUT_START_X, IO_START_Y);
@@ -167,7 +167,7 @@ void GraphEditor::addInputNode()
 
 void GraphEditor::addOutputNode()
 {
-    auto newOutput = nodeInteractionHandler.createNode(NodeInstance::Output, Point<int>());
+    auto newOutput = nodeInteractionHandler.createIONode(NodeInstance::Output, Point<int>(), 0);
     nodeInteractionHandler.initializeNode(newOutput);
     newOutput->setTopLeftPosition(OUTPUT_START_X, IO_START_Y);
     outputs.add(newOutput);
@@ -358,6 +358,8 @@ void GraphEditor::fromXml(XmlElement* xml)
         {
             std::string name = nodeXml->getChildByName(NAME_TAG)->getAllSubText().toStdString();
             nodeUI = nodeInteractionHandler.createMacroNode(Point<int>(x, y), name);
+            //// CHECK THIS WORKS!
+            // nodeUI->fromXml(nodeXml);
             auto macroNode = dynamic_cast<AudioProcessorMacroNode*>(nodeUI.get());
             macroNode->fromXml(nodeXml);
 
@@ -365,6 +367,11 @@ void GraphEditor::fromXml(XmlElement* xml)
             // {
             //     new_nodes.add(dynamic_cast<AudioProcessorNodeUI*>(nodeUI.get())->getProcessorNode());
             // }
+        }
+        else if (nodeInstance == NodeInstance::Input || nodeInstance == NodeInstance::Output)
+        {
+            nodeUI = nodeInteractionHandler.createIONode(nodeInstance, Point<int>(x, y), 0);
+            nodeUI->fromXml(nodeXml);
         }
         else
         {

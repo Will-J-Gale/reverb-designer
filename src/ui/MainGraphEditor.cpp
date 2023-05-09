@@ -44,7 +44,7 @@ void MainGraphEditor::createIOProcessors()
     for (int i = 0; i < audioInputs.size(); i++)
     {
         auto audioInput = audioInputs[i];
-        auto newInput = nodeInteractionHandler.createNode(NodeInstance::Input, Point<int>(), audioInput);
+        auto newInput = nodeInteractionHandler.createIONode(NodeInstance::Input, Point<int>(), audioInput, i);
         nodeInteractionHandler.initializeNode(newInput);
         inputs.add(newInput);
         newInput->setTopLeftPosition(INPUT_START_X, y);
@@ -55,7 +55,7 @@ void MainGraphEditor::createIOProcessors()
     for (int i = 0; i < audioOutputs.size(); i++)
     {
         auto audioOutput = audioOutputs[i];
-        auto newOutput = nodeInteractionHandler.createNode(NodeInstance::Output, Point<int>(), audioOutput);
+        auto newOutput = nodeInteractionHandler.createIONode(NodeInstance::Output, Point<int>(), audioOutput, i);
         nodeInteractionHandler.initializeNode(newOutput);
 
         outputs.add(newOutput);

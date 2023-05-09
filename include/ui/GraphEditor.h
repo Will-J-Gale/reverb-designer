@@ -37,7 +37,7 @@ public:
     void clear();
 
     XmlElement* toXml();
-    void fromXml(XmlElement* xml);
+    virtual void fromXml(XmlElement* xml);
 
     void createAllConnections(std::map<std::string, NodeUIPtr> idToNodeUIMap, std::map<std::string, XmlElement*> idToXmlElement);
 
