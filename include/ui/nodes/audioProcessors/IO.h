@@ -7,6 +7,7 @@ class IO : public AudioProcessorNodeUI
 public:
     IO(String name, AudioProcessorNodePtr node, NodeInstance instance, AudioProcessorMacroNode* parent=nullptr);
     std::string getParentId();
+    void handleRightClick() override {};
 
 private:
     AudioProcessorMacroNode* parent = nullptr;
