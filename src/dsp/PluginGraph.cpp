@@ -35,6 +35,12 @@ void PluginGraph::process(std::vector<float>& inputFrame, size_t numInputChannel
         return;
     }
 
+    if(clearAllNodes)
+    {
+        clear();
+        return;
+    }
+
     for (size_t i = 0; i < inputs.size(); i++)
     {
         auto input = inputs[i];
@@ -212,9 +218,9 @@ XmlElementPtr PluginGraph::getPluginState()
     return pluginState;
 }
 
-std::map<std::string, AudioProcessorNodePtr> PluginGraph::getAudioProcessorNodeMap()
+IdToAudioProcessorMap PluginGraph::getAudioProcessorNodeMap()
 {
-    auto map = std::map<std::string, AudioProcessorNodePtr>();
+    auto map = IdToAudioProcessorMap();
     
     for (auto node : inputs)
     {
@@ -244,8 +250,6 @@ Array<AudioProcessorNodePtr> PluginGraph::getAllBlocks()
 
 void PluginGraph::clear()
 {
-    pluginState = nullptr;
-    
     for(AudioProcessorNodePtr& input : inputs)
     {
         input->disconnectAll();
@@ -264,6 +268,11 @@ void PluginGraph::clear()
     // inputs.clear();
     // outputs.clear();
     allNodes.clear();
+}
+
+void PluginGraph::clearFromUI()
+{
+    clearAllNodes = true;
 }
 
 void PluginGraph::deleteAndReplaceAudioBlocks(std::function<std::shared_ptr<AudioProcessorState>()> callback)

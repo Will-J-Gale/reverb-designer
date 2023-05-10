@@ -45,6 +45,7 @@ public:
     std::map<std::string, AudioProcessorNodePtr> getAudioProcessorNodeMap();
 
     void clear();
+    void clearFromUI();
     void deleteAndReplaceAudioBlocks(std::function<std::shared_ptr<AudioProcessorState>()> callback);
     void deleteAndReplaceAudioBlocks(std::shared_ptr<AudioProcessorState> state);
 
@@ -66,6 +67,7 @@ private:
     
     bool updateProcessorsFlag = false;
     bool processPathNeedsUpdating = false;
+    bool clearAllNodes = false;
     std::function<std::shared_ptr<AudioProcessorState>()> generateCallback;
     Array<Array<AudioProcessorNode*>> processPath;
 

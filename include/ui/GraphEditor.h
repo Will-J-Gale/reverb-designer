@@ -1,18 +1,19 @@
 #pragma once
-#include <ui/nodes/NodeConnection.h>
+#include <dsp/AudioProcessorState.h>
+#include <dsp/AudioProcessorNode.h>
 #include <utils/ManagedArray.h>
 #include <utils/Constants.h>
+#include <utils/XmlUtils.h>
+#include <ui/nodes/NodeConnection.h>
 #include <ui/menus/GraphEditorContextMenu.h>
 #include <ui/interaction/SelectionHandler.h>
 #include <ui/menus/MainMenu.h>
-#include <dsp/AudioProcessorState.h>
 #include <ui/interaction/ZoomHandler.h>
 #include <ui/interaction/ConnectionHandler.h>
 #include <ui/interaction/NodeUIInteractionHandler.h>
 #include <ui/interaction/NodeConnectorInteractionHandler.h>
 #include <ui/nodes/NodeUI.h>
 #include <ui/nodes/audioProcessors/AudioProcessorMacroNode.h>
-#include <utils/XmlUtils.h>
 
 //Forward declarations
 class PluginGraph;
@@ -37,7 +38,7 @@ public:
     void clear();
 
     XmlElement* toXml();
-    virtual void fromXml(XmlElement* xml);
+    virtual void fromXml(XmlElement* xml, IdToAudioProcessorMap* idToProcessorMap=nullptr);
 
     void createAllConnections(std::map<std::string, NodeUIPtr> idToNodeUIMap, std::map<std::string, XmlElement*> idToXmlElement);
 

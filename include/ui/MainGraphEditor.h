@@ -13,7 +13,7 @@ public:
     
     // XmlElementPtr generatePluginState();
     void loadFromExistingState(XmlElement* state);
-    void fromXml(XmlElement* xml) override;
+    void fromXml(XmlElement* xml, IdToAudioProcessorMap* idToProcessorMap=nullptr) override;
 
 private:
     friend class MainMenuInteractionHandler;

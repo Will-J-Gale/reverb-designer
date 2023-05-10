@@ -11,6 +11,7 @@ public:
     void onLoad(std::string filepath);
     void onNewProject();
     void onPresetSelected(PresetType presetId);
+    void onTestReset();
 
 private:
     MainGraphEditor* mainGraphEditor;

@@ -8,6 +8,7 @@
 #include <parameters/AudioParameters.h>
 
 #define AudioProcessorNodePtr std::shared_ptr<AudioProcessorNode>
+#define IdToAudioProcessorMap std::map<std::string, AudioProcessorNodePtr>
 
 /// AudioProcessorNode wraps an IAudioProcessor and handles input, output
 /// and feedback to other AudioProcessorNodes

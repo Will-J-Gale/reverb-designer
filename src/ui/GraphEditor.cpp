@@ -335,7 +335,7 @@ XmlElement* GraphEditor::toXml()
     return graphEditorState;
 }
 
-void GraphEditor::fromXml(XmlElement* xml)
+void GraphEditor::fromXml(XmlElement* xml, IdToAudioProcessorMap* idToProcessorMap)
 {
     const MessageManagerLock mmlock;
     auto idToNodeXmlElementMap = XmlUtils::generateIdToNodeXmlElementMap(xml);
@@ -367,29 +367,21 @@ void GraphEditor::fromXml(XmlElement* xml)
             else
                 nodeUI = outputs[channel];
             jassert(nodeUI != nullptr);
-            // nodeUI = nodeInteractionHandler.createIONode(nodeInstance, Point<int>(x, y), 0);
-            // nodeUI->fromXml(nodeXml);
-
-            // if(nodeInstance == NodeInstance::Input)
-            //     inputs.add(nodeUI);
-            // else
-            //     outputs.add(nodeUI);
         }
         else
         {
-            nodeUI = nodeInteractionHandler.createNode(nodeInstance, Point<int>(x, y));
+            if(idToProcessorMap != nullptr && idToProcessorMap->at(id) != nullptr)
+                nodeUI = nodeInteractionHandler.createNode(nodeInstance, Point<int>(x, y), idToProcessorMap->at(id));
+            else
+                nodeUI = nodeInteractionHandler.createNode(nodeInstance, Point<int>(x, y));
+
             auto audioNodeUI = dynamic_cast<AudioProcessorNodeUI*>(nodeUI.get());
             auto audioProcessorNode = audioNodeUI->getProcessorNode();
             auto audioParametesXml = nodeXml->getChildByName(AUDIO_PARAMETERTS_TAG);
             XmlUtils::setAudioParametersFromXml(audioNodeUI->getAudioParameters(), audioParametesXml);
             audioNodeUI->updateParametersUI();
 
-            // if(nodeInstance == NodeInstance::Input)
-            //     new_input_nodes.add(audioProcessorNode);
-            // else if(nodeInstance == NodeInstance::Output)
-            //     new_output_nodes.add(audioProcessorNode);
-            // else
-            //     new_nodes.add(audioProcessorNode);
+            
         }
 
         if(isReversed)

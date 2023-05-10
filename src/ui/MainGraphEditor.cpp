@@ -13,8 +13,7 @@ MainGraphEditor::MainGraphEditor() : GraphEditor()
 
 MainGraphEditor::~MainGraphEditor()
 {
-    //@TODO Fix this
-    // pluginGraph->setPluginState(XmlUtils::generatePluginState(nodes));
+    pluginGraph->setPluginState(std::shared_ptr<XmlElement>(toXml()));
 }
 
 void MainGraphEditor::resized()
@@ -68,56 +67,22 @@ void MainGraphEditor::loadFromExistingState(XmlElement* state)
 {
     //Load xml 
     if (state == nullptr || state->getTagName() != PLUGIN_STATE_TAG)
-    {
         return;
-    }
-    
+
     auto idToXmlMap = XmlUtils::generateIdToNodeXmlElementMap(state);
     auto idToNodeMap = pluginGraph->getAudioProcessorNodeMap();
 
-    std::map<std::string, NodeUIPtr> processorUIMap;
-    
-    //Generate all processing UI
-    for (auto pair : idToXmlMap)
-    {
-        auto id = pair.first;
-        auto xml = pair.second;
-        auto nodeClass = (NodeClass)(xml->getChildByName(NODE_CLASS_TAG)->getAllSubText().getIntValue());
-        auto nodeInstance = (NodeInstance)(xml->getChildByName(INSTANCE_TAG)->getAllSubText().getIntValue());
-        auto x = xml->getChildByName(X_TAG)->getAllSubText().getIntValue();
-        auto y = xml->getChildByName(Y_TAG)->getAllSubText().getIntValue();
-        auto isReversed = xml->getChildByName(IS_REVERSED_TAG)->getAllSubText().getIntValue();
-        auto parametersXML = xml->getChildByName(AUDIO_PARAMETERTS_TAG);
-
-        NodeUIPtr nodeUI = nullptr;
-
-        if (idToNodeMap.count(id) > 0)//Processor Exists
-        {
-            auto processorNode = idToNodeMap[id];
-            nodeUI = nodeInteractionHandler.createNode(nodeInstance, Point<int>(x, y), processorNode);
-        }
-        else //Processor does not exist
-            nodeUI = nodeInteractionHandler.createNode(nodeInstance, Point<int>(x, y));
-
-        if (isReversed)
-            nodeUI->reverse();
-
-        nodeInteractionHandler.initializeNode(nodeUI);
-        processorUIMap[id] = nodeUI;
-    }
-
-    createAllConnections(processorUIMap, idToXmlMap);
+    fromXml(state, &idToNodeMap);
     state->deleteAllChildElements();
 }
 
-void MainGraphEditor::fromXml(XmlElement* xml)
+void MainGraphEditor::fromXml(XmlElement* xml, IdToAudioProcessorMap* idToProcessorMap)
 {
     const MessageManagerLock mmlock;
     clear();
-    pluginGraph->clear();
 
     createIOProcessors();
-    GraphEditor::fromXml(xml);
+    GraphEditor::fromXml(xml, idToProcessorMap);
 
     pluginGraph->updateProcessPath();
     repaint();

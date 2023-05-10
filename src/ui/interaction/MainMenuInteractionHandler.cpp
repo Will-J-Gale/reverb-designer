@@ -52,6 +52,14 @@ void MainMenuInteractionHandler::onLoad(std::string filepath)
     auto file = File(filepath);
     auto xmlString = file.loadFileAsString().toStdString();
     auto xml = parseXML(xmlString);
+    mainGraphEditor->pluginGraph->clear();
     mainGraphEditor->fromXml(xml.get());
     xml->deleteAllChildElements();
+}
+
+#warning DELETE ME
+void MainMenuInteractionHandler::onTestReset()
+{
+    auto xml = std::shared_ptr<XmlElement>(mainGraphEditor->toXml());
+    mainGraphEditor->loadFromExistingState(xml.get());
 }
