@@ -3,7 +3,7 @@
 Gain::Gain()
 {
     parameters = MAKE_PARAMETERS({
-        std::make_shared<DoubleParameter>("Gain", 1.0, 0.0, 1.0),
+        std::make_shared<DoubleParameter>("Gain", 1.0, -1.0, 1.0),
     });
 
     parameters->addOnChangeCallback(std::bind(&Gain::onParametersChanged, this));
