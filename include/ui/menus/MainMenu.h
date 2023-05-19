@@ -14,8 +14,6 @@ public:
         virtual void onLoad(std::string filepath) = 0;
         virtual void onNewProject() = 0;
         virtual void onPresetSelected(PresetType presetId) = 0;
-        #warning DELETE ME
-        virtual void onTestReset() = 0;
     };
 
     MainMenu();
@@ -33,8 +31,6 @@ private:
     void saveFile();
     void loadFile();
     void presetSelected(PresetType presetId);
-    #warning DELETE ME
-    void testReset();
 
     std::unique_ptr<FileChooser> fileChooser;
     std::unique_ptr<MenuBarComponent> menuBar;

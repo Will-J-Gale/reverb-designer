@@ -45,6 +45,8 @@ void MainMenuInteractionHandler::onSave(std::string savePath)
 {
     auto pluginState = mainGraphEditor->toXml();
     StorageManager::saveXML(savePath, pluginState->toString().toStdString());
+    pluginState->deleteAllChildElements();
+    delete pluginState;
 }
 
 void MainMenuInteractionHandler::onLoad(std::string filepath)
@@ -52,14 +54,7 @@ void MainMenuInteractionHandler::onLoad(std::string filepath)
     auto file = File(filepath);
     auto xmlString = file.loadFileAsString().toStdString();
     auto xml = parseXML(xmlString);
-    mainGraphEditor->pluginGraph->clear();
+    onNewProject();
     mainGraphEditor->fromXml(xml.get());
     xml->deleteAllChildElements();
-}
-
-#warning DELETE ME
-void MainMenuInteractionHandler::onTestReset()
-{
-    auto xml = std::shared_ptr<XmlElement>(mainGraphEditor->toXml());
-    mainGraphEditor->loadFromExistingState(xml.get());
 }

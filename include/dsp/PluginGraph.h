@@ -19,7 +19,8 @@ public:
     void createDSPObject(NodeInstance dspObjectType);
     void initialiseDspObject(IAudioProcessor* dspObject);
     void addProcessorNode(AudioProcessorNodePtr processorNode);
-    void deleteProcessorNode(AudioProcessorNodePtr processorNode);
+    void deleteProcessorNode(AudioProcessorNode* processorNode);
+    void deleteProcessorNodes(Array<AudioProcessorNode*> processorNodes);
 
     AudioProcessorNodePtr generateProcessorNode(NodeInstance type);
 
@@ -56,18 +57,23 @@ public:
 private:
     void updateProcessors();
     void resetProcessors();
+    void performDelete();
+
     Array<AudioProcessorNode*> processBlocks(Array<AudioProcessorNode*> blockToProcess);
 
     double sampleRate = 0;
     Array<AudioProcessorNodePtr> allNodes;
     Array<AudioProcessorNodePtr> inputs;
     Array<AudioProcessorNodePtr> outputs;
+    Array<AudioProcessorNode*> nodesToDelete;
 
     XmlElementPtr pluginState = nullptr;
     
     bool updateProcessorsFlag = false;
     bool processPathNeedsUpdating = false;
     bool clearAllNodes = false;
+    bool deleteNodes = false;
+
     std::function<std::shared_ptr<AudioProcessorState>()> generateCallback;
     Array<Array<AudioProcessorNode*>> processPath;
 

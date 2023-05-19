@@ -144,18 +144,35 @@ void NodeUIInteractionHandler::initializeNode(NodeUIPtr node)
     graphEditor->addAndMakeVisible(node.get());
 }
 
-void NodeUIInteractionHandler::deleteProcessor(NodeUI *node)
+void NodeUIInteractionHandler::deleteProcessor(NodeUI *nodeUIToDelete)
 {
-    Array<NodeConnectorUI *> nodeConnectors = node->getAllNodeConnectors();
+    Array<NodeConnectorUI *> nodeConnectors = nodeUIToDelete->getAllNodeConnectors();
     for (auto *nodeConnector : nodeConnectors)
     {
         graphEditor->connectionHandler.deleteConnection(nodeConnector);
         graphEditor->removeFromArray(graphEditor->nodeConnectors, nodeConnector);
     }
 
-    // pluginGraph->deleteProcessorNode(processorNodeUI->getProcessorNode());
-    graphEditor->removeFromArray(graphEditor->nodes, node);
-    // pluginGraph->updateProcessPath();
+    if(nodeUIToDelete->getNodeInstance() == NodeInstance::Macro)
+    {
+        Array<NodeUIPtr> internalNodeUIs = static_cast<AudioProcessorMacroNode*>(nodeUIToDelete)->getInternalNodes();
+        Array<AudioProcessorNode*> internalNodes = {static_cast<AudioProcessorNodeUI*>(nodeUIToDelete)->getProcessorNode().get()};
+
+        for(NodeUIPtr nodeUI : internalNodeUIs)
+        {
+            auto audioProcessorNode = static_cast<AudioProcessorNodeUI*>(nodeUI.get());
+            internalNodes.add(audioProcessorNode->getProcessorNode().get());
+        }
+        
+        pluginGraph->deleteProcessorNodes(internalNodes);
+    }
+    else
+    {
+        auto audioProcessorNode = static_cast<AudioProcessorNodeUI*>(nodeUIToDelete);
+        pluginGraph->deleteProcessorNode(audioProcessorNode->getProcessorNode().get());
+    }
+        
+    graphEditor->removeFromArray(graphEditor->nodes, nodeUIToDelete);
 }
 
 void NodeUIInteractionHandler::duplicateProcessor(NodeUI *node)

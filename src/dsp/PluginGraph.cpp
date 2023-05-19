@@ -41,6 +41,12 @@ void PluginGraph::process(std::vector<float>& inputFrame, size_t numInputChannel
         return;
     }
 
+    if(deleteNodes)
+    {
+        performDelete();
+        return;
+    }
+
     for (size_t i = 0; i < inputs.size(); i++)
     {
         auto input = inputs[i];
@@ -99,9 +105,27 @@ void PluginGraph::addProcessorNode(AudioProcessorNodePtr processorNode)
     allNodes.add(processorNode);
 }
 
-void PluginGraph::deleteProcessorNode(AudioProcessorNodePtr processorNode)
+void PluginGraph::deleteProcessorNode(AudioProcessorNode* processorNode)
 {
-    removeFromArray(allNodes, processorNode);
+    deleteNodes = true;
+    nodesToDelete.add(processorNode);
+}
+
+void PluginGraph::deleteProcessorNodes(Array<AudioProcessorNode*> processorNodes)
+{
+    deleteNodes = true;
+    nodesToDelete.addArray(processorNodes);
+}
+
+void PluginGraph::performDelete()
+{
+    deleteNodes = false;
+    for(AudioProcessorNode* node : nodesToDelete)
+    {
+        removeFromArray(allNodes, node);
+    }
+
+    nodesToDelete.clear();
 }
 
 AudioProcessorNodePtr PluginGraph::generateProcessorNode(NodeInstance type)

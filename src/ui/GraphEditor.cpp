@@ -260,6 +260,27 @@ Array<NodeUIPtr>& GraphEditor::getOutputs()
 
 void GraphEditor::clear()
 {
+    for(NodeUIPtr nodeUI : nodes)
+    {
+        if(nodeUI->getNodeInstance() == NodeInstance::Macro)
+        {
+            auto macroUI = dynamic_cast<AudioProcessorMacroNode*>(nodeUI.get());
+            auto processorNodePtrs = macroUI->getInternalAudioProcessorNodes();
+            Array<AudioProcessorNode*> processorNodes;
+
+            for(AudioProcessorNodePtr& node : processorNodePtrs)
+            {
+                processorNodes.add(node.get());
+            }
+            pluginGraph->deleteProcessorNodes(processorNodes);
+        }
+        else
+        {
+            AudioProcessorNodeUI* audioNodeUI = static_cast<AudioProcessorNodeUI*>(nodeUI.get()); 
+            pluginGraph->deleteProcessorNode(audioNodeUI->getProcessorNode().get());
+        }
+    }
+
     inputs.clear();
     outputs.clear();
     nodes.clear();

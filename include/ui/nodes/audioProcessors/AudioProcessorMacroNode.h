@@ -27,6 +27,7 @@ public:
     NodeUIPtr getInputNodeUI();
     NodeUIPtr getOutputNodeUI();
     Array<NodeUIPtr> getInternalNodes();
+    Array<AudioProcessorNodePtr> getInternalAudioProcessorNodes();
 
     virtual XmlElement* toXml() override;
     virtual void fromXml(XmlElement* xml) override;

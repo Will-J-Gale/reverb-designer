@@ -99,6 +99,27 @@ Array<NodeUIPtr> AudioProcessorMacroNode::getInternalNodes()
     return graphEditor->getNodes();
 }
 
+Array<AudioProcessorNodePtr> AudioProcessorMacroNode::getInternalAudioProcessorNodes()
+{
+    Array<AudioProcessorNodePtr> nodes;
+
+    for(NodeUIPtr& nodeUI : graphEditor->getNodes())
+    {
+        if(nodeUI->getNodeInstance() == NodeInstance::Macro)
+        {
+            auto macroNode = static_cast<AudioProcessorMacroNode*>(nodeUI.get());
+            nodes.addArray(macroNode->getInternalAudioProcessorNodes());
+        }
+        else
+        {
+            nodes.add(static_cast<AudioProcessorNodeUI*>(nodeUI.get())->getProcessorNode());
+        }
+
+    }
+
+    return nodes;
+}
+
 XmlElement* AudioProcessorMacroNode::toXml()
 {
     XmlElement* macroXml = XmlUtils::generateNodeXml(this);
@@ -110,7 +131,6 @@ XmlElement* AudioProcessorMacroNode::toXml()
 void AudioProcessorMacroNode::fromXml(XmlElement* xml)
 {
     name = xml->getChildByName(NAME_TAG)->getAllSubText().toStdString();
-    auto x = xml->getChildByName(X_TAG)->getAllSubText().getIntValue();
 
     updateNameAndReCenter(name);
     graphEditor->clear();

@@ -31,7 +31,6 @@ PopupMenu MainMenu::getMenuForIndex(int menuIndex, const String& menuName)
         menu.addItem(NEW_PROJECT_TEXT, std::bind(&MainMenu::newProject, this));
         menu.addItem(SAVE_TEXT, std::bind(&MainMenu::saveFile, this));
         menu.addItem(LOAD_TEXT, std::bind(&MainMenu::loadFile, this));
-        menu.addItem("Test reset with existing data", std::bind(&MainMenu::testReset, this));
     }
     else if (menuIndex == 1)
     {
@@ -92,14 +91,5 @@ void MainMenu::newProject()
     for (auto listener : listeners)
     {
         listener->onNewProject();
-    }
-}
-
-#warning DELETE ME
-void MainMenu::testReset()
-{
-    for (auto listener : listeners)
-    {
-        listener->onTestReset();
     }
 }
