@@ -1,5 +1,6 @@
 #pragma once
 #include <ui/menus/MainMenu.h>
+#include <utils/Presets.h>
 
 class MainGraphEditor;
 
@@ -10,7 +11,7 @@ public:
     void onSave(std::string filepath);
     void onLoad(std::string filepath);
     void onNewProject();
-    void onPresetSelected(PresetType presetId);
+    void onPresetSelected(Presets::Type presetId);
     void onTestReset();
 
 private:

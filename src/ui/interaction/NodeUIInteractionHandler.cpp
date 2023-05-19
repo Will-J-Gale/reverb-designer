@@ -45,7 +45,7 @@ void NodeUIInteractionHandler::onNodeContextSelection(NodeUI* node, NodeUIConext
         if (!graphEditor->selectionHandler.isEmpty())
             graphEditor->deleteSelectedProcessors();
         else
-            deleteProcessor(node);
+            deleteNode(node);
     }
     else if (selection == NodeUIConextMenuItems::Duplicate)
     {
@@ -144,7 +144,7 @@ void NodeUIInteractionHandler::initializeNode(NodeUIPtr node)
     graphEditor->addAndMakeVisible(node.get());
 }
 
-void NodeUIInteractionHandler::deleteProcessor(NodeUI *nodeUIToDelete)
+void NodeUIInteractionHandler::deleteNode(NodeUI *nodeUIToDelete)
 {
     Array<NodeConnectorUI *> nodeConnectors = nodeUIToDelete->getAllNodeConnectors();
     for (auto *nodeConnector : nodeConnectors)

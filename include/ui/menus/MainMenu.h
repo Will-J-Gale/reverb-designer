@@ -1,6 +1,7 @@
 #pragma once
 #include <JuceHeader.h>
 #include <utils/Constants.h>
+#include <utils/Presets.h>
 
 class MainMenu : public Component,
                  public MenuBarModel
@@ -13,7 +14,7 @@ public:
         virtual void onSave(std::string filepath) = 0;
         virtual void onLoad(std::string filepath) = 0;
         virtual void onNewProject() = 0;
-        virtual void onPresetSelected(PresetType presetId) = 0;
+        virtual void onPresetSelected(Presets::Type presetId) = 0;
     };
 
     MainMenu();
@@ -30,7 +31,7 @@ private:
     void newProject();
     void saveFile();
     void loadFile();
-    void presetSelected(PresetType presetId);
+    void presetSelected(Presets::Type presetId);
 
     std::unique_ptr<FileChooser> fileChooser;
     std::unique_ptr<MenuBarComponent> menuBar;

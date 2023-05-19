@@ -23,22 +23,22 @@ void MainMenuInteractionHandler::onNewProject()
     {
         if (!io.contains(node))
         {
-            mainGraphEditor->nodeInteractionHandler.deleteProcessor(node.get());
+            mainGraphEditor->nodeInteractionHandler.deleteNode(node.get());
         }
     }
 
     mainGraphEditor->repaint();
 }
 
-void MainMenuInteractionHandler::onPresetSelected(PresetType presetId)
+void MainMenuInteractionHandler::onPresetSelected(Presets::Type presetId)
 {
-    // graphEditor->clear();
+    mainGraphEditor->clear();
 
-    // auto xmlString = PresetFactory::getPreset(presetId);
-    // auto callback = std::bind(&GraphEditor::loadStateFromFile, this, xmlString);
-    
-    // auto state = loadStateFromFile(xmlString);
-    // pluginGraph->deleteAndReplaceAudioBlocks(state);
+    auto xmlString = Presets::getPreset(presetId);
+    auto xml = parseXML(xmlString);
+    onNewProject();
+    mainGraphEditor->fromXml(xml.get());
+    xml->deleteAllChildElements();
 }
 
 void MainMenuInteractionHandler::onSave(std::string savePath)

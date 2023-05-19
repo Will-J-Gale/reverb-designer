@@ -5,7 +5,6 @@
 #include <utils/HitTest.h>
 #include <utils/XmlUtils.h>
 #include <utils/StorageManager.h>
-#include <utils/PresetFactory.h>
 #include <utils/HitTest.h>
 #include <ui/menus/InputModals.h>
 
@@ -232,7 +231,7 @@ void GraphEditor::deleteSelectedProcessors()
         if (nodeInstance == NodeInstance::Input || nodeInstance == NodeInstance::Output)
             continue;
 
-        nodeInteractionHandler.deleteProcessor(node);
+        nodeInteractionHandler.deleteNode(node);
     }
 
     selectionHandler.clear();
