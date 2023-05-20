@@ -18,6 +18,7 @@ AudioProcessorNodeUI::AudioProcessorNodeUI(String name, NodeInstance nodeInstanc
     auto yPosition = PARAMETER_Y_OFFSET;
     for(ParameterPtr parameter : parameters->getAllParameters())
     {
+        auto parameterHeight = 0;
         if(parameter->getType() == ParameterType::Boolean)
         {
             auto boolParameter = static_cast<BooleanParameter*>(parameter.get());
@@ -31,6 +32,7 @@ AudioProcessorNodeUI::AudioProcessorNodeUI(String name, NodeInstance nodeInstanc
             this->parametersUI.add(parameterUI);
             componentIdToParameterMap.insert({parameterUI->getId(), parameter});
             parameterNameToUI.insert({parameter->getName(), parameterUI.get()});
+            parameterHeight = parameterUI->getHeight();
         }
         else if(parameter->getType() == ParameterType::Double)
         {
@@ -46,6 +48,7 @@ AudioProcessorNodeUI::AudioProcessorNodeUI(String name, NodeInstance nodeInstanc
             this->parametersUI.add(parameterUI);
             componentIdToParameterMap.insert({parameterUI->getId(), parameter});
             parameterNameToUI.insert({parameter->getName(), parameterUI.get()});
+            parameterHeight = parameterUI->getHeight();
         }
         else if(parameter->getType() == ParameterType::Option)
         {
@@ -65,9 +68,10 @@ AudioProcessorNodeUI::AudioProcessorNodeUI(String name, NodeInstance nodeInstanc
             this->parametersUI.add(parameterUI);
             componentIdToParameterMap.insert({parameterUI->getId(), parameter});
             parameterNameToUI.insert({parameter->getName(), parameterUI.get()});
+            parameterHeight = parameterUI->getHeight();
         }
 
-        yPosition += PARAMETER_SPACING;
+        yPosition += parameterHeight;
     }
 
     auto height = NODE_MIN_HEIGHT + yPosition;

@@ -26,8 +26,8 @@ constexpr int PARAMETER_SPACING = 30;
 constexpr int PARAMETER_TEXT_WIDTH = 100;
 
 //Slider parameter
-constexpr int SLIDER_WIDTH = 100;
-constexpr int SLIDER_HEIGHT = 30;
+constexpr int SLIDER_WIDTH = 75;
+constexpr int SLIDER_HEIGHT = 15;
 constexpr int SLIDER_PARAMETER_WIDTH = 350;
 constexpr int MIN_TEXT_X = 0;
 constexpr int MAX_TEXT_X = MIN_TEXT_X + SLIDER_WIDTH + 10;
