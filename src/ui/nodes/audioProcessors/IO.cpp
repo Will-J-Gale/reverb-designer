@@ -29,4 +29,7 @@ XmlElement* IO::toXml()
 void IO::fromXml(XmlElement* xml)
 {
     channel = xml->getChildByName(IO_CHANNEL_TAG)->getAllSubText().getIntValue();
+    auto x = xml->getChildByName(X_TAG)->getAllSubText().getIntValue();
+    auto y = xml->getChildByName(Y_TAG)->getAllSubText().getIntValue();
+    setTopLeftPosition(x, y);
 }

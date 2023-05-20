@@ -387,6 +387,7 @@ void GraphEditor::fromXml(XmlElement* xml, IdToAudioProcessorMap* idToProcessorM
             else
                 nodeUI = outputs[channel];
             jassert(nodeUI != nullptr);
+            nodeUI->fromXml(nodeXml);
         }
         else
         {
