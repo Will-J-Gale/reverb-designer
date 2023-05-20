@@ -26,4 +26,17 @@ namespace StorageManager
 
         return storageDirectory;
     }
+
+    inline String getStorageDirectoryPath()
+    {
+        return getStorageDirectory().getFullPathName();
+    }
+
+    inline String getStorageSubdirectoryPath(String subdir)
+    {
+        String storagePath = getStorageDirectoryPath();
+        storagePath += "/" + subdir;
+
+        return storagePath;
+    }
 };

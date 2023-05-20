@@ -21,7 +21,7 @@ public:
     void onNodeClicked(NodeUI* processor, const MouseEvent& e) override;
     void onNodeMoved(NodeUI* processor, const MouseEvent& e) override;
     void onNodeReleased(NodeUI* processor, const MouseEvent& e) override;
-    void onNodeContextSelection(NodeUI* processor, NodeUIConextMenuItems selection) override;
+    void onNodeContextSelection(NodeUI* processor, NodeContextMenuItems selection) override;
     
     NodeUIPtr createMacroNode(Point<int> position, String name);
     NodeUIPtr createIONode(NodeInstance instance, Point<int> position, AudioProcessorNodePtr ioProcessorNode, int channel=0);
@@ -31,7 +31,7 @@ public:
 
     void initializeNode(NodeUIPtr processor);
     void deleteNode(NodeUI* processor);
-    void duplicateProcessor(NodeUI* processor);
+    void duplicateNode(NodeUI* processor);
 
 private:
     GraphEditor* graphEditor;

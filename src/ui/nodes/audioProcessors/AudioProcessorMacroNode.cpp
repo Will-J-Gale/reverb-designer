@@ -6,6 +6,7 @@
 
 AudioProcessorMacroNode::AudioProcessorMacroNode(PluginGraph* pluginGraph, String name, AudioProcessorNodePtr node) : AudioProcessorNodeUI(name, NodeInstance::Macro, node)
 {
+    contextMenu = MacroContextMenu();
     setBounds(0, 0, GAIN_WIDTH, GAIN_HEIGHT);
 
     addInputConnector();

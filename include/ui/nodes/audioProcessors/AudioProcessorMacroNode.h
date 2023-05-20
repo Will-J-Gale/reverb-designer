@@ -4,6 +4,7 @@
 #include <ui/nodes/audioProcessors/AudioProcessorNodeUI.h>
 #include <ui/parameters/NumberParameter.h>
 #include <ui/windows/AudioProcessorMacroWindow.h>
+#include <ui/menus/MacroContextMenu.h>
 #include <utils/Constants.h>
 
 class GraphEditor;

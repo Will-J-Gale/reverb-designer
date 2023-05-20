@@ -224,6 +224,11 @@ const String APF_PRESET_TEXT = "All Pass Filter";
 //Fonts
 constexpr int FONT_SIZE = 12.00f;
 
+//Storage
+const String FILE_CHOOSER_FILTER = "*.xml";
+const String SAVE_FILE_EXT = ".xml";
+const String MACRO_DIR_NAME = "Macros";
+
 enum class NodeConnectorType
 {
     AudioInput,
@@ -294,12 +299,13 @@ enum class GraphEditorContextMenuItems
     Paste
 };
 
-enum class NodeUIConextMenuItems
+enum class NodeContextMenuItems
 {
     EMPTY,
     Delete,
     Reverse,
-    Duplicate
+    Duplicate,
+    Save
 };
 
 enum class InteractionState

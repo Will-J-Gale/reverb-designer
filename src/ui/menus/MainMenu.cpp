@@ -9,7 +9,7 @@ MainMenu::MainMenu()
 
     setBounds(0, 0, 500, 200);
 
-    fileChooser.reset(new FileChooser(FILE_CHOOSER_TEXT, StorageManager::getStorageDirectory(), "*.xml", true));
+    fileChooser.reset(new FileChooser(FILE_CHOOSER_TEXT, StorageManager::getStorageDirectory(), FILE_CHOOSER_FILTER, true));
 }
 
 void MainMenu::resized()
@@ -58,7 +58,16 @@ void MainMenu::saveFile()
 
     if (fileIsChosen)
     {
-        auto savePath = fileChooser->getResult().getFullPathName().toStdString();
+        auto file = fileChooser->getResult();
+        auto originalPath = file.getFullPathName();
+
+        if(file.getFileExtension().length() == 0)
+            originalPath.append(SAVE_FILE_EXT, SAVE_FILE_EXT.length());
+        else
+            originalPath = originalPath.replaceFirstOccurrenceOf(file.getFileExtension(), SAVE_FILE_EXT);
+
+        std::string savePath = originalPath.toStdString();
+
         for (auto listener : listeners)
         {
             listener->onSave(savePath);

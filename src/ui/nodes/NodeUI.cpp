@@ -178,7 +178,7 @@ void NodeUI::mouseUp(const MouseEvent& e)
 
 void NodeUI::handleRightClick()
 {
-    NodeUIConextMenuItems selection = (NodeUIConextMenuItems)contextMenu.show();
+    NodeContextMenuItems selection = (NodeContextMenuItems)contextMenu.show();
 
     for (auto listener : listeners)
     {

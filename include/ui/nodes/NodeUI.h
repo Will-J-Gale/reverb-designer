@@ -23,7 +23,7 @@ public:
         virtual void onNodeClicked(NodeUI* processor, const MouseEvent& e) = 0;
         virtual void onNodeMoved(NodeUI* processor, const MouseEvent& e) = 0;
         virtual void onNodeReleased(NodeUI* processor, const MouseEvent& e) = 0;
-        virtual void onNodeContextSelection(NodeUI* processor, NodeUIConextMenuItems selection) = 0;
+        virtual void onNodeContextSelection(NodeUI* processor, NodeContextMenuItems selection) = 0;
     };
 
     NodeUI(){};
@@ -74,7 +74,7 @@ protected:
     String name;
     NodeClass nodeClass;
     NodeInstance nodeInstance;
-    NodeUIContextMenu contextMenu;
+    PopupMenu contextMenu = NodeUIContextMenu();
     Array<Listener*> listeners;
     DragHandler dragHandler = DragHandler(this);
 

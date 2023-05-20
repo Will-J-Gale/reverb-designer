@@ -208,7 +208,7 @@ void GraphEditor::duplicateSelectedProcessors()
         if (nodeInstance == NodeInstance::Input || nodeInstance == NodeInstance::Output)
             continue;
 
-        nodeInteractionHandler.duplicateProcessor(node);
+        nodeInteractionHandler.duplicateNode(node);
     }
 }
 

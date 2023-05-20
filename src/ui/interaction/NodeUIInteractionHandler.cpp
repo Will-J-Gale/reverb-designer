@@ -8,6 +8,7 @@
 #include <ui/menus/InputModals.h>
 #include <ui/nodes/NodeUI.h>
 #include <utils/Constants.h>
+#include <utils/StorageManager.h>
 
 void NodeUIInteractionHandler::initialize(GraphEditor* graphEditor, PluginGraph* pluginGraph)
 {
@@ -38,28 +39,41 @@ void NodeUIInteractionHandler::onNodeReleased(NodeUI* node, const MouseEvent& e)
     graphEditor->selectionHandler.updateItemPositions();
 }
 
-void NodeUIInteractionHandler::onNodeContextSelection(NodeUI* node, NodeUIConextMenuItems selection)
+void NodeUIInteractionHandler::onNodeContextSelection(NodeUI* node, NodeContextMenuItems selection)
 {
-    if (selection == NodeUIConextMenuItems::Delete)
+    if (selection == NodeContextMenuItems::Delete)
     {
         if (!graphEditor->selectionHandler.isEmpty())
             graphEditor->deleteSelectedProcessors();
         else
             deleteNode(node);
     }
-    else if (selection == NodeUIConextMenuItems::Duplicate)
+    else if (selection == NodeContextMenuItems::Duplicate)
     {
         if (!graphEditor->selectionHandler.isEmpty())
             graphEditor->duplicateSelectedProcessors();
         else
-            duplicateProcessor(node);
+            duplicateNode(node);
     }
-    else if (selection == NodeUIConextMenuItems::Reverse)
+    else if (selection == NodeContextMenuItems::Reverse)
     {
         if (!graphEditor->selectionHandler.isEmpty())
             graphEditor->reverseSelectedProcessors();
         else
             node->reverse();
+    }
+    else if (selection == NodeContextMenuItems::Save)
+    {
+        auto macroNode = static_cast<AudioProcessorMacroNode*>(node);
+        String macroName = macroNode->getNodeName();
+        XmlElement* xml = macroNode->toXml();
+        String macrosPath = StorageManager::getStorageSubdirectoryPath(MACRO_DIR_NAME);
+        macrosPath = macrosPath + "/" + macroName + SAVE_FILE_EXT;
+
+        StorageManager::saveXML(macrosPath.toStdString(), xml->toString().toStdString());
+
+        xml->deleteAllChildElements();
+        delete xml;
     }
 
     graphEditor->repaint();
@@ -175,7 +189,7 @@ void NodeUIInteractionHandler::deleteNode(NodeUI *nodeUIToDelete)
     graphEditor->removeFromArray(graphEditor->nodes, nodeUIToDelete);
 }
 
-void NodeUIInteractionHandler::duplicateProcessor(NodeUI *node)
+void NodeUIInteractionHandler::duplicateNode(NodeUI *node)
 {
     auto newProcessor = createNode(node->getNodeInstance(), node->getPosition() + Point<int>(DUPLICATE_OFFSET_X, DUPLICATE_OFFSET_Y));
     // auto parameters = node->getAudioParametersAsXml();
