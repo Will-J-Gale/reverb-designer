@@ -11,7 +11,6 @@ public:
     ~MainGraphEditor();
     void setPluginGraph(PluginGraph* pluginGraph) override;
     
-    // XmlElementPtr generatePluginState();
     void loadFromExistingState(XmlElement* state);
     void fromXml(XmlElement* xml, IdToAudioProcessorMap* idToProcessorMap=nullptr) override;
 
