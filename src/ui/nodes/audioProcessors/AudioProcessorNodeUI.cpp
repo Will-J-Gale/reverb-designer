@@ -70,7 +70,7 @@ AudioProcessorNodeUI::AudioProcessorNodeUI(String name, NodeInstance nodeInstanc
         yPosition += PARAMETER_SPACING;
     }
 
-    auto height = NODE_MIN_HEIGHT + (this->parametersUI.size() * NODE_SCALE_PER_PARAMETER);
+    auto height = NODE_MIN_HEIGHT + yPosition;
     setBounds(0, 0, NODE_DEFAULT_WIDTH, height);
 
     nameLabel.setBounds(0, 0, NODE_DEFAULT_WIDTH, TEXT_HEIGHT);
@@ -185,21 +185,21 @@ void AudioProcessorNodeUI::disconnectOutput(NodeUI* destinationNode)
 
 void AudioProcessorNodeUI::buttonClicked (Button* button)
 {
-    BaseParameter* parameterUI  = static_cast<BaseParameter*>(button->getParentComponent());
+    BaseParameterUI* parameterUI  = static_cast<BaseParameterUI*>(button->getParentComponent());
     BooleanParameter* parameter = static_cast<BooleanParameter*>(componentIdToParameterMap.at(parameterUI->getId()).get());
     parameter->setValue(button->getToggleState());
 }
 
 void AudioProcessorNodeUI::sliderValueChanged (Slider* slider)
 {
-    BaseParameter* parameterUI  = static_cast<BaseParameter*>(slider->getParentComponent());
+    BaseParameterUI* parameterUI  = static_cast<BaseParameterUI*>(slider->getParentComponent());
     DoubleParameter* parameter = static_cast<DoubleParameter*>(componentIdToParameterMap.at(parameterUI->getId()).get());
     parameter->setValue(slider->getValue());
 }
 
 void AudioProcessorNodeUI::comboBoxChanged (ComboBox* comboBox)
 {
-    BaseParameter* parameterUI  = static_cast<BaseParameter*>(comboBox->getParentComponent());
+    BaseParameterUI* parameterUI  = static_cast<BaseParameterUI*>(comboBox->getParentComponent());
     OptionParameter* parameter = static_cast<OptionParameter*>(componentIdToParameterMap.at(parameterUI->getId()).get());
     parameter->setValue(comboBox->getSelectedId());
 }
