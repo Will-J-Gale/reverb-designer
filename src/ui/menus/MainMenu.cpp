@@ -38,6 +38,7 @@ PopupMenu MainMenu::getMenuForIndex(int menuIndex, const String& menuName)
         menu.addItem(FEEDFORWARD_COMB_PRESET_TEXT, std::bind(&MainMenu::presetSelected, this, Presets::Type::FEEDFORWARD_COMB));
         menu.addItem(FEEDBACK_COMB_PRESET_TEXT, std::bind(&MainMenu::presetSelected, this, Presets::Type::FEEDBACK_COMB));
         menu.addItem(APF_PRESET_TEXT, std::bind(&MainMenu::presetSelected, this, Presets::Type::APF));
+        menu.addItem(SCHROEDER_PRESET_TEXT, std::bind(&MainMenu::presetSelected, this, Presets::Type::SCHROEDER_REVERB));
         // menu.addItem(FEEDBACK_COMB_PRESET_TEXT, std::bind(&MainMenu::presetSelected, this, PresetType::FeedforwardComb));
         // menu.addItem(APF_PRESET_TEXT, std::bind(&MainMenu::presetSelected, this, PresetType::APF));
         // menu.addItem(SCHROEDER_PRESET_TEXT, std::bind(&MainMenu::presetSelected, this, PresetType::SchroederReverb));
