@@ -1,10 +1,10 @@
 #pragma once
 #include <JuceHeader.h>
 
-class BaseParameter : public Component
+class BaseParameterUI : public Component
 {
 public:
-    BaseParameter();
+    BaseParameterUI();
     void setParameterName(String newName);
     std::string getId();
     virtual Component* getComponent() = 0;

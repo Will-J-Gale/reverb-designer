@@ -1,11 +1,11 @@
 #pragma once
 #include <JuceHeader.h>
-#include <ui/parameters/BaseParameter.h>
+#include <ui/parameters/BaseParameterUI.h>
 
-class NumberParameter : public BaseParameter
+class NumberParameterUI : public BaseParameterUI
 {
 public:
-    NumberParameter();
+    NumberParameterUI();
 
     void setValue(double number);
     void setWidth(int width);

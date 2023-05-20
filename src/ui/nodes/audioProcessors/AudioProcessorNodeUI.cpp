@@ -1,10 +1,10 @@
 #include <dsp/FeedbackDelay.h>
 #include <ui/nodes/audioProcessors/AudioProcessorNodeUI.h>
 #include <ui/GraphEditor.h>
-#include <ui/parameters/NumberParameter.h>
-#include <ui/parameters/BoolParameter.h>
-#include <ui/parameters/SliderParameter.h>
-#include <ui/parameters/ComboBoxParameter.h>
+#include <ui/parameters/NumberParameterUI.h>
+#include <ui/parameters/BoolParameterUI.h>
+#include <ui/parameters/SliderParameterUI.h>
+#include <ui/parameters/ComboBoxParameterUI.h>
 #include <utils/XmlUtils.h>
 
 AudioProcessorNodeUI::AudioProcessorNodeUI(String name, NodeInstance nodeInstance, AudioProcessorNodePtr node) 
@@ -21,7 +21,7 @@ AudioProcessorNodeUI::AudioProcessorNodeUI(String name, NodeInstance nodeInstanc
         if(parameter->getType() == ParameterType::Boolean)
         {
             auto boolParameter = static_cast<BooleanParameter*>(parameter.get());
-            auto parameterUI = std::make_shared<BoolParameter>();
+            auto parameterUI = std::make_shared<BoolParameterUI>();
             parameterUI->setParameterName(boolParameter->getName());
             parameterUI->setToggleState(boolParameter->getValue());
             parameterUI->setTopLeftPosition(PARAMETER_X_OFFSET, yPosition);
@@ -35,7 +35,7 @@ AudioProcessorNodeUI::AudioProcessorNodeUI(String name, NodeInstance nodeInstanc
         else if(parameter->getType() == ParameterType::Double)
         {
             auto doubleParameter = static_cast<DoubleParameter*>(parameter.get());
-            auto parameterUI = std::make_shared<SliderParameter>();
+            auto parameterUI = std::make_shared<SliderParameterUI>();
             parameterUI->setParameterName(doubleParameter->getName());
             parameterUI->setMinAndMax(doubleParameter->getMin(), doubleParameter->getMax());
             parameterUI->setValue(doubleParameter->getValue());
@@ -50,7 +50,7 @@ AudioProcessorNodeUI::AudioProcessorNodeUI(String name, NodeInstance nodeInstanc
         else if(parameter->getType() == ParameterType::Option)
         {
             auto optionParameter = static_cast<OptionParameter*>(parameter.get());
-            auto parameterUI = std::make_shared<ComboBoxParameter>();
+            auto parameterUI = std::make_shared<ComboBoxParameterUI>();
             for(OptionItem item : optionParameter->getItems())
             {
                 parameterUI->addItem(item.name, item.value);
@@ -105,17 +105,17 @@ void AudioProcessorNodeUI::updateParametersUI()
 
         if(parameterType == ParameterType::Boolean)
         {
-            BoolParameter* toggle = static_cast<BoolParameter*>(parameterNameToUI.at(parameterName));
+            BoolParameterUI* toggle = static_cast<BoolParameterUI*>(parameterNameToUI.at(parameterName));
             toggle->setToggleState(parameters->getParameterValueByName<bool>(parameterName));
         }
         else if(parameterType == ParameterType::Double)
         {
-            SliderParameter* slider = static_cast<SliderParameter*>(parameterNameToUI.at(parameterName));
+            SliderParameterUI* slider = static_cast<SliderParameterUI*>(parameterNameToUI.at(parameterName));
             slider->setValue(parameters->getParameterValueByName<double>(parameterName));
         }
         else if(parameterType == ParameterType::Option)
         {
-            ComboBoxParameter* combo = static_cast<ComboBoxParameter*>(parameterNameToUI.at(parameterName));
+            ComboBoxParameterUI* combo = static_cast<ComboBoxParameterUI*>(parameterNameToUI.at(parameterName));
             combo->setSelectedItem(parameters->getParameterValueByName<int>(parameterName));
         }
     }

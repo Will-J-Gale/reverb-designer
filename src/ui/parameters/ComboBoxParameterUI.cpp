@@ -1,7 +1,7 @@
-#include <ui/parameters/ComboBoxParameter.h>
+#include <ui/parameters/ComboBoxParameterUI.h>
 #include <utils/Constants.h>
 
-ComboBoxParameter::ComboBoxParameter()
+ComboBoxParameterUI::ComboBoxParameterUI()
 {
     choices.setBounds(COMBO_X, 0, COMBO_WIDTH, COMBO_HEIGHT);
     name.setBounds(COMBO_TEXT_OFFSET, 0, COMBO_TEXT_WIDTH, COMBO_HEIGHT);
@@ -9,27 +9,27 @@ ComboBoxParameter::ComboBoxParameter()
     addAndMakeVisible(choices);
 }
 
-void ComboBoxParameter::addItem(String item, int itemId)
+void ComboBoxParameterUI::addItem(String item, int itemId)
 {
     choices.addItem(item, itemId);
 }
 
-int ComboBoxParameter::getSelectedItemId()
+int ComboBoxParameterUI::getSelectedItemId()
 {
     return choices.getSelectedId();
 }
 
-void ComboBoxParameter::setSelectedItem(int id)
+void ComboBoxParameterUI::setSelectedItem(int id)
 {
     choices.setSelectedId(id, dontSendNotification);
 }
 
-void ComboBoxParameter::addListener(ComboBox::Listener* listener)
+void ComboBoxParameterUI::addListener(ComboBox::Listener* listener)
 {
     choices.addListener(listener);
 }
 
-Component* ComboBoxParameter::getComponent()
+Component* ComboBoxParameterUI::getComponent()
 {
     return &choices;
 }

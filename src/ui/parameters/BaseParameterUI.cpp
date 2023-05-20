@@ -1,7 +1,7 @@
-#include <ui/parameters/BaseParameter.h>
+#include <ui/parameters/BaseParameterUI.h>
 #include <utils/Constants.h>
 
-BaseParameter::BaseParameter()
+BaseParameterUI::BaseParameterUI()
 {
     setBounds(0, 0, PARAMETER_WIDTH, 20);
 
@@ -13,12 +13,12 @@ BaseParameter::BaseParameter()
     addAndMakeVisible(name);
 }
 
-void BaseParameter::setParameterName(String newName)
+void BaseParameterUI::setParameterName(String newName)
 {
     name.setText(newName, NotificationType::dontSendNotification);
 }
 
-std::string BaseParameter::getId()
+std::string BaseParameterUI::getId()
 {
     return id.toString().toStdString();
 }

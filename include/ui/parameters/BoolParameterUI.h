@@ -1,11 +1,11 @@
 #pragma once
 #include <JuceHeader.h>
-#include <ui/parameters/BaseParameter.h>
+#include <ui/parameters/BaseParameterUI.h>
 
-class BoolParameter : public BaseParameter
+class BoolParameterUI : public BaseParameterUI
 {
 public:
-    BoolParameter();
+    BoolParameterUI();
     virtual Component* getComponent() override;
     void addListener(ToggleButton::Listener* listener);
     void setToggleState(bool state);

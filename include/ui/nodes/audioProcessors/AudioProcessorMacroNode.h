@@ -2,7 +2,7 @@
 #include <dsp/AudioProcessorNode.h>
 #include <dsp/Gain.h>
 #include <ui/nodes/audioProcessors/AudioProcessorNodeUI.h>
-#include <ui/parameters/NumberParameter.h>
+#include <ui/parameters/NumberParameterUI.h>
 #include <ui/windows/AudioProcessorMacroWindow.h>
 #include <ui/menus/MacroContextMenu.h>
 #include <utils/Constants.h>

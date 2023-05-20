@@ -1,12 +1,12 @@
 #pragma once
 #include <JuceHeader.h>
-#include <ui/parameters/BaseParameter.h>
+#include <ui/parameters/BaseParameterUI.h>
 
-class SliderParameter : public BaseParameter,
+class SliderParameterUI : public BaseParameterUI,
                         public Slider::Listener
 {
 public:
-    SliderParameter();
+    SliderParameterUI();
     void addListener(Slider::Listener* listener);
     virtual void sliderValueChanged(Slider* slider) override;
 

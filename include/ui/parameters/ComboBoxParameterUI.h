@@ -1,11 +1,11 @@
 #pragma once
 #include <JuceHeader.h>
-#include <ui/parameters/BaseParameter.h>
+#include <ui/parameters/BaseParameterUI.h>
 
-class ComboBoxParameter : public BaseParameter
+class ComboBoxParameterUI : public BaseParameterUI
 {
 public:
-    ComboBoxParameter();
+    ComboBoxParameterUI();
     void addItem(String item, int itemId);
     int getSelectedItemId();
     void setSelectedItem(int id);

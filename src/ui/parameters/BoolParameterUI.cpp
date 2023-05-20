@@ -1,7 +1,7 @@
-#include <ui/parameters/BoolParameter.h>
+#include <ui/parameters/BoolParameterUI.h>
 #include <utils/Constants.h>
 
-BoolParameter::BoolParameter()
+BoolParameterUI::BoolParameterUI()
 {
     name.setTopLeftPosition(30, 0);
     toggle.setBounds(PARAMETER_X_OFFSET, 0, 70, 15);
@@ -9,17 +9,17 @@ BoolParameter::BoolParameter()
     addAndMakeVisible(toggle);
 }
 
-Component* BoolParameter::getComponent()
+Component* BoolParameterUI::getComponent()
 {
     return &toggle;
 }
 
-void BoolParameter::addListener(ToggleButton::Listener* listener)
+void BoolParameterUI::addListener(ToggleButton::Listener* listener)
 {
     toggle.addListener(listener);
 }
 
-void BoolParameter::setToggleState(bool state)
+void BoolParameterUI::setToggleState(bool state)
 {
     toggle.setToggleState(state, dontSendNotification);
 }

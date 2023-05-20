@@ -1,7 +1,7 @@
-#include <ui/parameters/SliderParameter.h>
+#include <ui/parameters/SliderParameterUI.h>
 #include <utils/Constants.h>
 
-SliderParameter::SliderParameter()
+SliderParameterUI::SliderParameterUI()
 {
     setBounds(0, 0, SLIDER_PARAMETER_WIDTH, SLIDER_HEIGHT);
     slider.setBounds(SLIDER_X, 0, SLIDER_WIDTH, SLIDER_HEIGHT);
@@ -25,49 +25,49 @@ SliderParameter::SliderParameter()
     setInterceptsMouseClicks(false, true);
 }
 
-void SliderParameter::addListener(Slider::Listener* listener)
+void SliderParameterUI::addListener(Slider::Listener* listener)
 {
     slider.addListener(listener);
 }
 
-void SliderParameter::sliderValueChanged(Slider* slider)
+void SliderParameterUI::sliderValueChanged(Slider* slider)
 {
 }
 
-void SliderParameter::setValue(double value)
+void SliderParameterUI::setValue(double value)
 {
     this->value = value;
     slider.setValue(value, dontSendNotification);
 }
 
-double SliderParameter::getValue()
+double SliderParameterUI::getValue()
 {
     return value;
 }
 
-void SliderParameter::setMin(double min)
+void SliderParameterUI::setMin(double min)
 {
     setMinAndMax(min, max);
 }
 
-void SliderParameter::setMax(double max)
+void SliderParameterUI::setMax(double max)
 {
     setMinAndMax(min, max);
 }
 
-void SliderParameter::setMinAndMax(double min, double max)
+void SliderParameterUI::setMinAndMax(double min, double max)
 {
     this->min = min;
     this->max = max;
     slider.setRange(min, max, SLIDER_INTERVAL);
 }
 
-void SliderParameter::setTextSuffix(const String& suffix)
+void SliderParameterUI::setTextSuffix(const String& suffix)
 {
     slider.setTextValueSuffix(suffix);
 }
 
-Component* SliderParameter::getComponent()
+Component* SliderParameterUI::getComponent()
 {
 	return &slider;
 }

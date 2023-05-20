@@ -1,7 +1,7 @@
-#include <ui/parameters/NumberParameter.h>
+#include <ui/parameters/NumberParameterUI.h>
 #include <utils/Constants.h>
 
-NumberParameter::NumberParameter()
+NumberParameterUI::NumberParameterUI()
 {
     value.setBounds(PARAMETER_X_OFFSET, 0, NUMBER_WIDTH, PARAMETER_HEIGHT);
     name.setBounds(PARAMETER_X_OFFSET + NUMBER_WIDTH, 0, PARAMETER_TEXT_WIDTH, PARAMETER_HEIGHT);
@@ -9,23 +9,23 @@ NumberParameter::NumberParameter()
     addAndMakeVisible(value);
 }
 
-void NumberParameter::setValue(double number)
+void NumberParameterUI::setValue(double number)
 {
     value.setText(String::formatted("%.2f", number), dontSendNotification);
 }
 
-void NumberParameter::setWidth(int width)
+void NumberParameterUI::setWidth(int width)
 {
     value.setSize(width, value.getHeight());
     name.setTopLeftPosition(width + NUMBER_TEXT_GAP, name.getY());
 }
 
-void NumberParameter::addListener(TextEditor::Listener* listener)
+void NumberParameterUI::addListener(TextEditor::Listener* listener)
 {
     value.addListener(listener);
 }
 
-Component* NumberParameter::getComponent()
+Component* NumberParameterUI::getComponent()
 {
     return &value;
 }

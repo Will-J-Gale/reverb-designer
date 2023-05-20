@@ -9,7 +9,7 @@
 #include <ui/nodes/NodeUI.h>
 #include <utils/Constants.h>
 #include <utils/ManagedArray.h>
-#include <ui/parameters/BaseParameter.h>
+#include <ui/parameters/BaseParameterUI.h>
 
 //Forward declarations
 class GraphEditor;
@@ -51,7 +51,7 @@ public:
 
 protected:
     AudioProcessorNodePtr processorNode = nullptr;
-    Array<std::shared_ptr<BaseParameter>> parametersUI;
+    Array<std::shared_ptr<BaseParameterUI>> parametersUI;
     std::map<std::string, ParameterPtr> componentIdToParameterMap;
     std::map<std::string, Component*> parameterNameToUI;
 };
