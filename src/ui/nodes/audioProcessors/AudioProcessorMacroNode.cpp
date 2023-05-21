@@ -132,8 +132,11 @@ XmlElement* AudioProcessorMacroNode::toXml()
 void AudioProcessorMacroNode::fromXml(XmlElement* xml)
 {
     name = xml->getChildByName(NAME_TAG)->getAllSubText().toStdString();
+    int x = xml->getChildByName(X_TAG)->getAllSubText().getIntValue();
+    int y = xml->getChildByName(Y_TAG)->getAllSubText().getIntValue();
 
     updateNameAndReCenter(name);
+    setTopLeftPosition(x, y);
     graphEditor->clear();
     graphEditor->addInputNode();
     graphEditor->addOutputNode();

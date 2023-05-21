@@ -98,7 +98,7 @@ enum class AudioDetectorMode
 
 enum class ModulatedDelayAlgorithm
 {
-    kFlanger,
+    kFlanger=1,
     kVibrato,
     kChorus
 };

@@ -3,7 +3,7 @@
 
 ModulatedDelay::ModulatedDelay()
 {
-    MAKE_PARAMETERS({
+    parameters = MAKE_PARAMETERS({
         std::make_shared<OptionParameter>(
             "Algorithm", 
             std::vector<OptionItem> {
@@ -18,6 +18,7 @@ ModulatedDelay::ModulatedDelay()
         std::make_shared<DoubleParameter>("Feedback", DEFAULT_MOD_DELAY_FEEDBACK, 0.0, 1.0),
     });
 
+    delayParameters = delay.getParameters();
     parameters->addOnChangeCallback(std::bind(&ModulatedDelay::onParametersChanged, this));
     onParametersChanged();
 }

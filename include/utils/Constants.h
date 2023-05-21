@@ -278,8 +278,8 @@ const std::map<NodeInstance, std::string> NodeInstanceToName = {
     {NodeInstance::APF, "All Pass Filter"},
     {NodeInstance::Comb, "Comb Filter"},
     {NodeInstance::NestedAPF, "Nested APF"},
+    {NodeInstance::ModDelay, "Modulated Delay"},
 };
-
 
 enum class NodeClass
 {
