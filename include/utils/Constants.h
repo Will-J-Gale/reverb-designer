@@ -227,7 +227,7 @@ const String FEEDBACK_COMB_PRESET_TEXT = "Feedback Comb";
 const String APF_PRESET_TEXT = "All Pass Filter";
 const String SCHROEDER_PRESET_TEXT = "Schroeder Reverb";
 const String ALLPASS_LOOP_PRESET_TEXT = "Allpass loop";
-// const String FIGURE8_PRESET_TEXT = "Figure 8 Reverb";
+const String FIGURE8_PRESET_TEXT = "Figure 8 Reverb";
 
 //Fonts
 constexpr int FONT_SIZE = 12.00f;
@@ -328,16 +328,4 @@ enum class SliderInteraction
 {
     TextEnter = -1,
     Slide = 0
-};
-
-enum class PresetType
-{
-    None,
-    StereoDelay,
-    FeedforwardComb,
-    FeedbackComb,
-    APF,
-    SchroederReverb,
-    SpinSemiconductorReverb,
-    Figure8Reverb
 };

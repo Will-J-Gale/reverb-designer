@@ -41,7 +41,7 @@ PopupMenu MainMenu::getMenuForIndex(int menuIndex, const String& menuName)
         menu.addItem(APF_PRESET_TEXT, std::bind(&MainMenu::presetSelected, this, Presets::Type::APF));
         menu.addItem(SCHROEDER_PRESET_TEXT, std::bind(&MainMenu::presetSelected, this, Presets::Type::SCHROEDER_REVERB));
         menu.addItem(ALLPASS_LOOP_PRESET_TEXT, std::bind(&MainMenu::presetSelected, this, Presets::Type::ALLPASS_LOOP));
-        // menu.addItem(FIGURE8_PRESET_TEXT, std::bind(&MainMenu::presetSelected, this, PresetType::Figure8Reverb));
+        menu.addItem(FIGURE8_PRESET_TEXT, std::bind(&MainMenu::presetSelected, this, Presets::Type::FIGURE_8_REVERB));
     }
     else if (menuIndex == 2)
     {
