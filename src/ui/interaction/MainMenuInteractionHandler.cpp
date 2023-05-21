@@ -58,3 +58,13 @@ void MainMenuInteractionHandler::onLoad(std::string filepath)
     mainGraphEditor->fromXml(xml.get());
     xml->deleteAllChildElements();
 }
+
+void MainMenuInteractionHandler::onMacroSelected(File macroFile)
+{
+    auto macroXmlString = macroFile.loadFileAsString().toStdString();
+    auto xml = parseXML(macroXmlString);
+    auto macroNode = mainGraphEditor->nodeInteractionHandler.createMacroNodeFromXml(xml.get());
+    mainGraphEditor->nodeInteractionHandler.initializeNode(macroNode);
+
+    xml->deleteAllChildElements();
+}

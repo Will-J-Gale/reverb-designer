@@ -211,6 +211,7 @@ const String NEW_PROJECT_TEXT = "New";
 const String FILE_CHOOSER_TEXT = "Choose file...";
 const String FILE_MENU_TEXT = "File";
 const String PRESET_MENU_TEXT = "Presets";
+const String MACRO_MENU_TEXT = "Macros";
 
 //Preset test
 const String STEREO_DELAY_PRESET_TEXT = "Stereo Delay";

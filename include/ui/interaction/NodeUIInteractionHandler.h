@@ -24,6 +24,7 @@ public:
     void onNodeContextSelection(NodeUI* processor, NodeContextMenuItems selection) override;
     
     NodeUIPtr createMacroNode(Point<int> position, String name);
+    NodeUIPtr createMacroNodeFromXml(XmlElement* xml);
     NodeUIPtr createIONode(NodeInstance instance, Point<int> position, AudioProcessorNodePtr ioProcessorNode, int channel=0);
     NodeUIPtr createIONode(NodeInstance instance, Point<int> position, int channel=0);
     NodeUIPtr createNode(NodeInstance instance, Point<int> position);

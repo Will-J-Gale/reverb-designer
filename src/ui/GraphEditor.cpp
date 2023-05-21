@@ -376,8 +376,7 @@ void GraphEditor::fromXml(XmlElement* xml, IdToAudioProcessorMap* idToProcessorM
         NodeUIPtr nodeUI;
         if(nodeInstance == NodeInstance::Macro)
         {
-            nodeUI = nodeInteractionHandler.createMacroNode(Point<int>(x, y), std::string());
-            nodeUI->fromXml(nodeXml);
+            nodeUI = nodeInteractionHandler.createMacroNodeFromXml(nodeXml);
         }
         else if (nodeInstance == NodeInstance::Input || nodeInstance == NodeInstance::Output)
         {

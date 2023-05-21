@@ -39,4 +39,11 @@ namespace StorageManager
 
         return storagePath;
     }
+
+    inline Array<File> listDir(String directoryPath)
+    {
+        File directory = File(directoryPath);
+        jassert(directory.isDirectory());
+        return directory.findChildFiles(File::TypesOfFileToFind::findFiles, false, FILE_CHOOSER_FILTER, File::FollowSymlinks::no);
+    }
 };

@@ -90,6 +90,14 @@ NodeUIPtr NodeUIInteractionHandler::createMacroNode(Point<int> position, String 
     return macroNode;
 }
 
+NodeUIPtr NodeUIInteractionHandler::createMacroNodeFromXml(XmlElement* xml)
+{
+    auto macroNode = createMacroNode(Point<int>(), std::string());
+    macroNode->fromXml(xml);
+    return macroNode;
+}
+
+
 
 NodeUIPtr NodeUIInteractionHandler::createIONode(NodeInstance instance, Point<int> position, AudioProcessorNodePtr ioProcessorNode, int channel)
 {

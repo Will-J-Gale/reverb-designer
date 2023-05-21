@@ -15,6 +15,7 @@ public:
         virtual void onLoad(std::string filepath) = 0;
         virtual void onNewProject() = 0;
         virtual void onPresetSelected(Presets::Type presetId) = 0;
+        virtual void onMacroSelected(File macroFile) = 0;
     };
 
     MainMenu();
@@ -32,6 +33,7 @@ private:
     void saveFile();
     void loadFile();
     void presetSelected(Presets::Type presetId);
+    void macroSelected(File macroFile);
 
     std::unique_ptr<FileChooser> fileChooser;
     std::unique_ptr<MenuBarComponent> menuBar;

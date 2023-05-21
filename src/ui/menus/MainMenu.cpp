@@ -1,6 +1,7 @@
 #include <ui/menus/MainMenu.h>
 #include <utils/StorageManager.h>
 #include <utils/Constants.h>
+#include <utils/StorageManager.h>
 
 MainMenu::MainMenu()
 {
@@ -19,7 +20,7 @@ void MainMenu::resized()
 
 StringArray MainMenu::getMenuBarNames()
 {
-    return { FILE_MENU_TEXT, PRESET_MENU_TEXT };
+    return { FILE_MENU_TEXT, PRESET_MENU_TEXT, MACRO_MENU_TEXT };
 }
 
 PopupMenu MainMenu::getMenuForIndex(int menuIndex, const String& menuName)
@@ -45,6 +46,17 @@ PopupMenu MainMenu::getMenuForIndex(int menuIndex, const String& menuName)
         // menu.addItem(SPIN_SEMICONDUCTOR_PRESET_TEXT, std::bind(&MainMenu::presetSelected, this, PresetType::SpinSemiconductorReverb));
         // menu.addItem(FIGURE8_PRESET_TEXT, std::bind(&MainMenu::presetSelected, this, PresetType::Figure8Reverb));
     }
+    else if (menuIndex == 2)
+    {
+        String macroFolderPath = StorageManager::getStorageSubdirectoryPath(MACRO_DIR_NAME);
+        Array<File> macroFiles = StorageManager::listDir(macroFolderPath);
+
+        for(File& file : macroFiles)
+        {
+            menu.addItem(file.getFileNameWithoutExtension(), std::bind(&MainMenu::macroSelected, this, file));
+        }
+    }
+
     return menu;
 }
 
@@ -103,5 +115,13 @@ void MainMenu::newProject()
     for (auto listener : listeners)
     {
         listener->onNewProject();
+    }
+}
+
+void MainMenu::macroSelected(File macroFile)
+{
+    for (auto listener : listeners)
+    {
+        listener->onMacroSelected(macroFile);
     }
 }

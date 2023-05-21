@@ -12,6 +12,7 @@ public:
     void onLoad(std::string filepath);
     void onNewProject();
     void onPresetSelected(Presets::Type presetId);
+    void onMacroSelected(File macroFile);
     void onTestReset();
 
 private:
