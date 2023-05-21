@@ -40,10 +40,7 @@ PopupMenu MainMenu::getMenuForIndex(int menuIndex, const String& menuName)
         menu.addItem(FEEDBACK_COMB_PRESET_TEXT, std::bind(&MainMenu::presetSelected, this, Presets::Type::FEEDBACK_COMB));
         menu.addItem(APF_PRESET_TEXT, std::bind(&MainMenu::presetSelected, this, Presets::Type::APF));
         menu.addItem(SCHROEDER_PRESET_TEXT, std::bind(&MainMenu::presetSelected, this, Presets::Type::SCHROEDER_REVERB));
-        // menu.addItem(FEEDBACK_COMB_PRESET_TEXT, std::bind(&MainMenu::presetSelected, this, PresetType::FeedforwardComb));
-        // menu.addItem(APF_PRESET_TEXT, std::bind(&MainMenu::presetSelected, this, PresetType::APF));
-        // menu.addItem(SCHROEDER_PRESET_TEXT, std::bind(&MainMenu::presetSelected, this, PresetType::SchroederReverb));
-        // menu.addItem(SPIN_SEMICONDUCTOR_PRESET_TEXT, std::bind(&MainMenu::presetSelected, this, PresetType::SpinSemiconductorReverb));
+        menu.addItem(ALLPASS_LOOP_PRESET_TEXT, std::bind(&MainMenu::presetSelected, this, Presets::Type::ALLPASS_LOOP));
         // menu.addItem(FIGURE8_PRESET_TEXT, std::bind(&MainMenu::presetSelected, this, PresetType::Figure8Reverb));
     }
     else if (menuIndex == 2)

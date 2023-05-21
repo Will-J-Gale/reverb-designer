@@ -226,7 +226,7 @@ const String FEEDFORWARD_COMB_PRESET_TEXT = "Feedforward Comb";
 const String FEEDBACK_COMB_PRESET_TEXT = "Feedback Comb";
 const String APF_PRESET_TEXT = "All Pass Filter";
 const String SCHROEDER_PRESET_TEXT = "Schroeder Reverb";
-// const String SPIN_SEMICONDUCTOR_PRESET_TEXT = "Spin Semiconductor Reverb";
+const String ALLPASS_LOOP_PRESET_TEXT = "Allpass loop";
 // const String FIGURE8_PRESET_TEXT = "Figure 8 Reverb";
 
 //Fonts
