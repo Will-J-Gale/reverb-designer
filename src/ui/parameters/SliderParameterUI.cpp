@@ -22,7 +22,7 @@ SliderParameterUI::SliderParameterUI()
     //addAndMakeVisible(minLabel);
     //addAndMakeVisible(maxLabel);
 
-    setInterceptsMouseClicks(false, true);
+    setInterceptsMouseClicks(true, true);
 }
 
 void SliderParameterUI::addListener(Slider::Listener* listener)
@@ -70,4 +70,25 @@ void SliderParameterUI::setTextSuffix(const String& suffix)
 Component* SliderParameterUI::getComponent()
 {
 	return &slider;
+}
+
+float SliderParameterUI::getVisibleWidth()
+{
+    return slider.getX() + slider.getWidth() + getNameTextWidth() + PARAMETER_PADDING;
+}
+
+#warning DELETE
+void SliderParameterUI::mouseDown(const MouseEvent& e)
+{
+    int x = e.getMouseDownX();
+    int i = 0;
+    // e.getEventRelativeTo(getParentComponent());
+}
+
+void SliderParameterUI::mouseDrag(const MouseEvent& e)
+{
+    auto parent = getParentComponent();
+    parent->mouseDrag(e.getEventRelativeTo(parent));
+    e.getEventRelativeTo(parent);
+    // e.getEventRelativeTo(getParentComponent());
 }

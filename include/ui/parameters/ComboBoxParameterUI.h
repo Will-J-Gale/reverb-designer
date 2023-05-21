@@ -13,6 +13,7 @@ public:
     void addListener(ComboBox::Listener* listener);
 
     virtual Component* getComponent() override;
+    virtual float getVisibleWidth() override;
 private:
     ComboBox choices; 
 };

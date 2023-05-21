@@ -33,3 +33,8 @@ Component* ComboBoxParameterUI::getComponent()
 {
     return &choices;
 }
+
+float ComboBoxParameterUI::getVisibleWidth()
+{
+    return choices.getWidth() + getNameTextWidth();
+}

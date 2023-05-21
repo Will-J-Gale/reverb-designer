@@ -23,7 +23,9 @@ constexpr int PARAMETER_WIDTH = 250;
 constexpr int PARAMETER_NAME_WIDTH = 200;
 constexpr int PARAMETER_NAME_HEIGHT = 20;
 constexpr int PARAMETER_SPACING = 30;
+constexpr int PARAMETER_PADDING = 10;
 constexpr int PARAMETER_TEXT_WIDTH = 100;
+constexpr int PARAMETER_MAX_SIZE = 80;
 
 //Slider parameter
 constexpr int SLIDER_WIDTH = 75;
@@ -46,6 +48,11 @@ constexpr int COMBO_WIDTH = 80;
 constexpr int COMBO_HEIGHT = 20;
 constexpr int COMBO_TEXT_OFFSET = COMBO_X + COMBO_WIDTH;
 constexpr int COMBO_TEXT_WIDTH = 80;
+
+//Bool parameter
+constexpr int BOOL_PARAMETER_WIDTH = 70;
+constexpr int BOOL_PARAMETER_HEIGHT = 15;
+constexpr int BOOL_PARAMETER_START_X = 30;
 
 //Node connectors
 const std::string CONNECTOR_COLOUR = "ffff0000";

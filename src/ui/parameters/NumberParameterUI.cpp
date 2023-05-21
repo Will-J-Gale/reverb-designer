@@ -29,3 +29,8 @@ Component* NumberParameterUI::getComponent()
 {
     return &value;
 }
+
+float NumberParameterUI::getVisibleWidth()
+{
+    return value.getWidth() + getNameTextWidth();
+}

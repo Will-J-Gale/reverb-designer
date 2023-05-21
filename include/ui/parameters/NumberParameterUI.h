@@ -11,6 +11,7 @@ public:
     void setWidth(int width);
     void addListener(TextEditor::Listener* listener);
     virtual Component* getComponent() override;
+    virtual float getVisibleWidth() override;
 
 private:
     TextEditor value;

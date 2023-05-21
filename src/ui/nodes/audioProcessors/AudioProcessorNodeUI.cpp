@@ -16,66 +16,64 @@ AudioProcessorNodeUI::AudioProcessorNodeUI(String name, NodeInstance nodeInstanc
     //@TODO Refactor this 
     auto parameters = node->getParameters();
     auto yPosition = PARAMETER_Y_OFFSET;
+    auto maxParameterWidth = 0;
+
     for(ParameterPtr parameter : parameters->getAllParameters())
     {
-        auto parameterHeight = 0;
+        std::shared_ptr<BaseParameterUI> parameterUI = nullptr;
+
         if(parameter->getType() == ParameterType::Boolean)
         {
             auto boolParameter = static_cast<BooleanParameter*>(parameter.get());
-            auto parameterUI = std::make_shared<BoolParameterUI>();
-            parameterUI->setParameterName(boolParameter->getName());
-            parameterUI->setToggleState(boolParameter->getValue());
-            parameterUI->setTopLeftPosition(PARAMETER_X_OFFSET, yPosition);
-            parameterUI->addListener(this);
-            addAndMakeVisible(parameterUI.get());
-
-            this->parametersUI.add(parameterUI);
-            componentIdToParameterMap.insert({parameterUI->getId(), parameter});
-            parameterNameToUI.insert({parameter->getName(), parameterUI.get()});
-            parameterHeight = parameterUI->getHeight();
+            auto boolParameterUI = std::make_shared<BoolParameterUI>();
+            parameterUI = boolParameterUI;
+            boolParameterUI->setParameterName(boolParameter->getName());
+            boolParameterUI->setToggleState(boolParameter->getValue());
+            boolParameterUI->setTopLeftPosition(PARAMETER_X_OFFSET, yPosition);
+            boolParameterUI->addListener(this);
+            
         }
         else if(parameter->getType() == ParameterType::Double)
         {
             auto doubleParameter = static_cast<DoubleParameter*>(parameter.get());
-            auto parameterUI = std::make_shared<SliderParameterUI>();
-            parameterUI->setParameterName(doubleParameter->getName());
-            parameterUI->setMinAndMax(doubleParameter->getMin(), doubleParameter->getMax());
-            parameterUI->setValue(doubleParameter->getValue());
-            parameterUI->setTopLeftPosition(PARAMETER_X_OFFSET, yPosition);
-            parameterUI->addListener(this);
-            addAndMakeVisible(parameterUI.get());
-
-            this->parametersUI.add(parameterUI);
-            componentIdToParameterMap.insert({parameterUI->getId(), parameter});
-            parameterNameToUI.insert({parameter->getName(), parameterUI.get()});
-            parameterHeight = parameterUI->getHeight();
+            auto sliderParameterUI = std::make_shared<SliderParameterUI>();
+            parameterUI = sliderParameterUI;
+            sliderParameterUI->setParameterName(doubleParameter->getName());
+            sliderParameterUI->setMinAndMax(doubleParameter->getMin(), doubleParameter->getMax());
+            sliderParameterUI->setValue(doubleParameter->getValue());
+            sliderParameterUI->setTopLeftPosition(PARAMETER_X_OFFSET, yPosition);
+            sliderParameterUI->addListener(this);
         }
         else if(parameter->getType() == ParameterType::Option)
         {
             auto optionParameter = static_cast<OptionParameter*>(parameter.get());
-            auto parameterUI = std::make_shared<ComboBoxParameterUI>();
+            auto comboBoxParameterUI = std::make_shared<ComboBoxParameterUI>();
+            parameterUI = comboBoxParameterUI;
+
             for(OptionItem item : optionParameter->getItems())
             {
-                parameterUI->addItem(item.name, item.value);
+                comboBoxParameterUI->addItem(item.name, item.value);
             }
 
-            parameterUI->setParameterName(optionParameter->getName());
-            parameterUI->setSelectedItem(optionParameter->getValue());
-            parameterUI->setTopLeftPosition(PARAMETER_X_OFFSET, yPosition);
-            parameterUI->addListener(this);
-            addAndMakeVisible(parameterUI.get());
-
-            this->parametersUI.add(parameterUI);
-            componentIdToParameterMap.insert({parameterUI->getId(), parameter});
-            parameterNameToUI.insert({parameter->getName(), parameterUI.get()});
-            parameterHeight = parameterUI->getHeight();
+            comboBoxParameterUI->setParameterName(optionParameter->getName());
+            comboBoxParameterUI->setSelectedItem(optionParameter->getValue());
+            comboBoxParameterUI->setTopLeftPosition(PARAMETER_X_OFFSET, yPosition);
+            comboBoxParameterUI->addListener(this);
         }
 
-        yPosition += parameterHeight;
+        addAndMakeVisible(parameterUI.get());
+        this->parametersUI.add(parameterUI);
+        componentIdToParameterMap.insert({parameterUI->getId(), parameter});
+        parameterNameToUI.insert({parameter->getName(), parameterUI.get()});
+
+        if(parameterUI->getVisibleWidth() > maxParameterWidth)
+            maxParameterWidth = parameterUI->getVisibleWidth();
+
+        yPosition += parameterUI->getHeight();
     }
 
     auto height = NODE_MIN_HEIGHT + yPosition;
-    setBounds(0, 0, NODE_DEFAULT_WIDTH, height);
+    setBounds(0, 0, maxParameterWidth + 20, height);
 
     nameLabel.setBounds(0, 0, NODE_DEFAULT_WIDTH, TEXT_HEIGHT);
     updateNameAndReCenter(this->name);

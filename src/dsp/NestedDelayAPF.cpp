@@ -75,6 +75,6 @@ void NestedDelayAPF::onParametersChanged()
     double innerAPFG = parameters->getParameterValueByName<double>("Inner APF G");
 
     AudioParametersPtr nestedAPFParameters = nestedApf.getParameters();
-    nestedAPFParameters->setParameterValueByName<double>("Inner Delay Time", innerDelayTimeInMs);
-    nestedAPFParameters->setParameterValueByName<double>("Inner APF G", innerAPFG);
+    nestedAPFParameters->setParameterValueByName<double>("TimeMs", innerDelayTimeInMs);
+    nestedAPFParameters->setParameterValueByName<double>("APF G", innerAPFG);
 }
