@@ -21,9 +21,10 @@ public:
 
     virtual Component* getComponent() override;
     virtual float getVisibleWidth() override;
-    // For setting min/max manually
-    void mouseDown(const MouseEvent& e) override;
-    void mouseDrag(const MouseEvent& e) override;
+
+    // Useful for setting min/max manually or context menus on parameters
+    // void mouseDown(const MouseEvent& e) override;
+    // void mouseDrag(const MouseEvent& e) override;
 
 private:
     double value = 0.0;
