@@ -80,9 +80,11 @@ float SliderParameterUI::getVisibleWidth()
 // #warning DELETE
 // void SliderParameterUI::mouseDown(const MouseEvent& e)
 // {
-//     int x = e.getMouseDownX();
-//     int i = 0;
-//     // e.getEventRelativeTo(getParentComponent());
+//     if(e.mods.isLeftButtonDown())
+//     {
+//         auto parent = getParentComponent();
+//         parent->mouseDown(e.getEventRelativeTo(parent));
+//     }
 // }
 
 // void SliderParameterUI::mouseDrag(const MouseEvent& e)
@@ -90,5 +92,4 @@ float SliderParameterUI::getVisibleWidth()
 //     auto parent = getParentComponent();
 //     parent->mouseDrag(e.getEventRelativeTo(parent));
 //     e.getEventRelativeTo(parent);
-//     // e.getEventRelativeTo(getParentComponent());
 // }
