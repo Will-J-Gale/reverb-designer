@@ -3,7 +3,7 @@
 DelayAPF::DelayAPF()
 {
     parameters = MAKE_PARAMETERS({
-        std::make_shared<DoubleParameter>("DelayTimeMs", 0.0, APF_MIN_DELAY, APF_MAX_DELAY),
+        std::make_shared<DoubleParameter>("TimeMs", 0.0, APF_MIN_DELAY, APF_MAX_DELAY),
         std::make_shared<DoubleParameter>("APF G", 0.0, 0.0, 1.0),
         std::make_shared<BooleanParameter>("Enable LPF", false),
         std::make_shared<DoubleParameter>("LPF G", 0.0, 0.0, 1.0),
@@ -33,7 +33,7 @@ double DelayAPF::process(double xn)
     double g = parameters->getParameterValueByName<double>("APF G");
     double g2 = parameters->getParameterValueByName<double>("LPF G");
     double lfoDepth = parameters->getParameterValueByName<double>("LFO Depth");
-    double delayTimeMs = parameters->getParameterValueByName<double>("DelayTimeMs");
+    double delayTimeMs = parameters->getParameterValueByName<double>("TimeMs");
     double lfoMaxModulationInMs = parameters->getParameterValueByName<double>("LFO Max Modulation ms");
     double enableLPF = parameters->getParameterValueByName<bool>("Enable LPF");
     double enableLFO = parameters->getParameterValueByName<bool>("Enable LFO");
@@ -89,11 +89,11 @@ bool DelayAPF::canProcessAudioFrame()
 
 void DelayAPF::onParametersChanged()
 {
-    double delayTimeInMs = parameters->getParameterValueByName<double>("DelayTimeMs");
+    double delayTimeInMs = parameters->getParameterValueByName<double>("TimeMs");
     double lfoRate = parameters->getParameterValueByName<double>("LFO Rate");
     
     AudioParametersPtr delayParameters = delay.getParameters();
-    delayParameters->setParameterValueByName<double>("DelayTimeMs", delayTimeInMs);
+    delayParameters->setParameterValueByName<double>("TimeMs", delayTimeInMs);
 
     OscillatorParameters lfoPrams = lfo.getParameters();
     lfoPrams.frequency = lfoRate;

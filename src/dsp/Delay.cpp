@@ -3,7 +3,7 @@
 Delay::Delay()
 {
     parameters = MAKE_PARAMETERS({
-        std::make_shared<DoubleParameter>("DelayTimeMs", 0.0, 0.0, 5000.0)
+        std::make_shared<DoubleParameter>("TimeMs", 0.0, 0.0, 5000.0)
     });
 
     parameters->addOnChangeCallback(std::bind(&Delay::onParametersChanged, this));
@@ -15,7 +15,7 @@ bool Delay::reset(double sampleRate)
     this->sampleRate = sampleRate;
 
     buffer.flushBuffer();
-    double maxDelayTimeInSeconds = parameters->getParameterByNameAsType<DoubleParameter>("DelayTimeMs")->getMax() / 1000.0;
+    double maxDelayTimeInSeconds = parameters->getParameterByNameAsType<DoubleParameter>("TimeMs")->getMax() / 1000.0;
     bufferLength = (sampleRate * maxDelayTimeInSeconds) + 1;
 
     buffer.createCircularBuffer(bufferLength);
@@ -66,6 +66,6 @@ void Delay::write(double xn)
 
 void Delay::onParametersChanged()
 {
-    auto delayTimeInMs = parameters->getParameterValueByName<double>("DelayTimeMs");
+    auto delayTimeInMs = parameters->getParameterValueByName<double>("TimeMs");
     delayTimeInSamples = sampleRate * (delayTimeInMs / 1000.0);
 }
