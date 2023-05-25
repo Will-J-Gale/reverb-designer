@@ -124,7 +124,6 @@ void AudioFilter::calculateCoefficients()
         case FilterType::LWRHPF2:
             AudioFilterCalculations::calcualteLWRHPF2(_coeffs, fc, fs);
             break;
-        
     }
 
     _biquad.setCoefficients(_coeffs);

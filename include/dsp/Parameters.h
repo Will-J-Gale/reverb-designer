@@ -42,8 +42,7 @@ enum class BiquadAlgorithm
 
 enum class FilterType
 {
-    EMPTY,
-    LPF1,
+    LPF1=1,
     HPF1,
     LPF2,
     HPF2,
