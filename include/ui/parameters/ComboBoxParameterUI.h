@@ -15,5 +15,5 @@ public:
     virtual Component* getComponent() override;
     virtual float getVisibleWidth() override;
 private:
-    ComboBox choices; 
+    ComboBox _choices; 
 };

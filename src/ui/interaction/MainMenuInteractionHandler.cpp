@@ -6,44 +6,44 @@
 
 MainMenuInteractionHandler::MainMenuInteractionHandler(MainGraphEditor* mainGraphEditor)
 {
-    this->mainGraphEditor = mainGraphEditor;
+    _mainGraphEditor = mainGraphEditor;
 }
 
 void MainMenuInteractionHandler::onNewProject()
 {
     auto io = Array<NodeUIPtr>();
-    io.addArray(mainGraphEditor->inputs);
-    io.addArray(mainGraphEditor->outputs);
+    io.addArray(_mainGraphEditor->_inputs);
+    io.addArray(_mainGraphEditor->_outputs);
 
-    auto nodesToDelete = mainGraphEditor->nodes;
+    auto nodesToDelete = _mainGraphEditor->_nodes;
     nodesToDelete.removeValuesIn(io);
-    mainGraphEditor->nodes.removeValuesNotIn(io);
+    _mainGraphEditor->_nodes.removeValuesNotIn(io);
 
     for (auto node : nodesToDelete)
     {
         if (!io.contains(node))
         {
-            mainGraphEditor->nodeInteractionHandler.deleteNode(node.get());
+            _mainGraphEditor->_nodeInteractionHandler.deleteNode(node.get());
         }
     }
 
-    mainGraphEditor->repaint();
+    _mainGraphEditor->repaint();
 }
 
 void MainMenuInteractionHandler::onPresetSelected(Presets::Type presetId)
 {
-    mainGraphEditor->clear();
+    _mainGraphEditor->clear();
 
     auto xmlString = Presets::getPreset(presetId);
     auto xml = parseXML(xmlString);
     onNewProject();
-    mainGraphEditor->fromXml(xml.get());
+    _mainGraphEditor->fromXml(xml.get());
     xml->deleteAllChildElements();
 }
 
 void MainMenuInteractionHandler::onSave(std::string savePath)
 {
-    auto pluginState = mainGraphEditor->toXml();
+    auto pluginState = _mainGraphEditor->toXml();
     StorageManager::saveXML(savePath, pluginState->toString().toStdString());
     pluginState->deleteAllChildElements();
     delete pluginState;
@@ -55,7 +55,7 @@ void MainMenuInteractionHandler::onLoad(std::string filepath)
     auto xmlString = file.loadFileAsString().toStdString();
     auto xml = parseXML(xmlString);
     onNewProject();
-    mainGraphEditor->fromXml(xml.get());
+    _mainGraphEditor->fromXml(xml.get());
     xml->deleteAllChildElements();
 }
 
@@ -63,8 +63,8 @@ void MainMenuInteractionHandler::onMacroSelected(File macroFile)
 {
     auto macroXmlString = macroFile.loadFileAsString().toStdString();
     auto xml = parseXML(macroXmlString);
-    auto macroNode = mainGraphEditor->nodeInteractionHandler.createMacroNodeFromXml(xml.get());
-    mainGraphEditor->nodeInteractionHandler.initializeNode(macroNode);
+    auto macroNode = _mainGraphEditor->_nodeInteractionHandler.createMacroNodeFromXml(xml.get());
+    _mainGraphEditor->_nodeInteractionHandler.initializeNode(macroNode);
 
     xml->deleteAllChildElements();
 }

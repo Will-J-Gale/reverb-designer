@@ -70,7 +70,7 @@ enum BiquadCoefficients
     B2,
     C0,
     D0,
-    numCoeffs
+    NUM_COEFFS
 };
 
 enum BiquadStateRegister
@@ -79,7 +79,7 @@ enum BiquadStateRegister
     x_z2,
     y_z1,
     y_z2,
-    numStates
+    NUM_STATES
 };
 
 enum class GeneratorWaveform

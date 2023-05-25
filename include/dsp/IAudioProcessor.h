@@ -11,7 +11,7 @@
 class IAudioProcessor
 {
 public:
-    virtual bool reset(double sampleRate) = 0;
+    virtual void reset(double sampleRate) = 0;
     virtual double process(double xn) = 0;
     virtual bool canProcessAudioFrame() = 0;
 
@@ -20,12 +20,12 @@ public:
     virtual void onParametersChanged() {};
     virtual AudioParametersPtr getParameters()
     {
-        jassert(parameters != nullptr);
-        return parameters;
+        jassert(_parameters != nullptr);
+        return _parameters;
     };
     virtual void setParameters(AudioParametersPtr newParameters)
     {
-        parameters = newParameters;
+        _parameters = newParameters;
     };
 	virtual double processAuxInputAudioSample(double xn)
 	{
@@ -40,5 +40,5 @@ public:
 	}
 
 protected:
-    AudioParametersPtr parameters = nullptr;
+    AudioParametersPtr _parameters = nullptr;
 };

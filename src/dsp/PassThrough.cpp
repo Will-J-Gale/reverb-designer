@@ -2,12 +2,11 @@
 
 PassThrough::PassThrough()
 {   
-    parameters = MAKE_PARAMETERS({});
+    _parameters = MAKE_PARAMETERS({});
 }
 
-bool PassThrough::reset(double sampleRate)
+void PassThrough::reset(double sampleRate)
 {
-    return true;
 }
 
 double PassThrough::process(double xn)
@@ -21,5 +20,5 @@ bool PassThrough::canProcessAudioFrame()
 }
 AudioParametersPtr PassThrough::getParameters()
 {
-    return parameters;
+    return _parameters;
 }

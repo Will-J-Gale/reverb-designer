@@ -2,52 +2,52 @@
 
 void SelectionHandler::setItems(Array<NodeUI*> items)
 {
-    this->items = items;
+    _items = items;
     
-    for (auto item : this->items)
+    for (auto item : _items)
     {
-        originalPositions.emplace(item, item->getPosition());
+        _originalPositions.emplace(item, item->getPosition());
     }
 }
 
 void SelectionHandler::moveItems(Point<int> velocity)
 {
-    for (auto item : items)
+    for (auto item : _items)
     {
-        item->setTopLeftPosition(originalPositions[item] + velocity);
+        item->setTopLeftPosition(_originalPositions[item] + velocity);
     }
 }
 
 void SelectionHandler::clear()
 {
-    items.clear();
-    originalPositions.clear();
+    _items.clear();
+    _originalPositions.clear();
 }
 
 void SelectionHandler::updateItemPositions()
 {
-    for (auto item : items)
+    for (auto item : _items)
     {
-        originalPositions[item] = item->getPosition();
+        _originalPositions[item] = item->getPosition();
     }
 }
 
 bool SelectionHandler::contains(NodeUI* item)
 {
-	return items.contains(item);
+	return _items.contains(item);
 }
 
 bool SelectionHandler::isEmpty()
 {
-    return items.isEmpty();
+    return _items.isEmpty();
 }
 
 size_t SelectionHandler::size()
 {
-    return items.size();
+    return _items.size();
 }
 
 Array<NodeUI*> SelectionHandler::getItems()
 {
-    return items;
+    return _items;
 }

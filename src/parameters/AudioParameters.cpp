@@ -9,7 +9,7 @@ ParameterPtr AudioParameters::getParameterByName(std::string name)
 {
     try
     {
-        return nameToParameterMap.at(name);
+        return _nameToParameterMap.at(name);
     }
     catch(std::out_of_range& e)
     {
@@ -19,21 +19,21 @@ ParameterPtr AudioParameters::getParameterByName(std::string name)
 
 void AudioParameters::setParameters(std::vector<ParameterPtr> parameters)
 {
-    this->parameters = parameters;
-    nameToParameterMap.clear();
+    _parameters = parameters;
+    _nameToParameterMap.clear();
 
     for(ParameterPtr parameter : parameters)
     {
-        nameToParameterMap.insert({parameter->getName(), parameter});
+        _nameToParameterMap.insert({parameter->getName(), parameter});
     }
 }
 std::vector<ParameterPtr>& AudioParameters::getAllParameters()
 {
-    return parameters;
+    return _parameters;
 }
 void AudioParameters::addOnChangeCallback(OnParameterChangeCallback callback)
 {
-    for(ParameterPtr parameter : parameters)
+    for(ParameterPtr parameter : _parameters)
     {
         parameter->setOnChangeCallback(callback);
     }

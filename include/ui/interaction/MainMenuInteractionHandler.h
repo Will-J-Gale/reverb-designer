@@ -16,5 +16,5 @@ public:
     void onTestReset();
 
 private:
-    MainGraphEditor* mainGraphEditor;
+    MainGraphEditor* _mainGraphEditor;
 };

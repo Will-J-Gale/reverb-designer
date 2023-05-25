@@ -13,8 +13,8 @@ public:
     void setInterpolate(bool interpolate);
 
 private:
-    std::unique_ptr<double[]> buffer;
-    unsigned int bufferLength = 0;
-    unsigned int writeIndex = 0;
-    bool interpolate = false;
+    std::unique_ptr<double[]> _buffer;
+    unsigned int _bufferLength = 0;
+    unsigned int _writeIndex = 0;
+    bool _interpolate = false;
 };

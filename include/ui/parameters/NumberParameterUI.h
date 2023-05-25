@@ -14,5 +14,5 @@ public:
     virtual float getVisibleWidth() override;
 
 private:
-    TextEditor value;
+    TextEditor _value;
 };

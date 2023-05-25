@@ -2,47 +2,47 @@
 
 ZoomHandler::ZoomHandler(Component* component)
 {
-    this->component = component;
+    _component = component;
     setOriginalBounds(component->getBounds());
 }
 
 void ZoomHandler::zoomIn()
 {
-    auto transform = component->getTransform().scaled(zoomAmount, zoomAmount);
+    auto transform = _component->getTransform().scaled(_zoomAmount, _zoomAmount);
     
-    component->setTransform(transform);
-    zoomLevel *= zoomAmount;
+    _component->setTransform(transform);
+    _zoomLevel *= _zoomAmount;
     
     updateSize();
 }
 
 void ZoomHandler::zoomOut()
 {
-    auto inverseZoom = 1 / zoomAmount;
-    auto transform = component->getTransform().scaled(inverseZoom, inverseZoom);
+    auto inverseZoom = 1 / _zoomAmount;
+    auto transform = _component->getTransform().scaled(inverseZoom, inverseZoom);
     
-    component->setTransform(transform);
-    zoomLevel *= inverseZoom;
+    _component->setTransform(transform);
+    _zoomLevel *= inverseZoom;
     
     updateSize();
 }
 
 void ZoomHandler::reset()
 {
-    auto transform = component->getTransform().scaled(1, 1);
-    component->setTransform(transform);
+    auto transform = _component->getTransform().scaled(1, 1);
+    _component->setTransform(transform);
     updateSize();
 }
 
 void ZoomHandler::updateSize()
 {
-    auto width = originalWidth * (1 / zoomLevel);
-    auto height = originalHeight * (1 / zoomLevel);
-    component->setSize(width, height);
+    auto width = _originalWidth * (1 / _zoomLevel);
+    auto height = _originalHeight * (1 / _zoomLevel);
+    _component->setSize(width, height);
 }
 
 void ZoomHandler::setOriginalBounds(Rectangle<int> bounds)
 {
-    originalWidth = bounds.getWidth();
-    originalHeight = bounds.getHeight();
+    _originalWidth = bounds.getWidth();
+    _originalHeight = bounds.getHeight();
 }

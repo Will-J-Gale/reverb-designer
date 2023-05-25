@@ -1,9 +1,10 @@
 #pragma once
 #include <dsp/IAudioProcessor.h>
 #include <dsp/AudioProcessorNode.h>
-#include <utils/ManagedArray.h>
 #include <dsp/AudioProcessorState.h>
+#include <utils/ManagedArray.h>
 #include <utils/XmlUtils.h>
+#include <utils/Constants.h>
 
 class PluginGraph : public ManagedArray
 {
@@ -12,8 +13,8 @@ public:
     PluginGraph() {};
     ~PluginGraph();
 
-    bool reset(double sampleRate);
-    void process(std::vector<float>& inputFrame, size_t numInputChannels);
+    void reset(double sampleRate);
+    void process(std::vector<float>& inputFrame, int numInputChannels);
     bool canProcessAudioFrame();
 
     void createDSPObject(NodeInstance dspObjectType);
@@ -61,21 +62,20 @@ private:
 
     Array<AudioProcessorNode*> processBlocks(Array<AudioProcessorNode*> blockToProcess);
 
-    double sampleRate = 0;
-    Array<AudioProcessorNodePtr> allNodes;
-    Array<AudioProcessorNodePtr> inputs;
-    Array<AudioProcessorNodePtr> outputs;
-    Array<AudioProcessorNode*> nodesToDelete;
+    double _sampleRate = DEFAULT_SAMPLERATE;
+    Array<AudioProcessorNodePtr> _allNodes;
+    Array<AudioProcessorNodePtr> _inputs;
+    Array<AudioProcessorNodePtr> _outputs;
+    Array<AudioProcessorNode*> _nodesToDelete;
 
-    XmlElementPtr pluginState = nullptr;
+    XmlElementPtr _pluginState = nullptr;
     
-    bool updateProcessorsFlag = false;
-    bool processPathNeedsUpdating = false;
-    bool clearAllNodes = false;
-    bool deleteNodes = false;
+    bool _updateProcessorsFlag = false;
+    bool _processPathNeedsUpdating = false;
+    bool _clearAllNodes = false;
+    bool _deleteNodes = false;
 
-    std::function<std::shared_ptr<AudioProcessorState>()> generateCallback;
-    Array<Array<AudioProcessorNode*>> processPath;
-
-    std::shared_ptr<AudioProcessorState> tempProcessorState;
+    std::function<std::shared_ptr<AudioProcessorState>()> _generateCallback;
+    Array<Array<AudioProcessorNode*>> _processPath;
+    std::shared_ptr<AudioProcessorState> _tempProcessorState;
 };

@@ -126,9 +126,9 @@ bool ReverbDesignerAudioProcessor::isBusesLayoutSupported (const BusesLayout& la
 
 void ReverbDesignerAudioProcessor::prepareToPlay(double sampleRate, int samplesPerBlock)
 {
-    pluginGraph->reset(sampleRate);  
-    pluginGraph->addInputs(getNumInputChannels());
-    pluginGraph->addOutputs(getNumOutputChannels());
+    _pluginGraph->reset(sampleRate);  
+    _pluginGraph->addInputs(getTotalNumInputChannels());
+    _pluginGraph->addOutputs(getTotalNumOutputChannels());
 }
 void ReverbDesignerAudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiBuffer& midiMessages)
 {
@@ -136,7 +136,7 @@ void ReverbDesignerAudioProcessor::processBlock (AudioBuffer<float>& buffer, Mid
     float* rightData = buffer.getWritePointer(1);
     auto channels = buffer.getArrayOfWritePointers();
 
-    size_t numChannels = buffer.getNumChannels();
+    int numChannels = buffer.getNumChannels();
 
     for (int i = 0; i < buffer.getNumSamples(); i++)
     {
@@ -147,9 +147,9 @@ void ReverbDesignerAudioProcessor::processBlock (AudioBuffer<float>& buffer, Mid
             frame->push_back(channels[channel][i]);
         }
 
-        pluginGraph->process(*frame, numChannels);
-        leftData[i] = pluginGraph->getOutputSampleFrom(0);
-        rightData[i] = pluginGraph->getOutputSampleFrom(1);
+        _pluginGraph->process(*frame, numChannels);
+        leftData[i] = _pluginGraph->getOutputSampleFrom(0);
+        rightData[i] = _pluginGraph->getOutputSampleFrom(1);
     }
 }
 
@@ -180,7 +180,7 @@ void ReverbDesignerAudioProcessor::setStateInformation (const void* data, int si
 
 PluginGraph* ReverbDesignerAudioProcessor::getPluginGraph()
 {
-    return pluginGraph.get();
+    return _pluginGraph.get();
 }
 
 //==============================================================================

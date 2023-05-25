@@ -9,6 +9,6 @@ public:
     void drag(const MouseEvent& e);
 
 private:
-    Component* component;
-    Point<int> dragOffset;
+    Component* _component;
+    Point<int> _dragOffset;
 };

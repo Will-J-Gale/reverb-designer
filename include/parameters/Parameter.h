@@ -17,10 +17,10 @@ enum class ParameterType
 struct OptionItem
 {
     OptionItem(){};
-    OptionItem(std::string name, int value)
+    OptionItem(std::string option_name, int option_value)
     {
-        this->name = name;
-        this->value = value;
+        name = option_name;
+        value = option_value;
     }
 
     std::string name;
@@ -32,12 +32,12 @@ class Parameter
 public:
     Parameter(ParameterType type, std::string name)
     {
-        this->type = type;
-        this->name = name;
+        _type = type;
+        _name = name;
     }
 
-    ParameterType getType(){ return type; }
-    std::string getName(){ return name; }
+    ParameterType getType(){ return _type; }
+    std::string getName(){ return _name; }
     void setOnChangeCallback(OnParameterChangeCallback callback){ onChangeCallback = callback; }
 
     template<class T>
@@ -47,8 +47,8 @@ public:
     }
 
 protected:
-    ParameterType type;
-    std::string name;
+    ParameterType _type;
+    std::string _name;
     OnParameterChangeCallback onChangeCallback = nullptr;
 };
 
@@ -57,20 +57,20 @@ class BooleanParameter : public Parameter
 public:
     BooleanParameter(std::string name, bool value) : Parameter(ParameterType::Boolean, name)
     {
-        this->value = value;
+        _value = value;
     };
 
-    bool getValue() { return value; }
+    bool getValue() { return _value; }
     void setValue(bool value) 
     { 
-        this->value = value;
+        _value = value;
 
         if(onChangeCallback != nullptr)
             onChangeCallback();
     }
 
 private:
-    bool value;
+    bool _value;
 };
 
 class FloatParameter : public Parameter
@@ -78,45 +78,45 @@ class FloatParameter : public Parameter
 public:
     FloatParameter(std::string name, float value) : Parameter(ParameterType::Float, name)
     {
-        this->value = value;
+        _value = value;
     };
-    float getValue() { return value; }
+    float getValue() { return _value; }
     void setValue(float value)
     { 
-        this->value = value;
+        _value = value;
 
         if(onChangeCallback != nullptr)
             onChangeCallback();
     }
 
 private:
-    float value;
+    float _value;
 };
 
 struct OptionParameter : public Parameter
 {
 public:
-    OptionParameter(std::string name, std::vector<OptionItem> options, int initialValueIndex) : Parameter(ParameterType::Option, name)
+    OptionParameter(std::string name, std::vector<OptionItem> options, size_t initialValueIndex) : Parameter(ParameterType::Option, name)
     {
-        this->options = options;
-        this->value = options[initialValueIndex].value;
+        _options = options;
+        _value = options[initialValueIndex].value;
     };
 
-    int getValue() { return value; }
+    int getValue() { return _value; }
     void setValue(int value)
     { 
-        this->value = value;
+        _value = value;
 
         if(onChangeCallback != nullptr)
             onChangeCallback();
     }
 
-    std::vector<OptionItem> getItems(){ return options; }
+    std::vector<OptionItem> getItems(){ return _options; }
     OptionItem getInitialItem(){ return initialItem; }
 
 private:
-    int value;
-    std::vector<OptionItem> options;
+    int _value;
+    std::vector<OptionItem> _options;
     OptionItem initialItem;
 };
 
@@ -125,25 +125,25 @@ class DoubleParameter : public Parameter
 public:
     DoubleParameter(std::string name, double value, double min, double max) : Parameter(ParameterType::Double, name)
     {
-        this->value = value;
-        this->min = min;
-        this->max = max;
+        _value = value;
+        _min = min;
+        _max = max;
     };
 
-    double getValue() { return value; }
+    double getValue() { return _value; }
     void setValue(double value)
     { 
-        this->value = value;
+        _value = value;
 
         if(onChangeCallback != nullptr)
             onChangeCallback();
     }
 
-    double getMin() { return min; }
-    double getMax() { return max; }
+    double getMin() { return _min; }
+    double getMax() { return _max; }
 
 private:
-    double value;
-    double min;
-    double max;
+    double _value;
+    double _min;
+    double _max;
 };

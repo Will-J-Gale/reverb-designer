@@ -7,7 +7,7 @@ AudioProcessorMacroWindow::AudioProcessorMacroWindow(
     int buttonsNeeded)
         : DocumentWindow (name, backgroundColour, buttonsNeeded)
 {
-    this->onCloseCallback = onCloseCallback;
+    _onCloseCallback = onCloseCallback;
     setBounds(0,0, MACRO_WINDOW_DEFAULT_WIDTH, MACRO_WINDOW_DEFAULT_HEIGHT);
     setResizable(MACRO_WINDOW_RESIZABLE, MACRO_WINDOW_CORNER_RESIZE);
     setVisible(MACRO_WINDOW_DEFAULT_VISIBLE);
@@ -16,5 +16,5 @@ AudioProcessorMacroWindow::AudioProcessorMacroWindow(
 
 void AudioProcessorMacroWindow::closeButtonPressed()
 {
-    this->onCloseCallback();
+    _onCloseCallback();
 }

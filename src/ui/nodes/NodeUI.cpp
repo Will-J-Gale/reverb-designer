@@ -2,9 +2,9 @@
 
 NodeUI::NodeUI(String name, NodeClass nodeClass, NodeInstance nodeInstance)
 {
-    this->name = name;
-    this->nodeClass = nodeClass;
-    this->nodeInstance = nodeInstance;
+    _name = name;
+    _nodeClass = nodeClass;
+    _nodeInstance = nodeInstance;
 
     initialize();
 }
@@ -13,110 +13,70 @@ void NodeUI::initialize()
 {
     setBounds(0, 0, 200, 50);
 
-    updateNameAndReCenter(name);
-    nameLabel.setBounds(getBounds());
-    nameLabel.setJustificationType(Justification::centredTop);
-    nameLabel.setInterceptsMouseClicks(false, false);
-    nameLabel.setColour(Label::textColourId, Colour::fromString(TEXT_COLOUR));
-    nameLabel.setFont(Font(FONT_SIZE, Font::bold));
+    updateNameAndReCenter(_name);
+    _nameLabel.setBounds(getBounds());
+    _nameLabel.setJustificationType(Justification::centredTop);
+    _nameLabel.setInterceptsMouseClicks(false, false);
+    _nameLabel.setColour(Label::textColourId, Colour::fromString(TEXT_COLOUR));
+    _nameLabel.setFont(Font(FONT_SIZE, Font::bold));
 
-    addAndMakeVisible(nameLabel);
+    addAndMakeVisible(_nameLabel);
 }
 
 void NodeUI::addInputConnector()
 {
-    input = std::make_shared<NodeConnectorUI>(this);
-    input->setType(NodeConnectorType::AudioInput);
-    input->setCentrePosition(CONNECTOR_SIZE / 2, getHeight() / 2);
+    _inputConnector = std::make_shared<NodeConnectorUI>(this);
+    _inputConnector->setType(NodeConnectorType::AudioInput);
+    _inputConnector->setCentrePosition(CONNECTOR_SIZE / 2, getHeight() / 2);
     
-    addAndMakeVisible(input.get());  
+    addAndMakeVisible(_inputConnector.get());  
 }
 
 void NodeUI::addOutputConnector()
 {
-    output = std::make_shared<NodeConnectorUI>(this);
-    output->setType(NodeConnectorType::AudioOutput);
-    output->setCentrePosition(getWidth() - (CONNECTOR_SIZE / 2), getHeight() / 2);
+    _outputConnector = std::make_shared<NodeConnectorUI>(this);
+    _outputConnector->setType(NodeConnectorType::AudioOutput);
+    _outputConnector->setCentrePosition(getWidth() - (CONNECTOR_SIZE / 2), getHeight() / 2);
     
-    addAndMakeVisible(output.get());
+    addAndMakeVisible(_outputConnector.get());
 }
 
 NodeConnectorUI* NodeUI::getInputConnector()
 {
-    return input.get();
+    return _inputConnector.get();
 }
 
 NodeConnectorUI* NodeUI::getOutputConnector()
 {
-	return output.get();
+	return _outputConnector.get();
 }
 
 Array<NodeConnectorUI*> NodeUI::getAllNodeConnectors()
 {
     Array<NodeConnectorUI*> nodes;
 
-    if (input != nullptr)
-        nodes.add(input.get());
+    if (_inputConnector != nullptr)
+        nodes.add(_inputConnector.get());
 
-    if (output != nullptr)
-        nodes.add(output.get());
+    if (_outputConnector != nullptr)
+        nodes.add(_outputConnector.get());
 
     return nodes;
 }
 
-// void NodeUI::connectInput(NodeUI* connection)
-// {
-//     if (!inputConnections.contains(connection))
-//     {
-//         inputConnections.add(connection);
-//         // this->processorNode->connectInput(connection->getProcessorNode().get());
-//     }
-    
-// }
-
-// void NodeUI::connectFeedbackInput(NodeUI* connection)
-// {
-//     if (!feedbackConnections.contains(connection))
-//     {
-//         feedbackConnections.add(connection);
-//         // this->processorNode->connectFeedbackInput(connection->getProcessorNode().get());
-//     }
-// }
-
-// void NodeUI::connectOutput(NodeUI* connection)
-// {
-//     if (!outputConnections.contains(connection))
-//     {
-//         outputConnections.add(connection);
-//         // this->processorNode->connectOutput(connection->getProcessorNode().get());
-//     } 
-// }
-
-// void NodeUI::disconnectInput(NodeUI* connection)
-// {
-//     removeFromArray(inputConnections, connection);
-//     // this->processorNode->disconnectInput(connection->getProcessorNode().get());
-// }
-
-// void NodeUI::disconnectOutput(NodeUI* connection)
-// {
-//     removeFromArray(outputConnections, connection);
-//     // this->processorNode->disconnectOutput(connection->getProcessorNode().get());
-// }
-
 Array<NodeUI*> NodeUI::getOutputConnections()
 {
-    return outputConnections;
+    return _outputConnections;
 }
 
 Array<NodeUI*> NodeUI::getInputConnections()
 {
-    return inputConnections;
+    return _inputConnections;
 }
 
 Array<NodeUI*> NodeUI::getFeedbackConnections()
 {
-    return feedbackConnections;
+    return _feedbackConnections;
 }
 
 Point<int> NodeUI::getCenterPosition()
@@ -143,7 +103,7 @@ void NodeUI::paint(Graphics& g)
 
 void NodeUI::mouseDown(const MouseEvent& e)
 {
-    dragHandler.mouseDown(e);
+    _dragHandler.mouseDown(e);
 
     if (e.mods.isRightButtonDown())
     {
@@ -151,7 +111,7 @@ void NodeUI::mouseDown(const MouseEvent& e)
     }
     else
     {
-        for (auto listener : listeners)
+        for (auto listener : _listeners)
         {
             listener->onNodeClicked(this, e);
         }
@@ -160,9 +120,9 @@ void NodeUI::mouseDown(const MouseEvent& e)
 
 void NodeUI::mouseDrag(const MouseEvent& e)
 {
-    dragHandler.drag(e);
+    _dragHandler.drag(e);
 
-    for (auto listener : listeners)
+    for (auto listener : _listeners)
     {
         listener->onNodeMoved(this, e);
     }
@@ -170,7 +130,7 @@ void NodeUI::mouseDrag(const MouseEvent& e)
 
 void NodeUI::mouseUp(const MouseEvent& e)
 {
-    for (auto listener : listeners)
+    for (auto listener : _listeners)
     {
         listener->onNodeReleased(this, e);
     }
@@ -178,9 +138,9 @@ void NodeUI::mouseUp(const MouseEvent& e)
 
 void NodeUI::handleRightClick()
 {
-    NodeContextMenuItems selection = (NodeContextMenuItems)contextMenu.show();
+    NodeContextMenuItems selection = (NodeContextMenuItems)_contextMenu.show();
 
-    for (auto listener : listeners)
+    for (auto listener : _listeners)
     {
         listener->onNodeContextSelection(this, selection);
     }
@@ -188,50 +148,50 @@ void NodeUI::handleRightClick()
 
 void NodeUI::updateNameAndReCenter(String name)
 {
-    nameLabel.setText(name, dontSendNotification);
-    nameLabel.setSize(getBounds().getWidth(), nameLabel.getBounds().getHeight());
+    _nameLabel.setText(name, dontSendNotification);
+    _nameLabel.setSize(getBounds().getWidth(), _nameLabel.getBounds().getHeight());
 }
 
 void NodeUI::addListener(Listener* listener)
 {
-    listeners.add(listener);
+    _listeners.add(listener);
 }
 
 void NodeUI::reverse()
 {
-    reversed = !reversed;
+    _reversed = !_reversed;
 
-    auto inputPosition = input->getPosition();
-    auto outputPosition = output->getPosition();
+    auto inputPosition = _inputConnector->getPosition();
+    auto outputPosition = _outputConnector->getPosition();
 
-    inputPosition.addXY(input->getWidth() / 2, input->getHeight() / 2);
-    outputPosition.addXY(output->getWidth() / 2, output->getHeight() / 2);
+    inputPosition.addXY(_inputConnector->getWidth() / 2, _inputConnector->getHeight() / 2);
+    outputPosition.addXY(_outputConnector->getWidth() / 2, _outputConnector->getHeight() / 2);
 
-    input->setCentrePosition(outputPosition);
-    output->setCentrePosition(inputPosition);
+    _inputConnector->setCentrePosition(outputPosition);
+    _outputConnector->setCentrePosition(inputPosition);
 }
 
 bool NodeUI::isReversed()
 {
-    return reversed;
+    return _reversed;
 }
 
 std::string NodeUI::getIdAsString()
 {
-    return id.toString().toStdString();
+    return _id.toString().toStdString();
 }
 
 NodeClass NodeUI::getNodeClass()
 {
-    return nodeClass;
+    return _nodeClass;
 }
 
 NodeInstance NodeUI::getNodeInstance()
 {
-    return nodeInstance;
+    return _nodeInstance;
 }
 
 String NodeUI::getNodeName()
 {
-    return name;
+    return _name;
 }

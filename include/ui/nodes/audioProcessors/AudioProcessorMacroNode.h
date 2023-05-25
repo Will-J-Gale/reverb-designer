@@ -35,6 +35,6 @@ public:
 
 private:
     void closeWindow();
-    std::unique_ptr<AudioProcessorMacroWindow> window;
-    std::shared_ptr<GraphEditor> graphEditor;
+    std::unique_ptr<AudioProcessorMacroWindow> _window;
+    std::shared_ptr<GraphEditor> _graphEditor;
 };

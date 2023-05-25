@@ -66,4 +66,4 @@ namespace NodeConnectionDrawer
             drawUTurnConnection(g, Point<int>(x1, y1), Point<int>(x2, y2), false);
         }
     }    
-};
+}

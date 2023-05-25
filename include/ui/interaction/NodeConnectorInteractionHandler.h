@@ -14,5 +14,5 @@ public:
     void onNodeConnectorLeftRelease(NodeConnectorUI* nodeConnector, const MouseEvent& e) override;
 
 private:
-    GraphEditor* graphEditor;
+    GraphEditor* _graphEditor;
 };

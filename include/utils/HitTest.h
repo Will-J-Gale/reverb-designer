@@ -74,4 +74,4 @@ namespace HitTest
 
         return overlappingNodes;
     }
-};
+}

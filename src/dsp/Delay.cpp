@@ -2,35 +2,35 @@
 
 Delay::Delay()
 {
-    parameters = MAKE_PARAMETERS({
+    _parameters = MAKE_PARAMETERS({
         std::make_shared<DoubleParameter>("TimeMs", 0.0, 0.0, 5000.0)
     });
 
-    parameters->addOnChangeCallback(std::bind(&Delay::onParametersChanged, this));
+    _parameters->addOnChangeCallback(std::bind(&Delay::onParametersChanged, this));
     onParametersChanged();
 }
 
-bool Delay::reset(double sampleRate)
+void Delay::reset(double sampleRate)
 {
-    this->sampleRate = sampleRate;
+    _sampleRate = sampleRate;
 
-    buffer.flushBuffer();
-    double maxDelayTimeInSeconds = parameters->getParameterByNameAsType<DoubleParameter>("TimeMs")->getMax() / 1000.0;
-    bufferLength = (sampleRate * maxDelayTimeInSeconds) + 1;
+    _buffer.flushBuffer();
+    double maxDelayTimeInSeconds = _parameters->getParameterByNameAsType<DoubleParameter>("TimeMs")->getMax() / 1000.0;
+    _bufferLength = (sampleRate * maxDelayTimeInSeconds) + 1;
 
-    buffer.createCircularBuffer(bufferLength);
+    _buffer.createCircularBuffer(_bufferLength);
 }
 
 double Delay::process(double xn)
 {
-    if (delayTimeInSamples == 0)
+    if (_delayTimeInSamples == 0)
     {
         return xn;
     }
 
-    double yn = buffer.read(delayTimeInSamples);
+    double yn = _buffer.read(_delayTimeInSamples);
 
-    buffer.write(xn);
+    _buffer.write(xn);
 
     return yn;
 }
@@ -42,30 +42,30 @@ bool Delay::canProcessAudioFrame()
 
 double Delay::readDelay()
 {
-    return buffer.read(delayTimeInSamples);
+    return _buffer.read(_delayTimeInSamples);
 }
 
 double Delay::readDelayAtTimeInMs(double delayInMs)
 {
-    double delayInSamples = sampleRate * (delayInMs / 1000.0);
+    double delayInSamples = _sampleRate * (delayInMs / 1000.0);
 
-    return buffer.read(delayInSamples);
+    return _buffer.read(delayInSamples);
 }
 
 double Delay::readDelayAtPercentage(double delayPercentage)
 {
-    double delayInSamples = delayTimeInSamples * delayPercentage;
+    double delayInSamples = _delayTimeInSamples * delayPercentage;
 
-    return buffer.read(delayInSamples);
+    return _buffer.read(delayInSamples);
 }
 
 void Delay::write(double xn)
 {
-    buffer.write(xn);
+    _buffer.write(xn);
 }
 
 void Delay::onParametersChanged()
 {
-    auto delayTimeInMs = parameters->getParameterValueByName<double>("TimeMs");
-    delayTimeInSamples = sampleRate * (delayTimeInMs / 1000.0);
+    auto delayTimeInMs = _parameters->getParameterValueByName<double>("TimeMs");
+    _delayTimeInSamples = _sampleRate * (delayTimeInMs / 1000.0);
 }

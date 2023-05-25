@@ -12,5 +12,5 @@ public:
     void addListener(ToggleButton::Listener* listener);
     void setToggleState(bool state);
 private:
-    ToggleButton toggle;
+    ToggleButton _toggle;
 };

@@ -9,14 +9,14 @@
 
 void ConnectionHandler::initialize(GraphEditor* graphEditor, PluginGraph* pluginGraph)
 {
-    this->graphEditor = graphEditor;
-    this->pluginGraph = pluginGraph;
+    _graphEditor = graphEditor;
+    _pluginGraph = pluginGraph;
 }
 
 void ConnectionHandler::createConnection(NodeConnectorUI* start, NodeConnectorUI* end)
 {
     auto connection = std::make_shared<NodeConnection>(start, end);
-    graphEditor->connections.add(connection);
+    _graphEditor->_connections.add(connection);
 
     auto* startNodeUI = (NodeUI*)start->getParentComponent();
     auto* endNodeUI = (NodeUI*)end->getParentComponent();
@@ -26,13 +26,13 @@ void ConnectionHandler::createConnection(NodeConnectorUI* start, NodeConnectorUI
 
     endNodeUI->connectInput(startNodeUI);
     startNodeUI->connectOutput(endNodeUI);
-    graphEditor->pluginGraph->updateProcessPath();
+    _graphEditor->_pluginGraph->updateProcessPath();
 }
 
 void ConnectionHandler::createFeedbackConnection(NodeConnectorUI* start, NodeConnectorUI* end)
 {
     auto connection = std::make_shared<NodeConnection>(start, end);
-    graphEditor->connections.add(connection);
+    _graphEditor->_connections.add(connection);
 
     auto* startNodeUI = (NodeUI*)start->getParentComponent();
     auto* endNodeUI = (NodeUI*)end->getParentComponent();
@@ -41,14 +41,14 @@ void ConnectionHandler::createFeedbackConnection(NodeConnectorUI* start, NodeCon
     endNodeUI = handleMacroNode(endNodeUI, true);
 
     endNodeUI->connectFeedbackInput(startNodeUI);
-    graphEditor->pluginGraph->updateProcessPath();
+    _graphEditor->_pluginGraph->updateProcessPath();
 }
 
 void ConnectionHandler::deleteConnection(NodeConnectorUI* nodeConnector)
 {
     Array<NodeConnection*> nodeConnections;
 
-    for (auto connection : graphEditor->connections)
+    for (auto connection : _graphEditor->_connections)
     {
         if (connection->getEndConnector() == nodeConnector || connection->getStartConnector() == nodeConnector)
         {
@@ -66,18 +66,18 @@ void ConnectionHandler::deleteConnection(NodeConnectorUI* nodeConnector)
 
         startNodeUI->disconnectOutput(endNodeUI);
         endNodeUI->disconnectInput(startNodeUI);
-        graphEditor->removeFromArray(graphEditor->connections, connection);
+        _graphEditor->removeFromArray(_graphEditor->_connections, connection);
     }
 
-    graphEditor->pluginGraph->updateProcessPath();
-    graphEditor->repaint();
+    _graphEditor->_pluginGraph->updateProcessPath();
+    _graphEditor->repaint();
 }
 
 bool ConnectionHandler::connectionExists(NodeConnectorUI* start, NodeConnectorUI* end)
 {
     bool exists = false;
 
-    for (auto connection : graphEditor->connections)
+    for (auto connection : _graphEditor->_connections)
     {
         if (connection->getStartConnector() == start && connection->getEndConnector() == end)
         {
@@ -103,7 +103,7 @@ bool ConnectionHandler::isCreatingFeedback(NodeConnectorUI* start, NodeConnector
     if (startProcessorNode == nullptr || endProcessorNode == nullptr) { return false; }
     if (startProcessorNode == endProcessorNode) { return true; }
 
-    if (graphEditor->pluginGraph->isCreatingFeedback(endProcessorNode.get(), startProcessorNode.get()))
+    if (_graphEditor->_pluginGraph->isCreatingFeedback(endProcessorNode.get(), startProcessorNode.get()))
     {
         return true;
     }

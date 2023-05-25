@@ -4,21 +4,21 @@
 SliderParameterUI::SliderParameterUI()
 {
     setBounds(0, 0, SLIDER_PARAMETER_WIDTH, SLIDER_HEIGHT);
-    slider.setBounds(SLIDER_X, 0, SLIDER_WIDTH, SLIDER_HEIGHT);
+    _slider.setBounds(SLIDER_X, 0, SLIDER_WIDTH, SLIDER_HEIGHT);
     //slider.setTextBoxStyle(Slider::TextBoxBelow, false, 80, 20);
-    slider.setRange(min, max, SLIDER_INTERVAL);
-    slider.setSliderStyle(Slider::LinearBar);
+    _slider.setRange(_min, _max, SLIDER_INTERVAL);
+    _slider.setSliderStyle(Slider::LinearBar);
     
-    name.setInterceptsMouseClicks(false, false);
+    _name.setInterceptsMouseClicks(false, false);
     
-    minLabel.setText(std::to_string(min), dontSendNotification);
-    maxLabel.setText(std::to_string(max), dontSendNotification);
+    _minLabel.setText(std::to_string(_min), dontSendNotification);
+    _maxLabel.setText(std::to_string(_max), dontSendNotification);
     
-    minLabel.setBounds(MIN_TEXT_X, 0, 30, 20);
-    maxLabel.setBounds(MAX_TEXT_X, 0, 30, 20);
-    name.setBounds(SLIDER_NAME_X, -2, 100, 20);
+    _minLabel.setBounds(MIN_TEXT_X, 0, 30, 20);
+    _maxLabel.setBounds(MAX_TEXT_X, 0, 30, 20);
+    _name.setBounds(SLIDER_NAME_X, -2, 100, 20);
 
-    addAndMakeVisible(slider);
+    addAndMakeVisible(_slider);
     //addAndMakeVisible(minLabel);
     //addAndMakeVisible(maxLabel);
 
@@ -27,7 +27,7 @@ SliderParameterUI::SliderParameterUI()
 
 void SliderParameterUI::addListener(Slider::Listener* listener)
 {
-    slider.addListener(listener);
+    _slider.addListener(listener);
 }
 
 void SliderParameterUI::sliderValueChanged(Slider* slider)
@@ -36,45 +36,45 @@ void SliderParameterUI::sliderValueChanged(Slider* slider)
 
 void SliderParameterUI::setValue(double value)
 {
-    this->value = value;
-    slider.setValue(value, dontSendNotification);
+    _value = value;
+    _slider.setValue(value, dontSendNotification);
 }
 
 double SliderParameterUI::getValue()
 {
-    return value;
+    return _value;
 }
 
 void SliderParameterUI::setMin(double min)
 {
-    setMinAndMax(min, max);
+    setMinAndMax(min, _max);
 }
 
 void SliderParameterUI::setMax(double max)
 {
-    setMinAndMax(min, max);
+    setMinAndMax(_min, max);
 }
 
 void SliderParameterUI::setMinAndMax(double min, double max)
 {
-    this->min = min;
-    this->max = max;
-    slider.setRange(min, max, SLIDER_INTERVAL);
+    _min = min;
+    _max = max;
+    _slider.setRange(min, max, SLIDER_INTERVAL);
 }
 
 void SliderParameterUI::setTextSuffix(const String& suffix)
 {
-    slider.setTextValueSuffix(suffix);
+    _slider.setTextValueSuffix(suffix);
 }
 
 Component* SliderParameterUI::getComponent()
 {
-	return &slider;
+	return &_slider;
 }
 
 float SliderParameterUI::getVisibleWidth()
 {
-    return slider.getX() + slider.getWidth() + getNameTextWidth() + PARAMETER_PADDING;
+    return _slider.getX() + _slider.getWidth() + getNameTextWidth() + PARAMETER_PADDING;
 }
 
 // #warning DELETE

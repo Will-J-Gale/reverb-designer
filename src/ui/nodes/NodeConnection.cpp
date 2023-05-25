@@ -8,39 +8,39 @@ NodeConnection::NodeConnection()
 
 NodeConnection::~NodeConnection()
 {
-    start = nullptr;
-    end = nullptr;
+    _start = nullptr;
+    _end = nullptr;
 }
 
 NodeConnection::NodeConnection(NodeConnectorUI* start, NodeConnectorUI* end)
 {
-    this->start = start;
-    this->end = end;
+    _start = start;
+    _end = end;
 }
 
-NodeConnection::NodeConnection(NodeConnectorUI* start, NodeConnectorUI* end, ConnectionType type)
+NodeConnection::NodeConnection(NodeConnectorUI* start, NodeConnectorUI* end, ConnectionType connectionType)
 {
-    this->start = start;
-    this->end = end;
-    this->connectionType = type;
+    _start = start;
+    _end = end;
+    _connectionType = connectionType;
 }
 
 NodeConnectorUI* NodeConnection::getStartConnector()
 {
-    return start;
+    return _start;
 }
 
 NodeConnectorUI* NodeConnection::getEndConnector()
 {
-    return end;
+    return _end;
 }
 
-void NodeConnection::setType(ConnectionType type)
+void NodeConnection::setType(ConnectionType connectionType)
 {
-    connectionType = type;
+    _connectionType = connectionType;
 }
 
 ConnectionType NodeConnection::getType()
 {
-    return connectionType;
+    return _connectionType;
 }

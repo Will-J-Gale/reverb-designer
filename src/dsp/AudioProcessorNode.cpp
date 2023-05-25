@@ -8,98 +8,98 @@ AudioProcessorNode::~AudioProcessorNode()
 
 void AudioProcessorNode::process(double xn)
 {
-    yn = xn;
-    finishedProcessing = true;
+    _yn = xn;
+    _finishedProcessing = true;
 }
 
 void AudioProcessorNode::process()
 {
-    xn = 0.0;
+    _xn = 0.0;
 
-    for (auto input : inputs)
+    for (auto input : _inputs)
     {
-        xn += input->getOutputSample();
+        _xn += input->getOutputSample();
     }
 
-    for (auto feedbackInput : feedbackConnections)
+    for (auto feedbackInput : _feedbackConnections)
     {
-        xn += feedbackInput->getOutputSample();
+        _xn += feedbackInput->getOutputSample();
     }
 
-    if (processor != nullptr)
+    if (_processor != nullptr)
     {
-        yn = processor->process(xn);
-        finishedProcessing = true;
+        _yn = _processor->process(_xn);
+        _finishedProcessing = true;
     }
     else
     {
-        yn = xn;
+        _yn = _xn;
     }
 }
 
 void AudioProcessorNode::reset()
 {
-    inputs.clear();
-    outputs.clear();
+    _inputs.clear();
+    _outputs.clear();
 }
 
 void AudioProcessorNode::connectInput(AudioProcessorNode* connection)
 {
-    if (!inputs.contains(connection))
+    if (!_inputs.contains(connection))
     {
-        inputs.add(connection);
+        _inputs.add(connection);
     }
 }
 
 void AudioProcessorNode::connectFeedbackInput(AudioProcessorNode* connection)
 {
-    if (!feedbackConnections.contains(connection))
+    if (!_feedbackConnections.contains(connection))
     {
-        feedbackConnections.add(connection);
+        _feedbackConnections.add(connection);
     }  
 }
 
 void AudioProcessorNode::connectOutput(AudioProcessorNode* connection)
 {
-    if (!outputs.contains(connection))
+    if (!_outputs.contains(connection))
     {
-        outputs.add(connection);
+        _outputs.add(connection);
     }
 }
 
 void AudioProcessorNode::disconnectInput(AudioProcessorNode* connection)
 {
-    int index = inputs.indexOf(connection);
-    int feedbackIndex = feedbackConnections.indexOf(connection);
+    int index = _inputs.indexOf(connection);
+    int feedbackIndex = _feedbackConnections.indexOf(connection);
 
     if (index >= 0)
-        inputs.remove(index);
+        _inputs.remove(index);
 
     if (feedbackIndex >= 0)
-        feedbackConnections.remove(feedbackIndex);
+        _feedbackConnections.remove(feedbackIndex);
 }
 
 void AudioProcessorNode::disconnectOutput(AudioProcessorNode* connection)
 {
-    int index = outputs.indexOf(connection);
+    int index = _outputs.indexOf(connection);
 
     if (index >= 0)
-        outputs.remove(index);
+        _outputs.remove(index);
 }
 
 void AudioProcessorNode::disconnectAll()
 {
-    for(AudioProcessorNode* input : inputs)
+    for(AudioProcessorNode* input : _inputs)
     {
         disconnectInput(input);
     }
 
-    for(AudioProcessorNode* output : outputs)
+    for(AudioProcessorNode* output : _outputs)
     {
         disconnectInput(output);
     }
 
-     for(AudioProcessorNode* feedback : feedbackConnections)
+     for(AudioProcessorNode* feedback : _feedbackConnections)
     {
         disconnectInput(feedback);
     }
@@ -108,9 +108,9 @@ void AudioProcessorNode::disconnectAll()
 bool AudioProcessorNode::isReady()
 {
     bool ready = true;
-    for (auto input : inputs)
+    for (auto input : _inputs)
     {
-        if (feedbackConnections.contains(input))
+        if (_feedbackConnections.contains(input))
         {
             continue;
         }
@@ -126,45 +126,45 @@ bool AudioProcessorNode::isReady()
 
 void AudioProcessorNode::setProcessor(IAudioProcessorPtr processor)
 {
-    this->processor = processor;
+    _processor = processor;
 }
 
 IAudioProcessor* AudioProcessorNode::getProcessor()
 {
-    return processor.get();
+    return _processor.get();
 }
 
 double AudioProcessorNode::getInputSample()
 {
-	return xn;
+	return _xn;
 }
 
 double AudioProcessorNode::getOutputSample()
 {
-    return yn;
+    return _yn;
 }
 
 void AudioProcessorNode::setOutputSample(double sample)
 {
-    yn = sample;
-    finishedProcessing = true;
+    _yn = sample;
+    _finishedProcessing = true;
 }
 
 Array<AudioProcessorNode*> AudioProcessorNode::getInputConnections()
 {
-    return inputs;
+    return _inputs;
 }
 
 Array<AudioProcessorNode*> AudioProcessorNode::getOutputConnections()
 {
-    return outputs;
+    return _outputs;
 }
 
 Array<AudioProcessorNode*> AudioProcessorNode::getReadyOutputConnections()
 {
     Array<AudioProcessorNode*> readyBlocks;
 
-    for (auto output : outputs)
+    for (auto output : _outputs)
     {
         if (output->isReady())
         {
@@ -177,15 +177,15 @@ Array<AudioProcessorNode*> AudioProcessorNode::getReadyOutputConnections()
 
 bool AudioProcessorNode::hasFinishedProcessing()
 {
-    return finishedProcessing;
+    return _finishedProcessing;
 }
 
 void AudioProcessorNode::setFinishedProcessing(bool hasFinished)
 {
-    finishedProcessing = hasFinished;
+    _finishedProcessing = hasFinished;
 }
 
 std::string AudioProcessorNode::getIdAsString()
 {
-    return id.toString().toStdString();
+    return _id.toString().toStdString();
 }

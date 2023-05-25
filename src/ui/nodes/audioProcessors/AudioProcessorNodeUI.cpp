@@ -11,7 +11,7 @@ AudioProcessorNodeUI::AudioProcessorNodeUI(String name, NodeInstance nodeInstanc
     : NodeUI(name, NodeClass::AudioProcessor, nodeInstance)
 {
     initialize();
-    this->processorNode = node;
+    _processorNode = node;
 
     //@TODO Refactor this 
     auto parameters = node->getParameters();
@@ -62,9 +62,9 @@ AudioProcessorNodeUI::AudioProcessorNodeUI(String name, NodeInstance nodeInstanc
         }
 
         addAndMakeVisible(parameterUI.get());
-        this->parametersUI.add(parameterUI);
-        componentIdToParameterMap.insert({parameterUI->getId(), parameter});
-        parameterNameToUI.insert({parameter->getName(), parameterUI.get()});
+        _parametersUI.add(parameterUI);
+        _componentIdToParameterMap.insert({parameterUI->getId(), parameter});
+        _parameterNameToUI.insert({parameter->getName(), parameterUI.get()});
 
         if(parameterUI->getVisibleWidth() > maxParameterWidth)
             maxParameterWidth = parameterUI->getVisibleWidth();
@@ -75,8 +75,8 @@ AudioProcessorNodeUI::AudioProcessorNodeUI(String name, NodeInstance nodeInstanc
     auto height = NODE_MIN_HEIGHT + yPosition;
     setBounds(0, 0, maxParameterWidth + 20, height);
 
-    nameLabel.setBounds(0, 0, NODE_DEFAULT_WIDTH, TEXT_HEIGHT);
-    updateNameAndReCenter(this->name);
+    _nameLabel.setBounds(0, 0, NODE_DEFAULT_WIDTH, TEXT_HEIGHT);
+    updateNameAndReCenter(_name);
 }
 
 AudioProcessorNodeUI::~AudioProcessorNodeUI()
@@ -85,16 +85,16 @@ AudioProcessorNodeUI::~AudioProcessorNodeUI()
 
 AudioProcessorNodePtr AudioProcessorNodeUI::getProcessorNode()
 {
-	return processorNode;
+	return _processorNode;
 }
 
 AudioParametersPtr AudioProcessorNodeUI::getAudioParameters()
 {
-	return processorNode->getParameters();
+	return _processorNode->getParameters();
 }
 void AudioProcessorNodeUI::setAudioParameters(AudioParametersPtr parameters)
 {
-    processorNode->getProcessor()->setParameters(parameters);
+    _processorNode->getProcessor()->setParameters(parameters);
 }
 
 void AudioProcessorNodeUI::updateParametersUI()
@@ -107,17 +107,17 @@ void AudioProcessorNodeUI::updateParametersUI()
 
         if(parameterType == ParameterType::Boolean)
         {
-            BoolParameterUI* toggle = static_cast<BoolParameterUI*>(parameterNameToUI.at(parameterName));
+            BoolParameterUI* toggle = static_cast<BoolParameterUI*>(_parameterNameToUI.at(parameterName));
             toggle->setToggleState(parameters->getParameterValueByName<bool>(parameterName));
         }
         else if(parameterType == ParameterType::Double)
         {
-            SliderParameterUI* slider = static_cast<SliderParameterUI*>(parameterNameToUI.at(parameterName));
+            SliderParameterUI* slider = static_cast<SliderParameterUI*>(_parameterNameToUI.at(parameterName));
             slider->setValue(parameters->getParameterValueByName<double>(parameterName));
         }
         else if(parameterType == ParameterType::Option)
         {
-            ComboBoxParameterUI* combo = static_cast<ComboBoxParameterUI*>(parameterNameToUI.at(parameterName));
+            ComboBoxParameterUI* combo = static_cast<ComboBoxParameterUI*>(_parameterNameToUI.at(parameterName));
             combo->setSelectedItem(parameters->getParameterValueByName<int>(parameterName));
         }
     }
@@ -127,82 +127,82 @@ void AudioProcessorNodeUI::setProcessorNode(AudioProcessorNodePtr processorNode)
 {
     // jassert(processorNode->getNodeInstance() == nodeInstance);
 
-    this->processorNode = processorNode;
+    _processorNode = processorNode;
 }
 
 IAudioProcessor* AudioProcessorNodeUI::getAudioProcessor()
 {
-    return processorNode->getProcessor();
+    return _processorNode->getProcessor();
 }
 
 std::string AudioProcessorNodeUI::getIdAsString()
 {
-    return processorNode->getIdAsString();
+    return _processorNode->getIdAsString();
 }
 
 void AudioProcessorNodeUI::connectInput(NodeUI* sourceNode)
 {
-    if (!inputConnections.contains(sourceNode))
+    if (!_inputConnections.contains(sourceNode))
     {
-        inputConnections.add(sourceNode);
+        _inputConnections.add(sourceNode);
         auto audioNode = dynamic_cast<AudioProcessorNodeUI*>(sourceNode);
-        this->processorNode->connectInput(audioNode->getProcessorNode().get());
+        _processorNode->connectInput(audioNode->getProcessorNode().get());
     }
 }
 
 void AudioProcessorNodeUI::connectFeedbackInput(NodeUI* sourceNode)
 {
-    if (!feedbackConnections.contains(sourceNode))
+    if (!_feedbackConnections.contains(sourceNode))
     {
-        feedbackConnections.add(sourceNode);
+        _feedbackConnections.add(sourceNode);
         auto audioNode = dynamic_cast<AudioProcessorNodeUI*>(sourceNode);
-        this->processorNode->connectFeedbackInput(audioNode->getProcessorNode().get());
+        _processorNode->connectFeedbackInput(audioNode->getProcessorNode().get());
     }
 }
 
 void AudioProcessorNodeUI::connectOutput(NodeUI* destinationNode)
 {
-    if (!outputConnections.contains(destinationNode))
+    if (!_outputConnections.contains(destinationNode))
     {
-        outputConnections.add(destinationNode);
+        _outputConnections.add(destinationNode);
 
         auto audioNode = dynamic_cast<AudioProcessorNodeUI*>(destinationNode);
-        this->processorNode->connectOutput(audioNode->getProcessorNode().get());
+        _processorNode->connectOutput(audioNode->getProcessorNode().get());
     } 
 }
 
 void AudioProcessorNodeUI::disconnectInput(NodeUI* sourceNode)
 {
-    removeFromArray(inputConnections, sourceNode);
+    removeFromArray(_inputConnections, sourceNode);
     auto audioNode = dynamic_cast<AudioProcessorNodeUI*>(sourceNode);
-    this->processorNode->disconnectInput(audioNode->getProcessorNode().get());
+    _processorNode->disconnectInput(audioNode->getProcessorNode().get());
 }
 
 void AudioProcessorNodeUI::disconnectOutput(NodeUI* destinationNode)
 {
-    removeFromArray(outputConnections, destinationNode);
+    removeFromArray(_outputConnections, destinationNode);
     auto audioNode = dynamic_cast<AudioProcessorNodeUI*>(destinationNode);
-    this->processorNode->disconnectOutput(audioNode->getProcessorNode().get());
+    _processorNode->disconnectOutput(audioNode->getProcessorNode().get());
 }
 
 void AudioProcessorNodeUI::buttonClicked (Button* button)
 {
     BaseParameterUI* parameterUI  = static_cast<BaseParameterUI*>(button->getParentComponent());
-    BooleanParameter* parameter = static_cast<BooleanParameter*>(componentIdToParameterMap.at(parameterUI->getId()).get());
+    BooleanParameter* parameter = static_cast<BooleanParameter*>(_componentIdToParameterMap.at(parameterUI->getId()).get());
     parameter->setValue(button->getToggleState());
 }
 
 void AudioProcessorNodeUI::sliderValueChanged (Slider* slider)
 {
     BaseParameterUI* parameterUI  = static_cast<BaseParameterUI*>(slider->getParentComponent());
-    DoubleParameter* parameter = static_cast<DoubleParameter*>(componentIdToParameterMap.at(parameterUI->getId()).get());
+    DoubleParameter* parameter = static_cast<DoubleParameter*>(_componentIdToParameterMap.at(parameterUI->getId()).get());
     parameter->setValue(slider->getValue());
 }
 
 void AudioProcessorNodeUI::comboBoxChanged (ComboBox* comboBox)
 {
     BaseParameterUI* parameterUI  = static_cast<BaseParameterUI*>(comboBox->getParentComponent());
-    OptionParameter* parameter = static_cast<OptionParameter*>(componentIdToParameterMap.at(parameterUI->getId()).get());
+    OptionParameter* parameter = static_cast<OptionParameter*>(_componentIdToParameterMap.at(parameterUI->getId()).get());
     parameter->setValue(comboBox->getSelectedId());
 }
 

@@ -59,7 +59,7 @@ public:
     PluginGraph* getPluginGraph();
 private:
 
-    std::unique_ptr<PluginGraph> pluginGraph = std::make_unique<PluginGraph>();
+    std::unique_ptr<PluginGraph> _pluginGraph = std::make_unique<PluginGraph>();
 
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (ReverbDesignerAudioProcessor)

@@ -7,7 +7,7 @@ class Gain : public IAudioProcessor
 {
 public:
     Gain();
-    virtual bool reset(double sampleRate) override;
+    virtual void reset(double sampleRate) override;
     virtual double process(double xn) override;
     virtual bool canProcessAudioFrame() override;
 };

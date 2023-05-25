@@ -10,13 +10,13 @@ class ModulatedDelay : public IAudioProcessor
 {
 public:
     ModulatedDelay();
-    virtual bool reset(double sampleRate) override;
+    virtual void reset(double sampleRate) override;
     virtual double process(double xn) override;
     virtual bool canProcessAudioFrame() override;
     void onParametersChanged();
 
 private:
-    FeedbackDelay delay;
-    AudioParametersPtr delayParameters = nullptr;
-    LFO lfo;
+    FeedbackDelay _delay;
+    AudioParametersPtr _delayParameters = nullptr;
+    LFO _lfo;
 };

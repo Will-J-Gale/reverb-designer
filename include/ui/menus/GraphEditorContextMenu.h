@@ -6,5 +6,5 @@ class GraphEditorContextMenu : public PopupMenu
 public:
     GraphEditorContextMenu();
 private:
-    PopupMenu dspObjectMenu;
+    PopupMenu _dspObjectMenu;
 };

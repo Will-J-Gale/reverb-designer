@@ -12,9 +12,9 @@ public:
     void setOriginalBounds(Rectangle<int> bounds);
 
 private:
-    Component* component;
-    int originalHeight = 0;
-    int originalWidth = 0;
-    float zoomLevel = 1;
-    float zoomAmount = 1.1;
+    Component* _component = nullptr;
+    int _originalHeight = 0;
+    int _originalWidth = 0;
+    float _zoomLevel = 1;
+    float _zoomAmount = 1.1;
 };

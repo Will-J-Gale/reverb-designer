@@ -20,9 +20,9 @@ public:
         switch (type)
         {
             case NodeInstance::Input:
-                return std::make_shared<PassThrough>();
-            
             case NodeInstance::Output:
+            case NodeInstance::Macro:
+            case NodeInstance::EMPTY:
                 return std::make_shared<PassThrough>();
 
             case NodeInstance::Gain:

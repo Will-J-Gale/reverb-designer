@@ -4,50 +4,50 @@
 
 NodeConnectorInteractionHandler::NodeConnectorInteractionHandler(GraphEditor* graphEditor)
 {
-    this->graphEditor = graphEditor;
+    _graphEditor = graphEditor;
 }
 
 void NodeConnectorInteractionHandler::onNodeConnectorLeftClick(NodeConnectorUI* node, const MouseEvent& e)
 {
-    graphEditor->interactionState = InteractionState::DragConnection;
-    graphEditor->clickedNodeConnector = node;
+    _graphEditor->_interactionState = InteractionState::DragConnection;
+    _graphEditor->_clickedNodeConnector = node;
 }
 
 void NodeConnectorInteractionHandler::onNodeConnectorRightClick(NodeConnectorUI* node, const MouseEvent& e)
 {
-    graphEditor->connectionHandler.deleteConnection(node);
+    _graphEditor->connectionHandler.deleteConnection(node);
 }
 
 void NodeConnectorInteractionHandler::onNodeConnectorDrag(NodeConnectorUI* nodeConnector, const MouseEvent& e)
 {
     auto pos = e.getScreenPosition();
-    graphEditor->mousePosition = graphEditor->getLocalPoint(nullptr, pos);
+    _graphEditor->_mousePosition = _graphEditor->getLocalPoint(nullptr, pos);
 
-    graphEditor->repaint();
+    _graphEditor->repaint();
 }
 
 void NodeConnectorInteractionHandler::onNodeConnectorLeftRelease(NodeConnectorUI* nodeConnecctor, const MouseEvent& e)
 {
-    auto* mouseUpNodeConnector = HitTest::getNodeConnectorAtPosition(e.getScreenPosition(), graphEditor->getNodeConnectors());
+    auto* mouseUpNodeConnector = HitTest::getNodeConnectorAtPosition(e.getScreenPosition(), _graphEditor->getNodeConnectors());
 
     if (mouseUpNodeConnector)
     {
-        auto* startNode = graphEditor->clickedNodeConnector->getType() == NodeConnectorType::AudioOutput ? graphEditor->clickedNodeConnector : mouseUpNodeConnector;
-        auto* endNode = mouseUpNodeConnector->getType() == NodeConnectorType::AudioInput ? mouseUpNodeConnector : graphEditor->clickedNodeConnector;
+        auto* startNode = _graphEditor->_clickedNodeConnector->getType() == NodeConnectorType::AudioOutput ? _graphEditor->_clickedNodeConnector : mouseUpNodeConnector;
+        auto* endNode = mouseUpNodeConnector->getType() == NodeConnectorType::AudioInput ? mouseUpNodeConnector : _graphEditor->_clickedNodeConnector;
 
-        if (!graphEditor->connectionHandler.connectionExists(startNode, endNode) 
-            && graphEditor->connectionHandler.nodesAreCompatible(startNode, endNode))
+        if (!_graphEditor->connectionHandler.connectionExists(startNode, endNode) 
+            && _graphEditor->connectionHandler.nodesAreCompatible(startNode, endNode))
         {
-            if (graphEditor->connectionHandler.isCreatingFeedback(startNode, endNode))
-                graphEditor->connectionHandler.createFeedbackConnection(startNode, endNode);
+            if (_graphEditor->connectionHandler.isCreatingFeedback(startNode, endNode))
+                _graphEditor->connectionHandler.createFeedbackConnection(startNode, endNode);
             else
-                graphEditor->connectionHandler.createConnection(startNode, endNode);
+                _graphEditor->connectionHandler.createConnection(startNode, endNode);
         }
     }
 
-    graphEditor->clickedNodeConnector = nullptr;
-    graphEditor->interactionState = InteractionState::None;
+    _graphEditor->_clickedNodeConnector = nullptr;
+    _graphEditor->_interactionState = InteractionState::None;
 
-    graphEditor->repaint();
+    _graphEditor->repaint();
 }
 

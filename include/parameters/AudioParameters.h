@@ -34,6 +34,12 @@ public:
             
             case ParameterType::Option:
                 return (ValueType)static_cast<OptionParameter*>(parameter)->getValue();
+            
+            case ParameterType::Float:
+                return (ValueType)static_cast<FloatParameter*>(parameter)->getValue();
+            
+            default:
+                throw std::runtime_error("Invalid paramter type");
         }
     }
 
@@ -52,6 +58,11 @@ public:
             
             case ParameterType::Option:
                 static_cast<OptionParameter*>(parameter)->setValue(value);
+            case ParameterType::Float:
+                static_cast<FloatParameter*>(parameter)->setValue(value);
+            
+            default:
+                throw std::runtime_error("Invalid paramter type");
         }
     }
 
@@ -60,6 +71,6 @@ public:
     std::vector<ParameterPtr>& getAllParameters();
 
 private:
-    std::map<std::string, ParameterPtr> nameToParameterMap;
-    std::vector<ParameterPtr> parameters;
+    std::map<std::string, ParameterPtr> _nameToParameterMap;
+    std::vector<ParameterPtr> _parameters;
 };

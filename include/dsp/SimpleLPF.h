@@ -6,7 +6,7 @@ class SimpleLPF : IAudioProcessor
 {
 public:
     SimpleLPF();
-    virtual bool reset(double sampleRate) override;
+    virtual void reset(double sampleRate) override;
     virtual double process(double xn) override;
     virtual bool canProcessAudioFrame() override;
     AudioParametersPtr getParameters() override;
@@ -15,6 +15,6 @@ public:
     void setParameters(SimpleLPFParameters newParameters);
 
 private:
-    SimpleLPFParameters params;
-    double state = 0.0;
+    SimpleLPFParameters _params;
+    double _state = 0.0;
 };

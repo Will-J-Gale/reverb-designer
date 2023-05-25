@@ -5,28 +5,28 @@ BaseParameterUI::BaseParameterUI()
 {
     setBounds(0, 0, PARAMETER_WIDTH, PARAMETER_HEIGHT);
 
-    name.setJustificationType(Justification::centredLeft);
-    name.setBounds(0, 0, PARAMETER_NAME_WIDTH, PARAMETER_NAME_HEIGHT);
-    name.setInterceptsMouseClicks(false, false);
-    name.setColour(Label::textColourId, Colour::fromString(TEXT_COLOUR));
-    name.setFont(Font(FONT_SIZE, Font::bold));
-    addAndMakeVisible(name);
+    _name.setJustificationType(Justification::centredLeft);
+    _name.setBounds(0, 0, PARAMETER_NAME_WIDTH, PARAMETER_NAME_HEIGHT);
+    _name.setInterceptsMouseClicks(false, false);
+    _name.setColour(Label::textColourId, Colour::fromString(TEXT_COLOUR));
+    _name.setFont(Font(FONT_SIZE, Font::bold));
+    addAndMakeVisible(_name);
 }
 
 void BaseParameterUI::setParameterName(String newName)
 {
-    name.setText(newName, NotificationType::dontSendNotification);
+    _name.setText(newName, NotificationType::dontSendNotification);
     // setBounds(0, 0, getVisibleWidth(), PARAMETER_HEIGHT);
 }
 
 std::string BaseParameterUI::getId()
 {
-    return id.toString().toStdString();
+    return _id.toString().toStdString();
 }
 
 float BaseParameterUI::getNameTextWidth()
 {
-    auto width = name.getFont().getStringWidthFloat(name.getText());
+    auto width = _name.getFont().getStringWidthFloat(_name.getText());
     return width < PARAMETER_MAX_SIZE ? width : PARAMETER_MAX_SIZE;
 }
 

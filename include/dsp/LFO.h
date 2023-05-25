@@ -1,6 +1,7 @@
 #pragma once
 #include <dsp/IAudioSignalGenerator.h>
 #include <utils/Math.h>
+#include <utils/Constants.h>
 
 class LFO : public IAudioSignalGenerator
 {
@@ -21,13 +22,13 @@ private:
     void advanceModulo(double& moduloCounter, double phaseInc);
     double parabolicSine(double angle);
 
-    OscillatorParameters lfoParameters;
-    double modCounter;
-    double modCounterQP;
-    double phaseInc;
-    double sampleRate;
+    OscillatorParameters _lfoParameters;
+    double _modCounter = 0.0;
+    double modCounterQP = 0.0;
+    double _phaseInc = 0.0;
+    double _sampleRate = DEFAULT_SAMPLERATE;
 
-    const double B = 4.0 / Math::PI;
-    const double C = -4.0 / (Math::PI * Math::PI);
-    const double P = 0.225;
+    const double _B = 4.0 / Math::PI;
+    const double _C = -4.0 / (Math::PI * Math::PI);
+    const double _P = 0.225;
 };

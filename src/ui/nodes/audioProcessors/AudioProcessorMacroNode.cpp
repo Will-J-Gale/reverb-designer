@@ -6,18 +6,18 @@
 
 AudioProcessorMacroNode::AudioProcessorMacroNode(PluginGraph* pluginGraph, String name, AudioProcessorNodePtr node) : AudioProcessorNodeUI(name, NodeInstance::Macro, node)
 {
-    contextMenu = MacroContextMenu();
+    _contextMenu = MacroContextMenu();
     setBounds(0, 0, GAIN_WIDTH, GAIN_HEIGHT);
 
     addInputConnector();
     addOutputConnector();
 
-    nameLabel.setBounds(0, 0, GAIN_WIDTH, TEXT_HEIGHT);
+    _nameLabel.setBounds(0, 0, GAIN_WIDTH, TEXT_HEIGHT);
     updateNameAndReCenter(name);
 
-    graphEditor = std::make_shared<GraphEditor>(pluginGraph, this);
-    graphEditor->addInputNode();
-    graphEditor->addOutputNode();
+    _graphEditor = std::make_shared<GraphEditor>(pluginGraph, this);
+    _graphEditor->addInputNode();
+    _graphEditor->addOutputNode();
 }
 
 AudioProcessorMacroNode::~AudioProcessorMacroNode()
@@ -26,85 +26,85 @@ AudioProcessorMacroNode::~AudioProcessorMacroNode()
 
 void AudioProcessorMacroNode::connectInput(NodeUI* sourceNodeUI)
 {
-    if (!inputConnections.contains(sourceNodeUI))
+    if (!_inputConnections.contains(sourceNodeUI))
     {
-        inputConnections.add(sourceNodeUI);
+        _inputConnections.add(sourceNodeUI);
         auto audioNode = dynamic_cast<AudioProcessorNodeUI*>(sourceNodeUI);
-        this->processorNode->connectInput(audioNode->getProcessorNode().get());
+        _processorNode->connectInput(audioNode->getProcessorNode().get());
     }
 }
 
 void AudioProcessorMacroNode::connectFeedbackInput(NodeUI* sourceNodeUI)
 {
-    if (!feedbackConnections.contains(sourceNodeUI))
+    if (!_feedbackConnections.contains(sourceNodeUI))
     {
-        feedbackConnections.add(sourceNodeUI);
+        _feedbackConnections.add(sourceNodeUI);
         auto audioNode = dynamic_cast<AudioProcessorNodeUI*>(sourceNodeUI);
-        this->processorNode->connectFeedbackInput(audioNode->getProcessorNode().get());
+        _processorNode->connectFeedbackInput(audioNode->getProcessorNode().get());
     }
 }
 
 void AudioProcessorMacroNode::connectOutput(NodeUI* destinationNodeUI)
 {
-    if (!outputConnections.contains(destinationNodeUI))
+    if (!_outputConnections.contains(destinationNodeUI))
     {
-        outputConnections.add(destinationNodeUI);
+        _outputConnections.add(destinationNodeUI);
         auto audioNodeUI = dynamic_cast<AudioProcessorNodeUI*>(destinationNodeUI);
         
-        this->processorNode->connectOutput(audioNodeUI->getProcessorNode().get());
+        _processorNode->connectOutput(audioNodeUI->getProcessorNode().get());
     } 
 }
 
 void AudioProcessorMacroNode::disconnectInput(NodeUI* sourceNodeUI)
 {
-    removeFromArray(inputConnections, sourceNodeUI);
+    removeFromArray(_inputConnections, sourceNodeUI);
     auto audioNode = dynamic_cast<AudioProcessorNodeUI*>(sourceNodeUI);
-    this->processorNode->disconnectInput(audioNode->getProcessorNode().get());
+    _processorNode->disconnectInput(audioNode->getProcessorNode().get());
 }
 
 void AudioProcessorMacroNode::disconnectOutput(NodeUI* destinationNodeUI)
 {
-    removeFromArray(outputConnections, destinationNodeUI);
+    removeFromArray(_outputConnections, destinationNodeUI);
     auto audioNodeUI = dynamic_cast<AudioProcessorNodeUI*>(destinationNodeUI);
-    this->processorNode->disconnectOutput(audioNodeUI->getProcessorNode().get());
+    _processorNode->disconnectOutput(audioNodeUI->getProcessorNode().get());
 }
 
 void AudioProcessorMacroNode::mouseDoubleClick(const MouseEvent& e)
 {
     auto closeCallback = std::bind(&AudioProcessorMacroNode::closeWindow, this);
-    window = std::make_unique<AudioProcessorMacroWindow>("Macro", closeCallback);
-    window->setContentNonOwned(graphEditor.get(), true);
+    _window = std::make_unique<AudioProcessorMacroWindow>("Macro", closeCallback);
+    _window->setContentNonOwned(_graphEditor.get(), true);
 }
 
 void AudioProcessorMacroNode::closeWindow()
 {
-    window.reset();
+    _window.reset();
 }
 
 std::string AudioProcessorMacroNode::getIdAsString()
 {
-    return id.toString().toStdString();
+    return _id.toString().toStdString();
 }
 
 NodeUIPtr AudioProcessorMacroNode::getInputNodeUI()
 {
-    return graphEditor->getInputs()[0];
+    return _graphEditor->getInputs()[0];
 }
 NodeUIPtr AudioProcessorMacroNode::getOutputNodeUI()
 {
-    return graphEditor->getOutputs()[0];
+    return _graphEditor->getOutputs()[0];
 }
 
 Array<NodeUIPtr> AudioProcessorMacroNode::getInternalNodes()
 {
-    return graphEditor->getNodes();
+    return _graphEditor->getNodes();
 }
 
 Array<AudioProcessorNodePtr> AudioProcessorMacroNode::getInternalAudioProcessorNodes()
 {
     Array<AudioProcessorNodePtr> nodes;
 
-    for(NodeUIPtr& nodeUI : graphEditor->getNodes())
+    for(NodeUIPtr& nodeUI : _graphEditor->getNodes())
     {
         if(nodeUI->getNodeInstance() == NodeInstance::Macro)
         {
@@ -124,21 +124,21 @@ Array<AudioProcessorNodePtr> AudioProcessorMacroNode::getInternalAudioProcessorN
 XmlElement* AudioProcessorMacroNode::toXml()
 {
     XmlElement* macroXml = XmlUtils::generateNodeXml(this);
-    XmlElement* macroNodesXml = graphEditor->toXml();
+    XmlElement* macroNodesXml = _graphEditor->toXml();
     macroXml->addChildElement(macroNodesXml);
     return macroXml;
 }
 
 void AudioProcessorMacroNode::fromXml(XmlElement* xml)
 {
-    name = xml->getChildByName(NAME_TAG)->getAllSubText().toStdString();
+    _name = xml->getChildByName(NAME_TAG)->getAllSubText().toStdString();
     int x = xml->getChildByName(X_TAG)->getAllSubText().getIntValue();
     int y = xml->getChildByName(Y_TAG)->getAllSubText().getIntValue();
 
-    updateNameAndReCenter(name);
+    updateNameAndReCenter(_name);
     setTopLeftPosition(x, y);
-    graphEditor->clear();
-    graphEditor->addInputNode();
-    graphEditor->addOutputNode();
-    graphEditor->fromXml(xml->getChildByName(PLUGIN_STATE_TAG));
+    _graphEditor->clear();
+    _graphEditor->addInputNode();
+    _graphEditor->addOutputNode();
+    _graphEditor->fromXml(xml->getChildByName(PLUGIN_STATE_TAG));
 }

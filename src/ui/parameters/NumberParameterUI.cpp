@@ -3,34 +3,34 @@
 
 NumberParameterUI::NumberParameterUI()
 {
-    value.setBounds(PARAMETER_X_OFFSET, 0, NUMBER_WIDTH, PARAMETER_HEIGHT);
-    name.setBounds(PARAMETER_X_OFFSET + NUMBER_WIDTH, 0, PARAMETER_TEXT_WIDTH, PARAMETER_HEIGHT);
-    name.setInterceptsMouseClicks(false, false);
-    addAndMakeVisible(value);
+    _value.setBounds(PARAMETER_X_OFFSET, 0, NUMBER_WIDTH, PARAMETER_HEIGHT);
+    _name.setBounds(PARAMETER_X_OFFSET + NUMBER_WIDTH, 0, PARAMETER_TEXT_WIDTH, PARAMETER_HEIGHT);
+    _name.setInterceptsMouseClicks(false, false);
+    addAndMakeVisible(_value);
 }
 
 void NumberParameterUI::setValue(double number)
 {
-    value.setText(String::formatted("%.2f", number), dontSendNotification);
+    _value.setText(String::formatted("%.2f", number), dontSendNotification);
 }
 
 void NumberParameterUI::setWidth(int width)
 {
-    value.setSize(width, value.getHeight());
-    name.setTopLeftPosition(width + NUMBER_TEXT_GAP, name.getY());
+    _value.setSize(width, _value.getHeight());
+    _name.setTopLeftPosition(width + NUMBER_TEXT_GAP, _name.getY());
 }
 
 void NumberParameterUI::addListener(TextEditor::Listener* listener)
 {
-    value.addListener(listener);
+    _value.addListener(listener);
 }
 
 Component* NumberParameterUI::getComponent()
 {
-    return &value;
+    return &_value;
 }
 
 float NumberParameterUI::getVisibleWidth()
 {
-    return value.getWidth() + getNameTextWidth();
+    return _value.getWidth() + getNameTextWidth();
 }

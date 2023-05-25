@@ -3,57 +3,54 @@
 
 PluginGraph::~PluginGraph()
 {
-    if (pluginState != nullptr)
+    if (_pluginState != nullptr)
     {
-        pluginState->deleteAllChildElements();
+        _pluginState->deleteAllChildElements();
     }
 }
 
-bool PluginGraph::reset(double sampleRate)
+void PluginGraph::reset(double sampleRate)
 {
-    this->sampleRate = sampleRate;
-
-    inputs.clear();
-    outputs.clear();
-    allNodes.clear();
-
-    return true;
+    _sampleRate = sampleRate;
+    _inputs.clear();
+    _outputs.clear();
+    _allNodes.clear();
 }
 
-void PluginGraph::process(std::vector<float>& inputFrame, size_t numInputChannels)
+void PluginGraph::process(std::vector<float>& inputFrame, int numInputChannels)
 {
-    if (updateProcessorsFlag)
+    if (_updateProcessorsFlag)
     {
         updateProcessors();
-        updateProcessorsFlag = false;
+        _updateProcessorsFlag = false;
         return;
     }
 
-    if (processPathNeedsUpdating)
+    if (_processPathNeedsUpdating)
     {
         calculateProcessPath();
         return;
     }
 
-    if(clearAllNodes)
+    if(_clearAllNodes)
     {
         clear();
         return;
     }
 
-    if(deleteNodes)
+    if(_deleteNodes)
     {
         performDelete();
         return;
     }
 
-    for (size_t i = 0; i < inputs.size(); i++)
+for (int i = 0; i < _inputs.size(); i++)
     {
-        auto input = inputs[i];
-        inputs[i]->process(inputFrame[i]);
+        auto input = _inputs[i];
+        _inputs[i]->process(inputFrame[i]);
     } 
 
-    for (auto processors : processPath)
+    for (auto processors : _processPath)
     {
         for (auto processor : processors)
         {
@@ -61,7 +58,7 @@ void PluginGraph::process(std::vector<float>& inputFrame, size_t numInputChannel
         }
     }
 
-    for (auto output : outputs)
+    for (auto output : _outputs)
     {
         output->process();
     }
@@ -97,35 +94,35 @@ void PluginGraph::createDSPObject(NodeInstance dspObjectType)
 
 void PluginGraph::initialiseDspObject(IAudioProcessor *dspObject)
 {
-    dspObject->reset(sampleRate);
+    dspObject->reset(_sampleRate);
 }
 
 void PluginGraph::addProcessorNode(AudioProcessorNodePtr processorNode)
 {
-    allNodes.add(processorNode);
+    _allNodes.add(processorNode);
 }
 
 void PluginGraph::deleteProcessorNode(AudioProcessorNode* processorNode)
 {
-    deleteNodes = true;
-    nodesToDelete.add(processorNode);
+    _deleteNodes = true;
+    _nodesToDelete.add(processorNode);
 }
 
 void PluginGraph::deleteProcessorNodes(Array<AudioProcessorNode*> processorNodes)
 {
-    deleteNodes = true;
-    nodesToDelete.addArray(processorNodes);
+    _deleteNodes = true;
+    _nodesToDelete.addArray(processorNodes);
 }
 
 void PluginGraph::performDelete()
 {
-    deleteNodes = false;
-    for(AudioProcessorNode* node : nodesToDelete)
+    _deleteNodes = false;
+    for(AudioProcessorNode* node : _nodesToDelete)
     {
-        removeFromArray(allNodes, node);
+        removeFromArray(_allNodes, node);
     }
 
-    nodesToDelete.clear();
+    _nodesToDelete.clear();
 }
 
 AudioProcessorNodePtr PluginGraph::generateProcessorNode(NodeInstance type)
@@ -136,7 +133,7 @@ AudioProcessorNodePtr PluginGraph::generateProcessorNode(NodeInstance type)
     initialiseDspObject(audioProcessor.get());
     processorNode->setProcessor(audioProcessor);
 
-    allNodes.add(processorNode);
+    _allNodes.add(processorNode);
 
     return processorNode;
 }
@@ -176,7 +173,7 @@ void PluginGraph::addInputs(int numInputs)
 {
     for (int i = 0; i < numInputs; i++)
     {
-        inputs.add(std::make_shared<AudioProcessorNode>());
+        _inputs.add(std::make_shared<AudioProcessorNode>());
     }
 }
 
@@ -184,81 +181,81 @@ void PluginGraph::addOutputs(int numOutputs)
 {
     for (int i = 0; i < numOutputs; i++)
     {
-        outputs.add(std::make_shared<AudioProcessorNode>());
+        _outputs.add(std::make_shared<AudioProcessorNode>());
     }
 }
 
 Array<AudioProcessorNodePtr> PluginGraph::getInputs()
 {
-    return inputs;
+    return _inputs;
 }
 
 Array<AudioProcessorNodePtr>PluginGraph::getOutputs()
 {
-    return outputs;
+    return _outputs;
 }
 
 int PluginGraph::getNumInputs()
 {
-    return inputs.size();
+    return _inputs.size();
 }
 
 int PluginGraph::getNumOutputs()
 {
-    return inputs.size();
+    return _inputs.size();
 }
 
 double PluginGraph::getOutputSampleFrom(int outputChannel)
 {
-    if (outputs.size() - 1 < outputChannel)
+    if (_outputs.size() - 1 < outputChannel)
         return 0.0;
 
-    return outputs[outputChannel]->getInputSample();
+    return _outputs[outputChannel]->getInputSample();
 }
 
 double PluginGraph::getLeftOutputSample()
 {
-    if (inputs.size() >= 2)
-        return outputs[0]->getInputSample();
+    if (_inputs.size() >= 2)
+        return _outputs[0]->getInputSample();
 
     return 0.0;
 }
 
 double PluginGraph::getRightOutputSample()
 {
-    if (inputs.size() >= 2)
-        return outputs[0]->getInputSample();
+    if (_inputs.size() >= 2)
+        return _outputs[0]->getInputSample();
 
     return 0.0;
 }
 
 void PluginGraph::setPluginState(XmlElementPtr pluginState)
 {
-    this->pluginState = pluginState;
+    _pluginState = pluginState;
 }
 
 XmlElementPtr PluginGraph::getPluginState()
 {
-    return pluginState;
+    return _pluginState;
 }
 
 IdToAudioProcessorMap PluginGraph::getAudioProcessorNodeMap()
 {
-    auto map = IdToAudioProcessorMap();
+    IdToAudioProcessorMap map;
     
-    for (auto node : inputs)
+    for (auto node : _inputs)
     {
         auto id = node->getIdAsString();
         map[id] = node;
     }
 
-    for (auto node : outputs)
+    for (auto node : _outputs)
     {
         auto id = node->getIdAsString();
         map[id] = node;
     }
 
-    for (auto node : allNodes)
+    for (auto node : _allNodes)
     {
         auto id = node->getIdAsString();
         map[id] = node;
@@ -269,64 +266,64 @@ IdToAudioProcessorMap PluginGraph::getAudioProcessorNodeMap()
 
 Array<AudioProcessorNodePtr> PluginGraph::getAllBlocks()
 {
-    return allNodes;
+    return _allNodes;
 }
 
 void PluginGraph::clear()
 {
-    for(AudioProcessorNodePtr& input : inputs)
+    for(AudioProcessorNodePtr& input : _inputs)
     {
         input->disconnectAll();
     }
 
-    for(AudioProcessorNodePtr& output : outputs)
+    for(AudioProcessorNodePtr& output : _outputs)
     {
         output->disconnectAll();
     }
 
-    for(AudioProcessorNodePtr& node : allNodes)
+    for(AudioProcessorNodePtr& node : _allNodes)
     {
         node->disconnectAll();
     }
 
     // inputs.clear();
     // outputs.clear();
-    allNodes.clear();
+    _allNodes.clear();
 }
 
 void PluginGraph::clearFromUI()
 {
-    clearAllNodes = true;
+    _clearAllNodes = true;
 }
 
 void PluginGraph::deleteAndReplaceAudioBlocks(std::function<std::shared_ptr<AudioProcessorState>()> callback)
 {
-    updateProcessorsFlag = true;
-    generateCallback = callback;
+    _updateProcessorsFlag = true;
+    _generateCallback = callback;
 }
 
 void PluginGraph::deleteAndReplaceAudioBlocks(std::shared_ptr<AudioProcessorState> state)
 {
-    updateProcessorsFlag = true;
-    tempProcessorState = state;
+    _updateProcessorsFlag = true;
+    _tempProcessorState = state;
 }
 
 void PluginGraph::calculateProcessPath()
 {
-    processPathNeedsUpdating = false;
-    processPath.clear();
+    _processPathNeedsUpdating = false;
+    _processPath.clear();
 
     Array<AudioProcessorNode*> currentlyProcessing;
     Array<AudioProcessorNode*> finishedProcessing;
 
-    for (int i = 0; i < inputs.size(); i++)
+    for (int i = 0; i < _inputs.size(); i++)
     {
-        auto input = inputs[i];
-        inputs[i]->process(0);
-        currentlyProcessing.addArray(inputs[i]->getReadyOutputConnections());
+        auto input = _inputs[i];
+        _inputs[i]->process(0);
+        currentlyProcessing.addArray(_inputs[i]->getReadyOutputConnections());
     }
 
-    processPath.add(currentlyProcessing);
+    _processPath.add(currentlyProcessing);
 
     while (!currentlyProcessing.isEmpty())
     {
@@ -348,34 +345,34 @@ void PluginGraph::calculateProcessPath()
         if (outputConnections.size() > 0)
         {
             currentlyProcessing.addArray(outputConnections);
-            processPath.add(currentlyProcessing);
+            _processPath.add(currentlyProcessing);
         }  
     }
 }
 
 void PluginGraph::updateProcessPath()
 {
-    processPathNeedsUpdating = true;
+    _processPathNeedsUpdating = true;
 }
 
 void PluginGraph::updateProcessors()
 {
-    allNodes.clear();
-    inputs.clear();
-    outputs.clear();
+    _allNodes.clear();
+    _inputs.clear();
+    _outputs.clear();
 
     // auto newProcessors = generateCallback();
 
-    inputs = tempProcessorState->inputs;
-    outputs = tempProcessorState->outputs;
-    allNodes = tempProcessorState->nodes;
+    _inputs = _tempProcessorState->inputs;
+    _outputs = _tempProcessorState->outputs;
+    _allNodes = _tempProcessorState->nodes;
 
     calculateProcessPath();
 }
 
 void PluginGraph::resetProcessors()
 {
-    for (auto block : allNodes)
+    for (auto block : _allNodes)
     {
         block->setFinishedProcessing(false);
     }

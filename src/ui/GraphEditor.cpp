@@ -11,15 +11,15 @@
 GraphEditor::GraphEditor()
 {
     setBounds(0, 0, PLUGIN_WIDTH, PLUGIN_HEIGHT);
-    zoomHandler.setOriginalBounds(getBounds());
+    _zoomHandler.setOriginalBounds(getBounds());
 }
 
 GraphEditor::GraphEditor(PluginGraph* pluginGraph, AudioProcessorMacroNode* parent)
 {
     setBounds(0, 0, PLUGIN_WIDTH, PLUGIN_HEIGHT);
-    zoomHandler.setOriginalBounds(getBounds());
+    _zoomHandler.setOriginalBounds(getBounds());
     setPluginGraph(pluginGraph);
-    this->parent = parent;
+    _parent = parent;
 }
 
 GraphEditor::~GraphEditor()
@@ -29,12 +29,12 @@ GraphEditor::~GraphEditor()
 void GraphEditor::mouseDown(const MouseEvent& e)
 {
     Array<NodeUI*> tempNodes;
-    for (auto node : nodes)
+    for (auto node : _nodes)
     {
         tempNodes.add(node.get());
     }
 
-    globalSelection.setItems(tempNodes);
+    _globalSelection.setItems(tempNodes);
 
     if (e.mods.isRightButtonDown())
         handleRightClick(e);
@@ -44,36 +44,36 @@ void GraphEditor::mouseDown(const MouseEvent& e)
 
 void GraphEditor::mouseDrag(const MouseEvent& e)
 {
-    if (interactionState == InteractionState::CreateSelection)
+    if (_interactionState == InteractionState::CreateSelection)
     {
-        mousePosition = e.getPosition();
-        auto width = abs(mouseDownPosition.x - mousePosition.x);
-        auto height = abs(mouseDownPosition.y - mousePosition.y);
-        auto topLeft = Point<int>(fmin(mousePosition.x, mouseDownPosition.x), fmin(mousePosition.y, mouseDownPosition.y));
+        _mousePosition = e.getPosition();
+        auto width = abs(_mouseDownPosition.x - _mousePosition.x);
+        auto height = abs(_mouseDownPosition.y - _mousePosition.y);
+        auto topLeft = Point<int>(fmin(_mousePosition.x, _mouseDownPosition.x), fmin(_mousePosition.y, _mouseDownPosition.y));
         
-        selectionArea.setBounds(topLeft.x, topLeft.y, width, height);
-        selectionHandler.setItems(HitTest::getOverlappingNodes(selectionArea, nodes));
+        _selectionArea.setBounds(topLeft.x, topLeft.y, width, height);
+        _selectionHandler.setItems(HitTest::getOverlappingNodes(_selectionArea, _nodes));
     }
     else if (e.mods.isMiddleButtonDown())
-        globalSelection.moveItems(e.getOffsetFromDragStart());
+        _globalSelection.moveItems(e.getOffsetFromDragStart());
 
     repaint();
 }
 
 void GraphEditor::mouseUp(const MouseEvent& e)
 {
-    globalSelection.updateItemPositions();
-    interactionState = InteractionState::None;
-    selectionArea.setSize(0, 0);
+    _globalSelection.updateItemPositions();
+    _interactionState = InteractionState::None;
+    _selectionArea.setSize(0, 0);
     repaint();
 }
 
 void GraphEditor::mouseWheelMove(const MouseEvent& event, const MouseWheelDetails& wheel)
 {
     if (wheel.deltaY > 0)
-        zoomHandler.zoomIn();
+        _zoomHandler.zoomIn();
     else
-        zoomHandler.zoomOut();
+        _zoomHandler.zoomOut();
 }
 
 void GraphEditor::paint(Graphics& g)
@@ -81,15 +81,15 @@ void GraphEditor::paint(Graphics& g)
     g.fillAll(Colour::fromString(BACKGROUND_COLOUR_STRING));
     drawConnections(g);
 
-    if (interactionState == InteractionState::CreateSelection)
+    if (_interactionState == InteractionState::CreateSelection)
     {
         g.setColour(Colour::fromString(SELECTION_AREA_COLOUR));
-        g.fillRect(selectionArea);
+        g.fillRect(_selectionArea);
     }
 
-    if (selectionHandler.size() > 0)
+    if (_selectionHandler.size() > 0)
     {
-        for (auto processor : selectionHandler.getItems())
+        for (auto processor : _selectionHandler.getItems())
         {
             auto procPosition = processor->getPosition();
             auto procWidth = processor->getWidth() * SELECTION_SCALE;
@@ -103,8 +103,8 @@ void GraphEditor::paint(Graphics& g)
 
 void GraphEditor::setPluginGraph(PluginGraph* pluginGraph)
 {
-    this->pluginGraph = pluginGraph;
-    nodeInteractionHandler.initialize(this, pluginGraph);
+    _pluginGraph = pluginGraph;
+    _nodeInteractionHandler.initialize(this, pluginGraph);
     connectionHandler.initialize(this, pluginGraph);
 }
 
@@ -112,36 +112,33 @@ void GraphEditor::setPluginGraph(PluginGraph* pluginGraph)
 
 void GraphEditor::drawConnections(Graphics& g)
 {
-    if (clickedNodeConnector != nullptr)
+    if (_clickedNodeConnector != nullptr)
         drawPotentialConnection(g);
 
     g.setColour(Colour::fromString(CONNECTION_COLOUR));
 
-    for (auto connection : connections)
+    for (auto connection : _connections)
         NodeConnectionDrawer::drawConnection(g, this, connection->getStartConnector(), connection->getEndConnector());
 }
 
 void GraphEditor::drawPotentialConnection(Graphics& g)
 {
-    if (interactionState == InteractionState::DragConnection)
+    if (_interactionState == InteractionState::DragConnection)
     {
         g.setColour(Colour::fromString(CONNECTION_COLOUR));
 
-        Point<int> pos = clickedNodeConnector->getScreenPosition();
+        Point<int> pos = _clickedNodeConnector->getScreenPosition();
         pos = getLocalPoint(nullptr, pos);
-
-        auto processor = (NodeUI*)(clickedNodeConnector->getParentComponent());
-        auto isReversed = processor->isReversed();
 
         int x1 = pos.getX() + CONNECTOR_RADIUS;
         int y1 = pos.getY() + CONNECTOR_RADIUS;
-        int x2 = mousePosition.getX();
-        int y2 = mousePosition.getY();
+        int x2 = _mousePosition.getX();
+        int y2 = _mousePosition.getY();
 
-        if (clickedNodeConnector->getType() == NodeConnectorType::AudioInput)
+        if (_clickedNodeConnector->getType() == NodeConnectorType::AudioInput)
         {
-            x1 = mousePosition.getX();
-            y1 = mousePosition.getY();
+            x1 = _mousePosition.getX();
+            y1 = _mousePosition.getY();
             x2 = pos.getX();
             y2 = pos.getY();
         }
@@ -153,28 +150,28 @@ void GraphEditor::drawPotentialConnection(Graphics& g)
 void GraphEditor::addNodeConnectorListeners(Array<NodeConnectorUI*> nodeConnectors)
 {
     for (auto nodeConnector : nodeConnectors)
-        nodeConnector->addListener(&nodeConnectorInteractionHandler);
+        nodeConnector->addListener(&_nodeConnectorInteractionHandler);
 }
 
 void GraphEditor::addInputNode()
 {
-    auto newInput = nodeInteractionHandler.createIONode(NodeInstance::Input, Point<int>(), 0);
-    nodeInteractionHandler.initializeNode(newInput);
-    inputs.add(newInput);
+    auto newInput = _nodeInteractionHandler.createIONode(NodeInstance::Input, Point<int>(), 0);
+    _nodeInteractionHandler.initializeNode(newInput);
+    _inputs.add(newInput);
     newInput->setTopLeftPosition(INPUT_START_X, IO_START_Y);
 }
 
 void GraphEditor::addOutputNode()
 {
-    auto newOutput = nodeInteractionHandler.createIONode(NodeInstance::Output, Point<int>(), 0);
-    nodeInteractionHandler.initializeNode(newOutput);
+    auto newOutput = _nodeInteractionHandler.createIONode(NodeInstance::Output, Point<int>(), 0);
+    _nodeInteractionHandler.initializeNode(newOutput);
     newOutput->setTopLeftPosition(OUTPUT_START_X, IO_START_Y);
-    outputs.add(newOutput);
+    _outputs.add(newOutput);
 }
 
 void GraphEditor::handleRightClick(const MouseEvent& e)
 {
-    int contextSelection = contextMenu.show();
+    int contextSelection = _contextMenu.show();
 
     if (contextSelection == (int)GraphEditorContextMenuItems::Duplicate)
     {
@@ -183,40 +180,40 @@ void GraphEditor::handleRightClick(const MouseEvent& e)
     else if (contextSelection == (int)GraphEditorContextMenuItems::Macro)
     {
         auto macroName = InputModals::runTextInputModal(MACRO_MODAL_TITLE, MACRO_MODAL_MESSAGE, MACRO_DEFAULT_NAME);
-        auto node = nodeInteractionHandler.createMacroNode(e.getPosition(), macroName);
-        nodeInteractionHandler.initializeNode(node);
+        auto node = _nodeInteractionHandler.createMacroNode(e.getPosition(), macroName);
+        _nodeInteractionHandler.initializeNode(node);
     }
     else if (contextSelection > 0)
     {
-        auto node = nodeInteractionHandler.createNode((NodeInstance)contextSelection, e.getPosition());
-        nodeInteractionHandler.initializeNode(node);
+        auto node = _nodeInteractionHandler.createNode((NodeInstance)contextSelection, e.getPosition());
+        _nodeInteractionHandler.initializeNode(node);
     }
 }
 
 void GraphEditor::handleLeftClick(const MouseEvent& e)
 {
-    selectionHandler.clear();
-    mouseDownPosition = e.getPosition();
-    interactionState = InteractionState::CreateSelection; 
+    _selectionHandler.clear();
+    _mouseDownPosition = e.getPosition();
+    _interactionState = InteractionState::CreateSelection; 
 }
 
 void GraphEditor::duplicateSelectedProcessors()
 {
-    for (auto node : selectionHandler.getItems())
+    for (auto node : _selectionHandler.getItems())
     {
         NodeInstance nodeInstance = node->getNodeInstance();
         if (nodeInstance == NodeInstance::Input || nodeInstance == NodeInstance::Output)
             continue;
 
-        nodeInteractionHandler.duplicateNode(node);
+        _nodeInteractionHandler.duplicateNode(node);
     }
 }
 
 void GraphEditor::reverseSelectedProcessors()
 {
-    for (auto processor : selectionHandler.getItems())
+    for (auto processor : _selectionHandler.getItems())
     {
-        if (arrayContains(inputs, processor) || arrayContains(outputs, processor))
+        if (arrayContains(_inputs, processor) || arrayContains(_outputs, processor))
             continue;
 
         processor->reverse();
@@ -225,41 +222,41 @@ void GraphEditor::reverseSelectedProcessors()
 
 void GraphEditor::deleteSelectedProcessors()
 {
-    for (auto node : selectionHandler.getItems())
+    for (auto node : _selectionHandler.getItems())
     {
         NodeInstance nodeInstance = node->getNodeInstance();
         if (nodeInstance == NodeInstance::Input || nodeInstance == NodeInstance::Output)
             continue;
 
-        nodeInteractionHandler.deleteNode(node);
+        _nodeInteractionHandler.deleteNode(node);
     }
 
-    selectionHandler.clear();
+    _selectionHandler.clear();
 }
 
 Array<NodeConnectorUI*>& GraphEditor::getNodeConnectors()
 {
-    return nodeConnectors;
+    return _nodeConnectors;
 }
 Array<NodeUIPtr>& GraphEditor::getNodes()
 {
-    return nodes;
+    return _nodes;
 }
 
 Array<NodeUIPtr>& GraphEditor::getInputs()
 {
-    return inputs;
+    return _inputs;
 }
 
 
 Array<NodeUIPtr>& GraphEditor::getOutputs()
 {
-    return outputs;
+    return _outputs;
 }
 
 void GraphEditor::clear()
 {
-    for(NodeUIPtr nodeUI : nodes)
+    for(NodeUIPtr nodeUI : _nodes)
     {
         if(nodeUI->getNodeInstance() == NodeInstance::Macro)
         {
@@ -271,22 +268,22 @@ void GraphEditor::clear()
             {
                 processorNodes.add(node.get());
             }
-            pluginGraph->deleteProcessorNodes(processorNodes);
+            _pluginGraph->deleteProcessorNodes(processorNodes);
         }
         else
         {
             AudioProcessorNodeUI* audioNodeUI = static_cast<AudioProcessorNodeUI*>(nodeUI.get()); 
-            pluginGraph->deleteProcessorNode(audioNodeUI->getProcessorNode().get());
+            _pluginGraph->deleteProcessorNode(audioNodeUI->getProcessorNode().get());
         }
     }
 
-    inputs.clear();
-    outputs.clear();
-    nodes.clear();
-    nodeConnectors.clear();
-    connections.clear();
-    globalSelection.clear();
-    selectionHandler.clear();
+    _inputs.clear();
+    _outputs.clear();
+    _nodes.clear();
+    _nodeConnectors.clear();
+    _connections.clear();
+    _globalSelection.clear();
+    _selectionHandler.clear();
 }
 
 XmlElement* GraphEditor::toXml()
@@ -294,7 +291,7 @@ XmlElement* GraphEditor::toXml()
     XmlElement* graphEditorState = new XmlElement(PLUGIN_STATE_TAG);
     std::map<NodeUIPtr, XmlElement*> xmlMap;
 
-    for (auto node : nodes)
+    for (auto node : _nodes)
     {
         XmlElement* nodeXml = node->toXml();
         graphEditorState->addChildElement(nodeXml);
@@ -308,7 +305,7 @@ XmlElement* GraphEditor::toXml()
         auto nodeInstance = node->getNodeInstance();
 
         //If graph editor is for Macro, ignore input/output connections as they are handled by parent
-        if((nodeInstance == NodeInstance::Input || nodeInstance == NodeInstance::Output) && parent != nullptr)
+        if((nodeInstance == NodeInstance::Input || nodeInstance == NodeInstance::Output) && _parent != nullptr)
             continue;
 
         auto inputConnections = node->getInputConnections();
@@ -366,34 +363,32 @@ void GraphEditor::fromXml(XmlElement* xml, IdToAudioProcessorMap* idToProcessorM
         auto id = pair.first;
         auto nodeXml = pair.second;
         std::string testName = nodeXml->getChildByName(NAME_TAG)->getAllSubText().toStdString();
-        auto nodeClass = (NodeClass)(nodeXml->getChildByName(NODE_CLASS_TAG)->getAllSubText().getIntValue());
         auto nodeInstance = (NodeInstance)(nodeXml->getChildByName(INSTANCE_TAG)->getAllSubText().getIntValue());
         auto x = nodeXml->getChildByName(X_TAG)->getAllSubText().getIntValue();
         auto y = nodeXml->getChildByName(Y_TAG)->getAllSubText().getIntValue();
         auto isReversed = nodeXml->getChildByName(IS_REVERSED_TAG)->getAllSubText().getIntValue();
-        auto parametersXML = nodeXml->getChildByName(AUDIO_PARAMETERTS_TAG);
 
         NodeUIPtr nodeUI;
         if(nodeInstance == NodeInstance::Macro)
         {
-            nodeUI = nodeInteractionHandler.createMacroNodeFromXml(nodeXml);
+            nodeUI = _nodeInteractionHandler.createMacroNodeFromXml(nodeXml);
         }
         else if (nodeInstance == NodeInstance::Input || nodeInstance == NodeInstance::Output)
         {
             int channel = nodeXml->getChildByName(IO_CHANNEL_TAG)->getAllSubText().getIntValue();
             if(nodeInstance == NodeInstance::Input)
-                nodeUI = inputs[channel];
+                nodeUI = _inputs[channel];
             else
-                nodeUI = outputs[channel];
+                nodeUI = _outputs[channel];
             jassert(nodeUI != nullptr);
             nodeUI->fromXml(nodeXml);
         }
         else
         {
             if(idToProcessorMap != nullptr && idToProcessorMap->at(id) != nullptr)
-                nodeUI = nodeInteractionHandler.createNode(nodeInstance, Point<int>(x, y), idToProcessorMap->at(id));
+                nodeUI = _nodeInteractionHandler.createNode(nodeInstance, Point<int>(x, y), idToProcessorMap->at(id));
             else
-                nodeUI = nodeInteractionHandler.createNode(nodeInstance, Point<int>(x, y));
+                nodeUI = _nodeInteractionHandler.createNode(nodeInstance, Point<int>(x, y));
 
             auto audioNodeUI = dynamic_cast<AudioProcessorNodeUI*>(nodeUI.get());
             auto audioProcessorNode = audioNodeUI->getProcessorNode();
@@ -408,7 +403,7 @@ void GraphEditor::fromXml(XmlElement* xml, IdToAudioProcessorMap* idToProcessorM
             nodeUI->reverse();
         
         if(nodeInstance != NodeInstance::Input && nodeInstance != NodeInstance::Output)
-            nodeInteractionHandler.initializeNode(nodeUI);
+            _nodeInteractionHandler.initializeNode(nodeUI);
 
         idToNodeUIMap[id] = nodeUI;
     }
@@ -438,7 +433,7 @@ void GraphEditor::createAllConnections(std::map<std::string, NodeUIPtr> idToNode
 
                 if (!connectionHandler.connectionExists(startConnector, endConnector))
                 {
-                    connections.add(std::make_shared<NodeConnection>(startConnector, endConnector));
+                    _connections.add(std::make_shared<NodeConnection>(startConnector, endConnector));
 
                     //Get macro node input node if it's a macro
                     nodeUI = connectionHandler.handleMacroNode(nodeUI, true);
@@ -465,7 +460,7 @@ void GraphEditor::createAllConnections(std::map<std::string, NodeUIPtr> idToNode
 
                 if (!connectionHandler.connectionExists(startConnector, endConnector))
                 {
-                    connections.add(std::make_shared<NodeConnection>(startConnector, endConnector));
+                    _connections.add(std::make_shared<NodeConnection>(startConnector, endConnector));
 
                     nodeUI = connectionHandler.handleMacroNode(nodeUI, false);
                     outputNodeUI = connectionHandler.handleMacroNode(outputNodeUI, true);
@@ -494,7 +489,7 @@ void GraphEditor::createAllConnections(std::map<std::string, NodeUIPtr> idToNode
 
                 if (!connectionHandler.connectionExists(startConnector, endConnector))
                 {
-                    connections.add(std::make_shared<NodeConnection>(startConnector, endConnector));
+                    _connections.add(std::make_shared<NodeConnection>(startConnector, endConnector));
                     nodeUI->connectFeedbackInput(feedbackNodeUI);
                 }
 

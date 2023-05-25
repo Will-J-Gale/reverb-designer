@@ -9,27 +9,26 @@ BiquadFilter::~BiquadFilter()
 {
 }
 
-bool BiquadFilter::reset(double sampleRate)
+void BiquadFilter::reset(double sampleRate)
 {
-    memset(&delay[0], 0, numStates);
-    return true;
+    memset(&_delay[0], 0, NUM_STATES);
 }
 
 double BiquadFilter::process(double xn)
 {
-    if (biquadAlgorithm == BiquadAlgorithm::DirectForm)
+    if (_biquadAlgorithm == BiquadAlgorithm::DirectForm)
     {
         return processDirectForm(xn);
     }
-    else if (biquadAlgorithm == BiquadAlgorithm::DirectFormTransposed)
+    else if (_biquadAlgorithm == BiquadAlgorithm::DirectFormTransposed)
     {
         return processDirectFormTransposed(xn);
     }
-    else if (biquadAlgorithm == BiquadAlgorithm::CanonicalForm)
+    else if (_biquadAlgorithm == BiquadAlgorithm::CanonicalForm)
     {
         return processCanonicalForm(xn);
     }
-    else if (biquadAlgorithm == BiquadAlgorithm::CanonicalFormTransposed)
+    else
     {
         return processCanonicalFormTransposed(xn);
     }
@@ -37,26 +36,26 @@ double BiquadFilter::process(double xn)
 
 void BiquadFilter::setCoefficients(double* coeffs)
 {
-    std::memcpy(&this->coeffs[0], &coeffs[0], sizeof(double)*numCoeffs);
+    std::memcpy(&_coeffs[0], &coeffs[0], sizeof(double)*NUM_COEFFS);
 }
 
 void BiquadFilter::setAlgorithm(BiquadAlgorithm algorithm)
 {
-    biquadAlgorithm = algorithm;
+    _biquadAlgorithm = algorithm;
 }
 
 double BiquadFilter::processDirectForm(double xn)
 {
-    double yn = (xn * coeffs[A0])
-        + (delay[x_z1] * coeffs[A1])
-        + (delay[x_z2] * coeffs[A2])
-        - (delay[y_z1] * coeffs[B1])
-        - (delay[y_z2] * coeffs[B2]);
+    double yn = (xn * _coeffs[A0])
+        + (_delay[x_z1] * _coeffs[A1])
+        + (_delay[x_z2] * _coeffs[A2])
+        - (_delay[y_z1] * _coeffs[B1])
+        - (_delay[y_z2] * _coeffs[B2]);
 
-    delay[x_z1] = xn;
-    delay[x_z2] = delay[x_z1];
-    delay[y_z1] = yn;
-    delay[y_z2] = delay[y_z1];
+    _delay[x_z1] = xn;
+    _delay[x_z2] = _delay[x_z1];
+    _delay[y_z1] = yn;
+    _delay[y_z2] = _delay[y_z1];
 
     return yn;
 }
@@ -78,5 +77,5 @@ double BiquadFilter::processCanonicalFormTransposed(double xn)
 
 AudioParametersPtr BiquadFilter::getParameters()
 {
-    return parameters;
+    return _parameters;
 }

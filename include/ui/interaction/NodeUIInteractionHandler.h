@@ -35,6 +35,6 @@ public:
     void duplicateNode(NodeUI* processor);
 
 private:
-    GraphEditor* graphEditor;
-    PluginGraph* pluginGraph;
+    GraphEditor* _graphEditor;
+    PluginGraph* _pluginGraph;
 };

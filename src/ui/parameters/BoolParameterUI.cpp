@@ -3,29 +3,29 @@
 
 BoolParameterUI::BoolParameterUI()
 {
-    name.setTopLeftPosition(BOOL_PARAMETER_START_X, 0);
-    toggle.setBounds(PARAMETER_X_OFFSET, 0, BOOL_PARAMETER_WIDTH, BOOL_PARAMETER_HEIGHT);
+    _name.setTopLeftPosition(BOOL_PARAMETER_START_X, 0);
+    _toggle.setBounds(PARAMETER_X_OFFSET, 0, BOOL_PARAMETER_WIDTH, BOOL_PARAMETER_HEIGHT);
     setInterceptsMouseClicks(false, true);
-    addAndMakeVisible(toggle);
+    addAndMakeVisible(_toggle);
 }
 
 Component* BoolParameterUI::getComponent()
 {
-    return &toggle;
+    return &_toggle;
 }
 
 float BoolParameterUI::getVisibleWidth()
 {
-    return toggle.getWidth() + getNameTextWidth();
+    return _toggle.getWidth() + getNameTextWidth();
 }
 
 void BoolParameterUI::addListener(ToggleButton::Listener* listener)
 {
-    toggle.addListener(listener);
+    _toggle.addListener(listener);
 }
 
 void BoolParameterUI::setToggleState(bool state)
 {
-    toggle.setToggleState(state, dontSendNotification);
+    _toggle.setToggleState(state, dontSendNotification);
 }
 

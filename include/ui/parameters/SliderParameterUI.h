@@ -27,10 +27,10 @@ public:
     // void mouseDrag(const MouseEvent& e) override;
 
 private:
-    double value = 0.0;
-    double min = 0.0;
-    double max = 1.0;
-    Slider slider;
-    Label minLabel;
-    Label maxLabel;
+    double _value = 0.0;
+    double _min = 0.0;
+    double _max = 1.0;
+    Slider _slider;
+    Label _minLabel;
+    Label _maxLabel;
 };

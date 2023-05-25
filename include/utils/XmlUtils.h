@@ -153,4 +153,4 @@ namespace XmlUtils
 
         return xmlMap;
     }
-};
+}

@@ -17,6 +17,6 @@ public:
     void closeButtonPressed() override;
 
 private:
-    OnCloseCallback onCloseCallback;
+    OnCloseCallback _onCloseCallback;
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (AudioProcessorMacroWindow)
 };

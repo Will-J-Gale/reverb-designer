@@ -18,6 +18,6 @@ public:
     NodeUI* handleMacroNode(NodeUI* node, bool isInput);
 
 private:
-    GraphEditor* graphEditor;
-    PluginGraph* pluginGraph;
+    GraphEditor* _graphEditor = nullptr;
+    PluginGraph* _pluginGraph = nullptr;
 };

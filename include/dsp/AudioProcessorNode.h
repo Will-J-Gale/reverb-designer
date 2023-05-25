@@ -16,7 +16,7 @@ class AudioProcessorNode
 {
 public:
     AudioProcessorNode() {};
-    AudioProcessorNode(NodeInstance nodeInstance) { this->nodeInstance = nodeInstance; };
+    AudioProcessorNode(NodeInstance nodeInstance) { _nodeInstance = nodeInstance; };
     ~AudioProcessorNode();
 
     void process(double xn);
@@ -40,19 +40,19 @@ public:
     bool hasFinishedProcessing();
     void setFinishedProcessing(bool hasFinished);
     std::string getIdAsString();
-    NodeInstance getNodeInstance() { return nodeInstance; }
-    AudioParametersPtr getParameters() { return processor->getParameters(); };
+    NodeInstance getNodeInstance() { return _nodeInstance; }
+    AudioParametersPtr getParameters() { return _processor->getParameters(); };
     // void setParameters(AudioParametersPtr parameters) { processor->setParameters(parameters); };
 
 private:
-    Uuid id;
-    IAudioProcessorPtr processor = std::make_shared<PassThrough>();
-    Array<AudioProcessorNode*> inputs;
-    Array<AudioProcessorNode*> outputs;
-    Array<AudioProcessorNode*> feedbackConnections;
-    NodeInstance nodeInstance;
-    double xn = 0.0;
-    double yn = 0.0;
-    bool finishedProcessing = false;
-    bool isFeedback = false;
+    Uuid _id;
+    IAudioProcessorPtr _processor = std::make_shared<PassThrough>();
+    Array<AudioProcessorNode*> _inputs;
+    Array<AudioProcessorNode*> _outputs;
+    Array<AudioProcessorNode*> _feedbackConnections;
+    NodeInstance _nodeInstance;
+    double _xn = 0.0;
+    double _yn = 0.0;
+    bool _finishedProcessing = false;
+    bool _isFeedback = false;
 };

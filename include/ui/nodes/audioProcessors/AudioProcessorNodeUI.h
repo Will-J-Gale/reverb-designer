@@ -50,10 +50,10 @@ public:
     virtual void fromXml(XmlElement* xml) override;
 
 protected:
-    AudioProcessorNodePtr processorNode = nullptr;
-    Array<std::shared_ptr<BaseParameterUI>> parametersUI;
-    std::map<std::string, ParameterPtr> componentIdToParameterMap;
-    std::map<std::string, Component*> parameterNameToUI;
+    AudioProcessorNodePtr _processorNode = nullptr;
+    Array<std::shared_ptr<BaseParameterUI>> _parametersUI;
+    std::map<std::string, ParameterPtr> _componentIdToParameterMap;
+    std::map<std::string, Component*> _parameterNameToUI;
 };
 
 template<class T>

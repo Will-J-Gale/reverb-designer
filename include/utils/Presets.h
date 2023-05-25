@@ -40,6 +40,9 @@ namespace Presets
                 return ALLPASS_LOOP_XML;
             case Type::FIGURE_8_REVERB:
                 return FIGURE_8_REVERB_XML;
+            
+            default:
+                throw std::runtime_error("Invalid Preset ID");
         }
     }
 }

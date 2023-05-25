@@ -12,53 +12,53 @@
 
 void NodeUIInteractionHandler::initialize(GraphEditor* graphEditor, PluginGraph* pluginGraph)
 {
-    this->graphEditor = graphEditor;
-    this->pluginGraph = pluginGraph;
+    _graphEditor = graphEditor;
+    _pluginGraph = pluginGraph;
 }
 
 void NodeUIInteractionHandler::onNodeClicked(NodeUI* node, const MouseEvent& e)
 {
-    if (!graphEditor->selectionHandler.contains(node))
+    if (!_graphEditor->_selectionHandler.contains(node))
     {
-        graphEditor->selectionHandler.clear();
+        _graphEditor->_selectionHandler.clear();
     }
 
-    graphEditor->repaint();
+    _graphEditor->repaint();
 }
 
 void NodeUIInteractionHandler::onNodeMoved(NodeUI* node, const MouseEvent& e)
 {
-    auto newE = e.getEventRelativeTo(graphEditor);
-    graphEditor->selectionHandler.moveItems(newE.getOffsetFromDragStart());
+    auto newE = e.getEventRelativeTo(_graphEditor);
+    _graphEditor->_selectionHandler.moveItems(newE.getOffsetFromDragStart());
 
-    graphEditor->repaint();
+    _graphEditor->repaint();
 }
 
 void NodeUIInteractionHandler::onNodeReleased(NodeUI* node, const MouseEvent& e)
 {
-    graphEditor->selectionHandler.updateItemPositions();
+    _graphEditor->_selectionHandler.updateItemPositions();
 }
 
 void NodeUIInteractionHandler::onNodeContextSelection(NodeUI* node, NodeContextMenuItems selection)
 {
     if (selection == NodeContextMenuItems::Delete)
     {
-        if (!graphEditor->selectionHandler.isEmpty())
-            graphEditor->deleteSelectedProcessors();
+        if (!_graphEditor->_selectionHandler.isEmpty())
+            _graphEditor->deleteSelectedProcessors();
         else
             deleteNode(node);
     }
     else if (selection == NodeContextMenuItems::Duplicate)
     {
-        if (!graphEditor->selectionHandler.isEmpty())
-            graphEditor->duplicateSelectedProcessors();
+        if (!_graphEditor->_selectionHandler.isEmpty())
+            _graphEditor->duplicateSelectedProcessors();
         else
             duplicateNode(node);
     }
     else if (selection == NodeContextMenuItems::Reverse)
     {
-        if (!graphEditor->selectionHandler.isEmpty())
-            graphEditor->reverseSelectedProcessors();
+        if (!_graphEditor->_selectionHandler.isEmpty())
+            _graphEditor->reverseSelectedProcessors();
         else
             node->reverse();
     }
@@ -76,13 +76,13 @@ void NodeUIInteractionHandler::onNodeContextSelection(NodeUI* node, NodeContextM
         delete xml;
     }
 
-    graphEditor->repaint();
+    _graphEditor->repaint();
 }
 NodeUIPtr NodeUIInteractionHandler::createMacroNode(Point<int> position, String macroName)
 {
     //Refactor this to remove passthroughNode as macro really shouldn't need an explicit AudioProcessorNodePtr
-    auto passthroughNode = graphEditor->pluginGraph->generateProcessorNode(NodeInstance::Macro);
-    auto macroNode = std::make_shared<AudioProcessorMacroNode>(graphEditor->pluginGraph, macroName, passthroughNode);
+    auto passthroughNode = _graphEditor->_pluginGraph->generateProcessorNode(NodeInstance::Macro);
+    auto macroNode = std::make_shared<AudioProcessorMacroNode>(_graphEditor->_pluginGraph, macroName, passthroughNode);
     macroNode->setTopLeftPosition(position);
     macroNode->addInputConnector();
     macroNode->addOutputConnector();
@@ -103,7 +103,7 @@ NodeUIPtr NodeUIInteractionHandler::createIONode(NodeInstance instance, Point<in
 {
     jassert(instance == NodeInstance::Input || instance == NodeInstance::Output);
 
-    NodeUIPtr nodeUI = std::make_shared<IO>(NodeInstanceToName.at(instance), channel, ioProcessorNode, instance, graphEditor->parent);
+    NodeUIPtr nodeUI = std::make_shared<IO>(NodeInstanceToName.at(instance), channel, ioProcessorNode, instance, _graphEditor->_parent);
     nodeUI->setTopLeftPosition(position);
     
     if(instance != NodeInstance::Input)
@@ -119,8 +119,8 @@ NodeUIPtr NodeUIInteractionHandler::createIONode(NodeInstance instance, Point<in
 {
     jassert(instance == NodeInstance::Input || instance == NodeInstance::Output);
 
-    auto passthroughNode = graphEditor->pluginGraph->generateProcessorNode(NodeInstance::Macro);
-    NodeUIPtr nodeUI = std::make_shared<IO>(NodeInstanceToName.at(instance), channel, passthroughNode, instance, graphEditor->parent);
+    auto passthroughNode = _graphEditor->_pluginGraph->generateProcessorNode(NodeInstance::Macro);
+    NodeUIPtr nodeUI = std::make_shared<IO>(NodeInstanceToName.at(instance), channel, passthroughNode, instance, _graphEditor->_parent);
     nodeUI->setTopLeftPosition(position);
     
     if(instance != NodeInstance::Input)
@@ -135,7 +135,7 @@ NodeUIPtr NodeUIInteractionHandler::createIONode(NodeInstance instance, Point<in
 
 NodeUIPtr NodeUIInteractionHandler::createNode(NodeInstance instance, Point<int> position)
 {
-    auto node = graphEditor->pluginGraph->generateProcessorNode(instance);
+    auto node = _graphEditor->_pluginGraph->generateProcessorNode(instance);
     return createNode(instance, position, node);
 }
 
@@ -160,10 +160,10 @@ NodeUIPtr NodeUIInteractionHandler::createNode(NodeInstance instance, Point<int>
 void NodeUIInteractionHandler::initializeNode(NodeUIPtr node)
 {
     node->addListener(this);
-    graphEditor->nodes.add(node);
-    graphEditor->nodeConnectors.addArray(node->getAllNodeConnectors());
-    graphEditor->addNodeConnectorListeners(node->getAllNodeConnectors());
-    graphEditor->addAndMakeVisible(node.get());
+    _graphEditor->_nodes.add(node);
+    _graphEditor->_nodeConnectors.addArray(node->getAllNodeConnectors());
+    _graphEditor->addNodeConnectorListeners(node->getAllNodeConnectors());
+    _graphEditor->addAndMakeVisible(node.get());
 }
 
 void NodeUIInteractionHandler::deleteNode(NodeUI *nodeUIToDelete)
@@ -171,8 +171,8 @@ void NodeUIInteractionHandler::deleteNode(NodeUI *nodeUIToDelete)
     Array<NodeConnectorUI *> nodeConnectors = nodeUIToDelete->getAllNodeConnectors();
     for (auto *nodeConnector : nodeConnectors)
     {
-        graphEditor->connectionHandler.deleteConnection(nodeConnector);
-        graphEditor->removeFromArray(graphEditor->nodeConnectors, nodeConnector);
+        _graphEditor->connectionHandler.deleteConnection(nodeConnector);
+        _graphEditor->removeFromArray(_graphEditor->_nodeConnectors, nodeConnector);
     }
 
     if(nodeUIToDelete->getNodeInstance() == NodeInstance::Macro)
@@ -186,15 +186,15 @@ void NodeUIInteractionHandler::deleteNode(NodeUI *nodeUIToDelete)
             internalNodes.add(audioProcessorNode->getProcessorNode().get());
         }
         
-        pluginGraph->deleteProcessorNodes(internalNodes);
+        _pluginGraph->deleteProcessorNodes(internalNodes);
     }
     else
     {
         auto audioProcessorNode = static_cast<AudioProcessorNodeUI*>(nodeUIToDelete);
-        pluginGraph->deleteProcessorNode(audioProcessorNode->getProcessorNode().get());
+        _pluginGraph->deleteProcessorNode(audioProcessorNode->getProcessorNode().get());
     }
         
-    graphEditor->removeFromArray(graphEditor->nodes, nodeUIToDelete);
+    _graphEditor->removeFromArray(_graphEditor->_nodes, nodeUIToDelete);
 }
 
 void NodeUIInteractionHandler::duplicateNode(NodeUI *node)

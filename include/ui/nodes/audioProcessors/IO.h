@@ -13,7 +13,6 @@ public:
     virtual void fromXml(XmlElement* xml) override;
 
 private:
-    AudioProcessorMacroNode* parent = nullptr;
-    int channel = NULL;
-
+    AudioProcessorMacroNode* _parent = nullptr;
+    int _channel = -1;
 };

@@ -14,7 +14,7 @@
 
 //==============================================================================
 ReverbDesignerAudioProcessorEditor::ReverbDesignerAudioProcessorEditor (ReverbDesignerAudioProcessor& p)
-    : AudioProcessorEditor (&p), processor (p)
+    : AudioProcessorEditor (&p), _processor (p)
 {
    
     // Make sure that before the constructor has finished, you've set the
@@ -22,9 +22,9 @@ ReverbDesignerAudioProcessorEditor::ReverbDesignerAudioProcessorEditor (ReverbDe
     setSize(PLUGIN_WIDTH, PLUGIN_HEIGHT);
     setResizable(true, true);
 
-    mainGraphEditor.setPluginGraph(processor.getPluginGraph());
-    mainGraphEditor.setBounds(getBounds());
-    addAndMakeVisible(mainGraphEditor);
+    _mainGraphEditor.setPluginGraph(_processor.getPluginGraph());
+    _mainGraphEditor.setBounds(getBounds());
+    addAndMakeVisible(_mainGraphEditor);
 }
 
 ReverbDesignerAudioProcessorEditor::~ReverbDesignerAudioProcessorEditor()

@@ -7,11 +7,8 @@ class PassThrough : public IAudioProcessor
 {
 public:
     PassThrough();
-    virtual bool reset(double sampleRate) override;
+    virtual void reset(double sampleRate) override;
     virtual double process(double xn) override;
     virtual bool canProcessAudioFrame() override;
     virtual AudioParametersPtr getParameters() override;
-
-private:
-    AudioParametersPtr parameters;
 };

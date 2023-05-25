@@ -13,6 +13,6 @@ public:
     virtual float getVisibleWidth() = 0;
 
 protected:
-    Label name;
-    juce::Uuid id;
+    Label _name;
+    juce::Uuid _id;
 };

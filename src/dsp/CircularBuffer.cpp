@@ -4,14 +4,12 @@
 
 double CircularBuffer::read(int delayInSamples)
 {
-    int readIndex = writeIndex - delayInSamples;
+    int readIndex = _writeIndex - delayInSamples;
 
     if (readIndex < 0)
-    {
-        readIndex += bufferLength;
-    }
+        readIndex += _bufferLength;
 
-    return buffer[readIndex];
+    return _buffer[readIndex];
 }
 
 double CircularBuffer::read(double delayInFractionalSamples, bool interpolate)
@@ -30,26 +28,25 @@ double CircularBuffer::read(double delayInFractionalSamples, bool interpolate)
 
 void CircularBuffer::createCircularBuffer(size_t bufferLength)
 {
-    writeIndex = 0;
-    this->bufferLength = bufferLength;
-
-    buffer.reset(new double[this->bufferLength]);
+    _writeIndex = 0;
+    _bufferLength = bufferLength;
+    _buffer.reset(new double[_bufferLength]);
 
     flushBuffer();
 }
 
 void CircularBuffer::write(double sample)
 {
-    buffer[writeIndex] = sample;
-    writeIndex = (writeIndex + 1) % bufferLength;
+    _buffer[_writeIndex] = sample;
+    _writeIndex = (_writeIndex + 1) % _bufferLength;
 }
 
 void CircularBuffer::flushBuffer()
 {
-    memset(&buffer[0], 0, bufferLength * sizeof(double));
+    memset(&_buffer[0], 0, _bufferLength * sizeof(double));
 }
 
 void CircularBuffer::setInterpolate(bool interpolate)
 {
-    this->interpolate = interpolate;
+    _interpolate = interpolate;
 }

@@ -3,6 +3,8 @@
 #include <memory>
 #include <JuceHeader.h>
 
+// #define UNUSED()
+
 //Plugin size
 constexpr int PLUGIN_WIDTH = 1800;
 constexpr int PLUGIN_HEIGHT = 900;
@@ -75,6 +77,7 @@ constexpr size_t MAX_CHANNELS = 10;
 const std::string NODE_COLOUR = "ff02FF3E0";
 constexpr float AUDIO_PROCESSOR_CORNER_SIZE = 5.0;
 constexpr float NODE_THICKNESS = 2.0;
+constexpr double DEFAULT_SAMPLERATE = 44100;
 
 //Connections
 constexpr int CONNECTION_THICKNESS = 3;

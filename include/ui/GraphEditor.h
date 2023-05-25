@@ -57,24 +57,21 @@ protected:
     void drawPotentialConnection(Graphics& g);
     void addNodeConnectorListeners(Array<NodeConnectorUI*> nodes);
 
-    Array<NodeUIPtr> inputs;
-    Array<NodeUIPtr> outputs;
-    Array<NodeUIPtr> nodes;
-    Array<NodeConnectionPtr> connections;
-    NodeConnection potentialConnection;
-    Array<NodeConnectorUI*> nodeConnectors;
-    NodeConnectorUI* clickedNodeConnector = nullptr;
-
-    PluginGraph* pluginGraph = nullptr;
-    AudioProcessorMacroNode* parent = nullptr;
-
-    Point<int> mousePosition;
-    Point<int> mouseDownPosition;
-    Point<int> lastDragPosition;
-    Rectangle<int> selectionArea;
-    InteractionState interactionState = InteractionState::None;
-    
-    GraphEditorContextMenu contextMenu;
+    Array<NodeUIPtr> _inputs;
+    Array<NodeUIPtr> _outputs;
+    Array<NodeUIPtr> _nodes;
+    Array<NodeConnectionPtr> _connections;
+    NodeConnection _potentialConnection;
+    Array<NodeConnectorUI*> _nodeConnectors;
+    NodeConnectorUI* _clickedNodeConnector = nullptr;
+    PluginGraph* _pluginGraph = nullptr;
+    AudioProcessorMacroNode* _parent = nullptr;
+    Point<int> _mousePosition;
+    Point<int> _mouseDownPosition;
+    Point<int> _lastDragPosition;
+    Rectangle<int> _selectionArea;
+    InteractionState _interactionState = InteractionState::None;
+    GraphEditorContextMenu _contextMenu;
 
     //Interaction
     friend class ConnectionHandler;
@@ -82,11 +79,11 @@ protected:
     friend class NodeConnectorInteractionHandler;
     
     //Used for moving all elements around with middle mouse button (emulating panning)
-    SelectionHandler globalSelection;
+    SelectionHandler _globalSelection;
     //Used to only move selected items
-    SelectionHandler selectionHandler;
-    ZoomHandler zoomHandler{this};
+    SelectionHandler _selectionHandler;
+    ZoomHandler _zoomHandler{this};
     ConnectionHandler connectionHandler; 
-    NodeUIInteractionHandler nodeInteractionHandler; 
-    NodeConnectorInteractionHandler nodeConnectorInteractionHandler{this};
+    NodeUIInteractionHandler _nodeInteractionHandler; 
+    NodeConnectorInteractionHandler _nodeConnectorInteractionHandler{this};
 };

@@ -7,13 +7,13 @@ class AudioProcessorNode;
 struct AudioProcessorState
 {
     AudioProcessorState(
-        Array<AudioProcessorNodePtr> inputs,
-        Array<AudioProcessorNodePtr> outputs,
-        Array<AudioProcessorNodePtr> nodes)
+        Array<AudioProcessorNodePtr> newInputs,
+        Array<AudioProcessorNodePtr> newOutputs,
+        Array<AudioProcessorNodePtr> newNodes)
     {
-        this->inputs = inputs;
-        this->outputs = outputs;
-        this->nodes = nodes;
+        this->inputs = newInputs;
+        this->outputs = newOutputs;
+        this->nodes = newNodes;
     }
 
     Array<AudioProcessorNodePtr> inputs;

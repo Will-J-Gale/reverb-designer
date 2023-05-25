@@ -16,6 +16,6 @@ public:
     size_t size();
    
 private:
-    Array<NodeUI*> items;
-    std::map<NodeUI*, Point<int>> originalPositions;
+    Array<NodeUI*> _items;
+    std::map<NodeUI*, Point<int>> _originalPositions;
 };

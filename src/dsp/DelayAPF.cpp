@@ -2,7 +2,7 @@
 
 DelayAPF::DelayAPF()
 {
-    parameters = MAKE_PARAMETERS({
+    _parameters = MAKE_PARAMETERS({
         std::make_shared<DoubleParameter>("TimeMs", 0.0, APF_MIN_DELAY, APF_MAX_DELAY),
         std::make_shared<DoubleParameter>("APF G", 0.0, 0.0, 1.0),
         std::make_shared<BooleanParameter>("Enable LPF", false),
@@ -13,37 +13,34 @@ DelayAPF::DelayAPF()
         std::make_shared<DoubleParameter>("LFO Max Modulation ms", 0.0, APF_MIN_MOD_FREQ, APF_MAX_MOD_FREQ),
     });
 
-    parameters->addOnChangeCallback(std::bind(&DelayAPF::onParametersChanged, this));
-    delayParameters = delay.getParameters();
+    _parameters->addOnChangeCallback(std::bind(&DelayAPF::onParametersChanged, this));
+    _delayParameters = _delay.getParameters();
 
     onParametersChanged();
 }
 
-bool DelayAPF::reset(double sampleRate)
+void DelayAPF::reset(double sampleRate)
 {
-    this->sampleRate = sampleRate;
-    delay.reset(sampleRate);
-    lfo.reset(sampleRate);
-
-    delayParameters = delay.getParameters();
+    _sampleRate = sampleRate;
+    _delay.reset(sampleRate);
+    _lfo.reset(sampleRate);
+    _delayParameters = _delay.getParameters();
 }
 
 double DelayAPF::process(double xn)
 {
-    double g = parameters->getParameterValueByName<double>("APF G");
-    double g2 = parameters->getParameterValueByName<double>("LPF G");
-    double lfoDepth = parameters->getParameterValueByName<double>("LFO Depth");
-    double delayTimeMs = parameters->getParameterValueByName<double>("TimeMs");
-    double lfoMaxModulationInMs = parameters->getParameterValueByName<double>("LFO Max Modulation ms");
-    double enableLPF = parameters->getParameterValueByName<bool>("Enable LPF");
-    double enableLFO = parameters->getParameterValueByName<bool>("Enable LFO");
+    double g = _parameters->getParameterValueByName<double>("APF G");
+    double g2 = _parameters->getParameterValueByName<double>("LPF G");
+    double lfoDepth = _parameters->getParameterValueByName<double>("LFO Depth");
+    double delayTimeMs = _parameters->getParameterValueByName<double>("TimeMs");
+    double lfoMaxModulationInMs = _parameters->getParameterValueByName<double>("LFO Max Modulation ms");
+    double enableLPF = _parameters->getParameterValueByName<bool>("Enable LPF");
+    double enableLFO = _parameters->getParameterValueByName<bool>("Enable LFO");
     double delayedSample = 0.0;
 
     if (enableLFO)
     {
-        SignalGenData lfoOutput = lfo.renderAudioOutput();
-        double lfoDepth = lfoDepth;
-
+        SignalGenData lfoOutput = _lfo.renderAudioOutput();
         double maxDelay = delayTimeMs;
         double minDelay = maxDelay - lfoMaxModulationInMs;
         
@@ -52,11 +49,11 @@ double DelayAPF::process(double xn)
         double uniPolarLfo = Math::bipolarToUnipolar(lfoDepth * lfoOutput.normalOutput);
         double modDelayInMs = Math::uniPolarScale(uniPolarLfo, minDelay, maxDelay);
 
-        delayedSample = delay.readDelayAtTimeInMs(modDelayInMs);  
+        delayedSample = _delay.readDelayAtTimeInMs(modDelayInMs);  
     }
     else
     {
-        delayedSample = delay.readDelay();
+        delayedSample = _delay.readDelay();
     }
 
     double wn = xn + (delayedSample * g);
@@ -73,11 +70,11 @@ double DelayAPF::process(double xn)
 
     if (enableLPF)
     {
-        wn = (wn * (1 - g2)) + (lpfState * g2);
-        lpfState = wn;
+        wn = (wn * (1 - g2)) + (_lpfState * g2);
+        _lpfState = wn;
     }
 
-    delay.write(wn);
+    _delay.write(wn);
 
     return yn;
 }
@@ -89,13 +86,13 @@ bool DelayAPF::canProcessAudioFrame()
 
 void DelayAPF::onParametersChanged()
 {
-    double delayTimeInMs = parameters->getParameterValueByName<double>("TimeMs");
-    double lfoRate = parameters->getParameterValueByName<double>("LFO Rate");
+    double delayTimeInMs = _parameters->getParameterValueByName<double>("TimeMs");
+    double lfoRate = _parameters->getParameterValueByName<double>("LFO Rate");
     
-    AudioParametersPtr delayParameters = delay.getParameters();
+    AudioParametersPtr delayParameters = _delay.getParameters();
     delayParameters->setParameterValueByName<double>("TimeMs", delayTimeInMs);
 
-    OscillatorParameters lfoPrams = lfo.getParameters();
+    OscillatorParameters lfoPrams = _lfo.getParameters();
     lfoPrams.frequency = lfoRate;
-    lfo.setParameters(lfoPrams);
+    _lfo.setParameters(lfoPrams);
 }

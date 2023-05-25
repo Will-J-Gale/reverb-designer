@@ -3,10 +3,9 @@
 
 void LFO::reset(double sampleRate)
 {
-    this->sampleRate = sampleRate;
-    phaseInc = lfoParameters.frequency / sampleRate;
-
-    modCounter = 0.0;
+    _sampleRate = sampleRate;
+    _phaseInc = _lfoParameters.frequency / sampleRate;
+    _modCounter = 0.0;
     modCounterQP = 0.25;
 }
 
@@ -20,16 +19,16 @@ void LFO::setGeneratorWaveform(GeneratorWaveform waveform)
 
 SignalGenData LFO::renderAudioOutput()
 {
-    checkAndWrapModulo(modCounter, phaseInc);
+    checkAndWrapModulo(_modCounter, _phaseInc);
 
-    modCounterQP = modCounter;
+    modCounterQP = _modCounter;
     advanceAndcheckAndWrapModulo(modCounterQP, 0.25);
 
     SignalGenData output;
 
-    if (lfoParameters.waveForm == GeneratorWaveform::kSin)
+    if (_lfoParameters.waveForm == GeneratorWaveform::kSin)
     {
-        double angle = (modCounter * 2.0 * Math::PI) - Math::PI;
+        double angle = (_modCounter * 2.0 * Math::PI) - Math::PI;
 
         output.normalOutput = parabolicSine(-angle);
 
@@ -37,43 +36,43 @@ SignalGenData LFO::renderAudioOutput()
 
         output.quadPhaseOutput_pos = parabolicSine(-angle);
     }
-    else if (lfoParameters.waveForm == GeneratorWaveform::kTriangle)
+    else if (_lfoParameters.waveForm == GeneratorWaveform::kTriangle)
     {
-        double bipolar = Math::unipolarToBipolar(modCounter);
+        double bipolar = Math::unipolarToBipolar(_modCounter);
         output.normalOutput = 2.0 * fabs(bipolar) - 1;
 
         bipolar = Math::unipolarToBipolar(modCounterQP);
         output.quadPhaseOutput_pos = 2.0 * fabs(bipolar) - 1;
     }
-    else if (lfoParameters.waveForm == GeneratorWaveform::kSaw)
+    else if (_lfoParameters.waveForm == GeneratorWaveform::kSaw)
     {
-        output.normalOutput = Math::unipolarToBipolar(modCounter);
+        output.normalOutput = Math::unipolarToBipolar(_modCounter);
         output.quadPhaseOutput_pos = Math::unipolarToBipolar(modCounterQP);
     }
 
     output.invertedOutput = -output.normalOutput;
     output.quadPhaseOutput_neg = -output.quadPhaseOutput_pos;
 
-    advanceModulo(modCounter, phaseInc);
+    advanceModulo(_modCounter, _phaseInc);
 
     return output;
 }
 
 OscillatorParameters LFO::getParameters()
 {
-    return lfoParameters;
+    return _lfoParameters;
 }
 
 bool LFO::setParameters(OscillatorParameters newParameters)
 {
-    lfoParameters = newParameters;
-    phaseInc = lfoParameters.frequency / sampleRate;
+    _lfoParameters = newParameters;
+    _phaseInc = _lfoParameters.frequency / _sampleRate;
     return true;
 }
 
 void LFO::setSampleRate(double sampleRate)
 {
-    this->sampleRate = sampleRate;
+    _sampleRate = sampleRate;
 }
 
 bool LFO::checkAndWrapModulo(double& moduloCounter, double phaseInc)
@@ -123,7 +122,7 @@ void LFO::advanceModulo(double& moduloCounter, double phaseInc)
 
 double LFO::parabolicSine(double angle)
 {
-    double y = B * angle + C * angle * fabs(angle);
-    y = P * (y * fabs(y) - y) + y;
+    double y = _B * angle + _C * angle * fabs(angle);
+    y = _P * (y * fabs(y) - y) + y;
     return y;
 }

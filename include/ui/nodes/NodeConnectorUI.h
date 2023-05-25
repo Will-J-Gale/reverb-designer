@@ -45,11 +45,11 @@ public:
     NodeUI* getAttachedNodeUI();
 
 private:
-    Uuid id;
-    NodeConnectorType type = NodeConnectorType::AudioInput;
-    Point<float> position;
-    NodeConnectorUI* connectedTo = nullptr;
-    GraphEditor* parent = nullptr;
-    NodeUI* attachedProcessorUI;
-    Array<NodeConnectorUI::Listener*> listeners;
+    Uuid _id;
+    NodeConnectorType _nodeConnectorType = NodeConnectorType::AudioInput;
+    Point<float> _position;
+    NodeConnectorUI* _connectedTo = nullptr;
+    GraphEditor* _parent = nullptr;
+    NodeUI* _attachedNodeUI;
+    Array<NodeConnectorUI::Listener*> _listeners;
 };

@@ -8,16 +8,16 @@ NodeConnectorUI::NodeConnectorUI()
     initialize();
 }
 
-NodeConnectorUI::NodeConnectorUI(NodeUI* attachedProcessorUI)
+NodeConnectorUI::NodeConnectorUI(NodeUI* attachedNodeUI)
 {
-    this->attachedProcessorUI = attachedProcessorUI;
+    _attachedNodeUI = attachedNodeUI;
     initialize();
 }
 
 NodeConnectorUI::~NodeConnectorUI()
 {
-    connectedTo = nullptr;
-    parent = nullptr;
+    _connectedTo = nullptr;
+    _parent = nullptr;
 }
 
 void NodeConnectorUI::initialize()
@@ -34,7 +34,7 @@ void NodeConnectorUI::paint(Graphics& g)
     double x = getLocalBounds().getX();
     double y = getLocalBounds().getY();
     
-    if (type == NodeConnectorType::AudioInput)
+    if (_nodeConnectorType == NodeConnectorType::AudioInput)
     {
         //This is to draw circle in center of bounds
         //becuase it gets clipped otherwise
@@ -51,18 +51,18 @@ void NodeConnectorUI::paint(Graphics& g)
 
 void NodeConnectorUI::setPosition(float x, float y)
 {
-    position.setX(x);
-    position.setY(y);
+    _position.setX(x);
+    _position.setY(y);
 }
 
 void NodeConnectorUI::setPosition(Point<float> newPosition)
 {
-    position = newPosition;
+    _position = newPosition;
 }
 
 void NodeConnectorUI::mouseDown(const MouseEvent& e)
 {
-    for (auto listener : listeners)
+    for (auto listener : _listeners)
     {
         if (e.mods.isLeftButtonDown())
             listener->onNodeConnectorLeftClick(this, e);
@@ -73,7 +73,7 @@ void NodeConnectorUI::mouseDown(const MouseEvent& e)
 
 void NodeConnectorUI::mouseDrag(const MouseEvent& e)
 {
-    for (auto listener : listeners)
+    for (auto listener : _listeners)
     {
         listener->onNodeConnectorDrag(this, e);
     }
@@ -83,36 +83,35 @@ void NodeConnectorUI::mouseUp(const MouseEvent& e)
 {
     if (e.mods.isLeftButtonDown())
     {
-        for (auto listener : listeners)
+        for (auto listener : _listeners)
         {
-            int x = 1;
             listener->onNodeConnectorLeftRelease(this, e);
         }
     }
 }
 
-void NodeConnectorUI::setType(NodeConnectorType type)
+void NodeConnectorUI::setType(NodeConnectorType nodeConnectorType)
 {
-    this->type = type;
+    _nodeConnectorType = nodeConnectorType;
 }
 
 NodeConnectorType NodeConnectorUI::getType()
 {
-    return type;
+    return _nodeConnectorType;
 }
 
 Uuid NodeConnectorUI::getId()
 {
-    return id;
+    return _id;
 }
 
 void NodeConnectorUI::addListener(NodeConnectorUI::Listener* listener)
 {
-    listeners.add(listener);
+    _listeners.add(listener);
 }
 
 NodeUI* NodeConnectorUI::getAttachedNodeUI()
 {
-    return attachedProcessorUI;
+    return _attachedNodeUI;
 }
 

@@ -2,20 +2,20 @@
 
 DragHandler::DragHandler(Component* component)
 {
-    this->component = component;
+    _component = component;
 }
 
 void DragHandler::mouseDown(const MouseEvent& e)
 {
-    dragOffset = e.getScreenPosition() - component->getScreenPosition();
+    _dragOffset = e.getScreenPosition() - _component->getScreenPosition();
 }
 
 void DragHandler::drag(const MouseEvent& e)
 {
-    auto pos = e.getScreenPosition() - dragOffset;
+    auto pos = e.getScreenPosition() - _dragOffset;
 
-    if (component->getParentComponent() != nullptr)
-        pos = component->getParentComponent()->getLocalPoint(nullptr, pos);
+    if (_component->getParentComponent() != nullptr)
+        pos = _component->getParentComponent()->getLocalPoint(nullptr, pos);
 
-    component->setTopLeftPosition(pos.x, pos.y);
+    _component->setTopLeftPosition(pos.x, pos.y);
 }

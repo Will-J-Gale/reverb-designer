@@ -68,20 +68,20 @@ protected:
     void initialize();
     Point<int> getCenterPosition();
 
-    bool reversed = false;
-    Uuid id;
-    Label nameLabel;
-    String name;
-    NodeClass nodeClass;
-    NodeInstance nodeInstance;
-    PopupMenu contextMenu = NodeUIContextMenu();
-    Array<Listener*> listeners;
-    DragHandler dragHandler = DragHandler(this);
+    bool _reversed = false;
+    Uuid _id;
+    Label _nameLabel;
+    String _name;
+    NodeClass _nodeClass;
+    NodeInstance _nodeInstance;
+    PopupMenu _contextMenu = NodeUIContextMenu();
+    Array<Listener*> _listeners;
+    DragHandler _dragHandler = DragHandler(this);
 
-    NodeConnectorUIPtr input;
-    NodeConnectorUIPtr output;
+    NodeConnectorUIPtr _inputConnector;
+    NodeConnectorUIPtr _outputConnector;
 
-    Array<NodeUI*> inputConnections;
-    Array<NodeUI*> outputConnections;
-    Array<NodeUI*> feedbackConnections; 
+    Array<NodeUI*> _inputConnections;
+    Array<NodeUI*> _outputConnections;
+    Array<NodeUI*> _feedbackConnections; 
 };

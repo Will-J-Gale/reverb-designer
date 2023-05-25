@@ -5,17 +5,17 @@
 
 MainMenu::MainMenu()
 {
-    menuBar.reset(new MenuBarComponent(this));
-    addAndMakeVisible(menuBar.get());
+    _menuBar.reset(new MenuBarComponent(this));
+    addAndMakeVisible(_menuBar.get());
 
     setBounds(0, 0, 500, 200);
 
-    fileChooser.reset(new FileChooser(FILE_CHOOSER_TEXT, StorageManager::getStorageDirectory(), FILE_CHOOSER_FILTER, true));
+    _fileChooser.reset(new FileChooser(FILE_CHOOSER_TEXT, StorageManager::getStorageDirectory(), FILE_CHOOSER_FILTER, true));
 }
 
 void MainMenu::resized()
 {
-    menuBar->setBounds(0, 0, getWidth(), getHeight());
+    _menuBar->setBounds(0, 0, getWidth(), getHeight());
 }
 
 StringArray MainMenu::getMenuBarNames()
@@ -59,26 +59,26 @@ PopupMenu MainMenu::getMenuForIndex(int menuIndex, const String& menuName)
 
 void MainMenu::addListener(MainMenu::Listener* listener)
 {
-    listeners.add(listener);
+    _listeners.add(listener);
 }
 
 void MainMenu::saveFile()
 {
-    bool fileIsChosen = fileChooser->browseForFileToSave(true);
+    bool fileIsChosen = _fileChooser->browseForFileToSave(true);
 
     if (fileIsChosen)
     {
-        auto file = fileChooser->getResult();
+        auto file = _fileChooser->getResult();
         auto originalPath = file.getFullPathName();
 
         if(file.getFileExtension().length() == 0)
-            originalPath.append(SAVE_FILE_EXT, SAVE_FILE_EXT.length());
+            originalPath.append(SAVE_FILE_EXT, (size_t)SAVE_FILE_EXT.length());
         else
             originalPath = originalPath.replaceFirstOccurrenceOf(file.getFileExtension(), SAVE_FILE_EXT);
 
         std::string savePath = originalPath.toStdString();
 
-        for (auto listener : listeners)
+        for (auto listener : _listeners)
         {
             listener->onSave(savePath);
         }
@@ -87,12 +87,12 @@ void MainMenu::saveFile()
 
 void MainMenu::loadFile()
 {
-    bool fileIsChosen = fileChooser->browseForFileToOpen();
+    bool fileIsChosen = _fileChooser->browseForFileToOpen();
 
     if (fileIsChosen)
     {
-        auto filepath = fileChooser->getResult().getFullPathName().toStdString();
-        for (auto listener : listeners)
+        auto filepath = _fileChooser->getResult().getFullPathName().toStdString();
+        for (auto listener : _listeners)
         {
             listener->onLoad(filepath);
         }
@@ -101,7 +101,7 @@ void MainMenu::loadFile()
 
 void MainMenu::presetSelected(Presets::Type presetId)
 {
-    for (auto listener : listeners)
+    for (auto listener : _listeners)
     {
         listener->onPresetSelected(presetId);
     }
@@ -109,7 +109,7 @@ void MainMenu::presetSelected(Presets::Type presetId)
 
 void MainMenu::newProject()
 {
-    for (auto listener : listeners)
+    for (auto listener : _listeners)
     {
         listener->onNewProject();
     }
@@ -117,7 +117,7 @@ void MainMenu::newProject()
 
 void MainMenu::macroSelected(File macroFile)
 {
-    for (auto listener : listeners)
+    for (auto listener : _listeners)
     {
         listener->onMacroSelected(macroFile);
     }

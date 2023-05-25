@@ -20,6 +20,6 @@ private:
     void createIOProcessors();
     void resized() override;
 
-    MainMenu mainMenu;
-    MainMenuInteractionHandler mainMenuInteractionHandler{this};
+    MainMenu _mainMenu;
+    MainMenuInteractionHandler _mainMenuInteractionHandler{this};
 };

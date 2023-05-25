@@ -46,4 +46,4 @@ namespace StorageManager
         jassert(directory.isDirectory());
         return directory.findChildFiles(File::TypesOfFileToFind::findFiles, false, FILE_CHOOSER_FILTER, File::FollowSymlinks::no);
     }
-};
+}

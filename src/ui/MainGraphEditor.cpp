@@ -5,27 +5,27 @@
 
 MainGraphEditor::MainGraphEditor() : GraphEditor()
 {
-    mainMenu.setAlwaysOnTop(true);
-    mainMenu.addListener(&mainMenuInteractionHandler);
-    mainMenu.setBounds(0, 0, getWidth(), MENU_HEIGHT);
-    addAndMakeVisible(mainMenu);
+    _mainMenu.setAlwaysOnTop(true);
+    _mainMenu.addListener(&_mainMenuInteractionHandler);
+    _mainMenu.setBounds(0, 0, getWidth(), MENU_HEIGHT);
+    addAndMakeVisible(_mainMenu);
 }
 
 MainGraphEditor::~MainGraphEditor()
 {
-    pluginGraph->setPluginState(std::shared_ptr<XmlElement>(toXml()));
+    _pluginGraph->setPluginState(std::shared_ptr<XmlElement>(toXml()));
 }
 
 void MainGraphEditor::resized()
 {
-    mainMenu.setBounds(0, 0, getWidth(), MENU_HEIGHT);
+    _mainMenu.setBounds(0, 0, getWidth(), MENU_HEIGHT);
 }
 
 void MainGraphEditor::setPluginGraph(PluginGraph* pluginGraph)
 {
-    this->pluginGraph = pluginGraph;
+    _pluginGraph = pluginGraph;
     auto pluginState = pluginGraph->getPluginState().get();
-    nodeInteractionHandler.initialize(this, pluginGraph);
+    _nodeInteractionHandler.initialize(this, pluginGraph);
     connectionHandler.initialize(this, pluginGraph);
 
     if (pluginState != nullptr)
@@ -36,16 +36,16 @@ void MainGraphEditor::setPluginGraph(PluginGraph* pluginGraph)
 
 void MainGraphEditor::createIOProcessors()
 {
-    auto audioInputs = pluginGraph->getInputs();
-    auto audioOutputs = pluginGraph->getOutputs();
+    auto audioInputs = _pluginGraph->getInputs();
+    auto audioOutputs = _pluginGraph->getOutputs();
 
     auto y = IO_START_Y;
     for (int i = 0; i < audioInputs.size(); i++)
     {
         auto audioInput = audioInputs[i];
-        auto newInput = nodeInteractionHandler.createIONode(NodeInstance::Input, Point<int>(), audioInput, i);
-        nodeInteractionHandler.initializeNode(newInput);
-        inputs.add(newInput);
+        auto newInput = _nodeInteractionHandler.createIONode(NodeInstance::Input, Point<int>(), audioInput, i);
+        _nodeInteractionHandler.initializeNode(newInput);
+        _inputs.add(newInput);
         newInput->setTopLeftPosition(INPUT_START_X, y);
         y += IO_SPACING;
     }
@@ -54,10 +54,10 @@ void MainGraphEditor::createIOProcessors()
     for (int i = 0; i < audioOutputs.size(); i++)
     {
         auto audioOutput = audioOutputs[i];
-        auto newOutput = nodeInteractionHandler.createIONode(NodeInstance::Output, Point<int>(), audioOutput, i);
-        nodeInteractionHandler.initializeNode(newOutput);
+        auto newOutput = _nodeInteractionHandler.createIONode(NodeInstance::Output, Point<int>(), audioOutput, i);
+        _nodeInteractionHandler.initializeNode(newOutput);
 
-        outputs.add(newOutput);
+        _outputs.add(newOutput);
         newOutput->setTopLeftPosition(OUTPUT_START_X, y);
         y += IO_SPACING;
     }
@@ -70,7 +70,7 @@ void MainGraphEditor::loadFromExistingState(XmlElement* state)
         return;
 
     auto idToXmlMap = XmlUtils::generateIdToNodeXmlElementMap(state);
-    auto idToNodeMap = pluginGraph->getAudioProcessorNodeMap();
+    auto idToNodeMap = _pluginGraph->getAudioProcessorNodeMap();
 
     fromXml(state, &idToNodeMap);
     state->deleteAllChildElements();
@@ -84,6 +84,6 @@ void MainGraphEditor::fromXml(XmlElement* xml, IdToAudioProcessorMap* idToProces
     createIOProcessors();
     GraphEditor::fromXml(xml, idToProcessorMap);
 
-    pluginGraph->updateProcessPath();
+    _pluginGraph->updateProcessPath();
     repaint();
 }

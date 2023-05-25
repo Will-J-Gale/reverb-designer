@@ -23,11 +23,9 @@ public:
     ConnectionType getType();
 
 private:
-    Point<int> startPosition;
-    Point<int> endPosition;
-
-    NodeConnectorUI* start = nullptr;
-    NodeConnectorUI* end = nullptr;
-
-    ConnectionType connectionType = ConnectionType::Normal;
+    Point<int> _startPosition;
+    Point<int> _endPosition;
+    NodeConnectorUI* _start = nullptr;
+    NodeConnectorUI* _end = nullptr;
+    ConnectionType _connectionType = ConnectionType::Normal;
 };
