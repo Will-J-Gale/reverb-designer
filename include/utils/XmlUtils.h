@@ -1,6 +1,5 @@
 #pragma once
 #include <JuceHeader.h>
-#include <memory>
 #include <parameters/AudioParameters.h>
 #include <ui/nodes/audioProcessors/AudioProcessorNodeUI.h>
 #include <ui/nodes/audioProcessors/AudioProcessorMacroNode.h>

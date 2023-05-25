@@ -1,6 +1,4 @@
 #pragma once
-#include <memory>
-#include <functional>
 #include <JuceHeader.h>
 
 #define ParameterPtr std::shared_ptr<Parameter>

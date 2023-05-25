@@ -1,4 +1,3 @@
-#include <map>
 #include <ui/GraphEditor.h>
 #include <dsp/PluginGraph.h>
 #include <ui/interaction/NodeConnectionDrawer.h>

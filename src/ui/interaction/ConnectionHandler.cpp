@@ -1,4 +1,3 @@
-#include <memory>
 #include <ui/interaction/ConnectionHandler.h>
 #include <ui/nodes/NodeConnectorUI.h>
 #include <ui/GraphEditor.h>

@@ -44,7 +44,7 @@ void PluginGraph::process(std::vector<float>& inputFrame, int numInputChannels)
         return;
     }
 
-for (int i = 0; i < _inputs.size(); i++)
+    for (int i = 0; i < _inputs.size(); i++)
     {
         auto input = _inputs[i];
         _inputs[i]->process(inputFrame[i]);

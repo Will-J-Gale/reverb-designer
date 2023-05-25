@@ -3,8 +3,6 @@ cmake_minimum_required(VERSION 3.15)
 project(REVERB_DESIGNER VERSION 0.0.1)
 find_package(JUCE CONFIG REQUIRED)
 
-
-
 juce_add_plugin(ReverbDesigner
     # VERSION ...                               # Set this if the plugin version is different to the project version
     # ICON_BIG ...                              # ICON_* arguments specify a path to an image file to use as an icon for the Standalone
@@ -47,6 +45,15 @@ target_compile_options(warning_flags INTERFACE
         -Wredundant-decls -Wno-strict-overflow -Wshadow
         $<$<COMPILE_LANGUAGE:CXX>:
             -Wno-overloaded-virtual -Wreorder -Wzero-as-null-pointer-constant>)
+
+target_precompile_headers(
+    ReverbDesigner 
+    PUBLIC 
+    <memory>
+    <string>
+    <vector>
+    <map>
+    <functional>)
 
 target_link_libraries(ReverbDesigner
     PRIVATE

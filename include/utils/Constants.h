@@ -1,9 +1,5 @@
 #pragma once
-#include <string>
-#include <memory>
 #include <JuceHeader.h>
-
-// #define UNUSED()
 
 //Plugin size
 constexpr int PLUGIN_WIDTH = 1800;

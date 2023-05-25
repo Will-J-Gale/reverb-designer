@@ -1,5 +1,4 @@
 #pragma once
-#include <vector>
 #include <JuceHeader.h>
 #include <parameters/Parameter.h>
 
@@ -52,14 +51,19 @@ public:
         {
             case ParameterType::Boolean:
                 static_cast<BooleanParameter*>(parameter)->setValue(value);
+                return;
             
             case ParameterType::Double:
                 static_cast<DoubleParameter*>(parameter)->setValue(value);
+                return;
             
             case ParameterType::Option:
                 static_cast<OptionParameter*>(parameter)->setValue(value);
+                return;
+
             case ParameterType::Float:
                 static_cast<FloatParameter*>(parameter)->setValue(value);
+                return;
             
             default:
                 throw std::runtime_error("Invalid paramter type");

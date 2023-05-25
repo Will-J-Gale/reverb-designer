@@ -1,6 +1,6 @@
 #pragma once
+
 #include <JuceHeader.h>
-#include <memory>
 #include <utils/Constants.h>
 
 //Forward declarations

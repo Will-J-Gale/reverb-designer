@@ -1,6 +1,5 @@
 #pragma once
 #include <JuceHeader.h>
-#include <memory>
 
 class ManagedArray
 {

@@ -1,7 +1,6 @@
 
 #pragma once
 #include <cstdint>
-#include <memory>
 #include <dsp/Parameters.h>
 #include <stdexcept>
 #include <parameters/AudioParameters.h>

@@ -1,5 +1,4 @@
 #pragma once
-#include <functional>
 #include <JuceHeader.h>
 #include <utils/Constants.h>
 

@@ -1,10 +1,9 @@
 #pragma once
 
-#include <dsp/IAudioProcessor.h>
 #include <JuceHeader.h>
-#include <memory>
-#include <utils/Constants.h>
+#include <dsp/IAudioProcessor.h>
 #include <dsp/PassThrough.h>
+#include <utils/Constants.h>
 #include <parameters/AudioParameters.h>
 
 #define AudioProcessorNodePtr std::shared_ptr<AudioProcessorNode>

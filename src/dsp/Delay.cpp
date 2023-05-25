@@ -12,12 +12,10 @@ Delay::Delay()
 
 void Delay::reset(double sampleRate)
 {
-    _sampleRate = sampleRate;
-
-    _buffer.flushBuffer();
     double maxDelayTimeInSeconds = _parameters->getParameterByNameAsType<DoubleParameter>("TimeMs")->getMax() / 1000.0;
+    _sampleRate = sampleRate;
     _bufferLength = (sampleRate * maxDelayTimeInSeconds) + 1;
-
+    _buffer.flushBuffer();
     _buffer.createCircularBuffer(_bufferLength);
 }
 

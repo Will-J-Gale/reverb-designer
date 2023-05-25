@@ -1,5 +1,5 @@
 #pragma once
-#include <vector>
+
 #include <JuceHeader.h>
 #include <ui/menus/NodeUIContextMenu.h>
 #include <ui/nodes/NodeConnectorUI.h>

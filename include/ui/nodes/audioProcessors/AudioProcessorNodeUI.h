@@ -1,5 +1,4 @@
 #pragma once
-#include <vector>
 #include <JuceHeader.h>
 #include <dsp/IAudioProcessor.h>
 #include <dsp/AudioProcessorNode.h>
