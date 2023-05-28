@@ -28,10 +28,12 @@ void MainGraphEditor::setPluginGraph(PluginGraph* pluginGraph)
     _nodeInteractionHandler.initialize(this, pluginGraph);
     _connectionHandler.initialize(this, pluginGraph);
 
+
+    if(_inputs.size() == 0 && _outputs.size() == 0)
+        createIOProcessors();
+
     if (pluginState != nullptr)
         loadFromExistingState(pluginState);
-    else
-        createIOProcessors();
 }
 
 void MainGraphEditor::createIOProcessors()
