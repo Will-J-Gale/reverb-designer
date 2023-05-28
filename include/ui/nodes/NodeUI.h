@@ -41,6 +41,7 @@ public:
     virtual void connectOutput(NodeUI* connector) = 0;
     virtual void disconnectInput(NodeUI* connector) = 0;
     virtual void disconnectOutput(NodeUI* connector) = 0;
+    virtual void clearConnections() = 0;
 
     Array<NodeUI*> getOutputConnections();
     Array<NodeUI*> getInputConnections();

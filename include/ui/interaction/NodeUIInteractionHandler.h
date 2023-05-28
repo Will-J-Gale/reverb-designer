@@ -30,7 +30,7 @@ public:
     NodeUIPtr createNode(NodeInstance instance, Point<int> position, AudioProcessorNodePtr processorNode);
 
     void initializeNode(NodeUIPtr processor);
-    void deleteNode(NodeUI* processor);
+    void deleteNode(NodeUI* processor, bool deleteAudioNodes=false);
     void duplicateNode(NodeUI* processor);
 
 private:

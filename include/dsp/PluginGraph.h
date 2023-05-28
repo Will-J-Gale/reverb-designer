@@ -47,20 +47,21 @@ public:
     std::map<std::string, AudioProcessorNodePtr> getAudioProcessorNodeMap();
 
     void clear();
-    void clearFromUI();
-    void deleteAndReplaceAudioBlocks(std::function<std::shared_ptr<AudioProcessorState>()> callback);
-    void deleteAndReplaceAudioBlocks(std::shared_ptr<AudioProcessorState> state);
+    // void deleteAndReplaceAudioBlocks(std::function<std::shared_ptr<AudioProcessorState>()> callback);
+    // void deleteAndReplaceAudioBlocks(std::shared_ptr<AudioProcessorState> state);
 
     //Do a pass of processing to generate process path
     void calculateProcessPath();
-    void updateProcessPath();
+    void addAction(PluginGraphActionType actionType, PluginGraphActionCallback actionCallback=nullptr);
 
 private:
     void updateProcessors();
     void resetProcessors();
     void performDelete();
-
+    bool handleActions();
     Array<AudioProcessorNode*> processBlocks(Array<AudioProcessorNode*> blockToProcess);
+
+private:
 
     double _sampleRate = DEFAULT_SAMPLERATE;
     Array<AudioProcessorNodePtr> _allNodes;
@@ -70,12 +71,10 @@ private:
 
     XmlElementPtr _pluginState = nullptr;
     
-    bool _updateProcessorsFlag = false;
-    bool _processPathNeedsUpdating = false;
-    bool _clearAllNodes = false;
-    bool _deleteNodes = false;
-
     std::function<std::shared_ptr<AudioProcessorState>()> _generateCallback;
     Array<Array<AudioProcessorNode*>> _processPath;
     std::shared_ptr<AudioProcessorState> _tempProcessorState;
+
+    std::queue<PluginGraphAction> actions;
+    CriticalSection objectLock;
 };

@@ -185,6 +185,13 @@ void AudioProcessorNodeUI::disconnectOutput(NodeUI* destinationNode)
     _processorNode->disconnectOutput(audioNode->getProcessorNode().get());
 }
 
+void AudioProcessorNodeUI::clearConnections()
+{
+    _inputConnections.clear();
+    _outputConnections.clear();
+}
+
+
 void AudioProcessorNodeUI::buttonClicked (Button* button)
 {
     BaseParameterUI* parameterUI  = static_cast<BaseParameterUI*>(button->getParentComponent());

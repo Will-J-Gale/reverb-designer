@@ -15,7 +15,7 @@ void NodeConnectorInteractionHandler::onNodeConnectorLeftClick(NodeConnectorUI* 
 
 void NodeConnectorInteractionHandler::onNodeConnectorRightClick(NodeConnectorUI* node, const MouseEvent& e)
 {
-    _graphEditor->connectionHandler.deleteConnection(node);
+    _graphEditor->_connectionHandler.deleteConnection(node);
 }
 
 void NodeConnectorInteractionHandler::onNodeConnectorDrag(NodeConnectorUI* nodeConnector, const MouseEvent& e)
@@ -35,13 +35,13 @@ void NodeConnectorInteractionHandler::onNodeConnectorLeftRelease(NodeConnectorUI
         auto* startNode = _graphEditor->_clickedNodeConnector->getType() == NodeConnectorType::AudioOutput ? _graphEditor->_clickedNodeConnector : mouseUpNodeConnector;
         auto* endNode = mouseUpNodeConnector->getType() == NodeConnectorType::AudioInput ? mouseUpNodeConnector : _graphEditor->_clickedNodeConnector;
 
-        if (!_graphEditor->connectionHandler.connectionExists(startNode, endNode) 
-            && _graphEditor->connectionHandler.nodesAreCompatible(startNode, endNode))
+        if (!_graphEditor->_connectionHandler.connectionExists(startNode, endNode) 
+            && _graphEditor->_connectionHandler.nodesAreCompatible(startNode, endNode))
         {
-            if (_graphEditor->connectionHandler.isCreatingFeedback(startNode, endNode))
-                _graphEditor->connectionHandler.createFeedbackConnection(startNode, endNode);
+            if (_graphEditor->_connectionHandler.isCreatingFeedback(startNode, endNode))
+                _graphEditor->_connectionHandler.createFeedbackConnection(startNode, endNode);
             else
-                _graphEditor->connectionHandler.createConnection(startNode, endNode);
+                _graphEditor->_connectionHandler.createConnection(startNode, endNode);
         }
     }
 

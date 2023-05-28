@@ -16,5 +16,8 @@ public:
     void onTestReset();
 
 private:
+    void loadXMLCallback(std::string xmlString);
+
+private:
     MainGraphEditor* _mainGraphEditor;
 };

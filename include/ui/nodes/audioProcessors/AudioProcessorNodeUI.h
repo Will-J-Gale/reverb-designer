@@ -36,6 +36,7 @@ public:
     virtual void connectOutput(NodeUI* destinationNode) override;
     virtual void disconnectInput(NodeUI* sourceNode) override;
     virtual void disconnectOutput(NodeUI* destinationNode) override;
+    virtual void clearConnections() override;
     void buttonClicked (Button* button) override;
     void sliderValueChanged (Slider* slider) override;
     void comboBoxChanged (ComboBox* comboBoxThatHasChanged) override;

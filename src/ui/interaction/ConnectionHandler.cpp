@@ -25,7 +25,7 @@ void ConnectionHandler::createConnection(NodeConnectorUI* start, NodeConnectorUI
 
     endNodeUI->connectInput(startNodeUI);
     startNodeUI->connectOutput(endNodeUI);
-    _graphEditor->_pluginGraph->updateProcessPath();
+    _graphEditor->_pluginGraph->addAction(PluginGraphActionType::CalculateProcessPath);
 }
 
 void ConnectionHandler::createFeedbackConnection(NodeConnectorUI* start, NodeConnectorUI* end)
@@ -40,7 +40,7 @@ void ConnectionHandler::createFeedbackConnection(NodeConnectorUI* start, NodeCon
     endNodeUI = handleMacroNode(endNodeUI, true);
 
     endNodeUI->connectFeedbackInput(startNodeUI);
-    _graphEditor->_pluginGraph->updateProcessPath();
+    _graphEditor->_pluginGraph->addAction(PluginGraphActionType::CalculateProcessPath);
 }
 
 void ConnectionHandler::deleteConnection(NodeConnectorUI* nodeConnector)
@@ -68,7 +68,7 @@ void ConnectionHandler::deleteConnection(NodeConnectorUI* nodeConnector)
         _graphEditor->removeFromArray(_graphEditor->_connections, connection);
     }
 
-    _graphEditor->_pluginGraph->updateProcessPath();
+    _pluginGraph->addAction(PluginGraphActionType::CalculateProcessPath);
     _graphEditor->repaint();
 }
 

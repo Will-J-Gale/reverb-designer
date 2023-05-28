@@ -83,7 +83,7 @@ protected:
     //Used to only move selected items
     SelectionHandler _selectionHandler;
     ZoomHandler _zoomHandler{this};
-    ConnectionHandler connectionHandler; 
+    ConnectionHandler _connectionHandler; 
     NodeUIInteractionHandler _nodeInteractionHandler; 
     NodeConnectorInteractionHandler _nodeConnectorInteractionHandler{this};
 };

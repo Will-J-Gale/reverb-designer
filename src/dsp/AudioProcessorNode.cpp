@@ -103,6 +103,10 @@ void AudioProcessorNode::disconnectAll()
     {
         disconnectInput(feedback);
     }
+
+    _inputs.clear();
+    _outputs.clear();
+    _feedbackConnections.clear();
 }
 
 bool AudioProcessorNode::isReady()

@@ -26,7 +26,7 @@ void MainGraphEditor::setPluginGraph(PluginGraph* pluginGraph)
     _pluginGraph = pluginGraph;
     auto pluginState = pluginGraph->getPluginState().get();
     _nodeInteractionHandler.initialize(this, pluginGraph);
-    connectionHandler.initialize(this, pluginGraph);
+    _connectionHandler.initialize(this, pluginGraph);
 
     if (pluginState != nullptr)
         loadFromExistingState(pluginState);
@@ -81,9 +81,7 @@ void MainGraphEditor::fromXml(XmlElement* xml, IdToAudioProcessorMap* idToProces
     const MessageManagerLock mmlock;
     clear();
 
-    createIOProcessors();
     GraphEditor::fromXml(xml, idToProcessorMap);
-
-    _pluginGraph->updateProcessPath();
+    _pluginGraph->addAction(PluginGraphActionType::CalculateProcessPath);
     repaint();
 }

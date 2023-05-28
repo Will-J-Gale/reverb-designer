@@ -53,7 +53,8 @@ target_precompile_headers(
     <string>
     <vector>
     <map>
-    <functional>)
+    <functional>
+    <queue>)
 
 target_link_libraries(ReverbDesigner
     PRIVATE

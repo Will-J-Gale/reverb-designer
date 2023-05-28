@@ -104,7 +104,7 @@ void GraphEditor::setPluginGraph(PluginGraph* pluginGraph)
 {
     _pluginGraph = pluginGraph;
     _nodeInteractionHandler.initialize(this, pluginGraph);
-    connectionHandler.initialize(this, pluginGraph);
+    _connectionHandler.initialize(this, pluginGraph);
 }
 
 
@@ -255,34 +255,25 @@ Array<NodeUIPtr>& GraphEditor::getOutputs()
 
 void GraphEditor::clear()
 {
-    for(NodeUIPtr nodeUI : _nodes)
-    {
-        if(nodeUI->getNodeInstance() == NodeInstance::Macro)
-        {
-            auto macroUI = dynamic_cast<AudioProcessorMacroNode*>(nodeUI.get());
-            auto processorNodePtrs = macroUI->getInternalAudioProcessorNodes();
-            Array<AudioProcessorNode*> processorNodes;
+    auto io = Array<NodeUIPtr>();
+    io.addArray(_inputs);
+    io.addArray(_outputs);
 
-            for(AudioProcessorNodePtr& node : processorNodePtrs)
-            {
-                processorNodes.add(node.get());
-            }
-            _pluginGraph->deleteProcessorNodes(processorNodes);
-        }
-        else
-        {
-            AudioProcessorNodeUI* audioNodeUI = static_cast<AudioProcessorNodeUI*>(nodeUI.get()); 
-            _pluginGraph->deleteProcessorNode(audioNodeUI->getProcessorNode().get());
-        }
+    for(NodeUIPtr node : _nodes)
+    {
+        node->clearConnections();
     }
 
-    _inputs.clear();
-    _outputs.clear();
-    _nodes.clear();
+    auto nodesToDelete = _nodes;
+    nodesToDelete.removeValuesIn(io);
+    _nodes.removeValuesNotIn(io);
+
     _nodeConnectors.clear();
     _connections.clear();
     _globalSelection.clear();
     _selectionHandler.clear();
+
+    repaint();
 }
 
 XmlElement* GraphEditor::toXml()
@@ -316,6 +307,7 @@ XmlElement* GraphEditor::toXml()
             auto inputConnectionsXml = nodeXml->createNewChildElement(INPUT_CONNECTIONS_TAG);
             for (auto inputNodeUI : inputConnections)
             {
+                //@TODO Don't cast, just override getIdAsString in IO class
                 if(inputNodeUI->getNodeInstance() == NodeInstance::Output)
                     XmlUtils::createAndAddElement(ID_TAG, dynamic_cast<IO*>(inputNodeUI)->getParentId(), inputConnectionsXml);
                 else
@@ -328,6 +320,7 @@ XmlElement* GraphEditor::toXml()
             auto outputConnectionsXml = nodeXml->createNewChildElement(OUTPUT_CONNECTIONS_TAG);
             for (auto outputNodeUI : outputConnections)
             {
+                //@TODO Don't cast, just override getIdAsString in IO class
                 if(outputNodeUI->getNodeInstance() == NodeInstance::Input)
                     XmlUtils::createAndAddElement(ID_TAG, dynamic_cast<IO*>(outputNodeUI)->getParentId(), outputConnectionsXml);
                 else
@@ -340,6 +333,7 @@ XmlElement* GraphEditor::toXml()
             auto feedbackConnectionsXml = nodeXml->createNewChildElement(FEEDBACK_CONNECTIONS_TAG);
             for (auto feedbackNodeUI : feedbackConnections)
             {
+                //@TODO Don't cast, just override getIdAsString in IO class
                 if(feedbackNodeUI->getNodeInstance() == NodeInstance::Input)
                     XmlUtils::createAndAddElement(ID_TAG, dynamic_cast<IO*>(feedbackNodeUI)->getParentId(), feedbackConnectionsXml);
                 else
@@ -430,13 +424,13 @@ void GraphEditor::createAllConnections(std::map<std::string, NodeUIPtr> idToNode
                 auto startConnector = inputNodeUI->getOutputConnector();
                 auto endConnector = nodeUI->getInputConnector();
 
-                if (!connectionHandler.connectionExists(startConnector, endConnector))
+                if (!_connectionHandler.connectionExists(startConnector, endConnector))
                 {
                     _connections.add(std::make_shared<NodeConnection>(startConnector, endConnector));
 
                     //Get macro node input node if it's a macro
-                    nodeUI = connectionHandler.handleMacroNode(nodeUI, true);
-                    inputNodeUI = connectionHandler.handleMacroNode(inputNodeUI, false);
+                    nodeUI = _connectionHandler.handleMacroNode(nodeUI, true);
+                    inputNodeUI = _connectionHandler.handleMacroNode(inputNodeUI, false);
 
                     nodeUI->connectInput(inputNodeUI);
                     inputNodeUI->connectOutput(nodeUI);
@@ -457,12 +451,12 @@ void GraphEditor::createAllConnections(std::map<std::string, NodeUIPtr> idToNode
                 auto startConnector = nodeUI->getOutputConnector();
                 auto endConnector = outputNodeUI->getInputConnector();
 
-                if (!connectionHandler.connectionExists(startConnector, endConnector))
+                if (!_connectionHandler.connectionExists(startConnector, endConnector))
                 {
                     _connections.add(std::make_shared<NodeConnection>(startConnector, endConnector));
 
-                    nodeUI = connectionHandler.handleMacroNode(nodeUI, false);
-                    outputNodeUI = connectionHandler.handleMacroNode(outputNodeUI, true);
+                    nodeUI = _connectionHandler.handleMacroNode(nodeUI, false);
+                    outputNodeUI = _connectionHandler.handleMacroNode(outputNodeUI, true);
 
                     nodeUI->connectOutput(outputNodeUI);
                     outputNodeUI->connectInput(nodeUI);
@@ -483,10 +477,10 @@ void GraphEditor::createAllConnections(std::map<std::string, NodeUIPtr> idToNode
                 auto startConnector = feedbackNodeUI->getOutputConnector();
                 auto endConnector = nodeUI->getInputConnector();
 
-                nodeUI = connectionHandler.handleMacroNode(nodeUI, true);
-                feedbackNodeUI = connectionHandler.handleMacroNode(feedbackNodeUI, false);
+                nodeUI = _connectionHandler.handleMacroNode(nodeUI, true);
+                feedbackNodeUI = _connectionHandler.handleMacroNode(feedbackNodeUI, false);
 
-                if (!connectionHandler.connectionExists(startConnector, endConnector))
+                if (!_connectionHandler.connectionExists(startConnector, endConnector))
                 {
                     _connections.add(std::make_shared<NodeConnection>(startConnector, endConnector));
                     nodeUI->connectFeedbackInput(feedbackNodeUI);

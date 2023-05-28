@@ -11,34 +11,28 @@ MainMenuInteractionHandler::MainMenuInteractionHandler(MainGraphEditor* mainGrap
 
 void MainMenuInteractionHandler::onNewProject()
 {
-    auto io = Array<NodeUIPtr>();
-    io.addArray(_mainGraphEditor->_inputs);
-    io.addArray(_mainGraphEditor->_outputs);
+    _mainGraphEditor->clear();
+    _mainGraphEditor->_pluginGraph->addAction(PluginGraphActionType::ClearAllNodes);
+}
 
-    auto nodesToDelete = _mainGraphEditor->_nodes;
-    nodesToDelete.removeValuesIn(io);
-    _mainGraphEditor->_nodes.removeValuesNotIn(io);
+void MainMenuInteractionHandler::loadXMLCallback(std::string xmlString)
+{
+    const MessageManagerLock mmlock;
+    _mainGraphEditor->clear();
 
-    for (auto node : nodesToDelete)
-    {
-        if (!io.contains(node))
-        {
-            _mainGraphEditor->_nodeInteractionHandler.deleteNode(node.get());
-        }
-    }
-
-    _mainGraphEditor->repaint();
+    auto xml = parseXML(xmlString);
+    _mainGraphEditor->fromXml(xml.get());
+    _mainGraphEditor->_pluginGraph->addAction(PluginGraphActionType::CalculateProcessPath);
+    xml->deleteAllChildElements();
 }
 
 void MainMenuInteractionHandler::onPresetSelected(Presets::Type presetId)
 {
-    _mainGraphEditor->clear();
-
     auto xmlString = Presets::getPreset(presetId);
-    auto xml = parseXML(xmlString);
-    onNewProject();
-    _mainGraphEditor->fromXml(xml.get());
-    xml->deleteAllChildElements();
+    
+    //The callback method guarentees all nodes will be deleted when the callback is called
+    auto callback = std::bind(&MainMenuInteractionHandler::loadXMLCallback, this, xmlString);
+    _mainGraphEditor->_pluginGraph->addAction(PluginGraphActionType::ClearAllNodes, callback);
 }
 
 void MainMenuInteractionHandler::onSave(std::string savePath)
@@ -53,10 +47,9 @@ void MainMenuInteractionHandler::onLoad(std::string filepath)
 {
     auto file = File(filepath);
     auto xmlString = file.loadFileAsString().toStdString();
-    auto xml = parseXML(xmlString);
-    onNewProject();
-    _mainGraphEditor->fromXml(xml.get());
-    xml->deleteAllChildElements();
+
+    auto callback = std::bind(&MainMenuInteractionHandler::loadXMLCallback, this, xmlString);
+    _mainGraphEditor->_pluginGraph->addAction(PluginGraphActionType::ClearAllNodes, callback);
 }
 
 void MainMenuInteractionHandler::onMacroSelected(File macroFile)

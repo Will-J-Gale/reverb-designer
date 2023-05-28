@@ -328,3 +328,19 @@ enum class SliderInteraction
     TextEnter = -1,
     Slide = 0
 };
+
+enum class PluginGraphActionType
+{
+    UpdateProcessors,
+    CalculateProcessPath,
+    ClearAllNodes,
+    DeleteNodes
+};
+
+typedef std::function<void()> PluginGraphActionCallback;
+
+struct PluginGraphAction
+{
+    PluginGraphActionType type;
+    PluginGraphActionCallback callback;
+};

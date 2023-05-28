@@ -17,32 +17,45 @@ void PluginGraph::reset(double sampleRate)
     _allNodes.clear();
 }
 
+bool PluginGraph::handleActions()
+{
+    bool actionPerformed = false;
+
+    if(actions.size() > 0)
+    {
+        const GenericScopedLock<CriticalSection> _scopedLock (objectLock);
+    
+        PluginGraphAction action = actions.front();
+        actions.pop();
+
+        switch(action.type)
+        {
+            case PluginGraphActionType::UpdateProcessors:
+                updateProcessors();
+                break;
+            case PluginGraphActionType::CalculateProcessPath:
+                calculateProcessPath();
+                break;
+            case PluginGraphActionType::ClearAllNodes:
+                clear();
+                break;
+            case PluginGraphActionType::DeleteNodes:
+                performDelete();
+                break;
+        }
+
+        if(action.callback)
+            action.callback();
+
+        actionPerformed = true;
+    }
+
+    return actionPerformed;
+}
 void PluginGraph::process(std::vector<float>& inputFrame, int numInputChannels)
 {
-    if (_updateProcessorsFlag)
-    {
-        updateProcessors();
-        _updateProcessorsFlag = false;
+    if(handleActions())
         return;
-    }
-
-    if (_processPathNeedsUpdating)
-    {
-        calculateProcessPath();
-        return;
-    }
-
-    if(_clearAllNodes)
-    {
-        clear();
-        return;
-    }
-
-    if(_deleteNodes)
-    {
-        performDelete();
-        return;
-    }
 
     for (int i = 0; i < _inputs.size(); i++)
     {
@@ -104,19 +117,22 @@ void PluginGraph::addProcessorNode(AudioProcessorNodePtr processorNode)
 
 void PluginGraph::deleteProcessorNode(AudioProcessorNode* processorNode)
 {
-    _deleteNodes = true;
+    const GenericScopedLock<CriticalSection> myScopedLock (objectLock);
+    addAction(PluginGraphActionType::DeleteNodes);
     _nodesToDelete.add(processorNode);
 }
 
 void PluginGraph::deleteProcessorNodes(Array<AudioProcessorNode*> processorNodes)
 {
-    _deleteNodes = true;
+    const GenericScopedLock<CriticalSection> myScopedLock (objectLock);
+    addAction(PluginGraphActionType::DeleteNodes);
     _nodesToDelete.addArray(processorNodes);
 }
 
 void PluginGraph::performDelete()
 {
-    _deleteNodes = false;
+    _processPath.clear();
+
     for(AudioProcessorNode* node : _nodesToDelete)
     {
         removeFromArray(_allNodes, node);
@@ -289,28 +305,23 @@ void PluginGraph::clear()
     // inputs.clear();
     // outputs.clear();
     _allNodes.clear();
+    _processPath.clear();
 }
 
-void PluginGraph::clearFromUI()
-{
-    _clearAllNodes = true;
-}
+// void PluginGraph::deleteAndReplaceAudioBlocks(std::function<std::shared_ptr<AudioProcessorState>()> callback)
+// {
+//     addAction(PluginGraphActionType::UpdateProcessors);
+//     _generateCallback = callback;
+// }
 
-void PluginGraph::deleteAndReplaceAudioBlocks(std::function<std::shared_ptr<AudioProcessorState>()> callback)
-{
-    _updateProcessorsFlag = true;
-    _generateCallback = callback;
-}
-
-void PluginGraph::deleteAndReplaceAudioBlocks(std::shared_ptr<AudioProcessorState> state)
-{
-    _updateProcessorsFlag = true;
-    _tempProcessorState = state;
-}
+// void PluginGraph::deleteAndReplaceAudioBlocks(std::shared_ptr<AudioProcessorState> state)
+// {
+//     addAction(PluginGraphActionType::UpdateProcessors);
+//     _tempProcessorState = state;
+// }
 
 void PluginGraph::calculateProcessPath()
 {
-    _processPathNeedsUpdating = false;
     _processPath.clear();
 
     Array<AudioProcessorNode*> currentlyProcessing;
@@ -350,11 +361,6 @@ void PluginGraph::calculateProcessPath()
     }
 }
 
-void PluginGraph::updateProcessPath()
-{
-    _processPathNeedsUpdating = true;
-}
-
 void PluginGraph::updateProcessors()
 {
     _allNodes.clear();
@@ -376,4 +382,10 @@ void PluginGraph::resetProcessors()
     {
         block->setFinishedProcessing(false);
     }
+}
+
+void PluginGraph::addAction(PluginGraphActionType action, PluginGraphActionCallback actionCallback)
+{
+    const GenericScopedLock<CriticalSection> myScopedLock (objectLock);
+    actions.push(PluginGraphAction{action, actionCallback});
 }

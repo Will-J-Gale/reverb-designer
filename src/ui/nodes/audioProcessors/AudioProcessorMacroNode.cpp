@@ -69,6 +69,12 @@ void AudioProcessorMacroNode::disconnectOutput(NodeUI* destinationNodeUI)
     _processorNode->disconnectOutput(audioNodeUI->getProcessorNode().get());
 }
 
+void AudioProcessorMacroNode::clearConnections()
+{
+    _inputConnections.clear();
+    _outputConnections.clear();
+}
+
 void AudioProcessorMacroNode::mouseDoubleClick(const MouseEvent& e)
 {
     auto closeCallback = std::bind(&AudioProcessorMacroNode::closeWindow, this);
@@ -138,7 +144,7 @@ void AudioProcessorMacroNode::fromXml(XmlElement* xml)
     updateNameAndReCenter(_name);
     setTopLeftPosition(x, y);
     _graphEditor->clear();
-    _graphEditor->addInputNode();
-    _graphEditor->addOutputNode();
+    // _graphEditor->addInputNode();
+    // _graphEditor->addOutputNode();
     _graphEditor->fromXml(xml->getChildByName(PLUGIN_STATE_TAG));
 }
