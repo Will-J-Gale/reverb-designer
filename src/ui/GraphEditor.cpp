@@ -255,23 +255,28 @@ Array<NodeUIPtr>& GraphEditor::getOutputs()
 
 void GraphEditor::clear()
 {
-    auto io = Array<NodeUIPtr>();
-    io.addArray(_inputs);
-    io.addArray(_outputs);
-
     for(NodeUIPtr node : _nodes)
     {
         node->clearConnections();
     }
 
-    auto nodesToDelete = _nodes;
-    nodesToDelete.removeValuesIn(io);
-    _nodes.removeValuesNotIn(io);
-
     _nodeConnectors.clear();
     _connections.clear();
     _globalSelection.clear();
     _selectionHandler.clear();
+
+    _nodes.addArray(_inputs);
+    _nodes.addArray(_outputs);
+
+    for(NodeUIPtr& input : _inputs)
+    {
+        _nodeConnectors.addArray(input->getAllNodeConnectors());
+    }
+
+    for(NodeUIPtr& output : _outputs)
+    {
+        _nodeConnectors.addArray(output->getAllNodeConnectors());
+    }
 
     repaint();
 }
@@ -359,7 +364,6 @@ void GraphEditor::fromXml(XmlElement* xml, IdToAudioProcessorMap* idToProcessorM
         auto nodeInstance = (NodeInstance)(nodeXml->getChildByName(INSTANCE_TAG)->getAllSubText().getIntValue());
         auto x = nodeXml->getChildByName(X_TAG)->getAllSubText().getIntValue();
         auto y = nodeXml->getChildByName(Y_TAG)->getAllSubText().getIntValue();
-        auto isReversed = nodeXml->getChildByName(IS_REVERSED_TAG)->getAllSubText().getIntValue();
 
         NodeUIPtr nodeUI;
 

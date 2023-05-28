@@ -144,7 +144,5 @@ void AudioProcessorMacroNode::fromXml(XmlElement* xml)
     updateNameAndReCenter(_name);
     setTopLeftPosition(x, y);
     _graphEditor->clear();
-    // _graphEditor->addInputNode();
-    // _graphEditor->addOutputNode();
     _graphEditor->fromXml(xml->getChildByName(PLUGIN_STATE_TAG));
 }
