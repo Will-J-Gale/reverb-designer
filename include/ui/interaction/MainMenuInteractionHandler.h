@@ -13,7 +13,6 @@ public:
     void onNewProject();
     void onPresetSelected(Presets::Type presetId);
     void onMacroSelected(File macroFile);
-    void onTestReset();
 
 private:
     void loadXMLCallback(std::string xmlString);

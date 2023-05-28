@@ -199,11 +199,23 @@ void NodeUIInteractionHandler::deleteNode(NodeUI *nodeUIToDelete, bool deleteAud
     _graphEditor->removeFromArray(_graphEditor->_nodes, nodeUIToDelete);
 }
 
-void NodeUIInteractionHandler::duplicateNode(NodeUI *node)
+void NodeUIInteractionHandler::duplicateNode(NodeUI* node)
 {
-    auto newProcessor = createNode(node->getNodeInstance(), node->getPosition() + Point<int>(DUPLICATE_OFFSET_X, DUPLICATE_OFFSET_Y));
-    // auto parameters = node->getAudioParametersAsXml();
-    // newProcessor->setAudioParametersFromXml(parameters);
-    // delete parameters;
-    initializeNode(newProcessor);
+    std::shared_ptr<NodeUI> duplicatedNode;
+    auto nodeXml = node->toXml();
+
+    //@TODO make createNode return NodeUI instread of AudioProcessorNodeUI
+    if(node->getNodeInstance() == NodeInstance::Macro)
+        duplicatedNode = createMacroNodeFromXml(nodeXml);
+    else
+    {
+        duplicatedNode = createNode(node->getNodeInstance(), Point<int>());
+        duplicatedNode->fromXml(nodeXml);
+    }
+
+    nodeXml->deleteAllChildElements();
+    delete nodeXml;
+
+    duplicatedNode->setTopLeftPosition(node->getPosition() + Point<int>(DUPLICATE_OFFSET_X, DUPLICATE_OFFSET_Y));
+    initializeNode(duplicatedNode);
 }

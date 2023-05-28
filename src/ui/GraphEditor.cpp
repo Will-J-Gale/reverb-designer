@@ -362,6 +362,8 @@ void GraphEditor::fromXml(XmlElement* xml, IdToAudioProcessorMap* idToProcessorM
         auto isReversed = nodeXml->getChildByName(IS_REVERSED_TAG)->getAllSubText().getIntValue();
 
         NodeUIPtr nodeUI;
+
+        //@TODO All these branches now use XML so could make this more generic
         if(nodeInstance == NodeInstance::Macro)
         {
             nodeUI = _nodeInteractionHandler.createMacroNodeFromXml(nodeXml);
@@ -383,18 +385,9 @@ void GraphEditor::fromXml(XmlElement* xml, IdToAudioProcessorMap* idToProcessorM
             else
                 nodeUI = _nodeInteractionHandler.createNode(nodeInstance, Point<int>(x, y));
 
-            auto audioNodeUI = dynamic_cast<AudioProcessorNodeUI*>(nodeUI.get());
-            auto audioProcessorNode = audioNodeUI->getProcessorNode();
-            auto audioParametesXml = nodeXml->getChildByName(AUDIO_PARAMETERTS_TAG);
-            XmlUtils::setAudioParametersFromXml(audioNodeUI->getAudioParameters(), audioParametesXml);
-            audioNodeUI->updateParametersUI();
-
-            
+            nodeUI->fromXml(nodeXml);
         }
 
-        if(isReversed)
-            nodeUI->reverse();
-        
         if(nodeInstance != NodeInstance::Input && nodeInstance != NodeInstance::Output)
             _nodeInteractionHandler.initializeNode(nodeUI);
 

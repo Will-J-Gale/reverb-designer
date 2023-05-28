@@ -264,4 +264,6 @@ void AudioProcessorNodeUI::fromXml(XmlElement* nodeXml)
 
         parameter = parameter->getNextElement();
     }
+
+    updateParametersUI();
 }
